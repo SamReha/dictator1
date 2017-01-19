@@ -1,11 +1,10 @@
 #include <QCoreApplication>
-#include <QDebug>
+
+#include "board.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-
-    qDebug()<<"Hello World!";
 
     return a.exec();
 }
