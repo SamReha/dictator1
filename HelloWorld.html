@@ -4,24 +4,56 @@
 	<meta charset="UTF-8" />
 	<title>Phaser - Making your first game, part 1</title>
     <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+    <script src="MainGame.js"></script>
+    <script src="People.js"></script>
     <style type="text/css">
         body {
             margin: 0;
         }
+        @font-face {font-family: 'PingFangM'; src: url('images/PingFangM.ttf') format('truetype');}
     </style>
 </head>
 <body>
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(300, 200, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+/*global Phaser*/
+var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
-    game.load.image("helloWorld",'images/helloworld.jpg')
+    game.load.image("bg",'images/bg.jpg')
+    game.load.image('fg','images/tmm32.png')
+    // game.load.image('face','images/tmmf35.png')
+    game.load.spritesheet('blink','images/tmmf31.png',340,514)
 }
 
 function create() {
-    game.add.sprite(0,0,'helloWorld')
+    game.add.sprite(0,0,'bg')
+    game.add.sprite(200,0,'fg')
+    // game.add.sprite(375,0,'face')
+    
+    // play animation
+    var blink=game.add.sprite(375,0,'blink')
+    blink.animations.add('blinkAnim',[0,1],2,true)
+    blink.animations.play('blinkAnim')
+
+    // show text
+    var style = { font: "32px PingFangM", fill: "#ff0044", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00" };
+    var text = game.add.text(200, 200, "- If you can see Chinese 中文, it is good. -", style);
+    text.anchor.set(0.5);
+
+    // How to use a singleton class?
+    /*global MainGame*/
+    MainGame.init()
+    MainGame.start()
+    
+    // How to use a non-singleton class?
+    /*global People*/
+    var p=People.createNew('Sam Reha')
+    console.log("Created a person: type="+p.type+", name="+p.name)
+    /*global LowPerson*/
+    var p2=LowPerson.createNew('Jake Baker')
+    console.log("Created an interchangable: type="+p2.type+", name="+p2.name)
 }
 
 function update() {
