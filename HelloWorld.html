@@ -4,13 +4,18 @@
 	<meta charset="UTF-8" />
 	<title>Phaser - Making your first game, part 1</title>
     <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
-    <script src="MainGame.js"></script>
-    <script src="People.js"></script>
+    
+    <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
+    <script type="text/javascript" src="MainGame.js"></script>
+    <script type="text/javascript" src="People.js"></script>
+    <script type="text/javascript" src="Global.js"></script>
+    
+    <!--Yi: Please put our custome font files here-->
     <style type="text/css">
         body {
             margin: 0;
         }
-        @font-face {font-family: 'PingFangM'; src: url('images/PingFangM.ttf') format('truetype');}
+        @font-face {font-family: 'STKaiti'; src: url('images/STKaiTi.ttf') format('truetype');}
     </style>
 </head>
 <body>
@@ -38,19 +43,20 @@ function create() {
     blink.animations.play('blinkAnim')
 
     // show text
-    var style = { font: "32px PingFangM", fill: "#ff0044", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00" };
+    var style = { font: "32px STKaiti", fill: "#ff0044", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00" };
     var text = game.add.text(200, 200, "- If you can see Chinese 中文, it is good. -", style);
     text.anchor.set(0.5);
 
-    // How to use a singleton class?
+    // Yi: How to use a singleton class?
     /*global MainGame*/
-    MainGame.init()
     MainGame.start()
     
-    // How to use a non-singleton class?
+    // Yi: How to use a non-singleton class?
     /*global People*/
     var p=People.createNew('Sam Reha')
     console.log("Created a person: type="+p.type+", name="+p.name)
+    
+    // Yi: How to use a non-singleton derived class?
     /*global LowPerson*/
     var p2=LowPerson.createNew('Jake Baker')
     console.log("Created an interchangable: type="+p2.type+", name="+p2.name)

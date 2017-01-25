@@ -1,10 +1,8 @@
 // singleton
 
 var Global={
-    create=function(){
-        
-    }
-    turnUpdate=function(){
+    unrest:20,
+    turnUpdate:function(){
         
     }
 }

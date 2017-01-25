@@ -17,4 +17,8 @@ var MainGame={
         // TODO
     },
     
+    test: function(){
+        console.log('[MainGame] this is a test func call.')
+    }
 }
+
