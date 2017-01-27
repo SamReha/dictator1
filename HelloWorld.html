@@ -6,6 +6,7 @@
     <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
     
     <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
+    <script type="text/javascript" src="Board.js"></script>
     <script type="text/javascript" src="Global.js"></script>
     <script type="text/javascript" src="MainGame.js"></script>
     <script type="text/javascript" src="People.js"></script>
@@ -24,18 +25,19 @@
 <script type="text/javascript">
 
 /*global Phaser*/
-var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var g = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
     /*global Preloader*/
-    Preloader.preload(game)
+    Preloader.preload(g);
+
     /*global MainGame*/
-    MainGame.init(game)
+    MainGame.init(g);
 }
 
 function create() {
     /*global MainGame*/
-    MainGame.start()
+    MainGame.start();
 }
 
 function update() {
