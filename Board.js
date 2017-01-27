@@ -31,8 +31,6 @@ var Board={
         var board={
             width: 16,
             height: 16,
-            map: Map.createNew(),
-            
         }
         return board;
     },

@@ -7,6 +7,7 @@
     
     <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
     <script type="text/javascript" src="MainGame.js"></script>
+    <script type="text/javascript" src="RootNode.js"></script>
     <script type="text/javascript" src="People.js"></script>
     <script type="text/javascript" src="Global.js"></script>
     
@@ -26,40 +27,13 @@
 var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
-    game.load.image("bg",'images/bg.jpg')
-    game.load.image('fg','images/tmm32.png')
-    // game.load.image('face','images/tmmf35.png')
-    game.load.spritesheet('blink','images/tmmf31.png',340,514)
+    /*global MainGame*/
+    MainGame.init(game)
 }
 
 function create() {
-    game.add.sprite(0,0,'bg')
-    game.add.sprite(200,0,'fg')
-    // game.add.sprite(375,0,'face')
-    
-    // play animation
-    var blink=game.add.sprite(375,0,'blink')
-    blink.animations.add('blinkAnim',[0,1],2,true)
-    blink.animations.play('blinkAnim')
-
-    // show text
-    var style = { font: "32px STKaiti", fill: "#ff0044", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00" };
-    var text = game.add.text(200, 200, "- If you can see Chinese 中文, it is good. -", style);
-    text.anchor.set(0.5);
-
-    // Yi: How to use a singleton class?
     /*global MainGame*/
     MainGame.start()
-    
-    // Yi: How to use a non-singleton class?
-    /*global People*/
-    var p=People.createNew('Sam Reha')
-    console.log("Created a person: type="+p.type+", name="+p.name)
-    
-    // Yi: How to use a non-singleton derived class?
-    /*global LowPerson*/
-    var p2=LowPerson.createNew('Jake Baker')
-    console.log("Created an interchangable: type="+p2.type+", name="+p2.name)
 }
 
 function update() {

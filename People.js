@@ -9,7 +9,7 @@ var People={
         console.log("[People] created.")
         var p={}
         
-        // define private prop/funcs here.
+        // define class prop/funcs here.
         p.name=name
         p.testFunc=function(){
             console.log("[People] testFunc()")
