@@ -13,7 +13,7 @@ var Board={
         // get tile #[i]
         board.at=function(i){return Board.at(board,i);};
         // get #[i]'s adjacent tile at clock direction [cd]
-        board.adjacent=function(i,cd){return Board.adjacent(board,i,cd);};
+        board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning);};
         // get #[i]'s all adjacent tiles within a step distance N
         board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N);};
         
@@ -58,18 +58,24 @@ var Board={
     at: function(b,i){
         return b.map.children[i];
     },
-    adjacent: function(b,i,cd){
+    adjacent: function(b,i,cd,warning){
         var w=b.width, h=b.height;
         var x=i%w;
         //              0   1   2   3   4   5   6   7   8   9   10  11
         var adj_even=[-w, -w+1,-w+1,0, +1,  +1, +w,-1,  -1, 0,  -w-1,-w-1];
         var adj_odd= [-w, +1,   +1, 0, +w+1,+w+1,+w,+w-1,+w-1,0,-1,     -1];
-        var newIndex=(x%2===0?i+adj_even[i]:i+adj_odd[i])
-        if(newIndex<0){
-            console.error('[Board] Tile '+i+' does not have an adjacent at '+cd);
+        // see if it is the leftmost/rightmost
+        if(x===0){
+            adj_even[7]=0, adj_even[8]=0, adj_even[10]=0, adj_even[11]=0;
+        }else if(x===w-1){
+            adj_even[1]=0, adj_even[2]=0, adj_even[4]=0, adj_even[5]=0;
+        }
+        var newIndex=(x%2===0?i+adj_even[cd]:i+adj_odd[cd])
+        if(newIndex<0 || newIndex>=w*h){
+            if(warning) console.warn('[Board] Tile '+i+' does not have an adjacent at '+cd);
             return null;
         }else if(newIndex===i){
-            console.error('[Board] The clock direction should not be '+cd);
+            if(warning) console.error('[Board] The clock direction should not be '+cd);
             return null;
         }else{
             return newIndex;
@@ -91,4 +97,6 @@ var Board={
         result.shift();
         return result;
     },
+    
+    
 };
