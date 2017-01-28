@@ -10,12 +10,16 @@ var Board={
         board.height=h;
         board.map=g.add.group();
         
-        // get tile #[i]
+        // returns the tile sprite at [i]
         board.at=function(i){return Board.at(board,i);};
-        // get #[i]'s adjacent tile at clock direction [cd]
+        // returns the adjacent index at clock direction [cd] of tile [i]
         board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning);};
-        // get #[i]'s all adjacent tiles within a step distance N
+        // returns all adjacent indice within [N] steps of tile [i]
         board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N);};
+        // returns the (x,y) of i
+        board.xyOf=function(i){return Board.xyOf(board,i);};
+        // returns the step distance between i and j
+        board.distanceOf=function(i,j){return Board.distanceOf(board,i,j);};
         
         // init
         var N=w*h;
@@ -55,9 +59,11 @@ var Board={
         return board;
     },
 
+    // returns the tile sprite at [i]
     at: function(b,i){
         return b.map.children[i];
     },
+    // returns the adjacent index at clock direction [cd] of tile [i]
     adjacent: function(b,i,cd,warning){
         var w=b.width, h=b.height;
         var x=i%w;
@@ -81,6 +87,7 @@ var Board={
             return newIndex;
         }
     },
+    // returns all adjacent indice within [N] steps of tile [i]
     allAdjacent: function(b,i,N){
         var result=[i];
         var p0=0, p1=1;
@@ -97,6 +104,34 @@ var Board={
         result.shift();
         return result;
     },
-    
-    
+    // returns the (x,y) of i
+    xyOf: function(b,i){
+        var w=b.width;
+        return {x:i%w, y:Math.floor(i/w)};
+    },
+    // returns the step distance between i and j
+    distanceOf: function(b,i,j){
+        var p0=b.xyOf(i), p1=b.xyOf(j);
+        if(p0.x===p1.x){
+            return Math.abs(p0.y-p1.y);
+        }else if(p0.y===p1.y){
+            return Math.abs(p0.x-p1.x);
+        }else{
+            var dx=Math.abs(p0.x-p1.x);
+            var dy=Math.abs(p0.y-p1.y);
+            if(p0.x%2===1){
+                if(p0.y<p1.y){
+                    return dx+dy-Math.ceil(dx/2);
+                }else{
+                    return dx+dy-Math.floor(dx/2);
+                }
+            }else{
+                if(p0.y>p1.y){
+                    return dx+dy-Math.ceil(dx/2);
+                }else{
+                    return dx+dy-Math.floor(dx/2);
+                }
+            }
+        }
+    },
 };
