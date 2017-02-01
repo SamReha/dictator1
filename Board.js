@@ -10,6 +10,7 @@ var Board={
         board.height=h;
         board.map=g.add.group();
         
+        // Class Functions
         // returns the tile sprite at [i]
         board.at=function(i){return Board.at(board,i);};
         // returns the adjacent index at clock direction [cd] of tile [i]
