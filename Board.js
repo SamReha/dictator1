@@ -1,25 +1,77 @@
-// Board
+// require: MainGame.game !== null
+var Tile={
+    createNew: function(name,terrainTexture,resTexture){
+        /*global MainGame*/
+        var t=MainGame.game.add.group();
+        Tile.init(t,terrainTexture,resTexture);
+        
+        // Class vars
+        t.name=name;
+        
+        // Class funcs
+        t.getBuilding=function(){return t.building};
+        t.setBuilding=function(building){Tile.setBuilding(t,building)};
+        
+        return t;
+    },
+    init: function(t, terrainTexture, resTexture){
+        // add terrain
+        t.terrain=MainGame.game.add.sprite(0,0,terrainTexture);
+        t.addChild(t.terrain);
+        
+        // add resource
+        if(resTexture){
+            t.res=MainGame.game.add.sprite(0,0,resTexture);
+            t.addChild(t.res);
+        }else{
+            t.res=null;
+        }
+        
+        // add building
+        t.building=null;
+        // t.building=MainGame.game.add.group();
+        // t.building.nextTurn=function(){console.log("Next Turn for the building at "+t.name)};
+        // t.addChild(t.building);
+    },
+    setBuilding: function(tile, building){
+        if(tile.building===building){
+            return;
+        }
+        if(tile.building){
+            tile.removeChild(tile.building);
+            tile.building=null;
+        }
+        tile.building=building;
+        tile.addChild(building);
+    },
+};
+
+// Board as turnSystem
 var Board={
     // init func
-    createNew: function(g,w,h,pw,terrain,res,building){
-        var board={};
+    createNew: function(w,h,pw,terrain,res,building){
+        // board is a group
+        var board=MainGame.game.add.group();
+        // Class vars
+        board.game=MainGame.game;
+        board.gridWidth=w;
+        board.gridHeight=h;
         
-        // Class members
-        board.game=g;
-        board.width=w;
-        board.height=h;
-        board.map=g.add.group();
-        
+        // Class funcs
         // returns the tile sprite at [i]
-        board.at=function(i){return Board.at(board,i);};
+        board.at=function(i){return Board.at(board,i)};
         // returns the adjacent index at clock direction [cd] of tile [i]
-        board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning);};
+        board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning)};
         // returns all adjacent indice within [N] steps of tile [i]
-        board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N);};
+        board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N)};
         // returns the (x,y) of i
-        board.xyOf=function(i){return Board.xyOf(board,i);};
+        board.xyOf=function(i){return Board.xyOf(board,i)};
         // returns the step distance between i and j
-        board.distanceOf=function(i,j){return Board.distanceOf(board,i,j);};
+        board.distanceOf=function(i,j){return Board.distanceOf(board,i,j)};
+        // returns whether i is connected with j
+        board.hasRoadConnect=function(i,j){return Board.hasRoadConnect(board,i,j)};
+        // to next turn
+        board.nextTurn=function(){Board.nextTurn(board)};
         
         // init
         var N=w*h;
@@ -33,39 +85,31 @@ var Board={
                 y+=ph*0.5;
             }
             // create the tile group
-            var oneTile=g.add.group(board.map);
-            oneTile.x=x;
-            oneTile.y=y;
             
             // create map table
-            var terrainTable=['undefined', 'coast', 'desert', 'grass', 'mountain', 'water'];
-            var resTable=['undefined', 'forest', 'oil'];
-            var buildingTable=['undefined', 'apartments', 'factory', 'hospital', 'palace', 'shanties'];
+            var terrainTable=[null, 'coast', 'desert', 'grass', 'mountain', 'water'];
+            var resTable=[null, 'forest', 'oil'];
             
             // create terrain, res and building
             var terrainIndex=parseInt(terrain[i],10);
-            oneTile.create(0,0,terrainTable[terrainIndex]);
-            
             var resIndex=parseInt(res[i],10);
-            if(resIndex>=1){
-                oneTile.create(0,0,resTable[resIndex]);
-            }
-            
-            var buildingIndex=parseInt(building[i],10);
-            if(buildingIndex>=1){
-                oneTile.create(0,0,buildingTable[buildingIndex]);
-            }
+
+            var oneTile=Tile.createNew("tile("+x+","+y+")", terrainTable[terrainIndex], resTable[resIndex]);
+            oneTile.x=x;
+            oneTile.y=y;
+            board.addChild(oneTile);
         }
+        
         return board;
     },
 
     // returns the tile sprite at [i]
     at: function(b,i){
-        return b.map.children[i];
+        return b.children[i];
     },
     // returns the adjacent index at clock direction [cd] of tile [i]
     adjacent: function(b,i,cd,warning){
-        var w=b.width, h=b.height;
+        var w=b.gridWidth, h=b.gridHeight;
         var x=i%w;
         //              0   1   2   3   4   5   6   7   8   9   10  11
         var adj_even=[-w, -w+1,-w+1,0, +1,  +1, +w,-1,  -1, 0,  -w-1,-w-1];
@@ -106,7 +150,7 @@ var Board={
     },
     // returns the (x,y) of i
     xyOf: function(b,i){
-        var w=b.width;
+        var w=b.gridWidth;
         return {x:i%w, y:Math.floor(i/w)};
     },
     // returns the step distance between i and j
@@ -131,6 +175,47 @@ var Board={
                 }else{
                     return dx+dy-Math.floor(dx/2);
                 }
+            }
+        }
+    },
+    // returns if i and j is connected by road; returns true if i and j are adjacent.
+    hasRoadConnect: function(b,i,j){
+        console.assert(i!==j, "[Board] hasRoadConnect: the two indice should not be identical!");
+        // TODO: use A* instead
+        // now let's use BFS
+        var conStack=[i];
+        var checkedStack=[];
+        while(conStack.length>0){
+            var current=conStack.shift();
+            for(var cd=0;cd<12;cd+=2){
+                var adjacent=b.adjacent(current,cd);
+                // check if adjacent is j
+                if(adjacent===j){
+                    return true;
+                }
+                // push it for future check
+                if(adjacent && checkedStack.indexOf(adjacent)===-1){
+                    var oneTile=b.children[adjacent];
+                    if(oneTile.building){ 
+                        if(oneTile.building.type==="road"){
+                            conStack.push(adjacent);
+                        }
+                    }
+                }
+            }
+            checkedStack.push(current);
+        }
+        return false;
+    },
+    // to next turn
+    nextTurn: function(b){
+        // DFS call nextTurn
+        var stack=[b];
+        while(stack.length>0){
+            var node=stack.pop();
+            if(node.nextTurn && node!==b) node.nextTurn();
+            for(var i=0;i<node.children.length;i++){
+                stack.push(node.children[i]);
             }
         }
     },
