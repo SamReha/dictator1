@@ -54,8 +54,8 @@ var Board={
         var board=MainGame.game.add.group();
         // Class vars
         board.game=MainGame.game;
-        board.width=w;
-        board.height=h;
+        board.gridWidth=w;
+        board.gridHeight=h;
         
         // Class funcs
         // returns the tile sprite at [i]
@@ -68,6 +68,8 @@ var Board={
         board.xyOf=function(i){return Board.xyOf(board,i)};
         // returns the step distance between i and j
         board.distanceOf=function(i,j){return Board.distanceOf(board,i,j)};
+        // returns whether i is connected with j
+        board.hasRoadConnect=function(i,j){return Board.hasRoadConnect(board,i,j)};
         // to next turn
         board.nextTurn=function(){Board.nextTurn(board)};
         
@@ -97,6 +99,7 @@ var Board={
             oneTile.y=y;
             board.addChild(oneTile);
         }
+        
         return board;
     },
 
@@ -106,7 +109,7 @@ var Board={
     },
     // returns the adjacent index at clock direction [cd] of tile [i]
     adjacent: function(b,i,cd,warning){
-        var w=b.width, h=b.height;
+        var w=b.gridWidth, h=b.gridHeight;
         var x=i%w;
         //              0   1   2   3   4   5   6   7   8   9   10  11
         var adj_even=[-w, -w+1,-w+1,0, +1,  +1, +w,-1,  -1, 0,  -w-1,-w-1];
@@ -147,7 +150,7 @@ var Board={
     },
     // returns the (x,y) of i
     xyOf: function(b,i){
-        var w=b.width;
+        var w=b.gridWidth;
         return {x:i%w, y:Math.floor(i/w)};
     },
     // returns the step distance between i and j
@@ -174,6 +177,35 @@ var Board={
                 }
             }
         }
+    },
+    // returns if i and j is connected by road; returns true if i and j are adjacent.
+    hasRoadConnect: function(b,i,j){
+        console.assert(i!==j, "[Board] hasRoadConnect: the two indice should not be identical!");
+        // TODO: use A* instead
+        // now let's use BFS
+        var conStack=[i];
+        var checkedStack=[];
+        while(conStack.length>0){
+            var current=conStack.shift();
+            for(var cd=0;cd<12;cd+=2){
+                var adjacent=b.adjacent(current,cd);
+                // check if adjacent is j
+                if(adjacent===j){
+                    return true;
+                }
+                // push it for future check
+                if(adjacent && checkedStack.indexOf(adjacent)===-1){
+                    var oneTile=b.children[adjacent];
+                    if(oneTile.building){ 
+                        if(oneTile.building.type==="road"){
+                            conStack.push(adjacent);
+                        }
+                    }
+                }
+            }
+            checkedStack.push(current);
+        }
+        return false;
     },
     // to next turn
     nextTurn: function(b){

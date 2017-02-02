@@ -38,7 +38,7 @@ var MainGame={
         /*global Board*/
         MainGame.board=Board.createNew(5, 3, 256, '151512424231313', '12   22    1111', '  121  543     ');
         
-        MainGame.nextTurn();
+        //MainGame.nextTurn();
     },
     
     nextTurn: function(){
