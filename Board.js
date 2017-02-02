@@ -1,16 +1,60 @@
-// Board
+// require: MainGame.game !== null
+var Tile={
+    createNew: function(name,terrainTexture,resTexture){
+        /*global MainGame*/
+        var t=MainGame.game.add.group();
+        Tile.init(t,terrainTexture,resTexture);
+        
+        // Class vars
+        t.name=name;
+        
+        // Class funcs
+        t.getBuilding=function(){return t.building};
+        t.setBuilding=function(building){Tile.setBuilding(t,building)};
+        
+        return t;
+    },
+    init: function(t, terrainTexture, resTexture){
+        // add terrain
+        t.terrain=MainGame.game.add.sprite(0,0,terrainTexture);
+        t.addChild(t.terrain);
+        
+        // add resource
+        if(resTexture){
+            t.res=MainGame.game.add.sprite(0,0,resTexture);
+            t.addChild(t.res);
+        }else{
+            t.res=null;
+        }
+        
+        // add building
+        t.building=null;
+    },
+    setBuilding: function(tile, building){
+        if(tile.building===building){
+            return;
+        }
+        if(tile.building){
+            tile.removeChild(tile.building);
+            tile.building=null;
+        }
+        tile.building=building;
+        tile.addChild(building);
+    },
+};
+
+// Board as turnSystem
 var Board={
     // init func
-    createNew: function(g,w,h,pw,terrain,res,building){
-        var board={};
-        
-        // Class members
-        board.game=g;
+    createNew: function(w,h,pw,terrain,res,building){
+        // board is a group
+        var board=MainGame.game.add.group();
+        // Class vars
+        board.game=MainGame.game;
         board.width=w;
         board.height=h;
-        board.map=g.add.group();
         
-        // Class Functions
+        // Class funcs
         // returns the tile sprite at [i]
         board.at=function(i){return Board.at(board,i);};
         // returns the adjacent index at clock direction [cd] of tile [i]
@@ -34,35 +78,26 @@ var Board={
                 y+=ph*0.5;
             }
             // create the tile group
-            var oneTile=g.add.group(board.map);
-            oneTile.x=x;
-            oneTile.y=y;
             
             // create map table
-            var terrainTable=['undefined', 'coast', 'desert', 'grass', 'mountain', 'water'];
-            var resTable=['undefined', 'forest', 'oil'];
-            var buildingTable=['undefined', 'apartments', 'factory', 'hospital', 'palace', 'shanties'];
+            var terrainTable=[null, 'coast', 'desert', 'grass', 'mountain', 'water'];
+            var resTable=[null, 'forest', 'oil'];
             
             // create terrain, res and building
             var terrainIndex=parseInt(terrain[i],10);
-            oneTile.create(0,0,terrainTable[terrainIndex]);
-            
             var resIndex=parseInt(res[i],10);
-            if(resIndex>=1){
-                oneTile.create(0,0,resTable[resIndex]);
-            }
-            
-            var buildingIndex=parseInt(building[i],10);
-            if(buildingIndex>=1){
-                oneTile.create(0,0,buildingTable[buildingIndex]);
-            }
+
+            var oneTile=Tile.createNew("tile("+x+","+y+")", terrainTable[terrainIndex], resTable[resIndex]);
+            oneTile.x=x;
+            oneTile.y=y;
+            board.addChild(oneTile);
         }
         return board;
     },
 
     // returns the tile sprite at [i]
     at: function(b,i){
-        return b.map.children[i];
+        return b.children[i];
     },
     // returns the adjacent index at clock direction [cd] of tile [i]
     adjacent: function(b,i,cd,warning){

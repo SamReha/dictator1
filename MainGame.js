@@ -28,10 +28,11 @@ var MainGame={
     
     // start the game
     start: function(){
+        console.assert(MainGame.initialized);
         console.log('[MainGame] start...');
         
         // create board
         /*global Board*/
-        MainGame.board=Board.createNew(MainGame.game, 5, 3, 256, '151512424231313', '12   22    1111', '  121  543     ');
+        MainGame.board=Board.createNew(5, 3, 256, '151512424231313', '12   22    1111', '  121  543     ');
     },
 };
