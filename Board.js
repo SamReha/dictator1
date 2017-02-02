@@ -29,6 +29,9 @@ var Tile={
         
         // add building
         t.building=null;
+        // t.building=MainGame.game.add.group();
+        // t.building.nextTurn=function(){console.log("Next Turn for the building at "+t.name)};
+        // t.addChild(t.building);
     },
     setBuilding: function(tile, building){
         if(tile.building===building){
@@ -56,15 +59,17 @@ var Board={
         
         // Class funcs
         // returns the tile sprite at [i]
-        board.at=function(i){return Board.at(board,i);};
+        board.at=function(i){return Board.at(board,i)};
         // returns the adjacent index at clock direction [cd] of tile [i]
-        board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning);};
+        board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning)};
         // returns all adjacent indice within [N] steps of tile [i]
-        board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N);};
+        board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N)};
         // returns the (x,y) of i
-        board.xyOf=function(i){return Board.xyOf(board,i);};
+        board.xyOf=function(i){return Board.xyOf(board,i)};
         // returns the step distance between i and j
-        board.distanceOf=function(i,j){return Board.distanceOf(board,i,j);};
+        board.distanceOf=function(i,j){return Board.distanceOf(board,i,j)};
+        // to next turn
+        board.nextTurn=function(){Board.nextTurn(board)};
         
         // init
         var N=w*h;
@@ -167,6 +172,18 @@ var Board={
                 }else{
                     return dx+dy-Math.floor(dx/2);
                 }
+            }
+        }
+    },
+    // to next turn
+    nextTurn: function(b){
+        // DFS call nextTurn
+        var stack=[b];
+        while(stack.length>0){
+            var node=stack.pop();
+            if(node.nextTurn && node!==b) node.nextTurn();
+            for(var i=0;i<node.children.length;i++){
+                stack.push(node.children[i]);
             }
         }
     },

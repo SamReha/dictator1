@@ -10,7 +10,8 @@ var People={
         var p={}
         
         // define class prop/funcs here.
-        p.name=name
+        p.name=name;
+        
         p.testFunc=function(){
             console.log("[People] testFunc()")
         }
