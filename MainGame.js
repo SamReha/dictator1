@@ -11,6 +11,9 @@ var MainGame={
     // the board var
     board: null,
     
+    // The HUD
+    hud: null,
+    
     // singleton func to initialize
     initialized: false,
     init: function(g){
@@ -33,5 +36,8 @@ var MainGame={
         // create board
         /*global Board*/
         MainGame.board=Board.createNew(MainGame.game, 5, 3, 256, '151512424231313', '12   22    1111', '  121  543     ');
+        
+        /*global Hud*/
+        MainGame.hud = Hud.createNew(MainGame.game);
     },
 };
