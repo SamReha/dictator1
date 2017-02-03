@@ -1,13 +1,13 @@
 //Class and subclasses for all types of buildings
 
-//Top Level
+//Top Level, Abstract class
 var Building = {
     createNew: function(aType, aStartingTurn, aCost, textureKey){
         /*global MainGame*/
         var building = MainGame.game.add.sprite(0,0,textureKey);
         
-        building.type
-        building.startTurn = aStartingTurn;
+        building.type=aType;
+        building.startingTurn= aStartingTurn;
         building.cost = aCost;
         building.active = false;
         
@@ -15,17 +15,14 @@ var Building = {
     },
 }
 
+//Second Level
 var Road = {
-    createNew: function(textureKey){
-        var road = MainGame.game.add.sprite(0,0,textureKey);
-        
-        road.cost = 2;
-        
+    createNew: function(startingTurn){
+        var road = Building.createNew("road", 0, 2, "road");
         return road;
     },
 }
 
-//Second Level
 var Housing = {
     createNew: function(aMaxOccupants, aMaxShelter, aStartingTurn, aCost, textureKey){
         var housing = Building.createNew("bureaucratic", aStartingTurn, aCost, textureKey);
@@ -72,18 +69,18 @@ var Education = {
     },
 }
 
-var Resources = {
-        createNew: function(aMaxWorkers, aMaxProfit, aStartingTurn, aCost, textureKey){
-        var resources = Building.createNew(aStartingTurn, aCost, textureKey);
+// var Resources = {
+//         createNew: function(aMaxWorkers, aMaxProfit, aStartingTurn, aCost, textureKey){
+//         var resources = Building.createNew(aStartingTurn, aCost, textureKey);
         
-        resources.numWorkers = 0;
-        resources.maxWorkers = aMaxWorkers;
-        resources.maxProfit = aMaxProfit;
-        resources.profit = null;
+//         resources.numWorkers = 0;
+//         resources.maxWorkers = aMaxWorkers;
+//         resources.maxProfit = aMaxProfit;
+//         resources.profit = null;
         
-        return resources;
-    },
-}
+//         return resources;
+//     },
+// }
 
 var Millitary = {
         createNew: function(aMaxWorkers, aMaxAntiFree, aStartingTurn, aCost, textureKey){
@@ -101,19 +98,20 @@ var Millitary = {
 //Third Level
 var ShantyTown = {
     createNew: function(textureKey){
-        var shantyTown = Housing.createNew(5, 10, 0, 0, textureKey);
+        var shantyTown = Housing.createNew(5, 10, 0, 0, "shanties");
         
         return shantyTown;
     },
-    
 }
 
 var Apartment = {
     createNew: function(textureKey){
-        var apartment = Housing.createNew(10, 50, 0, 10, textureKey);
+        var apartment = Housing.createNew(10, 50, 0, 10, "apartments");
         
         apartment.residents = null;
         
+        apartment.school=false;
+
         return apartment;
     },
 
@@ -121,7 +119,7 @@ var Apartment = {
 
 var Mansion = {
     createNew: function(textureKey){
-        var mansion = Housing.createNew(1, 100, 0, 10, textureKey);
+        var mansion = Housing.createNew(1, 100, 0, 10, "mansion");
         
         mansion.resident = null;
         
@@ -131,7 +129,7 @@ var Mansion = {
 
 var Palace = {
     createNew: function(aResident, textureKey){
-        var palace = Housing.createNew(1, 100, 0, 50, textureKey);
+        var palace = Housing.createNew(1, 100, 0, 50, "palace");
         
         palace.resident = aResident;
 

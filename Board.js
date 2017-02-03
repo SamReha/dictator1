@@ -2,7 +2,7 @@
 var Tile={
     createNew: function(name,terrainTexture,resTexture){
         /*global MainGame*/
-        var t=MainGame.game.add.group();
+        var t=MainGame.game.make.group();
         Tile.init(t,terrainTexture,resTexture);
         
         // Class vars
@@ -16,12 +16,12 @@ var Tile={
     },
     init: function(t, terrainTexture, resTexture){
         // add terrain
-        t.terrain=MainGame.game.add.sprite(0,0,terrainTexture);
+        t.terrain=MainGame.game.make.sprite(0,0,terrainTexture);
         t.addChild(t.terrain);
         
         // add resource
         if(resTexture){
-            t.res=MainGame.game.add.sprite(0,0,resTexture);
+            t.res=MainGame.game.make.sprite(0,0,resTexture);
             t.addChild(t.res);
         }else{
             t.res=null;
@@ -29,7 +29,7 @@ var Tile={
         
         // add building
         t.building=null;
-        // t.building=MainGame.game.add.group();
+        // t.building=MainGame.game.make.group();
         // t.building.nextTurn=function(){console.log("Next Turn for the building at "+t.name)};
         // t.addChild(t.building);
     },
