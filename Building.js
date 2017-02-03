@@ -139,7 +139,7 @@ var Palace = {
 
 var ArableFarm = {
     createNew: function(textureKey){
-        var arableFarm = Health.createNew(2, 50, 0, 10, textureKey);
+        var arableFarm = Health.createNew(2, 50, 0, 10, "arableFarm");
         
         return arableFarm;
     },
@@ -147,7 +147,7 @@ var ArableFarm = {
 
 var WeakFarm = {
     createNew: function(textureKey){
-      var weakFarm = Health.createNew(2, 25, 0, 10, textureKey);
+      var weakFarm = Health.createNew(2, 25, 0, 10, "weakFarm");
       
       return weakFarm;
     },
@@ -155,7 +155,7 @@ var WeakFarm = {
 
 var School = {
     createNew: function(textureKey){
-        var school = Education.createNew(5, 50, 0, 15, textureKey);
+        var school = Education.createNew(5, 50, 0, 15, "school");
         
         return school;
     },
@@ -163,7 +163,7 @@ var School = {
 
 var Lumberyard = {
     createNew: function(textureKey){
-        var lumberyard = Resources.createNew(5, 15, 0, 30, textureKey);
+        var lumberyard = Resources.createNew(5, 15, 0, 30, "lumberYard");
         
         return lumberyard;
     },
@@ -171,7 +171,7 @@ var Lumberyard = {
 
 var ArmyBase = {
     createNew: function(textureKey){
-        var armyBase = Millitary.createNew(5, 10, 0, 30, textureKey);
+        var armyBase = Millitary.createNew(5, 10, 0, 30, "armyBase");
         
         armyBase.deployed = false;
         armyBase.activeCost = 0;
