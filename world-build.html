@@ -7,19 +7,13 @@
     
     <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
     <script type="text/javascript" src="Board.js"></script>
-    <script type="text/javascript" src="Building.js"></script>
-    <script type="text/javascript" src="Global.js"></script>
-    <script type="text/javascript" src="MainGame.js"></script>
-    <script type="text/javascript" src="People.js"></script>
     <script type="text/javascript" src="Preloader.js"></script>
-    <script type="application/JSON" src="stage1.json"></script>
     
     <!--Yi: Please put our custome font files here-->
     <style type="text/css">
         body {
             margin: 0;
         }
-        @font-face {font-family: 'STKaiti'; src: url('images/STKaiTi.ttf') format('truetype');}
     </style>
 </head>
 <body>
@@ -32,15 +26,11 @@ var g = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: 
 function preload() {
     /*global Preloader*/
     Preloader.preload(g);
-
-    /*global MainGame*/
-    MainGame.init(g);
 }
 
 function create() {
-    /*global MainGame*/
-    MainGame.start();
-    console.log("This is the test.");
+    console.log("Welcome to world-builder!");
+    // var board=Board.createNew()
 }
 
 function update() {

@@ -32,13 +32,12 @@ var MainGame={
     // start the game
     start: function(){
         console.assert(MainGame.initialized);
-        console.log('[MainGame] start...');
+        console.log('[MainGame] start...1');
         
         // create board
+        var stage1=MainGame.game.cache.getJSON('stage1');
         /*global Board*/
-        MainGame.board=Board.createNew(5, 3, 256, '151512424231313', '12   22    1111', '  121  543     ');
-        
-        //MainGame.nextTurn();
+        MainGame.board=Board.fromJSON(JSON.stringify(stage1));
     },
     
     nextTurn: function(){

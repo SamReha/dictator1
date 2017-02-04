@@ -21,7 +21,5 @@ var Preloader={
         g.load.image('mountain', 'images/terrains/mountain_tile.png');
         g.load.image('water', 'images/terrains/water_tile.png');
         
-        // load json files
-        g.load.json('stage1','stage1.json');
     }
 }

@@ -1,37 +1,26 @@
 // require: MainGame.game !== null
 var Tile={
-    createNew: function(name,terrainTexture,resTexture){
-        /*global MainGame*/
-        var t=MainGame.game.make.group();
-        Tile.init(t,terrainTexture,resTexture);
-        
-        // Class vars
-        t.name=name;
-        
+    fromJSON: function(json){
+        // create the tile
+        var tile=MainGame.game.make.group();
+        // decode json
+        var data=JSON.parse(json);
+
+        // Class members
+        tile.terrain=tile.create(0,0,data.terrain);
+        tile.res=tile.create(0,0,data.res);
+        /* global Building*/
+        tile.building=Building.createNew(data.building);
+
         // Class funcs
-        t.getBuilding=function(){return t.building};
-        t.setBuilding=function(building){Tile.setBuilding(t,building)};
-        
-        return t;
+        tile.getBuilding=function(){return tile.building};
+        tile.setBuilding=function(building){Tile.setBuilding(tile,building)};
+
+        return tile;
     },
-    init: function(t, terrainTexture, resTexture){
-        // add terrain
-        t.terrain=MainGame.game.make.sprite(0,0,terrainTexture);
-        t.addChild(t.terrain);
-        
-        // add resource
-        if(resTexture){
-            t.res=MainGame.game.make.sprite(0,0,resTexture);
-            t.addChild(t.res);
-        }else{
-            t.res=null;
-        }
-        
-        // add building
-        t.building=null;
-        // t.building=MainGame.game.make.group();
-        // t.building.nextTurn=function(){console.log("Next Turn for the building at "+t.name)};
-        // t.addChild(t.building);
+    toJSON: function(t){
+        var data={terrain:t.terrain.key, res:t.res.key, building:JSON.parse(t.building.toJSON())};
+        return JSON.stringify(data);
     },
     setBuilding: function(tile, building){
         if(tile.building===building){
@@ -48,16 +37,21 @@ var Tile={
 
 // Board as turnSystem
 var Board={
-    // init func
-    createNew: function(w,h,pw,terrain,res,building){
-        // board is a group
+    // load from JSON
+    fromJSON: function(json){
+        // create the board
         var board=MainGame.game.add.group();
+        // decode JSON
+        var data=JSON.parse(json);
+
         // Class vars
-        board.game=MainGame.game;
-        board.gridWidth=w;
-        board.gridHeight=h;
-        
+        board.gridWidth=data.gridWidth;
+        board.gridHeight=data.gridHeight;
+        board.tileWidth=data.tileWidth;
+
         // Class funcs
+        // returns the JSON string representation
+        board.toJSON=function(){return Board.toJSON(board)};
         // returns the tile sprite at [i]
         board.at=function(i){return Board.at(board,i)};
         // returns the adjacent index at clock direction [cd] of tile [i]
@@ -66,41 +60,39 @@ var Board={
         board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N)};
         // returns the (x,y) of i
         board.xyOf=function(i){return Board.xyOf(board,i)};
+        // returns the rect of i
+        board.rectOf=function(i,scale){return Board.rectOf(board,i,scale)};
         // returns the step distance between i and j
         board.distanceOf=function(i,j){return Board.distanceOf(board,i,j)};
         // returns whether i is connected with j
         board.hasRoadConnect=function(i,j){return Board.hasRoadConnect(board,i,j)};
         // to next turn
         board.nextTurn=function(){Board.nextTurn(board)};
-        
-        // init
-        var N=w*h;
-        var ph=pw*(1.732/2.0);
-        for(var i=0;i<N;i++){
-            var ix=i%w;
-            var iy=Math.floor(i/w);
-            var x=pw*0.75*ix;
-            var y=ph*iy;
-            if(ix%2===1){
-                y+=ph*0.5;
-            }
-            // create the tile group
-            
-            // create map table
-            var terrainTable=[null, 'coast', 'desert', 'grass', 'mountain', 'water'];
-            var resTable=[null, 'forest', 'oil'];
-            
-            // create terrain, res and building
-            var terrainIndex=parseInt(terrain[i],10);
-            var resIndex=parseInt(res[i],10);
 
-            var oneTile=Tile.createNew("tile("+x+","+y+")", terrainTable[terrainIndex], resTable[resIndex]);
-            oneTile.x=x;
-            oneTile.y=y;
+        // init tiles
+        var tileData=data.tiles;
+        var N=board.gridWidth*board.gridHeight;
+        for(var i=0;i<N;i++){
+            // create the tile group
+            var oneTile=Tile.fromJSON(JSON.stringify(tileData[i]));
+            oneTile.name="tile"+i;
+            var rect=board.rectOf(i, 1.0);
+            oneTile.x=rect.x;
+            oneTile.y=rect.y;
             board.addChild(oneTile);
         }
-        
+
         return board;
+    },
+    // save to JSON
+    toJSON: function(b){
+        var tiles=[];
+        var data={gridWidth:b.gridWidth, gridHeight:b.gridHeight, tileWidth:b.tileWidth, tiles:tiles};
+        var N=w*h;
+        for(var i=0;i<N;i++){
+            tiles[i]=JSON.parse(b.at(i).toJSON());
+        }
+        return JSON.stringify(data);
     },
 
     // returns the tile sprite at [i]
@@ -152,6 +144,19 @@ var Board={
     xyOf: function(b,i){
         var w=b.gridWidth;
         return {x:i%w, y:Math.floor(i/w)};
+    },
+    // returns the rect of i
+    rectOf: function(b,i,scale){
+        if(!scale || scale<=0) scale=1.0;
+        var ixy=b.xyOf(i);
+        var pw=b.tileWidth*scale;
+        var ph=pw*1.732/2.0;
+        var x=pw*0.75*ixy.x;
+        var y=ph*ixy.y;
+        if(ixy.x%2===1){
+            y+=ph*0.5;
+        }
+        return {x:x, y:y, w:pw, h:ph};
     },
     // returns the step distance between i and j
     distanceOf: function(b,i,j){
