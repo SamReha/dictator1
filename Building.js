@@ -2,17 +2,46 @@
 
 //Top Level, Abstract class
 var Building = {
-    createNew: function(aType, aStartingTurn, aCost, textureKey){
-        /*global MainGame*/
-        var building = MainGame.game.add.sprite(0,0,textureKey);
-        
-        building.type=aType;
-        building.startingTurn= aStartingTurn;
-        building.cost = aCost;
-        building.active = false;
-        
-        return building;
+    buildingData: null,
+    loadBuildingData: function(){
+        if(Building.buildingData===null){
+            console.log("[Building] loading building data...")
+            Building.buildingData=MainGame.game.cache.getJSON('buildingData');
+            console.assert(Building.buildingData["z_all_data_loaded"]===true);
+            console.log("[Building] OK.");
+        }
     },
+    createNew: function(data){
+        console.log("[Building] createNew, the building's textureKey must be name+level.");
+
+        // load building data (first time only)
+        Building.loadBuildingData();
+
+        var b=null;
+
+        // Class vars: name, level, startingTurn, {props_in_buildingData.json[name]}
+        if(!data){
+            b=MainGame.game.make.sprite(0,0);
+            b.name=null;
+        }else{
+            /*global MainGame*/
+            b=MainGame.game.make.sprite(0,0,data.name+data.level);
+            // copy name,level,startingTurn
+            for(key in data){
+                b[key]=data[key];
+            }
+            // copy props in buildingData.json[name]
+            var b_data=Building.buildingData[name];
+            for(key2 in b_data){
+                b[key]=b_data[key];
+            }
+        }
+
+        // Class funcs
+        b.isEmpty=function(){return b.name===null;}
+
+        return b;
+    }
 }
 
 //Second Level

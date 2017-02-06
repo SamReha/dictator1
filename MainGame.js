@@ -32,7 +32,7 @@ var MainGame={
     // start the game
     start: function(){
         console.assert(MainGame.initialized);
-        console.log('[MainGame] start...1');
+        console.log('[MainGame] start...');
         
         // create board
         var stage1=MainGame.game.cache.getJSON('stage1');

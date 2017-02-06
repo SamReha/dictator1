@@ -1,5 +1,6 @@
 // require: MainGame.game !== null
 var Tile={
+    // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
         // create the tile
         var tile=MainGame.game.make.group();
@@ -11,6 +12,7 @@ var Tile={
         tile.res=tile.create(0,0,data.res);
         /* global Building*/
         tile.building=Building.createNew(data.building);
+        tile.addChild(tile.building);
 
         // Class funcs
         tile.getBuilding=function(){return tile.building};
@@ -37,7 +39,7 @@ var Tile={
 
 // Board as turnSystem
 var Board={
-    // load from JSON
+    // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
         // create the board
         var board=MainGame.game.add.group();
@@ -73,7 +75,7 @@ var Board={
         var tileData=data.tiles;
         var N=board.gridWidth*board.gridHeight;
         for(var i=0;i<N;i++){
-            // create the tile group
+            // create the tile group from JSON. json MUST be a string!
             var oneTile=Tile.fromJSON(JSON.stringify(tileData[i]));
             oneTile.name="tile"+i;
             var rect=board.rectOf(i, 1.0);

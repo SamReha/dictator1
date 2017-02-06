@@ -1,20 +1,22 @@
 var Preloader={
     preload: function(g){
         // load building+res+terrain
-        g.load.image('apartments', 'images/buildings/apartments.png');
-        g.load.image('arableFarm', 'images/buildings/arableFarm.png');
-        g.load.image('armyBase', 'images/buildings/armyBase.png');
-        g.load.image('factory', 'images/buildings/factory.png');
-        g.load.image('hospital', 'images/buildings/hospital.png');
-        g.load.image('lumberYard', 'images/buildings/lumberYard.png');
-        g.load.image('mansion', 'images/buildings/mansion.png');                
-        g.load.image('palace', 'images/buildings/palace.png');
-        g.load.image("road", "images/buildings/road.png");
-        g.load.image('school','images/buildings/school.png');
-        g.load.image('shanties', 'images/buildings/shanties.png');
-        g.load.image('weakFarm', 'images/buildings/weakFarm.png');
+        g.load.image('apartment1', 'images/buildings/apartments.png');
+        g.load.image('arableFarm1', 'images/buildings/arableFarm.png');
+        g.load.image('armyBase1', 'images/buildings/armyBase.png');
+        g.load.image('factory1', 'images/buildings/factory.png');
+        g.load.image('hospital1', 'images/buildings/hospital.png');
+        g.load.image('lumberYard1', 'images/buildings/lumberYard.png');
+        g.load.image('mansion1', 'images/buildings/mansion.png');                
+        g.load.image('palace1', 'images/buildings/palace.png');
+        g.load.image("road1", "images/buildings/road.png");
+        g.load.image('school1','images/buildings/school.png');
+        g.load.image('shanty1', 'images/buildings/shanties.png');
+        g.load.image('weakFarm1', 'images/buildings/weakFarm.png');
+
         g.load.image('forest', 'images/resources/forest.png');
         g.load.image('oil', 'images/resources/oil.png');
+        
         g.load.image('coast', 'images/terrains/coast_tile.png');
         g.load.image('desert', 'images/terrains/desert_tile.png');
         g.load.image('grass', 'images/terrains/grass_tile.png');
@@ -23,5 +25,6 @@ var Preloader={
         
         // load json files
         g.load.json('stage1','stage1.json');
+        g.load.json('buildingData','buildingData.json');
     }
 }

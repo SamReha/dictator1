@@ -1,0 +1,39 @@
+{
+  "apartment":{
+    "type": "?",
+    "cost": 10,
+    "maxPeople": 10,
+    "maxPeopleStep": -1
+  },
+  "arableFarm":{
+    "type": "$",
+    "cost": 10,
+    "maxPeople": 5,
+    "effect": {
+      "type":"health",
+      "value":10,
+      "radius":2
+    }
+  },
+  "armyBase":{
+    "type": "!",
+    "cost": 20,
+    "maxPeople": 5
+  },
+  "lumberYard":{
+    "type": "$",
+    "cost": 10,
+    "maxPeople": 5
+  },
+  "road":{
+    "type": "-",
+    "cost": 2
+  },
+  "school":{
+    "type": "?",
+    "cost": 5
+  },
+
+
+  "z_all_data_loaded":true
+}
