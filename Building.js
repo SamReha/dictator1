@@ -26,6 +26,7 @@ var Building = {
         }else{
             /*global MainGame*/
             b=MainGame.game.make.sprite(0,0,data.name+data.level);
+
             // copy name,level,startingTurn
             for(key in data){
                 b[key]=data[key];
@@ -40,6 +41,10 @@ var Building = {
         // Class funcs
         b.isEmpty=function(){return b.name===null;}
 
+        console.log("[Building] created a building:")
+        for(key in b){
+            console.log(key+"="+b[key]);
+        }
         return b;
     }
 }
