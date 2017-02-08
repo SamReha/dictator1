@@ -38,6 +38,6 @@ var MainGame={
         MainGame.board=Board.createNew(MainGame.game, 5, 3, 256, '151512424231313', '12   22    1111', '  121  543     ');
         
         /*global Hud*/
-        MainGame.hud = Hud.createNew(MainGame.game);
+        MainGame.hud = Hud.createNew();
     },
 };

@@ -23,5 +23,6 @@ var Preloader={
         g.load.image('buttonUp', 'images/ui/button_up.png');
         g.load.image('buttonDown', 'images/ui/button_down.png');
         g.load.image('buttonOver', 'images/ui/button_over.png');
+        g.load.spritesheet('buttonSprite', 'images/ui/button_spritesheet.png', 128, 48, 4);
     }
 }
