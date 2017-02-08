@@ -1,0 +1,19 @@
+{
+  "gridWidth": 3,
+  "gridHeight": 3,
+  "tileWidth": 256,
+  
+  "tiles": [
+    {"terrain":"coast","res":null,"building":null},
+    {"terrain":"desert","res":null,"building":null},
+    {"terrain":"grass","res":"forest","building":{"name":"lumberYard","level":1,"startingTurn":0}},
+    
+    {"terrain":"mountain","res":null,"building":null},
+    {"terrain":"water","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null,"building":{"name":"school","level":1,"startingTurn":0}},
+    
+    {"terrain":"grass","res":"oil","building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"desert","res":null,"building":null}
+  ]
+}

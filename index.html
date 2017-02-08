@@ -7,11 +7,13 @@
     
     <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
     <script type="text/javascript" src="Board.js"></script>
+    <script type="text/javascript" src="Building.js"></script>
     <script type="text/javascript" src="Global.js"></script>
     <script type="text/javascript" src="MainGame.js"></script>
     <script type="text/javascript" src="UI.js"></script>
     <script type="text/javascript" src="People.js"></script>
     <script type="text/javascript" src="Preloader.js"></script>
+    <script type="application/JSON" src="stage1.json"></script>
     
     <!--Yi: Please put our custome font files here-->
     <style type="text/css">
@@ -39,6 +41,7 @@ function preload() {
 function create() {
     /*global MainGame*/
     MainGame.start();
+    console.log("This is the test.");
 }
 
 function update() {

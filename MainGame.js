@@ -13,6 +13,9 @@ var MainGame={
     
     // The HUD
     hud: null,
+
+    // the people var
+    people: null,
     
     // singleton func to initialize
     initialized: false,
@@ -31,13 +34,21 @@ var MainGame={
     
     // start the game
     start: function(){
+        console.assert(MainGame.initialized);
         console.log('[MainGame] start...');
         
         // create board
+        var stage1=MainGame.game.cache.getJSON('stage1');
         /*global Board*/
-        MainGame.board=Board.createNew(MainGame.game, 5, 3, 256, '151512424231313', '12   22    1111', '  121  543     ');
-        
+        MainGame.board=Board.fromJSON(JSON.stringify(stage1));
+
         /*global Hud*/
         MainGame.hud = Hud.createNew();
+    },
+    
+    nextTurn: function(){
+        MainGame.board.nextTurn();
+        // MainGame.people.nextTurn();
+        // TODO
     },
 };
