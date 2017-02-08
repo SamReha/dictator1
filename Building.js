@@ -41,10 +41,6 @@ var Building = {
         // Class funcs
         b.isEmpty=function(){return b.name===null;}
 
-        console.log("[Building] created a building:")
-        for(key in b){
-            console.log(key+"="+b[key]);
-        }
         return b;
     }
 }
