@@ -17,8 +17,8 @@ var Person={
         // TODO: add other vars
 
         // Class funcs
-        p.isMid=function{return p.type==='mid'};// Class func: inline style
-        p.isHi=function{return p.type==='hi'};  // Class func: inline style
+        p.isMid=function(){return p.type==='mid'};// Class func: inline style
+        p.isHi=function(){return p.type==='hi'};  // Class func: inline style
         p.report=function(){Person.report(p)};  // Class func: Declaration
         // TODO: add other funcs
 
