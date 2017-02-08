@@ -15,5 +15,18 @@
     {"terrain":"grass","res":"oil","building":null},
     {"terrain":"grass","res":null,"building":null},
     {"terrain":"desert","res":null,"building":null}
+  ],
+
+  "population": [
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":1, "portIndex":0, "name":"Jacob Baker"}
   ]
 }

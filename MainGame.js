@@ -35,9 +35,13 @@ var MainGame={
         console.log('[MainGame] start...');
         
         // create board
-        var stage1=MainGame.game.cache.getJSON('stage1');
         /*global Board*/
+        var stage1=MainGame.game.cache.getJSON('stage1');
         MainGame.board=Board.fromJSON(JSON.stringify(stage1));
+
+        // create population
+        /*global Population*/
+        var pop=Population.createNew(stage1.population);
     },
     
     nextTurn: function(){

@@ -3,10 +3,12 @@
 // Basic class for all people
 var Person={
     // Static vars
-    types:['low','mid','hi'],   // Adjust-able, but please use simple words.
+    Low: 0,
+    Mid: 1,
+    Hi: 2,
     
     // the create function
-    createNew: function(data){
+    createNew: function(data){  // data is a Table
         console.log("[People] created.");
         var p={};
         
@@ -17,8 +19,9 @@ var Person={
         // TODO: add other vars
 
         // Class funcs
-        p.isMid=function(){return p.type==='mid'};// Class func: inline style
-        p.isHi=function(){return p.type==='hi'};  // Class func: inline style
+        p.isLow=function(){return p.type===0};  // Class func: inline style
+        p.isMid=function(){return p.type===1};  // Class func: inline style
+        p.isHi=function(){return p.type===2};   // Class func: inline style
         p.report=function(){Person.report(p)};  // Class func: Declaration
         // TODO: add other funcs
 
@@ -34,8 +37,10 @@ var Person={
 
 // Contains all the literal information (string/number/bool vars) of all people
 var Population={
-    createNew: function(data){ 
-        console.log("[Population] created.");
+    // please see stage1.json: it will be created by stage1.population table.
+    createNew: function(data){  // data is an Array
+        console.log("[Population] created with count:"+data.length);
+        console.assert(Array.isArray(data), "[Population] data must be an Array!");
         var pop={};
 
         // Class vars
