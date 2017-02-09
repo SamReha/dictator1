@@ -114,7 +114,7 @@ var Board={
         }else if(x===w-1){
             adj_even[1]=0, adj_even[2]=0, adj_even[4]=0, adj_even[5]=0;
         }
-        var newIndex=(x%2===0?i+adj_even[cd]:i+adj_odd[cd])
+        var newIndex=(x%2===0?i+adj_even[cd]:i+adj_odd[cd]);
         if(newIndex<0 || newIndex>=w*h){
             if(warning) console.warn('[Board] Tile '+i+' does not have an adjacent at '+cd);
             return null;

@@ -16,7 +16,14 @@ var Person={
         p.type=data.type;               // must be one of Person.types
         p.name=data.name;               // nullable
         p.portIndex=data.portIndex;     // nullable
-        // TODO: add other vars
+        p.workplace=null;
+        p.home=null;
+        p.health=0;
+        p.education=0;
+        p.shelter=0;
+        p.influence=null;
+        p.role=null;
+        p.loyalty=null;
 
         // Class funcs
         p.isLow=function(){return p.type===0};  // Class func: inline style
@@ -25,7 +32,7 @@ var Person={
         p.report=function(){Person.report(p)};  // Class func: Declaration
         // TODO: add other funcs
 
-        return p
+        return p;
     },
 
     // Class func: Implementation
@@ -44,7 +51,9 @@ var Population={
         var pop={};
 
         // Class vars
-        // TODO: add other vars
+        pop.lowList=[];
+        pop.midList=[];
+        pop.highList=[];
 
         // Class funcs
         pop.count=function(){return pop.length};        // Class func: inline style

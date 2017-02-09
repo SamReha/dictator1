@@ -5,7 +5,7 @@ var Building = {
     buildingData: null,
     loadBuildingData: function(){
         if(Building.buildingData===null){
-            console.log("[Building] loading building data...")
+            console.log("[Building] loading building data...");
             Building.buildingData=MainGame.game.cache.getJSON('buildingData');
             console.assert(Building.buildingData["z_all_data_loaded"]===true);
             console.log("[Building] OK.");
@@ -28,13 +28,13 @@ var Building = {
             b=MainGame.game.make.sprite(0,0,data.name+data.level);
 
             // copy name,level,startingTurn
-            for(key in data){
+            for(var key in data){
                 b[key]=data[key];
             }
             // copy props in buildingData.json[name]
-            var b_data=Building.buildingData[name];
-            for(key2 in b_data){
-                b[key]=b_data[key];
+            var b_data=Building.buildingData[data.name];
+            for(var key2 in b_data){
+                b[key2]=b_data[key2];
             }
         }
 
