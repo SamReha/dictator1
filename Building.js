@@ -38,11 +38,11 @@ var Building = {
         }
 
         // Class funcs
-        b.isEmpty=function(){return b.name===null;}
+        b.isEmpty=function(){return b.name===null};
 
         return b;
     }
-}
+};
 
 //Second Level
 var Road = {

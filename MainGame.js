@@ -25,6 +25,7 @@ var MainGame={
         
         // set game var
         MainGame.game=g;
+        MainGame.population=null;
 
         console.log('[MainGame] init with (w,h)=('+g.width+','+g.height+')');
     },
@@ -41,12 +42,12 @@ var MainGame={
 
         // create population
         /*global Population*/
-        var pop=Population.createNew(stage1.population);
+        MainGame.population=Population.createNew(stage1.population);
     },
     
     nextTurn: function(){
         MainGame.board.nextTurn();
-        // MainGame.people.nextTurn();
+        MainGame.population.nextTurn();
         // TODO
     },
 };

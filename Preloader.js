@@ -27,4 +27,4 @@ var Preloader={
         g.load.json('stage1','stage1.json');
         g.load.json('buildingData','buildingData.json');
     }
-}
+};

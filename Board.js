@@ -3,6 +3,7 @@ var Tile={
     // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
         // create the tile
+        /*global MainGame*/
         var tile=MainGame.game.make.group();
         // decode json
         var data=JSON.parse(json);
@@ -90,7 +91,7 @@ var Board={
     toJSON: function(b){
         var tiles=[];
         var data={gridWidth:b.gridWidth, gridHeight:b.gridHeight, tileWidth:b.tileWidth, tiles:tiles};
-        var N=w*h;
+        var N=b.gridWidth*b.gridHeight;
         for(var i=0;i<N;i++){
             tiles[i]=JSON.parse(b.at(i).toJSON());
         }
