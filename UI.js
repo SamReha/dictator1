@@ -155,6 +155,28 @@ var BuildingPlacer = {
         // }
         
         // If it's a valid click, place the building
+        let mapIndex = MainGame.board.indexFrom(MainGame.game.input.x, MainGame.game.input.y);
+        
+        if (mapIndex != null) {
+            let tile = MainGame.board.at(mapIndex);
+            
+            // If it's impassable terrain, or already has a building, do nothing!
+            let terrainType = tile.terrain.key;
+            let hasBuilding = tile.getBuilding().name != null ? true : false;
+            if (!(tile.terrain.key === 'mountain' || tile.terrain.key === 'water'
+                || hasBuilding)) {
+                // Create a building object
+                
+                // Set the tile's building to that object
+                
+                // Bill the player
+                
+                // End build mode
+                self.cancelBuild();
+            } else {
+                console.log("Can't touch this!");
+            }
+        }
     },
     
     cancelBuild: function(self) {
