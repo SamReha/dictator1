@@ -11,6 +11,9 @@ var MainGame={
     // the board var
     board: null,
     
+    // The HUD
+    hud: null,
+
     // the people var
     people: null,
     
@@ -25,6 +28,13 @@ var MainGame={
         
         // set game var
         MainGame.game=g;
+
+        // set population var
+        MainGame.population=null;
+
+        // set global var
+        /*global Global*/
+        MainGame.global=Global;
 
         console.log('[MainGame] init with (w,h)=('+g.width+','+g.height+')');
     },
@@ -41,12 +51,23 @@ var MainGame={
 
         // create population
         /*global Population*/
-        var pop=Population.createNew(stage1.population);
+        MainGame.population=Population.createNew(stage1.population);
+
+        // create map selector showing building info        
+        var ms=MapSelector.createNew();
+
+        /*global Hud*/
+        MainGame.hud = Hud.createNew();
     },
     
     nextTurn: function(){
+        
+        MainGame.global.nextTurn();
+
         MainGame.board.nextTurn();
-        // MainGame.people.nextTurn();
+
+        //MainGame.population.nextTurn();
+
         // TODO
     },
 };
