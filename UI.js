@@ -141,6 +141,8 @@ var BuildingPlacer = {
         
         bP.deltaTime =  10; // How frequently update is called, in ms
         bP.buildingType = buildingType;
+        bP.canBuild = false;
+        bP.mapIndex = null;
 
         bP.update = function() { BuildingPlacer.update(bP); };
         bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer); };
@@ -159,8 +161,23 @@ var BuildingPlacer = {
         self.x = MainGame.game.input.x;
         self.y = MainGame.game.input.y;
         
+        // Is the mouse over a build-ready tile, or is if offsides?
+        self.mapIndex = MainGame.board.indexFrom(MainGame.game.input.x, MainGame.game.input.y);
+        if (self.mapIndex != null) {
+            let tile = MainGame.board.at(self.mapIndex);
+            // Might be nice to move these into Tile as convenience methods...
+            let terrainType = tile.terrain.key;
+            let hasBuilding = tile.getBuilding().name != null ? true : false;
+            // If the terrain is impassable, or a building already exists
+            self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || hasBuilding);
+        } else self.canBuild = false;
+        
         // Update tint
-        self.tint = Math.random() * 0xffffff;
+        if (self.canBuild) {
+            self.tint = 0x00ff00;
+        } else {
+            self.tint = 0xff0000;
+        }
     },
     
     clickHandler: function(self, pointer) {
@@ -169,32 +186,25 @@ var BuildingPlacer = {
         //     return;
         // }
         
-        // If it's a valid click, place the building
-        let mapIndex = MainGame.board.indexFrom(MainGame.game.input.x, MainGame.game.input.y);
-        
-        if (mapIndex != null) {
-            let tile = MainGame.board.at(mapIndex);
+        if (self.canBuild) {
+            let tile = MainGame.board.at(self.mapIndex);
             
-            // If it's impassable terrain, or already has a building, do nothing!
-            let terrainType = tile.terrain.key;
-            let hasBuilding = tile.getBuilding().name != null ? true : false;
-            if (!(tile.terrain.key === 'mountain' || tile.terrain.key === 'water'
-                || hasBuilding)) {
-                // Create a building object
+            // Create a building object
                 
-                // Set the tile's building to that object
-                
-                // Bill the player
-                
-                // End build mode
-                self.cancelBuild();
-            } else {
-                console.log("Can't touch this!");
-            }
+            // Set the tile's building to that object
+            
+            // Bill the player
+            
+            // End build mode
+            self.cancelBuild();
+        } else {
+            console.log("Can't touch this!");
         }
     },
     
     cancelBuild: function(self) {
+        MainGame.game.input.onDown.remove(self.clickHandler, self, self, MainGame.game.input.activePointer);
+        
         self.kill();
     }
 };
