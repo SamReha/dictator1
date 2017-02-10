@@ -11,6 +11,21 @@ var Hud = {
         // Test text style
         var style = { font: "32px STKaiti", fill: "#ff0044 ", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00 " };
 
+        // "Next Turn" button
+        var btnNextTurn=MainGame.game.make.button(750,0,"btnNextTurn",
+            MainGame.nextTurn,MainGame,0,1,2,3);
+        hud.addChild(btnNextTurn);
+
+        // Global vars
+        var grpGlobal=MainGame.game.make.group();
+        hud.addChild(grpGlobal);
+        var txtGlobalInfo=MainGame.game.make.text(20,0,"",style);
+        grpGlobal.addChild(txtGlobalInfo);
+        MainGame.game.time.events.loop(500, function(){
+            this.text=MainGame.global.toString();
+        }, txtGlobalInfo);
+
+
         // hud -: showBuildMenuBtn, buildMenu
         var buildMenu = MainGame.game.make.group();
         buildMenu.name = "buildMenu";
@@ -266,6 +281,8 @@ var MapSelector={
             return;
         }
         if(this.curIndex===index){
+            if(!MainGame.board.at(index).hasBuilding())
+                this.buildingInfo.visible=false;
             return;
         }
         this.curIndex=index;

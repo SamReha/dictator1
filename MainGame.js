@@ -32,6 +32,13 @@ var MainGame={
         // Prevent default right click behavior
         MainGame.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
+        // set population var
+        MainGame.population=null;
+
+        // set global var
+        /*global Global*/
+        MainGame.global=Global;
+
         console.log('[MainGame] init with (w,h)=('+g.width+','+g.height+')');
     },
     
@@ -50,8 +57,12 @@ var MainGame={
     },
     
     nextTurn: function(){
+        
+        MainGame.global.nextTurn();
+
         MainGame.board.nextTurn();
-        // MainGame.people.nextTurn();
+
+        //MainGame.population.nextTurn();
         // TODO
     },
 };
