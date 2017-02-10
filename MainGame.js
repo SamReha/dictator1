@@ -28,6 +28,7 @@ var MainGame={
         
         // set game var
         MainGame.game=g;
+        MainGame.population=null;
 
         console.log('[MainGame] init with (w,h)=('+g.width+','+g.height+')');
     },
@@ -38,9 +39,16 @@ var MainGame={
         console.log('[MainGame] start...');
         
         // create board
-        var stage1=MainGame.game.cache.getJSON('stage1');
         /*global Board*/
+        var stage1=MainGame.game.cache.getJSON('stage1');
         MainGame.board=Board.fromJSON(JSON.stringify(stage1));
+
+        // create population
+        /*global Population*/
+        MainGame.population=Population.createNew(stage1.population);
+
+        // create map selector showing building info        
+        var ms=MapSelector.createNew();
 
         /*global Hud*/
         MainGame.hud = Hud.createNew();
@@ -48,7 +56,7 @@ var MainGame={
     
     nextTurn: function(){
         MainGame.board.nextTurn();
-        // MainGame.people.nextTurn();
+        MainGame.population.nextTurn();
         // TODO
     },
 };

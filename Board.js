@@ -3,6 +3,7 @@ var Tile={
     // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
         // create the tile
+        /*global MainGame*/
         var tile=MainGame.game.make.group();
         // decode json
         var data=JSON.parse(json);
@@ -50,6 +51,7 @@ var Board={
         board.gridWidth=data.gridWidth;
         board.gridHeight=data.gridHeight;
         board.tileWidth=data.tileWidth;
+        board.currentScale=1.0;
 
         // Class funcs
         // returns the JSON string representation
@@ -60,10 +62,12 @@ var Board={
         board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning)};
         // returns all adjacent indice within [N] steps of tile [i]
         board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N)};
-        // returns the (x,y) of i
+        // returns the (gx,gy) of i
         board.xyOf=function(i){return Board.xyOf(board,i)};
         // returns the rect of i
         board.rectOf=function(i,scale){return Board.rectOf(board,i,scale)};
+        // returns the index of (x,y); nullable
+        board.indexFrom=function(px,py){return Board.indexFrom(board,px,py)};
         // returns the step distance between i and j
         board.distanceOf=function(i,j){return Board.distanceOf(board,i,j)};
         // returns whether i is connected with j
@@ -90,7 +94,7 @@ var Board={
     toJSON: function(b){
         var tiles=[];
         var data={gridWidth:b.gridWidth, gridHeight:b.gridHeight, tileWidth:b.tileWidth, tiles:tiles};
-        var N=w*h;
+        var N=b.gridWidth*b.gridHeight;
         for(var i=0;i<N;i++){
             tiles[i]=JSON.parse(b.at(i).toJSON());
         }
@@ -114,7 +118,7 @@ var Board={
         }else if(x===w-1){
             adj_even[1]=0, adj_even[2]=0, adj_even[4]=0, adj_even[5]=0;
         }
-        var newIndex=(x%2===0?i+adj_even[cd]:i+adj_odd[cd])
+        var newIndex=(x%2===0?i+adj_even[cd]:i+adj_odd[cd]);
         if(newIndex<0 || newIndex>=w*h){
             if(warning) console.warn('[Board] Tile '+i+' does not have an adjacent at '+cd);
             return null;
@@ -159,6 +163,16 @@ var Board={
             y+=ph*0.5;
         }
         return {x:x, y:y, w:pw, h:ph};
+    },
+    // returns the index of (x,y)
+    indexFrom: function(b,px,py){
+        var N=b.gridWidth*b.gridHeight;
+        for(var i=0;i<N;i++){
+            var r=b.rectOf(i,b.currentScale);
+            if(px>r.x && px<r.x+r.w && py>r.y && py<r.y+r.h)
+                return i;
+        }
+        return null;
     },
     // returns the step distance between i and j
     distanceOf: function(b,i,j){

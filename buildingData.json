@@ -18,22 +18,42 @@
   "armyBase":{
     "type": "!",
     "cost": 20,
-    "maxPeople": 5
+    "maxPeople": 5,
+    "outputCount": 2,
+    "outputTables": [[-2,-3,-3,-4,-4,-4], [2,2,2,3,3,4]],
+    "outputType": ["freedom", "unrest"]
+  },
+  "factory":{
+    "type": "$",
+    "cost": 20,
+    "maxPeople": 10,
+    "outputCount": 1,
+    "outputTables": [[0,1,2,3,4,4,5,5,5,6,6]],
+    "outputTypes": ["money"]
   },
   "lumberYard":{
     "type": "$",
     "cost": 10,
-    "maxPeople": 5
+    "maxPeople": 5,
+    "outputCount": 1,
+    "outputTables": [[0,1,2,3,3,3]],
+    "outputTypes": ["money"]
   },
   "road":{
     "type": "-",
-    "cost": 2
+    "cost": 2,
+    "maxPeople": 0,
+    "outputCount": 1,
+    "outputTables": [[0]]
   },
   "school":{
     "type": "?",
-    "cost": 5
+    "cost": 5,
+    "maxPeople": 5,
+    "outputCount": 2,
+    "outputTables": [[0,1,2,2,3,3],[0,1,1,2,2,3]],
+    "outputTypes": ["freedom", "education"]
   },
 
-
-  "z_all_data_loaded":true
+  "_Notice_": "1)keep the #count===maxPeople+1 when adjusting the output tables"
 }
