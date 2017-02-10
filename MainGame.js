@@ -11,11 +11,14 @@ var MainGame={
     // the board var
     board: null,
     
+    // the Map Selector
+    mapSelector: null,
+
     // The HUD
     hud: null,
 
     // the people var
-    people: null,
+    population: null,
     
     // singleton func to initialize
     initialized: false,
@@ -28,6 +31,9 @@ var MainGame={
         
         // set game var
         MainGame.game=g;
+        
+        // Prevent default right click behavior
+        MainGame.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
         // set population var
         MainGame.population=null;
@@ -45,16 +51,16 @@ var MainGame={
         console.log('[MainGame] start...');
         
         // create board
-        /*global Board*/
         var stage1=MainGame.game.cache.getJSON('stage1');
+
+        /*global Board*/
         MainGame.board=Board.fromJSON(JSON.stringify(stage1));
 
-        // create population
         /*global Population*/
-        MainGame.population=Population.createNew(stage1.population);
+        //MainGame.population=Population.createNew(stage1.population);
 
-        // create map selector showing building info        
-        var ms=MapSelector.createNew();
+        /*global MapSelector*/
+        MainGame.mapSelector=MapSelector.createNew();
 
         /*global Hud*/
         MainGame.hud = Hud.createNew();
@@ -67,7 +73,6 @@ var MainGame={
         MainGame.board.nextTurn();
 
         //MainGame.population.nextTurn();
-
         // TODO
     },
 };
