@@ -16,6 +16,7 @@ var Tile={
         tile.addChild(tile.building);
 
         // Class funcs
+        tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
         tile.getBuilding=function(){return tile.building};
         tile.setBuilding=function(building){Tile.setBuilding(tile,building)};
 

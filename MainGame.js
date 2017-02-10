@@ -28,7 +28,13 @@ var MainGame={
         
         // set game var
         MainGame.game=g;
+
+        // set population var
         MainGame.population=null;
+
+        // set global var
+        /*global Global*/
+        MainGame.global=Global;
 
         console.log('[MainGame] init with (w,h)=('+g.width+','+g.height+')');
     },
@@ -55,8 +61,13 @@ var MainGame={
     },
     
     nextTurn: function(){
+        
+        MainGame.global.nextTurn();
+
         MainGame.board.nextTurn();
-        MainGame.population.nextTurn();
+
+        //MainGame.population.nextTurn();
+
         // TODO
     },
 };
