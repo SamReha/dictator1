@@ -98,18 +98,18 @@ var Education = {
     },
 }
 
-// var Resources = {
-//         createNew: function(aMaxWorkers, aMaxProfit, aStartingTurn, aCost, textureKey){
-//         var resources = Building.createNew(aStartingTurn, aCost, textureKey);
+var Resources = {
+        createNew: function(aMaxWorkers, aMaxProfit, aStartingTurn, aCost, textureKey){
+        var resources = Building.createNew(aStartingTurn, aCost, textureKey);
         
-//         resources.numWorkers = 0;
-//         resources.maxWorkers = aMaxWorkers;
-//         resources.maxProfit = aMaxProfit;
-//         resources.profit = null;
+        resources.numWorkers = 0;
+        resources.maxWorkers = aMaxWorkers;
+        resources.maxProfit = aMaxProfit;
+        resources.profit = null;
         
-//         return resources;
-//     },
-// }
+        return resources;
+    },
+}
 
 var Millitary = {
         createNew: function(aMaxWorkers, aMaxAntiFree, aStartingTurn, aCost, textureKey){

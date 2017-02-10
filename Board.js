@@ -75,6 +75,8 @@ var Board={
         board.hasRoadConnect=function(i,j){return Board.hasRoadConnect(board,i,j)};
         // to next turn
         board.nextTurn=function(){Board.nextTurn(board)};
+        // returns an array of tiles that have one type of building on them
+        board.getAllOfSubtype=function(buildingSubtype){Board.getAllOfSubtype(board,buildingSubtype)};
 
         // init tiles
         var tileData=data.tiles;
@@ -240,5 +242,17 @@ var Board={
                 stack.push(node.children[i]);
             }
         }
+    },
+    
+    getAllOfSubtype: function(b,buildingSubtype){
+        var stack=[b];
+        var results=[];
+        while(stack.length>0){
+            var node=stack.pop();
+            if(node.building.subtype===buildingSubtype){
+                results.push(node.building);
+            }
+        }
+        return results;
     },
 };

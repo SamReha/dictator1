@@ -1,14 +1,37 @@
 {
+  "shantyTown":{
+    "type": "?",
+    "subtype": "housing",
+    "cost": 0,
+    "maxShelter": 10,
+    "people": 0,
+    "maxPeople": 5,
+    "maxPeopleStep": -1
+  },
   "apartment":{
     "type": "?",
+    "subtype": "housing",
     "cost": 10,
+    "maxShelter": 60,
+    "people": 0,
     "maxPeople": 10,
     "maxPeopleStep": -1
   },
-  "arableFarm":{
-    "type": "$",
+  "mansion":{
+    "type": "?",
+    "subtype": "housing",
     "cost": 10,
-    "maxPeople": 5,
+    "maxShelter": 100,
+    "people": 0,
+    "maxPeople": 1,
+    "maxPeopleStep": -1
+  },
+  "arableFarm":{
+    "type": "?",
+    "subtype": "health",
+    "cost": 10,
+    "people": 0,
+    "maxPeople": 2,
     "effect": {
       "type":"health",
       "value":10,
@@ -17,7 +40,9 @@
   },
   "armyBase":{
     "type": "!",
+    "subtype": "millitary",
     "cost": 20,
+    "people": 0,
     "maxPeople": 5,
     "outputCount": 2,
     "outputTables": [[-2,-3,-3,-4,-4,-4], [2,2,2,3,3,4]],
@@ -25,15 +50,19 @@
   },
   "factory":{
     "type": "$",
+    "subtype": "production",
     "cost": 20,
-    "maxPeople": 10,
+    "people": 0,
+    "maxPeople": 5,
     "outputCount": 1,
     "outputTables": [[0,1,2,3,4,4,5,5,5,6,6]],
     "outputTypes": ["money"]
   },
   "lumberYard":{
     "type": "$",
+    "subtype": "production",
     "cost": 10,
+    "people": 0,
     "maxPeople": 5,
     "outputCount": 1,
     "outputTables": [[0,1,2,3,3,3]],
@@ -41,6 +70,7 @@
   },
   "road":{
     "type": "-",
+    "subtype": "-",
     "cost": 2,
     "maxPeople": 0,
     "outputCount": 1,
@@ -48,7 +78,9 @@
   },
   "school":{
     "type": "?",
+    "subtype": "education",
     "cost": 5,
+    "people": 0,
     "maxPeople": 5,
     "outputCount": 2,
     "outputTables": [[0,1,2,2,3,3],[0,1,1,2,2,3]],
