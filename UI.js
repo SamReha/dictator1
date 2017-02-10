@@ -8,9 +8,6 @@ var Hud = {
         var hud = MainGame.game.add.group();
         hud.name = "HUD"; // Useful for debugging
 
-        var testSprite = TestSprite.createNew();
-        hud.addChild(testSprite);
-
         // Test text style
         var style = { font: "32px STKaiti", fill: "#ff0044 ", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00 " };
 
@@ -121,43 +118,48 @@ var Hud = {
 };
 
 // Building Placer Object
+// Dynamically extends sprite
 var BuildingPlacer = {
-    buildingType: "",
 
     createNew: function(buildingType) {
-        var buildingPlacer = {};
+        var bP = MainGame.game.add.sprite(0, 0, 'apartment1');
+        
+        bP.deltaTime =  10; // How frequently update is called, in ms
+        bP.buildingType = buildingType;
 
-        buildingPlacer.buildingType = buildingType;
-        buildingPlacer.update = function() { BuildingPlacer.update(buildingPlacer); };
+        bP.update = function() { BuildingPlacer.update(bP); };
+        bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer); };
+        bP.cancelBuild = function() { BuildingPlacer.cancelBuild(bP); };
+        
+        //console.log(MainGame.game.input);
+        
+        MainGame.game.time.events.loop(BuildingPlacer.deltaTime, bP.update, bP);
+        MainGame.game.input.onDown.add(bP.clickHandler, bP, bP, MainGame.game.input.activePointer);
 
-        return buildingPlacer;
+        return bP;
     },
 
     update: function(self) {
-        console.log(self.buildingType);
-    }
-};
-
-var TestSprite = {
-    createNew: function() {
-        /*global MainGame*/
-        var t = MainGame.game.add.sprite(0,0,'apartment1');
-        var timer = MainGame.game.time.events.loop(100, t.frameUpdate, t);
-
-        // dream
-        t.frameUpdate=function(){
-            //var pos=MainGame.game.input.mousePointer.x;
-            /*global MainGame*/
-            t.x=MainGame.game.input.x;
-            t.y=MainGame.game.input.y;
-        };
-
-         // assume that works
-        //var timer=MainGame.game.make.timer("myTimer",100);
-        //timer.setCallbackFunc(t, t.frameUpdate);
-
-        return t;
+        // Track the mouse
+        self.x = MainGame.game.input.x;
+        self.y = MainGame.game.input.y;
+        
+        // Update tint
+        self.tint = Math.random() * 0xffffff;
     },
+    
+    clickHandler: function(self, pointer) {
+        // if (pointer.rightButton.isDown) {
+        //     self.cancelBuild();
+        //     return;
+        // }
+        
+        // If it's a valid click, place the building
+    },
+    
+    cancelBuild: function(self) {
+        self.kill();
+    }
 };
 
 // add me before HUD!!!
@@ -169,7 +171,7 @@ var MapSelector={
         // Class vars
         ms.name="MapSelector";
         ms.curIndex=-1;
-        ms.mouseHoverTimer=MainGame.game.time.events.loop(500, MapSelector.updateBuildingInfo, ms);
+        ms.mouseHoverTimer=MainGame.game.time.events.loop(50, MapSelector.updateBuildingInfo, ms);
         ms.buildingInfo=MapSelector.makeBuildingInfo(ms);
         ms.addChild(ms.buildingInfo);
 

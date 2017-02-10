@@ -15,24 +15,24 @@
 
         // var timer = MainGame.game.time.events.loop(100, function(num){console.log("timer test!" + num);}, Hud, 5);
 
-        var TestSprite = {
-            createNew: function() {
-                /*global MainGame*/
-                var t = MainGame.game.add.sprite(0,0,'apartment1');
-                var timer = MainGame.game.time.events.loop(100, t.frameUpdate, t);
+        // var TestSprite = {
+        //     createNew: function() {
+        //         /*global MainGame*/
+        //         var t = MainGame.game.add.sprite(0,0,'apartment1');
+        //         var timer = MainGame.game.time.events.loop(100, t.frameUpdate, t);
 
-                // dream
-                t.frameUpdate=function(){
-                    //var pos=MainGame.game.input.mousePointer.x;
-                    this.x=MainGame.game.input.x;
-                    this.y=MainGame.game.input.y;
-                };
+        //         // dream
+        //         t.frameUpdate=function(){
+        //             //var pos=MainGame.game.input.mousePointer.x;
+        //             this.x=MainGame.game.input.x;
+        //             this.y=MainGame.game.input.y;
+        //         };
 
-                 // assume that works
-                var timer=MainGame.game.make.timer("myTimer",100);
-                timer.setCallbackFunc(t, t.frameUpdate);
+        //          // assume that works
+        //         var timer=MainGame.game.make.timer("myTimer",100);
+        //         timer.setCallbackFunc(t, t.frameUpdate);
 
-                return t;
-            },
+        //         return t;
+        //     },
 
-        }
+        // }

@@ -28,7 +28,9 @@ var MainGame={
         
         // set game var
         MainGame.game=g;
-        MainGame.population=null;
+        
+        // Prevent default right click behavior
+        MainGame.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
         console.log('[MainGame] init with (w,h)=('+g.width+','+g.height+')');
     },
@@ -39,16 +41,9 @@ var MainGame={
         console.log('[MainGame] start...');
         
         // create board
-        /*global Board*/
         var stage1=MainGame.game.cache.getJSON('stage1');
+        /*global Board*/
         MainGame.board=Board.fromJSON(JSON.stringify(stage1));
-
-        // create population
-        /*global Population*/
-        MainGame.population=Population.createNew(stage1.population);
-
-        // create map selector showing building info        
-        var ms=MapSelector.createNew();
 
         /*global Hud*/
         MainGame.hud = Hud.createNew();
@@ -56,7 +51,7 @@ var MainGame={
     
     nextTurn: function(){
         MainGame.board.nextTurn();
-        MainGame.population.nextTurn();
+        // MainGame.people.nextTurn();
         // TODO
     },
 };
