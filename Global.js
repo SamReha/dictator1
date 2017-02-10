@@ -42,4 +42,7 @@ var Global={
         }
     },
 
+    toString: function(){
+        return "Freedom:"+this.freedom+" Unrest:"+this.unrest+" $="+this.money;
+    }
 };
