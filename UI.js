@@ -191,21 +191,43 @@ var MapSelector={
         // label2 (people)
         bi.label2=MainGame.game.make.text(10,30,"",style,bi);
         bi.addChild(bi.label2);
-        // button
-        bi.button=MainGame.game.make.button(60, 100, "btnHire", 
+        // Hire button
+        bi.button=MainGame.game.make.button(30, 100, "btnHire", 
             function(){
-                console.log("[MapSelector] Hire people for index:",ms.curIndex);
+                console.log("[MapSelector] Hire people for index: ",ms.curIndex);
                 // TODO
                 /*global MainGame*/
                 var bld=MainGame.board.at(ms.curIndex).building;
-                var emptySpace=bld.maxPeople-bld.people;
-                var actual=3;
-                // var actual=MainGame.population.moveTo(ms.curIndex, emptySpace, "job");
+                if(bld.people>=bld.maxPeople){
+                    return;
+                }
+                var actual=1;
+                console.log("[MapSelector] and the building's type is:["+bld.type+"]");
+                // var actual=MainGame.population.hire(ms.curIndex, bld.type);
                 bld.people=bld.people+actual;
                 // update display
                 bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;
             }, ms, 0, 1, 2, 3);
         bi.addChild(bi.button);
+        // Fire button
+        bi.button2=MainGame.game.make.button(100,100,"btnFire",
+            function(){
+                console.log("[MapSelector] Fire people for index: ",ms.curIndex);
+                // TODO
+                /*global MainGame*/
+                var bld=MainGame.board.at(ms.curIndex).building;
+                if(bld.people<=0){
+                    return;
+                }
+                var actual=1;
+                console.log("[MapSelector] and the building's type is:["+bld.type+"]");
+                //var actual=MainGame.population.fire(ms.curIndex, bld.type);
+                bld.people=bld.people-actual;
+                // update display
+                bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;                
+            }, ms, 0,1,2,3);
+        bi.addChild(bi.button2);
+
         bi.visible=false;
         return bi;
     },
