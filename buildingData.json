@@ -41,7 +41,7 @@
   "armyBase":{
     "type": "!",
     "subtype": "millitary",
-    "cost": 20,
+    "cost": 30,
     "people": 0,
     "maxPeople": 5,
     "outputCount": 2,
@@ -51,7 +51,7 @@
   "factory":{
     "type": "$",
     "subtype": "production",
-    "cost": 20,
+    "cost": 30,
     "people": 0,
     "maxPeople": 5,
     "outputCount": 1,
@@ -61,7 +61,7 @@
   "lumberYard":{
     "type": "$",
     "subtype": "production",
-    "cost": 10,
+    "cost": 30,
     "people": 0,
     "maxPeople": 5,
     "outputCount": 1,
@@ -79,7 +79,7 @@
   "school":{
     "type": "?",
     "subtype": "education",
-    "cost": 5,
+    "cost": 15,
     "people": 0,
     "maxPeople": 5,
     "outputCount": 2,

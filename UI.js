@@ -46,7 +46,7 @@ var Hud = {
         buildMenu.addChild(militaryGroup);
 
         // buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
-        var buyMansionBtn = MainGame.game.make.button(0, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
+        var buyMansionBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'mansion');}, buildMenu, 0, 1, 2, 3);
         buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
         var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n$10", style);
         mansionText.anchor.y = 1;
@@ -60,28 +60,28 @@ var Hud = {
         buySuburbBtn.addChild(suburbText);
         bureauGroup.addChild(buySuburbBtn);
 
-        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'buttonSprite', Hud.buildApartment, buildMenu, 0, 1, 2, 3);
+        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'apartment');}, buildMenu, 0, 1, 2, 3);
         buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
         var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n$10", style);
         apartmentText.anchor.y = 1;
         buyApartmentBtn.addChild(apartmentText);
         bureauGroup.addChild(buyApartmentBtn);
 
-        var buySchoolBtn = MainGame.game.make.button(600, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
+        var buySchoolBtn = MainGame.game.make.button(600, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'school');}, buildMenu, 0, 1, 2, 3);
         buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
         var schoolText = MainGame.game.make.text(0, -40, "Buy School\n$15", style);
         schoolText.anchor.y = 1;
         buySchoolBtn.addChild(schoolText);
         bureauGroup.addChild(buySchoolBtn);
 
-        var buyFactoryBtn = MainGame.game.make.button(0, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
+        var buyFactoryBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
         buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var factoryText = MainGame.game.make.text(0, -40, "Buy Factory\n$30", style);
+        var factoryText = MainGame.game.make.text(0, -40, "Buy LumberYard\n$30", style);
         factoryText.anchor.y = 1;
         buyFactoryBtn.addChild(factoryText);
         merchantGroup.addChild(buyFactoryBtn);
 
-        var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
+        var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'armyBase');}, buildMenu, 0, 1, 2, 3);
         buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
         var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n$30", style);
         armyBaseText.anchor.y = 1;
@@ -122,22 +122,26 @@ var Hud = {
     showBuildMenu: function() {
         this.visible = !this.visible;
     },
-
-    buildApartment: function() {
-        // Hide build menu
-        this.visible = false;
-
-        // Create a building placer
-        var buildingPlacer = BuildingPlacer.createNew('apartment');
+    
+    beginBuilding: function(menu, buildingType) {
+        console.log(buildingType);
+        console.log( MainGame.game.cache.getJSON('buildingData')[buildingType].cost);
+        if (Global.money >= MainGame.game.cache.getJSON('buildingData')[buildingType].cost) {
+            // Hide build menu
+            menu.visible = false;
+    
+            // Create a building placer
+            var buildingPlacer = BuildingPlacer.createNew(buildingType);
+        }
     },
 };
 
 // Building Placer Object
 // Dynamically extends sprite
 var BuildingPlacer = {
-
     createNew: function(buildingType) {
-        var bP = MainGame.game.add.sprite(0, 0, 'apartment1');
+        var bP = MainGame.game.add.sprite(0, 0, buildingType + '1');
+        bP.anchor.x = bP.anchor.y = 0.5;
         
         bP.deltaTime =  10; // How frequently update is called, in ms
         bP.buildingType = buildingType;
@@ -167,9 +171,15 @@ var BuildingPlacer = {
             let tile = MainGame.board.at(self.mapIndex);
             // Might be nice to move these into Tile as convenience methods...
             let terrainType = tile.terrain.key;
+            let tileResource = tile.res.key;
             let hasBuilding = tile.getBuilding().name != null ? true : false;
             // If the terrain is impassable, or a building already exists
             self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || hasBuilding);
+            
+            // Special consideration: lumberYards can only be built on forest
+            if (self.buildingType === 'lumberYard' && self.canBuild) {
+                self.canBuild = tileResource === 'forest' ? true : false;
+            }
         } else self.canBuild = false;
         
         // Update tint
@@ -188,12 +198,17 @@ var BuildingPlacer = {
         
         if (self.canBuild) {
             let tile = MainGame.board.at(self.mapIndex);
+            // Get the building data for our current building
+            let buildingData = MainGame.game.cache.getJSON('buildingData')[self.buildingType];
             
             // Create a building object
+            let newBuilding = Building.createNew(buildingData);
                 
             // Set the tile's building to that object
+            tile.setBuilding(newBuilding);
             
             // Bill the player
+            Global.money -= buildingData.cost;
             
             // End build mode
             self.cancelBuild();
