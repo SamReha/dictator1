@@ -138,7 +138,6 @@ var BuildingPlacer = {
     }
 };
 
-<<<<<<< HEAD
 var TestSprite = {
     createNew: function() {
         /*global MainGame*/
@@ -160,7 +159,6 @@ var TestSprite = {
         return t;
     },
 
-=======
 // add me before HUD!!!
 var MapSelector={
     createNew: function(){
@@ -237,40 +235,4 @@ var MapSelector={
         this.buildingInfo.x=tile.x;
         this.buildingInfo.y=tile.y;
     },
->>>>>>> testing
 };
-
-/*
-// A menu option that can be purchased by the player (should trigger building placement mode)
-var BuildingPurchaseOption = {
-    icon: null,
-    name: "",
-    cost: 0,
-    purchaseable: false,
-    
-    createNew: function(icon, name, cost) {
-        this.icon = icon;
-        this.name = name;
-        this.cost = cost;
-        
-        return this;
-    }
-}
-
-// The menu itself, controlled by the HUD
-var BuildMenu = {
-    buildingPurchaseList: [
-        BuildingPurchaseOption.createNew(null, "Mansion",   10),
-        BuildingPurchaseOption.createNew(null, "Suburbs",   10),
-        BuildingPurchaseOption.createNew(null, "Apartment", 10),
-        BuildingPurchaseOption.createNew(null, "School",    15),
-        BuildingPurchaseOption.createNew(null, "Factory",   30),
-        BuildingPurchaseOption.createNew(null, "Army Base", 30)
-    ],
-    visible: false,
-    
-    createNew: function() {
-        return this;
-    }
-}
-*/
