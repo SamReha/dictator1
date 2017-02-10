@@ -94,8 +94,8 @@ var Population={
         pop.count=function(){return pop.length};        // Class func: inline style
         pop.report=function(){Population.report(pop)};  // Class func: Declaration
         pop.increasePopulation=function(amount){Population.increasePopulation(pop,amount)};
-        pop.hire=function(tileIndex,buildingType){Population.hire(tileIndex,buildingType)};
-        pop.fire=function(tileIndex,buildingType){Population.fire(tileIndex,buildingType)};
+        pop.hire=function(tileIndex,buildingType){Population.hire(pop,tileIndex,buildingType)};
+        pop.fire=function(tileIndex,buildingType){Population.fire(pop,tileIndex,buildingType)};
         // TODO: add other funcs
 
         return pop;
@@ -132,11 +132,11 @@ var Population={
         }
     },
     
-    hire: function(tileIndex,buildingType){
+    hire: function(pop,tileIndex,buildingType){
         
     },
     
-    fire: function(tileIndex,buildingType){
+    fire: function(pop,tileIndex,buildingType){
         
     }
 };

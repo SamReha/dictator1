@@ -198,17 +198,17 @@ var BuildingPlacer = {
         
         if (self.canBuild) {
             let tile = MainGame.board.at(self.mapIndex);
-            // Get the building data for our current building
-            let buildingData = MainGame.game.cache.getJSON('buildingData')[self.buildingType];
+            // // Get the building data for our current building
+            // let buildingData = MainGame.game.cache.getJSON('buildingData')[self.buildingType];
             
             // Create a building object
-            let newBuilding = Building.createNew(buildingData);
+            let newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:0,people:0});
                 
             // Set the tile's building to that object
             tile.setBuilding(newBuilding);
             
             // Bill the player
-            Global.money -= buildingData.cost;
+            Global.money -= newBuilding.cost;
             
             // End build mode
             self.cancelBuild();

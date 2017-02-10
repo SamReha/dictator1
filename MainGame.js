@@ -11,11 +11,14 @@ var MainGame={
     // the board var
     board: null,
     
+    // the Map Selector
+    mapSelector: null,
+
     // The HUD
     hud: null,
 
     // the people var
-    people: null,
+    population: null,
     
     // singleton func to initialize
     initialized: false,
@@ -49,8 +52,15 @@ var MainGame={
         
         // create board
         var stage1=MainGame.game.cache.getJSON('stage1');
+
         /*global Board*/
         MainGame.board=Board.fromJSON(JSON.stringify(stage1));
+
+        /*global Population*/
+        //MainGame.population=Population.createNew(stage1.population);
+
+        /*global MapSelector*/
+        MainGame.mapSelector=MapSelector.createNew();
 
         /*global Hud*/
         MainGame.hud = Hud.createNew();
