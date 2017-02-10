@@ -2,8 +2,13 @@
 // Holds all our in-game UI elements
 var Hud = {    
     createNew: function() {
+        //var timer = MainGame.game.time.events.loop(100, function(num){console.log("timer test!" + num);}, Hud, 5);
+
         var hud = MainGame.game.add.group();
         hud.name = "HUD"; // Useful for debugging
+
+        var testSprite = TestSprite.createNew();
+        hud.addChild(testSprite);
 
         // Test text style
         var style = { font: "32px STKaiti", fill: "#ff0044 ", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00 " };
@@ -30,42 +35,42 @@ var Hud = {
         // buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
         var buyMansionBtn = MainGame.game.make.button(0, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
         buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n $10", style);
+        var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n$10", style);
         mansionText.anchor.y = 1;
         buyMansionBtn.addChild(mansionText);
         bureauGroup.addChild(buyMansionBtn);
 
         var buySuburbBtn = MainGame.game.make.button(200, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
         buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n $10", style);
+        var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n$10", style);
         suburbText.anchor.y = 1;
         buySuburbBtn.addChild(suburbText);
         bureauGroup.addChild(buySuburbBtn);
 
-        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
+        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'buttonSprite', Hud.buildApartment, buildMenu, 0, 1, 2, 3);
         buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n $10", style);
+        var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n$10", style);
         apartmentText.anchor.y = 1;
         buyApartmentBtn.addChild(apartmentText);
         bureauGroup.addChild(buyApartmentBtn);
 
         var buySchoolBtn = MainGame.game.make.button(600, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
         buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var schoolText = MainGame.game.make.text(0, -40, "Buy School\n $15", style);
+        var schoolText = MainGame.game.make.text(0, -40, "Buy School\n$15", style);
         schoolText.anchor.y = 1;
         buySchoolBtn.addChild(schoolText);
         bureauGroup.addChild(buySchoolBtn);
 
         var buyFactoryBtn = MainGame.game.make.button(0, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
         buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var factoryText = MainGame.game.make.text(0, -40, "Buy Factory\n $30", style);
+        var factoryText = MainGame.game.make.text(0, -40, "Buy Factory\n$30", style);
         factoryText.anchor.y = 1;
         buyFactoryBtn.addChild(factoryText);
         merchantGroup.addChild(buyFactoryBtn);
 
         var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
         buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n $30", style);
+        var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n$30", style);
         armyBaseText.anchor.y = 1;
         buyArmyBaseBtn.addChild(armyBaseText);
         militaryGroup.addChild(buyArmyBaseBtn);
@@ -103,8 +108,57 @@ var Hud = {
 
     showBuildMenu: function() {
         this.visible = !this.visible;
+    },
+
+    buildApartment: function() {
+        // Hide build menu
+        this.visible = false;
+
+        // Create a building placer
+        var buildingPlacer = BuildingPlacer.createNew('apartment');
+    },
+};
+
+// Building Placer Object
+var BuildingPlacer = {
+    buildingType: "",
+
+    createNew: function(buildingType) {
+        var buildingPlacer = {};
+
+        buildingPlacer.buildingType = buildingType;
+        buildingPlacer.update = function() { BuildingPlacer.update(buildingPlacer); };
+
+        return buildingPlacer;
+    },
+
+    update: function(self) {
+        console.log(self.buildingType);
     }
-}
+};
+
+var TestSprite = {
+    createNew: function() {
+        /*global MainGame*/
+        var t = MainGame.game.add.sprite(0,0,'apartment1');
+        var timer = MainGame.game.time.events.loop(100, t.frameUpdate, t);
+
+        // dream
+        t.frameUpdate=function(){
+            //var pos=MainGame.game.input.mousePointer.x;
+            /*global MainGame*/
+            t.x=MainGame.game.input.x;
+            t.y=MainGame.game.input.y;
+        };
+
+         // assume that works
+        //var timer=MainGame.game.make.timer("myTimer",100);
+        //timer.setCallbackFunc(t, t.frameUpdate);
+
+        return t;
+    },
+
+};
 
 /*
 // A menu option that can be purchased by the player (should trigger building placement mode)
