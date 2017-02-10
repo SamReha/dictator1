@@ -2,6 +2,7 @@
 // Holds all our in-game UI elements
 var Hud = {    
     createNew: function() {
+        /*global MainGame*/
         var hud = MainGame.game.add.group();
         hud.name = "HUD"; // Useful for debugging
 
@@ -104,7 +105,85 @@ var Hud = {
     showBuildMenu: function() {
         this.visible = !this.visible;
     }
-}
+};
+
+// add me before HUD!!!
+var MapSelector={
+    createNew: function(){
+        /*global MainGame*/
+        var ms=MainGame.game.add.group();        
+
+        // Class vars
+        ms.name="MapSelector";
+        ms.curIndex=-1;
+        ms.mouseHoverTimer=MainGame.game.time.events.loop(500, MapSelector.updateBuildingInfo, ms);
+        ms.buildingInfo=MapSelector.makeBuildingInfo(ms);
+        ms.addChild(ms.buildingInfo);
+
+        // Class funcs
+        ms.updateBuildingInfo=function(){MapSelector.updateBuildingInfo(ms)};
+
+        return ms;
+    },
+    makeBuildingInfo: function(ms){
+        var bi=MainGame.game.make.group();
+        // Test text style
+        var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00 " };
+        // bg (the grad)
+        bi.bg=MainGame.game.make.sprite(0,0,"grpBldInfo");
+        bi.addChild(bi.bg);
+        // label (bld name/lv)
+        bi.label=MainGame.game.make.text(10,0,"",style,bi);
+        bi.addChild(bi.label);
+        // label2 (people)
+        bi.label2=MainGame.game.make.text(10,30,"",style,bi);
+        bi.addChild(bi.label2);
+        // button
+        bi.button=MainGame.game.make.button(60, 100, "btnHire", 
+            function(){
+                console.log("[MapSelector] Hire people for index:",ms.curIndex);
+                // TODO
+                /*global MainGame*/
+                var bld=MainGame.board.at(ms.curIndex).building;
+                var emptySpace=bld.maxPeople-bld.people;
+                var actual=3;
+                // var actual=MainGame.population.moveTo(ms.curIndex, emptySpace, "job");
+                bld.people=bld.people+actual;
+                // update display
+                bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;
+            }, ms, 0, 1, 2, 3);
+        bi.addChild(bi.button);
+        bi.visible=false;
+        return bi;
+    },
+    updateBuildingInfo: function(){
+        this.buildingInfo.visible=true;
+        /*global MainGame*/
+        var mouseX=MainGame.game.input.x;
+        var mouseY=MainGame.game.input.y;
+        var index=MainGame.board.indexFrom(mouseX,mouseY);
+        if(index===null){
+            this.buildingInfo.visible=false;
+            return;
+        }
+        if(this.curIndex===index){
+            return;
+        }
+        this.curIndex=index;
+        var tile=MainGame.board.at(index);
+        var bld=tile.building;
+        if(bld===null || bld.isEmpty()){
+            this.buildingInfo.visible=false;
+            return;
+        }
+        var str=bld.name+" Lv"+bld.level;
+        var str2="People: "+bld.people+"/"+bld.maxPeople;
+        this.buildingInfo.label.text=str;
+        this.buildingInfo.label2.text=str2;
+        this.buildingInfo.x=tile.x;
+        this.buildingInfo.y=tile.y;
+    },
+};
 
 /*
 // A menu option that can be purchased by the player (should trigger building placement mode)

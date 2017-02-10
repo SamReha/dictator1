@@ -47,6 +47,9 @@ var MainGame={
         /*global Population*/
         MainGame.population=Population.createNew(stage1.population);
 
+        // create map selector showing building info        
+        var ms=MapSelector.createNew();
+
         /*global Hud*/
         MainGame.hud = Hud.createNew();
     },

@@ -18,7 +18,7 @@ var Building = {
 
         var b=null;
 
-        // Class vars: name, level, startingTurn, {props_in_buildingData.json[name]}
+        // Class vars: name, level, startingTurn, people, {props_in_buildingData.json[name]}
         if(!data){
             b=MainGame.game.make.sprite(0,0);
             b.name=null;
@@ -26,7 +26,7 @@ var Building = {
             /*global MainGame*/
             b=MainGame.game.make.sprite(0,0,data.name+data.level);
 
-            // copy name,level,startingTurn
+            // copy name,level,startingTurn,people
             for(var key in data){
                 b[key]=data[key];
             }

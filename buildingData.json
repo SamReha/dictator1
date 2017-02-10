@@ -49,6 +49,7 @@
   "school":{
     "type": "?",
     "cost": 5,
+    "maxPeople": 5,
     "outputCount": 2,
     "outputTables": [[0,1,2,2,3,3],[0,1,1,2,2,3]],
     "outputTypes": ["freedom", "education"]

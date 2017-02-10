@@ -27,6 +27,8 @@ var Preloader={
 
         // load ui assets
         g.load.spritesheet('buttonSprite', 'images/ui/button_spritesheet.png', 128, 48, 4);
+        g.load.image('grpBldInfo', 'images/ui/grpBldInfo.png');
+        g.load.spritesheet('btnHire', 'images/ui/btnHire.png', 64, 20, 4);
         
         // load json files
         g.load.json('stage1','stage1.json');
