@@ -67,9 +67,14 @@ var Person={
         for(var house in housing){
             if(house.people < house.maxPeople){
                 house.people += 1;
-                
+                p.home = MainGame.board.indexOfBuilding(house);
+                p.health = house.health;
+                p.education = house.education;
+                p.shelter = house.shelter;
+                return true;
             }
         }
+        return false;
     },
 };
 
@@ -94,8 +99,8 @@ var Population={
         pop.count=function(){return pop.length};        // Class func: inline style
         pop.report=function(){Population.report(pop)};  // Class func: Declaration
         pop.increasePopulation=function(amount){Population.increasePopulation(pop,amount)};
-        pop.hire=function(tileIndex,buildingType){Population.hire(tileIndex,buildingType)};
-        pop.fire=function(tileIndex,buildingType){Population.fire(tileIndex,buildingType)};
+        pop.hire=function(tileIndex,buildingType){Population.hire(pop,tileIndex,buildingType)};
+        pop.fire=function(tileIndex,buildingType){Population.fire(pop,tileIndex,buildingType)};
         // TODO: add other funcs
 
         return pop;
@@ -129,14 +134,50 @@ var Population={
         for(var i = 1; i < amount; i += 1){
             var per=Person.createNew({"type":0});
             pop.lowList.push(per);
+            if(!per.findHousing()){
+                pop.homeless += 1;
+            }
+            pop.unemployed += 1;
         }
     },
     
-    hire: function(tileIndex,buildingType){
-        
+    /*global MainGame*/
+    hire: function(pop,tileIndex,buildingType){
+        var employmentLine = [];
+        for(var per in pop.lowList){
+            if(per.workplace===null){
+                if(MainGame.board.hasRoadConnect(per.home,tileIndex)){
+                    employmentLine.push(per);
+                }
+            }
+        }
+        if(employmentLine.length > 0){
+            employmentLine[MainGame.game.rnd.integer()%employmentLine.length].workplace=tileIndex;
+            MainGame.board.children[tileIndex].building.people += 1;
+            pop.unemployed -= 1;
+            return 1;
+        }
+        else{
+            return 0;
+        }
     },
     
-    fire: function(tileIndex,buildingType){
-        
+    /*global MainGame*/
+    fire: function(pop,tileIndex,buildingType){
+        var workers = [];
+        for(var per in pop.lowList){
+            if(per.workplace===tileIndex){
+                workers.push(per);
+            }
+        }
+        if(workers.length > 0){
+            workers[MainGame.game.rnd.integer()%workers.length].workplace=null;
+            MainGame.board.children[tileIndex].building.people -= 1;
+            pop.unemployed += 1;
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
 };

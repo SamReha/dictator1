@@ -67,6 +67,8 @@ var Board={
         board.xyOf=function(i){return Board.xyOf(board,i)};
         // returns the rect of i
         board.rectOf=function(i,scale){return Board.rectOf(board,i,scale)};
+        // returns the index of the given building's tile
+        board.indexOfBuilding=function(building){Board.indexOfBuilding(board,building)};
         // returns the index of (x,y); nullable
         board.indexFrom=function(px,py){return Board.indexFrom(board,px,py)};
         // returns the step distance between i and j
@@ -167,6 +169,15 @@ var Board={
         }
         return {x:x, y:y, w:pw, h:ph};
     },
+    // returns the index of the given building's tile 
+    indexOfBuilding: function(board,building){
+        var tiles=board.children;
+        for(var i = 0; i < tiles.length; i += 1){
+            if(tiles[i].building===building){
+                return i;
+            }
+        }
+    },
     // returns the index of (x,y)
     indexFrom: function(b,px,py){
         var N=b.gridWidth*b.gridHeight;
@@ -245,14 +256,15 @@ var Board={
     },
     
     getAllOfSubtype: function(b,buildingSubtype){
-        var stack=[b];
         var results=[];
+        var stack=b.children;
         while(stack.length>0){
             var node=stack.pop();
             if(node.building.subtype===buildingSubtype){
                 results.push(node.building);
             }
         }
+
         return results;
     },
 };
