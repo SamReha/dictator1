@@ -11,6 +11,9 @@ var MainGame={
     // the board var
     board: null,
     
+    // The HUD
+    hud: null,
+
     // the people var
     people: null,
     
@@ -43,6 +46,9 @@ var MainGame={
         // create population
         /*global Population*/
         MainGame.population=Population.createNew(stage1.population);
+
+        /*global Hud*/
+        MainGame.hud = Hud.createNew();
     },
     
     nextTurn: function(){
