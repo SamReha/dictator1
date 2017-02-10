@@ -158,6 +158,7 @@ var TestSprite = {
 
         return t;
     },
+};
 
 // add me before HUD!!!
 var MapSelector={
