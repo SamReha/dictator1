@@ -29,7 +29,9 @@ var Person={
         p.isLow=function(){return p.type===0};  // Class func: inline style
         p.isMid=function(){return p.type===1};  // Class func: inline style
         p.isHi=function(){return p.type===2};   // Class func: inline style
+        p.nextTurn=function(){};
         p.report=function(){Person.report(p)};  // Class func: Declaration
+        p.findHousing=function(){Person.findHousing()};
         // TODO: add other funcs
 
         return p;
@@ -39,6 +41,10 @@ var Person={
     report: function(p){
         console.log("[Person] type="+p.type+", name="+p.name);
         // TODO: add other infomation that needs to show
+    },
+    
+    findHousing: function(){
+        
     },
 };
 
@@ -51,19 +57,37 @@ var Population={
         var pop={};
 
         // Class vars
+        pop.unemployed;
+        pop.homeless;
         pop.lowList=[];
         pop.midList=[];
         pop.highList=[];
 
         // Class funcs
+        pop.nextTurn=function(){Population.nextTurn(pop)};
         pop.count=function(){return pop.length};        // Class func: inline style
         pop.report=function(){Population.report(pop)};  // Class func: Declaration
+        pop.increasePopulation=function(amount){Population.increasePopulation(pop,amount)};
+        pop.hire=function(tileIndex,buildingType){Population.hire(tileIndex,buildingType)};
+        pop.fire=function(tileIndex,buildingType){Population.fire(tileIndex,buildingType)};
         // TODO: add other funcs
 
         return pop;
     },
 
     // Class func: Implementation
+    nextTurn: function(pop){
+        for(var p in pop.lowList){
+            p.nextTurn();
+        }
+        for(var p in pop.midList){
+            p.nextTurn();
+        }
+        for(var p in pop.highList){
+            p.nextTurn();
+        }
+    },
+    
     report: function(pop){
         console.log("[Population] now reporting-------");
         for(var i=0;i<pop.length;i++){
@@ -72,4 +96,19 @@ var Population={
         // TODO: add other information that needs to show
         console.log("[Population] end of report.");
     },
+    
+    increasePopulation: function(pop,amount){
+        for(var i = 1; i < amount; i += 1){
+            var per=Person.createNew({"type":0});
+            pop.lowList.push(per);
+        }
+    },
+    
+    hire: function(tileIndex,buildingType){
+        
+    },
+    
+    fire: function(tileIndex,buildingType){
+        
+    }
 };
