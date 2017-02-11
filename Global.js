@@ -2,7 +2,7 @@
 var Global={
 	freedom: 10,
     unrest: 20,
-    money: 100,
+    money: 10,
     education: 0,
 
     calcAvgEducation: function(){

@@ -16,6 +16,8 @@ var Tile={
         tile.addChild(tile.building);
 
         // Class funcs
+        tile.getTerrain=function(){return tile.terrain};
+        tile.getRes=function(){return tile.res};
         tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
         tile.getBuilding=function(){return tile.building};
         tile.setBuilding=function(building){Tile.setBuilding(tile,building)};
@@ -63,22 +65,30 @@ var Board={
         board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning)};
         // returns all adjacent indice within [N] steps of tile [i]
         board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N)};
+        // returns the tile count
+        board.tileCount=function(){return board.gridWidth*board.gridHeight};
         // returns the (gx,gy) of i
         board.xyOf=function(i){return Board.xyOf(board,i)};
         // returns the rect of i
         board.rectOf=function(i,scale){return Board.rectOf(board,i,scale)};
-        // returns the index of the given building's tile
-        board.indexOfBuilding=function(building){Board.indexOfBuilding(board,building)};
         // returns the index of (x,y); nullable
-        board.indexFrom=function(px,py){return Board.indexFrom(board,px,py)};
+        board.hitTest=function(px,py){return Board.hitTest(board,px,py)};
         // returns the step distance between i and j
         board.distanceOf=function(i,j){return Board.distanceOf(board,i,j)};
         // returns whether i is connected with j
         board.hasRoadConnect=function(i,j){return Board.hasRoadConnect(board,i,j)};
-        // to next turn
-        board.nextTurn=function(){Board.nextTurn(board)};
-        // returns an array of tiles that have one type of building on them
-        board.getAllOfSubtype=function(buildingSubtype){Board.getAllOfSubtype(board,buildingSubtype)};
+        // returns all the *indice* of the terrain type
+        board.findTerrain=function(type){return Board.findTerrain(board,type)};
+        // returns all the *indice* of the res type
+        board.findRes=function(type){return Board.findRes(board,type)};
+        // returns all the *indice* of the building type(nullable)/subtype(nullable)
+        board.findBuilding=function(type,subtype){return Board.findBuilding(board,type,subtype)};
+        // go to next turn
+        board.nextTurn=function(){return Board.nextTurn(board)};
+        // // returns an array of tiles that have one type of building on them
+        // // returns the index of the given building's tile
+         // board.indexOfBuilding=function(building){return Board.indexOfBuilding(board,building)};        
+         // board.getAllOfSubtype=function(buildingSubtype){return Board.getAllOfSubtype(board,buildingSubtype)};
 
         // init tiles
         var tileData=data.tiles;
@@ -179,7 +189,7 @@ var Board={
         }
     },
     // returns the index of (x,y)
-    indexFrom: function(b,px,py){
+    hitTest: function(b,px,py){
         var N=b.gridWidth*b.gridHeight;
         for(var i=0;i<N;i++){
             var r=b.rectOf(i,b.currentScale);
@@ -242,6 +252,34 @@ var Board={
         }
         return false;
     },
+    // returns the indice that match the condition!
+    findTerrain: function(b,type){
+        var res=[];
+        var N=b.tileCount();
+        for(var i=0;i<N;i++)
+            if(b.at(i).getTerrain()===type)
+                res.push(i);
+        return res;
+    },
+    findRes: function(b,type){
+        var res=[];
+        var N=b.tileCount();
+        for(var i=0;i<N;i++)
+            if(b.at(i).getRes()===type)
+                res.push(i);
+        return res;
+    },
+    findBuilding: function(b,type,subtype){
+        var res=[];
+        var N=b.tileCount();
+        for(var i=0;i<N;i++){
+            var bld=b.at(i).getBuilding;
+            if((bld.type===type || !type) && (bld.subtype===subtype || !subtype)){
+                res.push(i);
+            }
+        }
+        return res;
+    },
     // to next turn
     nextTurn: function(b){
         // DFS call nextTurn
@@ -253,18 +291,5 @@ var Board={
                 stack.push(node.children[i]);
             }
         }
-    },
-    
-    getAllOfSubtype: function(b,buildingSubtype){
-        var results=[];
-        var stack=b.children;
-        while(stack.length>0){
-            var node=stack.pop();
-            if(node.building.subtype===buildingSubtype){
-                results.push(node.building);
-            }
-        }
-
-        return results;
     },
 };

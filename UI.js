@@ -22,7 +22,7 @@ var Hud = {
         var txtGlobalInfo=MainGame.game.make.text(20,0,"",style);
         grpGlobal.addChild(txtGlobalInfo);
         MainGame.game.time.events.loop(500, function(){
-            this.text=MainGame.global.toString();
+            this.text=MainGame.global.toString()+"  Pop:"+MainGame.population.count();
         }, txtGlobalInfo);
 
 
@@ -166,7 +166,7 @@ var BuildingPlacer = {
         self.y = MainGame.game.input.y;
         
         // Is the mouse over a build-ready tile, or is if offsides?
-        self.mapIndex = MainGame.board.indexFrom(MainGame.game.input.x, MainGame.game.input.y);
+        self.mapIndex = MainGame.board.hitTest(MainGame.game.input.x, MainGame.game.input.y);
         if (self.mapIndex != null) {
             let tile = MainGame.board.at(self.mapIndex);
             // Might be nice to move these into Tile as convenience methods...
@@ -265,9 +265,9 @@ var MapSelector={
                 if(bld.people>=bld.maxPeople){
                     return;
                 }
-                var actual=1;
+                // var actual=1;
                 console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                // var actual=MainGame.population.hire(ms.curIndex, bld.type, bld.name);
+                var actual=MainGame.population.hire(ms.curIndex, bld.type, bld.name);
                 bld.people=bld.people+actual;
                 // update display
                 bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;
@@ -283,9 +283,9 @@ var MapSelector={
                 if(bld.people<=0){
                     return;
                 }
-                var actual=1;
+                // var actual=1;
                 console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                //var actual=MainGame.population.fire(ms.curIndex, bld.type, bld.name);
+                var actual=MainGame.population.fire(ms.curIndex, bld.type, bld.name);
                 bld.people=bld.people-actual;
                 // update display
                 bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;                
@@ -300,7 +300,7 @@ var MapSelector={
         /*global MainGame*/
         var mouseX=MainGame.game.input.x;
         var mouseY=MainGame.game.input.y;
-        var index=MainGame.board.indexFrom(mouseX,mouseY);
+        var index=MainGame.board.hitTest(mouseX,mouseY);
         if(index===null){
             this.buildingInfo.visible=false;
             return;

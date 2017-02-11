@@ -54,23 +54,17 @@ var Person={
     
     /*global MainGame*/
     findHousing: function(p){
-        var housing=MainGame.board.getAllOfSubtype("housing");
-        for(var i = 0; i <= housing.length; i += 1){
-            for(var j = i+1; j < housing.length; j += 1){
-                if(housing[j].shelter>housing[i].shelter){
-                    var temp = housing[i];
-                    housing[i]=housing[j];
-                    housing[j]=temp;
-                }
-            }
-        }
-        for(var house in housing){
-            if(house.people < house.maxPeople){
-                house.people += 1;
-                p.home = MainGame.board.indexOfBuilding(house);
-                p.health = house.health;
-                p.education = house.education;
-                p.shelter = house.shelter;
+        /*global MainGame*/
+        var housingIndice=MainGame.board.findBuilding(null,"housing");
+        console.log("housingIndice"+ housingIndice);
+
+        for(var i=0;i<housingIndice.length;i++){
+            var bld=MainGame.board.at(i);
+            if(bld.people<bld.maxPeople){
+                p.home=i;
+                p.health=bld.health;
+                p.education=bld.education;
+                p.shelter=bld.shelter;
                 return true;
             }
         }
@@ -96,7 +90,7 @@ var Population={
 
         // Class funcs
         pop.nextTurn=function(){Population.nextTurn(pop)};
-        pop.count=function(){return pop.length};        // Class func: inline style
+        pop.count=function(){return pop.lowList.length+pop.midList.length+pop.highList.length};        // Class func: inline style
         pop.report=function(){Population.report(pop)};  // Class func: Declaration
         pop.increasePopulation=function(amount){Population.increasePopulation(pop,amount)};
         pop.hire=function(tileIndex,buildingType){Population.hire(pop,tileIndex,buildingType)};

@@ -57,7 +57,8 @@ var MainGame={
         MainGame.board=Board.fromJSON(JSON.stringify(stage1));
 
         /*global Population*/
-        //MainGame.population=Population.createNew(stage1.population);
+        MainGame.population=Population.createNew(stage1.population);
+        MainGame.population.increasePopulation(10);
 
         /*global MapSelector*/
         MainGame.mapSelector=MapSelector.createNew();
@@ -72,7 +73,7 @@ var MainGame={
 
         MainGame.board.nextTurn();
 
-        //MainGame.population.nextTurn();
+        MainGame.population.nextTurn();
         // TODO
     },
 };
