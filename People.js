@@ -16,60 +16,54 @@ var Person={
         p.type=data.type;               // must be one of Person.types
         p.name=data.name;               // nullable
         p.portIndex=data.portIndex;     // nullable
-        p.workplace=null;
-        p.home=null;
-        p.health=0;
-        p.education=0;
-        p.shelter=0;
-        if(p.type>=1){
-            p.influence=0;
-            p.role=0;
-        }
-        else{
-            p.influence=null;
-            p.role=null;
-        }
-        if(p.type===2)
-        {   p.loyalty=0;    }
-        else
-        {   p.loyalty=null; }
+        p.workplace=null;               // nullable, index of the tile
+        p.home=null;                    // nullable, index of the tile
+        p.health=0;         // int
+        p.education=0;      // int
+        p.shelter=0;        // int
+        // Class vars (nullable)
+        p.influence=(p.type>=Person.Mid?0:null);
+        p.role=(p.type>=Person.Mid?0:null);
+        p.loyalty=(p.type>=Person.Hi?0:null);
 
         // Class funcs
-        p.isLow=function(){return p.type===0};  // Class func: inline style
-        p.isMid=function(){return p.type===1};  // Class func: inline style
-        p.isHi=function(){return p.type===2};   // Class func: inline style
-        p.nextTurn=function(){};
-        p.report=function(){Person.report(p)};  // Class func: Declaration
-        p.findHousing=function(){Person.findHousing(p)};
-        // TODO: add other funcs
+        p.nextTurn=function(){return Person.nextTurn(p)};
+        p.report=function(){return Person.report(p)};  // Class func: Declaration
+        // p.findHousing=function(){return Person.findHousing(p)};
 
         return p;
     },
 
     // Class func: Implementation
+    nextTurn: function(p){
+        // TODO
+    },
+    
     report: function(p){
         console.log("[Person] type="+p.type+", name="+p.name);
         // TODO: add other infomation that needs to show
     },
     
-    /*global MainGame*/
-    findHousing: function(p){
-        /*global MainGame*/
-        var housingIndice=MainGame.board.findBuilding(null,"housing");
-        console.log("housingIndice"+ housingIndice);
+    // /*global MainGame*/
+    // findHousing: function(p){
+    //     /*global MainGame*/
+    //     var housingIndice=MainGame.board.findBuilding(null,"housing");
+    //     console.log("housingIndice"+ housingIndice);
 
-        for(var i=0;i<housingIndice.length;i++){
-            var bld=MainGame.board.at(i);
-            if(bld.people<bld.maxPeople){
-                p.home=i;
-                p.health=bld.health;
-                p.education=bld.education;
-                p.shelter=bld.shelter;
-                return true;
-            }
-        }
-        return false;
-    },
+    //     for(var i=0;i<housingIndice.length;i++){
+    //         var bld=MainGame.board.at(i);
+    //         // found a good place
+    //         if(bld.people<bld.maxPeople){
+    //             p.home=i;
+    //             p.health=bld.health;
+    //             p.education=bld.education;
+    //             p.shelter=bld.shelter;
+    //             bld.people++;
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // },
 };
 
 // Contains all the literal information (string/number/bool vars) of all people
@@ -81,26 +75,44 @@ var Population={
         var pop={};
 
         // Class vars
-        pop.total;
-        pop.unemployed;
-        pop.homeless;
         pop.lowList=[];
         pop.midList=[];
         pop.highList=[];
 
         // Class funcs
         pop.nextTurn=function(){return Population.nextTurn(pop)};
-        pop.count=function(){return pop.lowList.length+pop.midList.length+pop.highList.length}; // Class func: inline style
+        pop.count=function(){return pop.lowList.length+pop.midList.length+pop.highList.length};
         pop.report=function(){return Population.report(pop)};  // Class func: Declaration
-        pop.increasePopulation=function(amount){return Population.increasePopulation(pop,amount)};
+        pop.increase=function(amount){return Population.increase(pop,amount)};
         pop.hire=function(tileIndex,buildingType){return Population.hire(pop,tileIndex,buildingType)};
         pop.fire=function(tileIndex,buildingType){return Population.fire(pop,tileIndex,buildingType)};
+        // returns the indice of housed/not housed people in lowList
+        pop.findHoused=function(){return Population.findHousingStatus(pop,true)};
+        pop.findNotHoused=function(){return Population.findHousingStatus(pop,false)};
+        // returns the indice of employed/not employed people in lowList
+        pop.findEmployed=function(){return Population.findEmployStatus(pop,true)};
+        pop.findNotEmployed=function(){return Population.findEmployStatus(pop,false)};
+        // returns the string representation
+        pop.toString=function(){return Population.toString(pop)};
+
         // TODO: add other funcs
+
+        // load the JSON data
+        Population.init(pop,data);
 
         return pop;
     },
-    init: function(){
-
+    init: function(pop,data){
+        console.assert(Array.isArray(data));
+        for(var i=0;i<data.length;i++){
+            if(data[i].type===Person.Low){
+                pop.lowList.push(Person.createNew(data[i]));
+            }else if(data[i].type===Person.Mid){
+                pop.midList.push(Person.createNew(data[i]));
+            }else{
+                pop.highList.push(Person.createNew(data[i]));
+            }
+        }
     },
 
     // Class func: Implementation
@@ -114,8 +126,7 @@ var Population={
         for(var p in pop.highList){
             p.nextTurn();
         }
-        /*global MainGame*/
-        pop.increasePopulation(MainGame.game.rnd.integer()%3+1);
+        pop.increase(Math.floor(Math.random()*3));
     },
     
     report: function(pop){
@@ -127,19 +138,28 @@ var Population={
         console.log("[Population] end of report.");
     },
     
-    increasePopulation: function(pop,amount){
+    increase: function(pop,amount){
         for(var i = 1; i < amount; i += 1){
             var per=Person.createNew({"type":0});
             pop.lowList.push(per);
-            if(!per.findHousing()){
-                pop.homeless += 1;
-            }
-            pop.unemployed += 1;
         }
     },
     
-    /*global MainGame*/
-    hire: function(pop,tileIndex,buildingType){
+    hire: function(pop,tileIndex){
+        /*global MainGame*/
+        var bld=MainGame.board.at(tileIndex).getBuilding();
+        console.assert(bld);
+        // set home for person
+        if(bld.name==="apartment"){
+            var hl=pop.findNotHoused();
+            if(hl.length>0 && bld.people<bld.maxPeople){
+                pop.lowList[hl[0]].home=tileIndex;
+                return 1;
+            }
+            return 0;
+        }
+
+        // set work place
         var employmentLine = [];
         for(var per in pop.lowList){
             if(per.workplace===null){
@@ -151,7 +171,6 @@ var Population={
         if(employmentLine.length > 0){
             employmentLine[MainGame.game.rnd.integer()%employmentLine.length].workplace=tileIndex;
             MainGame.board.children[tileIndex].building.people += 1;
-            pop.unemployed -= 1;
             return 1;
         }
         else{
@@ -159,8 +178,24 @@ var Population={
         }
     },
     
-    /*global MainGame*/
-    fire: function(pop,tileIndex,buildingType){
+    fire: function(pop,tileIndex){
+        /*global MainGame*/
+        var bld=MainGame.board.at(tileIndex).getBuilding();
+        console.assert(bld);
+        // unset home
+        if(bld.name==="apartment"){
+            var h=pop.findHoused();
+            console.log(h);
+            for(var i=0;i<h.length;i++){
+                if(pop.lowList[h[i]].home===tileIndex){
+                    pop.lowList[h[i]].home=null;
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        // unset work place
         var workers = [];
         for(var per in pop.lowList){
             if(per.workplace===tileIndex){
@@ -176,5 +211,28 @@ var Population={
         else{
             return 0;
         }
+    },
+
+    findHousingStatus: function(pop, hasHouse){
+        var res=[];
+        for(var i=0;i<pop.lowList.length;i++)
+            if(pop.lowList[i].home!==null && hasHouse 
+                || pop.lowList[i].home===null && !hasHouse)
+                res.push(i);
+        return res;
+    },
+
+    findEmployStatus: function(pop, hasWork){
+        var res=[];
+        for(var i=0;i<pop.lowList.length;i++)
+            if(pop.lowList[i].workplace!==null && hasWork 
+                || pop.lowList[i].workplace===null && !hasWork)
+                res.push(i);
+        return res;
+    },
+
+    toString: function(pop){
+        return "Pop[low,mid,hi]=["+pop.lowList.length+","+pop.midList.length+","+pop.highList.length+"]"
+        +" Pop[housed,employed]=["+pop.findHoused().length+","+pop.findEmployed().length+"]";
     }
 };

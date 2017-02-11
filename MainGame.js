@@ -58,7 +58,6 @@ var MainGame={
 
         /*global Population*/
         MainGame.population=Population.createNew(stage1.population);
-        MainGame.population.increasePopulation(10);
 
         /*global MapSelector*/
         MainGame.mapSelector=MapSelector.createNew();

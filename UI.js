@@ -22,7 +22,7 @@ var Hud = {
         var txtGlobalInfo=MainGame.game.make.text(20,0,"",style);
         grpGlobal.addChild(txtGlobalInfo);
         MainGame.game.time.events.loop(500, function(){
-            this.text=MainGame.global.toString()+"  Pop:"+MainGame.population.count();
+            this.text=MainGame.global.toString()+"\n"+MainGame.population.toString();
         }, txtGlobalInfo);
 
 
@@ -267,7 +267,7 @@ var MapSelector={
                 }
                 // var actual=1;
                 console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                var actual=MainGame.population.hire(ms.curIndex, bld.type, bld.name);
+                var actual=MainGame.population.hire(ms.curIndex);
                 bld.people=bld.people+actual;
                 // update display
                 bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;
@@ -285,7 +285,7 @@ var MapSelector={
                 }
                 // var actual=1;
                 console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                var actual=MainGame.population.fire(ms.curIndex, bld.type, bld.name);
+                var actual=MainGame.population.fire(ms.curIndex);
                 bld.people=bld.people-actual;
                 // update display
                 bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;                
