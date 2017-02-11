@@ -89,12 +89,12 @@ var Population={
         pop.highList=[];
 
         // Class funcs
-        pop.nextTurn=function(){Population.nextTurn(pop)};
+        pop.nextTurn=function(){return Population.nextTurn(pop)};
         pop.count=function(){return pop.lowList.length+pop.midList.length+pop.highList.length};        // Class func: inline style
-        pop.report=function(){Population.report(pop)};  // Class func: Declaration
-        pop.increasePopulation=function(amount){Population.increasePopulation(pop,amount)};
-        pop.hire=function(tileIndex,buildingType){Population.hire(pop,tileIndex,buildingType)};
-        pop.fire=function(tileIndex,buildingType){Population.fire(pop,tileIndex,buildingType)};
+        pop.report=function(){return Population.report(pop)};  // Class func: Declaration
+        pop.increasePopulation=function(amount){return Population.increasePopulation(pop,amount)};
+        pop.hire=function(tileIndex,buildingType){return Population.hire(pop,tileIndex,buildingType)};
+        pop.fire=function(tileIndex,buildingType){return Population.fire(pop,tileIndex,buildingType)};
         // TODO: add other funcs
 
         return pop;
