@@ -90,7 +90,7 @@ var Population={
 
         // Class funcs
         pop.nextTurn=function(){return Population.nextTurn(pop)};
-        pop.count=function(){return pop.lowList.length+pop.midList.length+pop.highList.length};        // Class func: inline style
+        pop.count=function(){return pop.lowList.length+pop.midList.length+pop.highList.length}; // Class func: inline style
         pop.report=function(){return Population.report(pop)};  // Class func: Declaration
         pop.increasePopulation=function(amount){return Population.increasePopulation(pop,amount)};
         pop.hire=function(tileIndex,buildingType){return Population.hire(pop,tileIndex,buildingType)};
@@ -98,6 +98,9 @@ var Population={
         // TODO: add other funcs
 
         return pop;
+    },
+    init: function(){
+
     },
 
     // Class func: Implementation
