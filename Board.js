@@ -3,6 +3,7 @@ var Tile={
     // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
         // create the tile
+        /*global MainGame*/
         var tile=MainGame.game.make.group();
         // decode json
         var data=JSON.parse(json);
@@ -15,6 +16,9 @@ var Tile={
         tile.addChild(tile.building);
 
         // Class funcs
+        tile.getTerrain=function(){return tile.terrain};
+        tile.getRes=function(){return tile.res};
+        tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
         tile.getBuilding=function(){return tile.building};
         tile.setBuilding=function(building){Tile.setBuilding(tile,building)};
 
@@ -50,6 +54,7 @@ var Board={
         board.gridWidth=data.gridWidth;
         board.gridHeight=data.gridHeight;
         board.tileWidth=data.tileWidth;
+        board.currentScale=1.0;
 
         // Class funcs
         // returns the JSON string representation
@@ -60,16 +65,30 @@ var Board={
         board.adjacent=function(i,cd,warning){return Board.adjacent(board,i,cd,warning)};
         // returns all adjacent indice within [N] steps of tile [i]
         board.allAdjacent=function(i,N){return Board.allAdjacent(board,i,N)};
-        // returns the (x,y) of i
+        // returns the tile count
+        board.tileCount=function(){return board.gridWidth*board.gridHeight};
+        // returns the (gx,gy) of i
         board.xyOf=function(i){return Board.xyOf(board,i)};
         // returns the rect of i
         board.rectOf=function(i,scale){return Board.rectOf(board,i,scale)};
+        // returns the index of (x,y); nullable
+        board.hitTest=function(px,py){return Board.hitTest(board,px,py)};
         // returns the step distance between i and j
         board.distanceOf=function(i,j){return Board.distanceOf(board,i,j)};
         // returns whether i is connected with j
         board.hasRoadConnect=function(i,j){return Board.hasRoadConnect(board,i,j)};
-        // to next turn
-        board.nextTurn=function(){Board.nextTurn(board)};
+        // returns all the *indice* of the terrain type
+        board.findTerrain=function(type){return Board.findTerrain(board,type)};
+        // returns all the *indice* of the res type
+        board.findRes=function(type){return Board.findRes(board,type)};
+        // returns all the *indice* of the building type(nullable)/subtype(nullable)
+        board.findBuilding=function(type,subtype){return Board.findBuilding(board,type,subtype)};
+        // go to next turn
+        board.nextTurn=function(){return Board.nextTurn(board)};
+        // // returns an array of tiles that have one type of building on them
+        // // returns the index of the given building's tile
+         // board.indexOfBuilding=function(building){return Board.indexOfBuilding(board,building)};        
+         // board.getAllOfSubtype=function(buildingSubtype){return Board.getAllOfSubtype(board,buildingSubtype)};
 
         // init tiles
         var tileData=data.tiles;
@@ -90,7 +109,7 @@ var Board={
     toJSON: function(b){
         var tiles=[];
         var data={gridWidth:b.gridWidth, gridHeight:b.gridHeight, tileWidth:b.tileWidth, tiles:tiles};
-        var N=w*h;
+        var N=b.gridWidth*b.gridHeight;
         for(var i=0;i<N;i++){
             tiles[i]=JSON.parse(b.at(i).toJSON());
         }
@@ -114,7 +133,7 @@ var Board={
         }else if(x===w-1){
             adj_even[1]=0, adj_even[2]=0, adj_even[4]=0, adj_even[5]=0;
         }
-        var newIndex=(x%2===0?i+adj_even[cd]:i+adj_odd[cd])
+        var newIndex=(x%2===0?i+adj_even[cd]:i+adj_odd[cd]);
         if(newIndex<0 || newIndex>=w*h){
             if(warning) console.warn('[Board] Tile '+i+' does not have an adjacent at '+cd);
             return null;
@@ -159,6 +178,25 @@ var Board={
             y+=ph*0.5;
         }
         return {x:x, y:y, w:pw, h:ph};
+    },
+    // returns the index of the given building's tile 
+    indexOfBuilding: function(board,building){
+        var tiles=board.children;
+        for(var i = 0; i < tiles.length; i += 1){
+            if(tiles[i].building===building){
+                return i;
+            }
+        }
+    },
+    // returns the index of (x,y)
+    hitTest: function(b,px,py){
+        var N=b.gridWidth*b.gridHeight;
+        for(var i=0;i<N;i++){
+            var r=b.rectOf(i,b.currentScale);
+            if(px>r.x && px<r.x+r.w && py>r.y && py<r.y+r.h)
+                return i;
+        }
+        return null;
     },
     // returns the step distance between i and j
     distanceOf: function(b,i,j){
@@ -213,6 +251,34 @@ var Board={
             checkedStack.push(current);
         }
         return false;
+    },
+    // returns the indice that match the condition!
+    findTerrain: function(b,type){
+        var res=[];
+        var N=b.tileCount();
+        for(var i=0;i<N;i++)
+            if(b.at(i).getTerrain()===type)
+                res.push(i);
+        return res;
+    },
+    findRes: function(b,type){
+        var res=[];
+        var N=b.tileCount();
+        for(var i=0;i<N;i++)
+            if(b.at(i).getRes()===type)
+                res.push(i);
+        return res;
+    },
+    findBuilding: function(b,type,subtype){
+        var res=[];
+        var N=b.tileCount();
+        for(var i=0;i<N;i++){
+            var bld=b.at(i).getBuilding;
+            if((bld.type===type || !type) && (bld.subtype===subtype || !subtype)){
+                res.push(i);
+            }
+        }
+        return res;
     },
     // to next turn
     nextTurn: function(b){

@@ -11,8 +11,14 @@ var MainGame={
     // the board var
     board: null,
     
+    // the Map Selector
+    mapSelector: null,
+
+    // The HUD
+    hud: null,
+
     // the people var
-    people: null,
+    population: null,
     
     // singleton func to initialize
     initialized: false,
@@ -25,6 +31,16 @@ var MainGame={
         
         // set game var
         MainGame.game=g;
+        
+        // Prevent default right click behavior
+        MainGame.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+
+        // set population var
+        MainGame.population=null;
+
+        // set global var
+        /*global Global*/
+        MainGame.global=Global;
 
         console.log('[MainGame] init with (w,h)=('+g.width+','+g.height+')');
     },
@@ -36,13 +52,27 @@ var MainGame={
         
         // create board
         var stage1=MainGame.game.cache.getJSON('stage1');
+
         /*global Board*/
         MainGame.board=Board.fromJSON(JSON.stringify(stage1));
+
+        /*global Population*/
+        MainGame.population=Population.createNew(stage1.population);
+
+        /*global MapSelector*/
+        MainGame.mapSelector=MapSelector.createNew();
+
+        /*global Hud*/
+        MainGame.hud = Hud.createNew();
     },
     
     nextTurn: function(){
+        
+        MainGame.global.nextTurn();
+
         MainGame.board.nextTurn();
-        // MainGame.people.nextTurn();
+
+        MainGame.population.nextTurn();
         // TODO
     },
 };
