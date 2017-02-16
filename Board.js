@@ -291,5 +291,8 @@ var Board={
                 stack.push(node.children[i]);
             }
         }
+        
+        /* global updatePopulation */
+        updatePopulation();
     },
 };

@@ -6,6 +6,7 @@ var Person={
     Low: 0,
     Mid: 1,
     Hi: 2,
+    learningSpeed: 10,
     
     // the create function
     createNew: function(data){  // data is a Table
