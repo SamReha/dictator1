@@ -30,6 +30,7 @@ var Person={
         p.nextTurn=function(){return Person.nextTurn(p)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
         // p.findHousing=function(){return Person.findHousing(p)};
+        p.toString=function(){return "PPL:"+p.type};
 
         return p;
     },
@@ -43,6 +44,7 @@ var Person={
         console.log("[Person] type="+p.type+", name="+p.name);
         // TODO: add other infomation that needs to show
     },
+
     
     // /*global MainGame*/
     // findHousing: function(p){
@@ -86,6 +88,7 @@ var Population={
         pop.hire=function(tileIndex,buildingType){return Population.hire(pop,tileIndex,buildingType)};
         pop.fire=function(tileIndex,buildingType){return Population.fire(pop,tileIndex,buildingType)};
         // filter people
+        pop.lowList=function(){return pop.people.filter(function(p){return p.type===0})};
         // returns the indice of housed/not housed people in lowList
         pop.findHoused=function(){return Population.findHousingStatus(pop,true)};
         pop.findNotHoused=function(){return Population.findHousingStatus(pop,false)};
