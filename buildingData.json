@@ -29,6 +29,20 @@
     "maxPeopleStep": -1,
     "effects": []
   },
+  "weakFarm": {
+    "type": "?",
+    "subtype": "health",
+    "cost": 10,
+    "people": 0,
+    "maxPeople": 5,
+    "effects": [
+      {
+        "type": "health",
+        "range": 2,
+        "outputTable": [0, 5, 10, 15, 20, 25]
+      }
+    ]
+  },
   "arableFarm": {
     "type": "?",
     "subtype": "health",
@@ -41,7 +55,7 @@
         "range": 2,
         "outputTable": [0, 10, 20, 30, 40, 50]
       }
-  ]
+    ]
   },
   "armyBase": {
     "type": "!",
