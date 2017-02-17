@@ -70,7 +70,7 @@
   },
   "road":{
     "type": "-",
-    "subtype": "-",
+    "subtype": "road",
     "cost": 2,
     "maxPeople": 0,
     "outputCount": 1,

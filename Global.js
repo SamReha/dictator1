@@ -1,9 +1,8 @@
 // singleton
 var Global={
-	freedom: 10,
-    unrest: 20,
-    money: 10,
-    education: 0,
+	freedom: 0,
+    unrest: 0,
+    money: 30,
 
     calcAvgEducation: function(){
 
@@ -44,5 +43,21 @@ var Global={
 
     toString: function(){
         return "Freedom:"+this.freedom+" Unrest:"+this.unrest+" $="+this.money;
-    }
+    },
+    // Finds the current Freedom value by averaging the health and education of all low people
+    updateFreedomUnrest: function(){
+        var freeAv = 0;
+        var unrestAv = 0;
+        var pop = MainGame.population.lowList();
+        
+        for(var person in pop){
+            freeAv += person.freedom;
+            unrestAv += person.unrest;
+        }
+        freeAv = freeAv/pop.length;
+        unrestAv = unrestAv/pop.length;
+
+        Global.freedom = freeAv + MainGame.board.getBuilding(null,"road").length;
+        Global.unrest = unrestAv;
+    },
 };

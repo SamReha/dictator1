@@ -21,22 +21,28 @@ var Person={
         p.health=0;         // int
         p.education=0;      // int
         p.shelter=0;        // int
+        p.freedom=0;        // int
+        p.unrest=0;         // int
         // Class vars (nullable)
         p.influence=(p.type>=Person.Mid?0:null);
         p.role=(p.type>=Person.Mid?0:null);
         p.loyalty=(p.type>=Person.Hi?0:null);
 
         // Class funcs
-        p.nextTurn=function(){return Person.nextTurn(p)};
+        p.nextTurn=function(board){return Person.nextTurn(p,board)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
         // p.findHousing=function(){return Person.findHousing(p)};
+        p.updateFreeUn=function(board){return Person.updateFreeUn(p,board)};
 
         return p;
     },
 
     // Class func: Implementation
-    nextTurn: function(p){
+    nextTurn: function(p,board){
         // TODO
+        if(p.type===Person.Low){
+            p.updateFreeUn(board);
+        }
     },
     
     report: function(p){
@@ -64,6 +70,11 @@ var Person={
     //     }
     //     return false;
     // },
+    
+    updateFreeUn: function(p,board){
+      p.freedom = Math.min(p.health,50) + Math.min(p.education,50) + board.at(p.home).influence.freedom;
+      p.unrest = Math.max(50-p.health,0) + Math.max(50-p.shelter,0) + board.at(p.home).influence.unrest;
+    },
 };
 
 // Contains all the literal information (string/number/bool vars) of all people
@@ -117,16 +128,18 @@ var Population={
 
     // Class func: Implementation
     nextTurn: function(pop){
+        /*global MainGame*/
+        var board = MainGame.board;
         for(var p in pop.lowList){
-            p.nextTurn();
+            p.nextTurn(board);
         }
         for(var p in pop.midList){
-            p.nextTurn();
+            p.nextTurn(board);
         }
         for(var p in pop.highList){
-            p.nextTurn();
+            p.nextTurn(board);
         }
-        pop.increase(Math.floor(Math.random()*3));
+        pop.increase(Math.floor(Math.random()*3)+1);
     },
     
     report: function(pop){

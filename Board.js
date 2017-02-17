@@ -11,6 +11,7 @@ var Tile={
         // Class members
         tile.terrain=tile.create(0,0,data.terrain);
         tile.res=tile.create(0,0,data.res);
+        tile.influence={freedom:0,unrest:0};
         /* global Building*/
         tile.building=Building.createNew(data.building);
         tile.addChild(tile.building);
