@@ -31,6 +31,9 @@ var Preloader={
         g.load.spritesheet('btnHire', 'images/ui/btnHire.png', 64, 20, 4);
         g.load.spritesheet('btnFire', 'images/ui/btnFire.png', 64, 20, 4);
         g.load.spritesheet('btnNextTurn', 'images/ui/btnNextTurn.png', 64, 20, 4);
+        g.load.image('grpBuildMenu', 'images/ui/grpBuildMenu.png');
+        g.load.image('grpStatsMenu', 'images/ui/grpStatsMenu.png');
+        g.load.image('topBar','images/ui/topBar.png');
         
         // load json files
         g.load.json('stage1','stage1.json');

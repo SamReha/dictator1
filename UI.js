@@ -1,39 +1,84 @@
 // Group all our UI classes here (at least, for now)
 // Holds all our in-game UI elements
 
-var Hud = {    
+
+var Hud = {
+    styleNormal: {font:"32px myKaiti", fill:"#ffffff"},
+
     createNew: function() {
-        //var timer = MainGame.game.time.events.loop(100, function(num){console.log("timer test!" + num);}, Hud, 5);
 
         /*global MainGame*/
         var hud = MainGame.game.add.group();
+
         hud.name = "HUD"; // Useful for debugging
 
-        // Test text style
-        var style = { font: "32px STKaiti", fill: "#ff0044 ", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00 " };
+        // Group1: Top Stats
+        var topGroup=MainGame.game.add.group();
+        topGroup.name="topGroup";
+        hud.addChild(topGroup);
+        //      top bar bg
+        var topBg=topGroup.create(0,0,'topBar');
+        //      global vars
+        var topText=MainGame.game.make.text(20,0,"",Hud.styleNormal);
+        topGroup.addChild(topText);
+        MainGame.game.time.events.loop(500, function(){
+            topText.text=MainGame.global.toString()+" Pop:"+MainGame.population.count();
+        }, topText);
 
         // "Next Turn" button
         var btnNextTurn=MainGame.game.make.button(750,0,"btnNextTurn",
             MainGame.nextTurn,MainGame,0,1,2,3);
+        btnNextTurn.name="btnNextTurn";
         hud.addChild(btnNextTurn);
 
-        // Global vars
-        var grpGlobal=MainGame.game.make.group();
-        hud.addChild(grpGlobal);
-        var txtGlobalInfo=MainGame.game.make.text(20,0,"",style);
-        grpGlobal.addChild(txtGlobalInfo);
-        MainGame.game.time.events.loop(500, function(){
-            this.text=MainGame.global.toString()+"\n"+MainGame.population.toString();
-        }, txtGlobalInfo);
-
-
-        // hud -: showBuildMenuBtn, buildMenu
+        // Group2: Build
+        var buildGroup=MainGame.game.make.group();
+        buildGroup.name="buildGroup";
+        hud.addChild(buildGroup);
+        //      "Build" button
+        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'buttonSprite', 
+            function(){
+                var menu=hud.findChild("buildMenu");
+                console.assert(menu);
+                menu.visible=!menu.visible;
+                // disable other buttons when "Build" menu is on show
+                if(menu.visible){
+                    var grp=hud.findChild("statsGroup");
+                }
+            }, null, 0, 1, 2, 3);
+        buildBtn.name="buildBtn";
+        buildBtn.setChecked=true;
+        buildBtn.anchor.y = 1;  // Anchor on bottom left corner
+        buildGroup.addChild(buildBtn);
+        //      "Build" menu
         var buildMenu = MainGame.game.make.group();
-        buildMenu.name = "buildMenu";
+        buildMenu.name="buildMenu";
         buildMenu.visible = false;
-        hud.addChild(buildMenu);
+        buildGroup.addChild(buildMenu);
 
-        // Build Menu UI groups
+        // Group3: Stats
+        var statsGroup=MainGame.game.make.group();
+        statsGroup.name="statsGroup";
+        hud.addChild(statsGroup);
+        //      "Stats" button
+        var statsBtn=MainGame.game.make.button(900, 650, 'buttonSprite',
+            function(){
+                var menu=hud.findChild("statsMenu");
+                console.assert(menu);
+                menu.visible=!menu.visible;
+                if(menu.visible){
+                    hud.findChild("buildBtn").visible=false;
+                }
+            }, null,0,1,2,3);
+        statsBtn.name="statsBtn";
+        statsGroup.addChild(statsBtn);
+        //      "Stats" menu
+        var statsMenu=MainGame.game.make.group();
+        statsMenu.name="statsMenu";
+        statsMenu.visible=false;
+        statsGroup.addChild(statsMenu);
+
+        // buildMenu: UI groups
         var bureauGroup = MainGame.game.make.group();
         bureauGroup.position.y = MainGame.game.world.height-400; // Magic numbers!
         buildMenu.addChild(bureauGroup);
@@ -49,50 +94,46 @@ var Hud = {
         // buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
         var buyMansionBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'mansion');}, buildMenu, 0, 1, 2, 3);
         buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n$10", style);
+        var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n$10", Hud.styleNormal);
         mansionText.anchor.y = 1;
         buyMansionBtn.addChild(mansionText);
         bureauGroup.addChild(buyMansionBtn);
 
         var buySuburbBtn = MainGame.game.make.button(200, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
         buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n$10", style);
+        var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n$10", Hud.styleNormal);
         suburbText.anchor.y = 1;
         buySuburbBtn.addChild(suburbText);
         bureauGroup.addChild(buySuburbBtn);
 
         var buyApartmentBtn = MainGame.game.make.button(400, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'apartment');}, buildMenu, 0, 1, 2, 3);
         buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n$10", style);
+        var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n$10", Hud.styleNormal);
         apartmentText.anchor.y = 1;
         buyApartmentBtn.addChild(apartmentText);
         bureauGroup.addChild(buyApartmentBtn);
 
         var buySchoolBtn = MainGame.game.make.button(600, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'school');}, buildMenu, 0, 1, 2, 3);
         buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var schoolText = MainGame.game.make.text(0, -40, "Buy School\n$15", style);
+        var schoolText = MainGame.game.make.text(0, -40, "Buy School\n$15", Hud.styleNormal);
         schoolText.anchor.y = 1;
         buySchoolBtn.addChild(schoolText);
         bureauGroup.addChild(buySchoolBtn);
 
         var buyFactoryBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
         buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var factoryText = MainGame.game.make.text(0, -40, "Buy LumberYard\n$30", style);
+        var factoryText = MainGame.game.make.text(0, -40, "Buy LumberYard\n$30", Hud.styleNormal);
         factoryText.anchor.y = 1;
         buyFactoryBtn.addChild(factoryText);
         merchantGroup.addChild(buyFactoryBtn);
 
         var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'armyBase');}, buildMenu, 0, 1, 2, 3);
         buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
-        var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n$30", style);
+        var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n$30", Hud.styleNormal);
         armyBaseText.anchor.y = 1;
         buyArmyBaseBtn.addChild(armyBaseText);
         militaryGroup.addChild(buyArmyBaseBtn);
 
-        // Toggles visibility of buildMenu
-        var showBuildMenuBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'buttonSprite', Hud.showBuildMenu, buildMenu, 0, 1, 2, 3);
-        showBuildMenuBtn.anchor.y = 1;  // Anchor on bottom left corner
-        hud.addChild(showBuildMenuBtn);
 
         // hud.buildMenu.buildingPurchaseList = [
         //     BuildingPurchaseOption.createNew(null, "Mansion",   10),
@@ -120,10 +161,28 @@ var Hud = {
         return hud;
     },
 
-    showBuildMenu: function() {
-        this.visible = !this.visible;
+    findChild: function(from,name){
+        if(from.name && from.name===name)
+            return from;
+        if(!from.children || !from.children.length)
+            return false;
+        var count=from.children.length;
+        for(var i=0;i<count;i++){
+            var ch=from.getChildAt(i);
+            var result=Hud.findChild(ch,name);
+            if(result)
+                return result;
+        }
+        return false;
     },
-    
+    showBuildMenu: function(hud) {
+        var buildMenu=hud.findChild("buildMenu");
+        console.assert(buildMenu);
+        buildMenu.visible=!buildMenu.visible;
+    },
+    showStatusMenu: function(){
+
+    },
     beginBuilding: function(menu, buildingType) {
         console.log(buildingType);
         console.log( MainGame.game.cache.getJSON('buildingData')[buildingType].cost);

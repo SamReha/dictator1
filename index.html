@@ -30,7 +30,7 @@
 </head>
 <body>
 
-<!-- Yi: force it to load the font -->
+<!-- Yi: force it to load the font. We should replace it with a custom loader/GameState -->
 <div class="fontLoader" style="font-family: 'myKaiti';">-</div>
 
 <script type="text/javascript">
@@ -40,10 +40,27 @@ var g = new Phaser.Game(1280, 720, Phaser.AUTO, '', {init:init, preload: preload
 
 
 function init(){
+    // let's add a function to Phaser's Group
+    Phaser.Group.prototype.findChild=function(name){
+        console.log("Find: "+name+ " in: "+this.name);
+        if(this.name && this.name===name)
+            return this;
+        if(!this.children || !this.children.length)
+            return false;
+        var childrenCount=this.children.length;
+        for(var i=0;i<childrenCount;i++){
+            var ch=this.getChildAt(i);
+            if(!ch.children || !ch.children.length ||!ch.findChild)
+                continue;
+            var res=ch.findChild(name);
+            if(res)
+                return res;        
+        }
+        return false;
+    };
 }
 
 function preload() {
-
     /*global Preloader*/
     Preloader.preload(g);
 
@@ -56,9 +73,8 @@ function create() {
     MainGame.start();
 
     // font test
-    var style={font: "50px 'myKaiti'", fill: "#ffffff", align: "center"};
-    var text=g.add.text(g.world.centerX, g.world.centerY, "Hello 汉", style);
-
+    // var style={font: "50px 'myKaiti'", fill: "#ffffff", align: "center"};
+    // var text=g.add.text(g.world.centerX, g.world.centerY, "Hello 汉", style);
 }
 
 function update() {
