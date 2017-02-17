@@ -39,8 +39,28 @@ var Building = {
 
         // Class funcs
         b.isEmpty=function(){return b.name===null};
+        b.addPerson=function(person){return b.addPerson(b,person)};
+        b.removePerson=function(person){return b.removePerson(b,person)};
 
         return b;
+    },
+    
+    addPerson: function(b,person){
+        if(b.people < b.maxPeople){
+            b.people += 1;
+            //TODO: add to list of builing occupants
+            return 1;
+        }
+        else{   return 0;   }
+    },
+    
+    removePerson: function(b,person){
+        if(b.people > 0){
+            b.people -= 1;
+            //TODO: add to list of building occupants
+            return 1;
+        }
+        else{   return 0;   }
     }
 };
 

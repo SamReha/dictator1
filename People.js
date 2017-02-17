@@ -31,7 +31,7 @@ var Person={
         // Class funcs
         p.nextTurn=function(board){return Person.nextTurn(p,board)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
-        // p.findHousing=function(){return Person.findHousing(p)};
+        p.findHousing=function(pop){return Person.findHousing(p,pop)};
         p.toString=function(){return "PPL:"+p.type};
         p.updateFreeUn=function(board){return Person.updateFreeUn(p,board)};
 
@@ -52,26 +52,25 @@ var Person={
     },
 
     
-    // /*global MainGame*/
-    // findHousing: function(p){
-    //     /*global MainGame*/
-    //     var housingIndice=MainGame.board.findBuilding(null,"housing");
-    //     console.log("housingIndice"+ housingIndice);
+    findHousing: function(p,pop){
+        /*global MainGame*/
+        var housingIndice=MainGame.board.findBuilding(null,"housing");
+        console.log("housingIndice"+ housingIndice);
 
-    //     for(var i=0;i<housingIndice.length;i++){
-    //         var bld=MainGame.board.at(i);
-    //         // found a good place
-    //         if(bld.people<bld.maxPeople){
-    //             p.home=i;
-    //             p.health=bld.health;
-    //             p.education=bld.education;
-    //             p.shelter=bld.shelter;
-    //             bld.people++;
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // },
+        for(var i=0;i<housingIndice.length;i++){
+            var bld=MainGame.board.at(i).getBuilding();
+            // found a good place
+            if(bld.people<bld.maxPeople){
+                pop.hire(i);
+                p.home=i;
+                p.health=bld.health;
+                p.education=bld.education;
+                p.shelter=bld.shelter;
+                return true;
+            }
+        }
+        return false;
+    },
     
     updateFreeUn: function(p,board){
       p.freedom = Math.min(p.health,50) + Math.min(p.education,50) + board.at(p.home).influence.freedom;
@@ -96,8 +95,9 @@ var Population={
         pop.count=function(){return pop.people.length};
         pop.report=function(){return Population.report(pop)};  // Class func: Declaration
         pop.increase=function(amount){return Population.increase(pop,amount)};
-        pop.hire=function(tileIndex,buildingType){return Population.hire(pop,tileIndex,buildingType)};
-        pop.fire=function(tileIndex,buildingType){return Population.fire(pop,tileIndex,buildingType)};
+        pop.hire=function(tileIndex){return Population.hire(pop,tileIndex)};
+        pop.hirePersonAt=function(person,tileIndex){return Population.hirePersonAt(pop,person,tileIndex)};
+        pop.fire=function(tileIndex){return Population.fire(pop,tileIndex)};
         // filter people
         pop.lowList=function(){return pop.people.filter(function(p){return p.type===0})};
         // returns the indice of housed/not housed people in lowList
@@ -168,6 +168,11 @@ var Population={
         for(var i = 1; i < amount; i += 1){
             var per=Person.createNew({"type":0});
             pop.people.push(per);
+            if(!per.findHousing(pop)){
+                /*global MainGame*/
+                var shanty = MainGame.buildShanty();
+                pop.hire(shanty);
+            }
         }
     },
     
@@ -177,20 +182,29 @@ var Population={
         var bld=MainGame.board.at(tileIndex).getBuilding();
         console.assert(bld);
         // set home for person
-        if(bld.name==="apartment"){
+        if(bld.subtype==="housing"){
             var hl=pop.findNotHoused();
             if(hl.length>0 && bld.people<bld.maxPeople){
                 pop.people[hl[0]].home=tileIndex;
-                return 1;
+                return bld.addPerson(hl[0]);
             }
             return 0;
         }else{
             var hl=pop.findNotEmployed();
             if(hl.length>0 && bld.people<bld.maxPeople){
                 pop.people[hl[0]].workplace=tileIndex;
-                return 1;
+                return bld.addPerson(hl[0]);
             }
             return 0;
+        }
+    },
+    
+    hirePersonAt: function(pop,person,tileIndex){
+        /*global MainGame*/
+        var bld = MainGame.board.at(tileIndex).getBuilding();
+        //set home for person
+        if(bld.subtype==="housing"){
+            
         }
     },
     
