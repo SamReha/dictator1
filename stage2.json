@@ -1,0 +1,60 @@
+{
+  "gridWidth": 7,
+  "gridHeight": 5,
+  "tileWidth": 256,
+  
+  "tiles": [
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":"forest","building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":"forest","building":null},
+
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":"forest","building":null},
+    {"terrain":"grass","res":"forest","building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":"forest","building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":{"name":"palace","level":1,"startingTurn":1,"people":0}}},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+
+    {"terrain":"grass","res":"forest","building":null},
+    {"terrain":"grass","res":"forest","building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":"forest","building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":null,"building":null},
+    {"terrain":"grass","res":"forest","building":null},
+  ],
+
+  "population": [
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":0},
+    {"type":1, "portIndex":0, "name":"Jacob Baker"}
+  ]
+}
