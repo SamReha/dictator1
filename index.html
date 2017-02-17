@@ -17,20 +17,33 @@
     
     <!--Yi: Please put our custome font files here-->
     <style type="text/css">
+        .fontLoader {
+            position: absolute;
+            left: -1000px;
+            visibility: hidden;
+        }
         body {
             margin: 0;
         }
-        @font-face {font-family: 'STKaiti'; src: url('images/STKaiTi.ttf') format('truetype');}
+       @font-face {font-family: 'myKaiti'; src: url("images/STKaiTi.ttf") format('truetype');}
     </style>
 </head>
 <body>
 
+<!-- Yi: force it to load the font -->
+<div class="fontLoader" style="font-family: 'myKaiti';">-</div>
+
 <script type="text/javascript">
 
 /*global Phaser*/
-var g = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var g = new Phaser.Game(1280, 720, Phaser.AUTO, '', {init:init, preload: preload, create: create, update: update });
+
+
+function init(){
+}
 
 function preload() {
+
     /*global Preloader*/
     Preloader.preload(g);
 
@@ -41,7 +54,11 @@ function preload() {
 function create() {
     /*global MainGame*/
     MainGame.start();
-    console.log("This is the test.");
+
+    // font test
+    var style={font: "50px 'myKaiti'", fill: "#ffffff", align: "center"};
+    var text=g.add.text(g.world.centerX, g.world.centerY, "Hello 汉", style);
+
 }
 
 function update() {

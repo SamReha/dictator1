@@ -1,5 +1,6 @@
 // Group all our UI classes here (at least, for now)
 // Holds all our in-game UI elements
+
 var Hud = {    
     createNew: function() {
         //var timer = MainGame.game.time.events.loop(100, function(num){console.log("timer test!" + num);}, Hud, 5);
