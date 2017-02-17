@@ -67,12 +67,11 @@ var MainGame={
     },
     
     nextTurn: function(){
-        
-        MainGame.global.nextTurn();
-
         MainGame.board.nextTurn();
 
         MainGame.population.nextTurn();
+        
+        MainGame.global.nextTurn();
         // TODO
     },
 };
