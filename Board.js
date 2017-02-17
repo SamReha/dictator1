@@ -84,6 +84,8 @@ var Board={
         board.findRes=function(type){return Board.findRes(board,type)};
         // returns all the *indice* of the building type(nullable)/subtype(nullable)
         board.findBuilding=function(type,subtype){return Board.findBuilding(board,type,subtype)};
+        //build new shanty town next to a random road tile and return index
+        board.buildShanty=function(){board};
         // go to next turn
         board.nextTurn=function(){return Board.nextTurn(board)};
         // // returns an array of tiles that have one type of building on them
@@ -281,6 +283,30 @@ var Board={
         }
         return res;
     },
+    buildShanty: function(board){
+      var roads = board.findBuilding(null,"road");
+      var choices = [];
+      
+      for(var i = 0; i < roads.length; i += 1){
+          var check = board.allAdjacent(board,i,1);
+          for(var j = 0; j < check.length; j += 1){
+              if(!board.at(j).hasBuilding()){
+                  for(var k = 0; k < choices.length; k += 1){
+                      if(j === choices[k]){
+                          j = null;
+                          break;
+                      }
+                  }
+                  
+                  if(j!==null){   choices.push(j);  }
+              }
+          }
+      }
+      
+      var index = choices[Math.floor(Math.random()*choices.length)];
+      board.at(index).setBuilding(Building.createNew({name:"shanty",level:1,startingTurn:0,people:0}));
+      return index;
+    },
     // to next turn
     nextTurn: function(b){
         // DFS call nextTurn
@@ -292,5 +318,8 @@ var Board={
                 stack.push(node.children[i]);
             }
         }
+        
+        /* global updatePopulation */
+        updatePopulation();
     },
 };

@@ -1,90 +1,146 @@
 {
-  "shanty":{
+  "shantyTown": {
     "type": "?",
     "subtype": "housing",
     "cost": 0,
+    "health": 0,
+    "education": 0,
+    "shelter": 0,
     "maxShelter": 10,
     "people": 0,
     "maxPeople": 5,
-    "maxPeopleStep": -1
+    "maxPeopleStep": -1,
+    "effects": []
   },
-  "apartment":{
+  "apartment": {
     "type": "?",
     "subtype": "housing",
     "cost": 10,
+    "health": 0,
+    "education": 0,
+    "shelter": 0,
     "maxShelter": 60,
     "people": 0,
     "maxPeople": 10,
-    "maxPeopleStep": -1
+    "maxPeopleStep": -1,
+    "effects": []
   },
-  "mansion":{
+  "mansion": {
     "type": "?",
     "subtype": "housing",
     "cost": 10,
+    "health": 0,
+    "education": 0,
+    "shelter": 0,
     "maxShelter": 100,
     "people": 0,
     "maxPeople": 1,
-    "maxPeopleStep": -1
+    "maxPeopleStep": -1,
+    "effects": []
   },
-  "arableFarm":{
+  "palace":{
+    "type": "?",
+    "subtype": "housing",
+    "cost": 0,
+    "health": 100,
+    "education": 100,
+    "shelter": 100,
+    "maxShelter": 100,
+    "people": 1,
+    "maxPeople": 1,
+  },
+
+  "weakFarm": {
     "type": "?",
     "subtype": "health",
     "cost": 10,
     "people": 0,
-    "maxPeople": 2,
-    "effect": {
-      "type":"health",
-      "value":10,
-      "radius":2
-    }
+    "maxPeople": 5,
+    "effects": [
+      {
+        "type": "health",
+        "range": 2,
+        "outputTable": [0, 5, 10, 15, 20, 25]
+      }
+    ]
   },
-  "armyBase":{
+  "arableFarm": {
+    "type": "?",
+    "subtype": "health",
+    "cost": 10,
+    "people": 0,
+    "maxPeople": 5,
+    "effects": [
+      {
+        "type": "health",
+        "range": 2,
+        "outputTable": [0, 10, 20, 30, 40, 50]
+      }
+    ]
+  },
+  "policeStation":{
+    "type": "!",
+    "subtype": "millitary",
+    "cost": 15,
+    "people": 0,
+    "maxPeople": 3,
+    "effect": [
+      {
+        "type": "antiFreedom",
+        "value": 10,
+        "radius": 2
+      }
+    ]
+  },
+  "armyBase": {
     "type": "!",
     "subtype": "millitary",
     "cost": 30,
     "people": 0,
     "maxPeople": 5,
-    "outputCount": 2,
-    "outputTables": [[-2,-3,-3,-4,-4,-4], [2,2,2,3,3,4]],
-    "outputType": ["freedom", "unrest"]
+    "effects": []
   },
-  "factory":{
+  "lumberYard": {
     "type": "$",
     "subtype": "production",
     "cost": 30,
     "people": 0,
-    "maxPeople": 5,
-    "outputCount": 1,
-    "outputTables": [[0,1,2,3,4,4,5,5,5,6,6]],
-    "outputTypes": ["money"]
+    "maxPeople": 7,
+    "effects": [
+      {
+        "type": "money",
+        "outputTable": [0, 3, 6, 9, 12, 15, 18, 21]
+      }
+    ]
   },
-  "lumberYard":{
-    "type": "$",
-    "subtype": "production",
-    "cost": 30,
-    "people": 0,
-    "maxPeople": 5,
-    "outputCount": 1,
-    "outputTables": [[0,1,2,3,3,3]],
-    "outputTypes": ["money"]
-  },
-  "road":{
+  "road": {
     "type": "-",
     "subtype": "road",
     "cost": 2,
     "maxPeople": 0,
-    "outputCount": 1,
-    "outputTables": [[0]]
+    "effects": [
+      {
+        "type": "freedom",
+        "outputTable": [4]
+      }
+    ]
   },
-  "school":{
+  "school": {
     "type": "?",
     "subtype": "education",
     "cost": 15,
     "people": 0,
-    "maxPeople": 5,
-    "outputCount": 2,
-    "outputTables": [[0,1,2,2,3,3],[0,1,1,2,2,3]],
-    "outputTypes": ["freedom", "education"]
+    "maxPeople": 3,
+    "effects": [
+      {
+        "type": "freedom",
+        "outputTable": [0, 3, 6, 9]
+      },
+      {
+        "type": "education",
+        "outputTable": [0, 30, 60, 90]
+      }
+    ]
   },
 
   "_Notice_": "1)keep the #count===maxPeople+1 when adjusting the output tables"

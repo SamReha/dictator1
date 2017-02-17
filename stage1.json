@@ -10,9 +10,9 @@
     
     {"terrain":"mountain","res":null,"building":null},
     {"terrain":"water","res":null,"building":null},
-    {"terrain":"grass","res":null,"building":null,"building":{"name":"school","level":1,"startingTurn":0,"people":0}},
+    {"terrain":"grass","res":null,"building":{"name":"school","level":1,"startingTurn":0,"people":0}},
     
-    {"terrain":"grass","res":"oil","building":null,"building":{"name":"shanty","level":1,"startingTurn":0,"people":0}},
+    {"terrain":"grass","res":"oil","building":{"name":"shanty","level":1,"startingTurn":0,"people":0}},
     {"terrain":"grass","res":null,"building":null},
     {"terrain":"desert","res":null,"building":null}
   ],
