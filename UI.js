@@ -267,8 +267,8 @@ var MapSelector={
                 }
                 // var actual=1;
                 console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                var actual=MainGame.population.hire(ms.curIndex);
-                bld.people=bld.people+actual;
+                MainGame.population.hire(ms.curIndex);
+                //bld.people=bld.people+actual; [this is now done in building.addPerson()]
                 // update display
                 bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;
             }, ms, 0, 1, 2, 3);
@@ -285,8 +285,8 @@ var MapSelector={
                 }
                 // var actual=1;
                 console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                var actual=MainGame.population.fire(ms.curIndex);
-                bld.people=bld.people-actual;
+                MainGame.population.fire(ms.curIndex);
+                //bld.people=bld.people-actual; [this is now done in building.addPerson()]
                 // update display
                 bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;                
             }, ms, 0,1,2,3);

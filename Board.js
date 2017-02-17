@@ -84,7 +84,7 @@ var Board={
         board.findRes=function(type){return Board.findRes(board,type)};
         // returns all the *indice* of the building type(nullable)/subtype(nullable)
         board.findBuilding=function(type,subtype){return Board.findBuilding(board,type,subtype)};
-        //build new shanty town next to a random road tile
+        //build new shanty town next to a random road tile and return index
         board.buildShanty=function(){board};
         // go to next turn
         board.nextTurn=function(){return Board.nextTurn(board)};
@@ -318,5 +318,8 @@ var Board={
                 stack.push(node.children[i]);
             }
         }
+        
+        /* global updatePopulation */
+        updatePopulation();
     },
 };

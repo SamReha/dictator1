@@ -39,28 +39,26 @@ var Building = {
 
         // Class funcs
         b.isEmpty=function(){return b.name===null};
-        b.addPerson=function(person){return b.addPerson(b,person)};
-        b.removePerson=function(person){return b.removePerson(b,person)};
+        b.addPerson=function(){return b.addPerson(b)};
+        b.removePerson=function(){return b.removePerson(b)};
 
         return b;
     },
     
-    addPerson: function(b,person){
+    addPerson: function(b){
         if(b.people < b.maxPeople){
             b.people += 1;
-            //TODO: add to list of builing occupants
-            return 1;
+            return true;
         }
-        else{   return 0;   }
+        else{   return false;   }
     },
     
-    removePerson: function(b,person){
+    removePerson: function(b){
         if(b.people > 0){
             b.people -= 1;
-            //TODO: add to list of building occupants
-            return 1;
+            return true;
         }
-        else{   return 0;   }
+        else{   return false;   }
     }
 };
 
