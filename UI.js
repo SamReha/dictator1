@@ -57,7 +57,7 @@ var Hud = {
         buildGroup.addChild(buildMenu);
 
         // Group3: Stats
-        var statsGroup=MainGame.game.make.group();
+       /* var statsGroup=MainGame.game.make.group();
         statsGroup.name="statsGroup";
         hud.addChild(statsGroup);
         //      "Stats" button
@@ -76,7 +76,7 @@ var Hud = {
         var statsMenu=MainGame.game.make.group();
         statsMenu.name="statsMenu";
         statsMenu.visible=false;
-        statsGroup.addChild(statsMenu);
+        statsGroup.addChild(statsMenu); */
 
         // buildMenu: UI groups
         var bureauGroup = MainGame.game.make.group();

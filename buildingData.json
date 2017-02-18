@@ -1,5 +1,5 @@
 {
-  "shantyTown": {
+  "shanty": {
     "type": "?",
     "subtype": "housing",
     "cost": 0,
@@ -46,8 +46,8 @@
     "education": 100,
     "shelter": 100,
     "maxShelter": 100,
-    "people": 1,
-    "maxPeople": 1,
+    "people": 0,
+    "maxPeople": 0
   },
 
   "weakFarm": {

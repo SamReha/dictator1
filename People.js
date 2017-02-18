@@ -72,8 +72,10 @@ var Person={
             }
         }
 
-        for(var i=0;i<housingIndice.length;i++){
-            if(pop.hirePersonAt(i)){    return true;    }
+        for (var i=0;i<housingIndice.length;i++) {
+            if (pop.hirePersonAt(p, housingIndices[i])) {
+                return true;
+            }
         }
         return false;
     },
@@ -112,7 +114,7 @@ var Population={
         pop.hire=function(tileIndex){return Population.hire(pop,tileIndex)};
         pop.hirePersonAt=function(person,tileIndex){return Population.hirePersonAt(pop,person,tileIndex)};
         pop.fire=function(tileIndex){return Population.fire(pop,tileIndex)};
-        pop.firePersonAt=function(person,tileIndex){return Population.firePersonAt(}
+        pop.firePersonAt=function(person,tileIndex){return Population.firePersonAt()};
         // filter people
         pop.lowList=function(){return pop.people.filter(function(p){return p.type===0})};
         // returns the indice of housed/not housed people in lowList
@@ -180,13 +182,13 @@ var Population={
     },
     
     increase: function(pop,amount){
-        for(var i = 1; i < amount; i += 1){
+        for(var i = 0; i < amount; i++) {
             var per=Person.createNew({"type":0});
             pop.people.push(per);
             if(!per.findHousing(pop)){
                 /*global MainGame*/
                 var shanty = MainGame.board.buildShanty();
-                pop.hirePersonAt(per,shanty);
+                pop.hirePersonAt(per, shanty);
             }
         }
     },
@@ -209,7 +211,7 @@ var Population={
         }else{
             var hl=pop.findNotEmployed();
             if(hl.length>0){
-                if(bld.addPerson(){
+                if(bld.addPerson()) {
                     pop.people[hl[0]].workplace=tileIndex;
                     return true;
                 }
@@ -218,7 +220,8 @@ var Population={
         }
     },
     
-    hirePersonAt: function(pop,person,tileIndex){
+    hirePersonAt: function(pop, person, tileIndex){
+        console.log("hirePersonAt: " + tileIndex);
         /*global MainGame*/
         var bld = MainGame.board.at(tileIndex).getBuilding();
         //set location for person

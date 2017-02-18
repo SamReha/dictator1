@@ -39,8 +39,8 @@ var Building = {
 
         // Class funcs
         b.isEmpty=function(){return b.name===null};
-        b.addPerson=function(){return b.addPerson(b)};
-        b.removePerson=function(){return b.removePerson(b)};
+        b.addPerson=function(){return Building.addPerson(b)};
+        b.removePerson=function(){return Building.removePerson(b)};
 
         return b;
     },

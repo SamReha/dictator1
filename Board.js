@@ -85,7 +85,7 @@ var Board={
         // returns all the *indice* of the building type(nullable)/subtype(nullable)
         board.findBuilding=function(type,subtype){return Board.findBuilding(board,type,subtype)};
         //build new shanty town next to a random road tile and return index
-        board.buildShanty=function(){board};
+        board.buildShanty=function(){Board.buildShanty(board)};
         // go to next turn
         board.nextTurn=function(){return Board.nextTurn(board)};
         // // returns an array of tiles that have one type of building on them
@@ -276,7 +276,7 @@ var Board={
         var res=[];
         var N=b.tileCount();
         for(var i=0;i<N;i++){
-            var bld=b.at(i).getBuilding;
+            var bld=b.at(i).getBuilding();
             if((bld.type===type || !type) && (bld.subtype===subtype || !subtype)){
                 res.push(i);
             }
@@ -286,9 +286,11 @@ var Board={
     buildShanty: function(board){
       var roads = board.findBuilding(null,"road");
       var choices = [];
+
+      console.log("buildShanty: Roads.length: " + roads.length);
       
       for(var i = 0; i < roads.length; i += 1){
-          var check = board.allAdjacent(board,i,1);
+          var check = board.allAdjacent(board,roads[i],1);
           for(var j = 0; j < check.length; j += 1){
               if(!board.at(j).hasBuilding()){
                   for(var k = 0; k < choices.length; k += 1){
@@ -303,7 +305,14 @@ var Board={
           }
       }
       
+      // In case no index could be found
+      if (choices.length === 0) {
+        return null;
+      }
+
       var index = choices[Math.floor(Math.random()*choices.length)];
+      console.log("buildShanty: random index: " + index);
+      /* global Building */
       board.at(index).setBuilding(Building.createNew({name:"shanty",level:1,startingTurn:0,people:0}));
       return index;
     },
