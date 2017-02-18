@@ -85,7 +85,7 @@ var Board={
         // returns all the *indice* of the building type(nullable)/subtype(nullable)
         board.findBuilding=function(type,subtype){return Board.findBuilding(board,type,subtype)};
         //build new shanty town next to a random road tile and return index
-        board.buildShanty=function(){Board.buildShanty(board)};
+        board.buildShanty=function(){return Board.buildShanty(board)};
         // go to next turn
         board.nextTurn=function(){return Board.nextTurn(board)};
         // // returns an array of tiles that have one type of building on them
@@ -290,7 +290,7 @@ var Board={
       console.log("buildShanty: Roads.length: " + roads.length);
       
       for(var i = 0; i < roads.length; i += 1){
-          var check = board.allAdjacent(board,roads[i],1);
+          var check = board.allAdjacent(roads[i],1);
           for(var j = 0; j < check.length; j += 1){
               if(!board.at(j).hasBuilding()){
                   for(var k = 0; k < choices.length; k += 1){
@@ -300,7 +300,7 @@ var Board={
                       }
                   }
                   
-                  if(j!==null){   choices.push(j);  }
+                  if(j!==null){   choices.push(check[j]);  }
               }
           }
       }

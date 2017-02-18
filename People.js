@@ -57,22 +57,23 @@ var Person={
     findHousing: function(p,pop){
         /*global MainGame*/
         var board = MainGame.board;
-        var housingIndice=board.findBuilding(null,"housing");
-        console.log("housingIndice"+ housingIndice);
+        var housingIndices=board.findBuilding(null,"housing");
+        console.log("housingIndices"+ housingIndices);
         
-        for(var i=0;i<housingIndice.length;++i){
-            var bld1 = board.at(housingIndice[i]);
-            for(var j=i+1;j<housingIndice.length;++j){
-                var bld2 = board.at(housingIndice[j]);
+        for(var i=0;i<housingIndices.length;++i){
+            var bld1 = board.at(housingIndices[i]);
+            for(var j=i+1;j<housingIndices.length;++j){
+                var bld2 = board.at(housingIndices[j]);
                 if(bld2.shelter>bld1.shelter){
-                    var tempIndex = housingIndice[i];
-                    housingIndice[i] = housingIndice[j];
-                    housingIndice[j] = tempIndex;
+                    var tempIndex = housingIndices[i];
+                    housingIndices[i] = housingIndices[j];
+                    housingIndices[j] = tempIndex;
                 }
             }
         }
-
-        for (var i=0;i<housingIndice.length;i++) {
+        console.log("housingIndices"+ housingIndices);
+        for (var i=0;i<housingIndices.length;i++) {
+            console.log(i);
             if (pop.hirePersonAt(p, housingIndices[i])) {
                 return true;
             }
@@ -89,8 +90,14 @@ var Person={
     },
     
     updateFreeUn: function(p,board){
+        if(p.home!==null){
       p.freedom = Math.min(p.health,50) + Math.min(p.education,50) + board.at(p.home).influence.freedom;
       p.unrest = Math.max(50-p.health,0) + Math.max(50-p.shelter,0) + board.at(p.home).influence.unrest;
+        }
+        else{
+            p.freedom = 0;
+            p.unrest = 0;
+        }
     },
 };
 
@@ -188,6 +195,7 @@ var Population={
             if(!per.findHousing(pop)){
                 /*global MainGame*/
                 var shanty = MainGame.board.buildShanty();
+                console.log("shanty town at: "+shanty);
                 pop.hirePersonAt(per, shanty);
             }
         }
