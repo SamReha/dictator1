@@ -284,37 +284,50 @@ var Board={
         return res;
     },
     buildShanty: function(board){
-      var roads = board.findBuilding(null,"road");
-      var choices = [];
+        var roads = board.findBuilding(null,"road");
+        var choices = [];
+        var distance = 0;
+        
+        //checking all tiles up to three steps removed from a road
+        do{
+            ++distance;
+            for(var i = 0; i < roads.length; ++i){
+                var check = board.allAdjacent(roads[i],distance);
+                if(distance>1){
+                    var remove = board.allAdjacent(roads[i],distance-1);
+                    for(var removeIndex in remove){
+                        var ind = check.indexOf(removeIndex)
+                        if(ind != -1){  check.splice(ind,1);    }
+                    }
+                }
+                for(var j = 0; j < check.length; ++j){
+                    if(!board.at(check[j]).hasBuilding()){
+                        for(var k = 0; k < choices.length; ++k){
+                            if(check[j] === choices[k]){
+                                check[j] = null;
+                                break;
+                            }
+                        }
 
-      console.log("buildShanty: Roads.length: " + roads.length);
-      
-      for(var i = 0; i < roads.length; i += 1){
-          var check = board.allAdjacent(roads[i],1);
-          for(var j = 0; j < check.length; j += 1){
-              if(!board.at(j).hasBuilding()){
-                  for(var k = 0; k < choices.length; k += 1){
-                      if(j === choices[k]){
-                          j = null;
-                          break;
-                      }
-                  }
-                  
-                  if(j!==null){   choices.push(check[j]);  }
-              }
-          }
-      }
-      
-      // In case no index could be found
-      if (choices.length === 0) {
-        return null;
-      }
+                        if(check[j]!==null){   choices.push(check[j]);  }
+                    }
+                }
+            }
+        }while(choices.length === 0 && distance <= 3);
 
-      var index = choices[Math.floor(Math.random()*choices.length)];
-      console.log("buildShanty: random index: " + index);
-      /* global Building */
-      board.at(index).setBuilding(Building.createNew({name:"shanty",level:1,startingTurn:0,people:0}));
-      return index;
+        // In case no index could be found at least 3 steps from a road
+        if(choices.length === 0){
+            for(var tileIndex = 0; tileIndex < board.tileCount(); ++tileIndex){
+                if(!board.at(tileIndex).hasBuilding()){
+                    choices.push(tileIndex);
+                }
+            }
+        }
+
+        var index = choices[Math.floor(Math.random()*choices.length)];
+        /* global Building */
+        board.at(index).setBuilding(Building.createNew({name:"shanty",level:1,startingTurn:0,people:0}));
+        return index;
     },
     // to next turn
     nextTurn: function(b){
