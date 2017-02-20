@@ -17,18 +17,28 @@ var Hud = {
         topGroup.name="topGroup";
         hud.addChild(topGroup);
         //      top bar bg
-        var topBg=topGroup.create(0,0,'topBar');
+        var topBg = topGroup.create(0,0,'topBar');
         //      global vars
-        var topText=MainGame.game.make.text(20,0,"",Hud.styleNormal);
+        var topText = MainGame.game.make.text(140, 0, '', Hud.styleNormal);
         topGroup.addChild(topText);
-        MainGame.game.time.events.loop(500, function(){
-            topText.text=MainGame.global.toString()+" Pop:"+MainGame.population.count();
+
+        // Have the top-bar text update itself every half second
+        topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
+        MainGame.game.time.events.loop(500, function() {
+            topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
         }, topText);
 
+        // Exit / Pause button
+        var btnExit = MainGame.game.make.button(0, 0, 'small_generic_button', null, MainGame, 0, 1, 2, 2);
+        btnExit.name = 'Exit Button';
+        hud.addChild(btnExit);
+
         // "Next Turn" button
-        var btnNextTurn=MainGame.game.make.button(750,0,"btnNextTurn",
-            MainGame.nextTurn,MainGame,0,1,2,3);
-        btnNextTurn.name="btnNextTurn";
+        var btnNextTurn=MainGame.game.make.button(1280, 720, 'med_generic_button',
+            MainGame.nextTurn, MainGame, 0, 1, 2, 2);
+        btnNextTurn.name = 'btnNextTurn';
+        btnNextTurn.anchor.x = 1;
+        btnNextTurn.anchor.y = 1;
         hud.addChild(btnNextTurn);
 
         // Group2: Build
