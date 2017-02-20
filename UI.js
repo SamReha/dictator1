@@ -298,13 +298,13 @@ var BuildingPlacer = {
 var MapSelector={
     createNew: function(){
         /*global MainGame*/
-        var ms=MainGame.game.add.group();        
+        var ms = MainGame.game.add.group();        
 
         // Class vars
-        ms.name="MapSelector";
-        ms.curIndex=-1;
-        ms.mouseHoverTimer=MainGame.game.time.events.loop(50, MapSelector.updateBuildingInfo, ms);
-        ms.buildingInfo=MapSelector.makeBuildingInfo(ms);
+        ms.name = "MapSelector";
+        ms.curIndex = -1;
+        ms.mouseHoverTimer = MainGame.game.time.events.loop(50, MapSelector.updateBuildingInfo, ms);
+        ms.buildingInfo = MapSelector.makeBuildingInfo(ms);
         ms.addChild(ms.buildingInfo);
 
         // Class funcs
@@ -313,57 +313,64 @@ var MapSelector={
         return ms;
     },
     makeBuildingInfo: function(ms){
-        var bi=MainGame.game.make.group();
+        var bInfo = MainGame.game.make.group();
         // Test text style
         var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00 " };
-        // bg (the grad)
-        bi.bg=MainGame.game.make.sprite(0,0,"grpBldInfo");
-        bi.addChild(bi.bg);
-        // label (bld name/lv)
-        bi.label=MainGame.game.make.text(10,0,"",style,bi);
-        bi.addChild(bi.label);
-        // label2 (people)
-        bi.label2=MainGame.game.make.text(10,30,"",style,bi);
-        bi.addChild(bi.label2);
-        // Hire button
-        bi.button=MainGame.game.make.button(30, 100, "btnHire", 
-            function(){
-                console.log("[MapSelector] Hire people for index: ",ms.curIndex);
-                // TODO
-                /*global MainGame*/
-                var bld=MainGame.board.at(ms.curIndex).building;
-                if(bld.people>=bld.maxPeople){
-                    return;
-                }
-                // var actual=1;
-                console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                MainGame.population.hire(ms.curIndex);
-                //bld.people=bld.people+actual; [this is now done in building.addPerson()]
-                // update display
-                bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;
-            }, ms, 0, 1, 2, 3);
-        bi.addChild(bi.button);
-        // Fire button
-        bi.button2=MainGame.game.make.button(100,100,"btnFire",
-            function(){
-                console.log("[MapSelector] Fire people for index: ",ms.curIndex);
-                // TODO
-                /*global MainGame*/
-                var bld=MainGame.board.at(ms.curIndex).building;
-                if(bld.people<=0){
-                    return;
-                }
-                // var actual=1;
-                console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                MainGame.population.fire(ms.curIndex);
-                //bld.people=bld.people-actual; [this is now done in building.addPerson()]
-                // update display
-                bi.label2.text="People: "+bld.people+"/"+bld.maxPeople;                
-            }, ms, 0,1,2,3);
-        bi.addChild(bi.button2);
 
-        bi.visible=false;
-        return bi;
+        // bg (the grad)
+        bInfo.bg = MainGame.game.make.sprite(0, 0, "grpBldInfo");
+        //bInfo.bg.anchor.x = 0.5;
+        //bInfo.bg.anchor.y = 0.5;
+        bInfo.addChild(bInfo.bg);
+
+        // label (bld name/lv)
+        bInfo.label = MainGame.game.make.text(10, 0, "", style, bInfo);
+        bInfo.addChild(bInfo.label);
+
+        // label2 (people)
+        bInfo.label2 = MainGame.game.make.text(10, 30, "", style, bInfo);
+        bInfo.addChild(bInfo.label2);
+
+        // // Hire button
+        // bInfo.button=MainGame.game.make.button(30, 100, "btnHire", 
+        //     function(){
+        //         console.log("[MapSelector] Hire people for index: ",ms.curIndex);
+        //         // TODO
+        //         /*global MainGame*/
+        //         var bld=MainGame.board.at(ms.curIndex).building;
+        //         if(bld.people>=bld.maxPeople){
+        //             return;
+        //         }
+        //         // var actual=1;
+        //         console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
+        //         MainGame.population.hire(ms.curIndex);
+        //         //bld.people=bld.people+actual; [this is now done in building.addPerson()]
+        //         // update display
+        //         bInfo.label2.text="People: "+bld.people+"/"+bld.maxPeople;
+        //     }, ms, 0, 1, 2, 3);
+        // bInfo.addChild(bInfo.button);
+
+        // // Fire button
+        // bInfo.button2=MainGame.game.make.button(100,100,"btnFire",
+        //     function(){
+        //         console.log("[MapSelector] Fire people for index: ",ms.curIndex);
+        //         // TODO
+        //         /*global MainGame*/
+        //         var bld=MainGame.board.at(ms.curIndex).building;
+        //         if(bld.people<=0){
+        //             return;
+        //         }
+        //         // var actual=1;
+        //         console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
+        //         MainGame.population.fire(ms.curIndex);
+        //         //bld.people=bld.people-actual; [this is now done in building.addPerson()]
+        //         // update display
+        //         bInfo.label2.text="People: "+bld.people+"/"+bld.maxPeople;                
+        //     }, ms, 0,1,2,3);
+        // bInfo.addChild(bInfo.button2);
+
+        bInfo.visible = false;
+        return bInfo;
     },
     updateBuildingInfo: function(){
         this.buildingInfo.visible=true;
