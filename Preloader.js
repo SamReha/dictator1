@@ -38,6 +38,7 @@ var Preloader={
         // load json files
         g.load.json('stage1','stage1.json');
         g.load.json('stage2','stage2.json');
+        g.load.json('stageMain','stageMain.json');
         g.load.json('buildingData','buildingData.json');
     }
 };

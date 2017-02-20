@@ -11,7 +11,6 @@ var Tile={
         // Class members
         tile.terrain=tile.create(0,0,data.terrain);
         tile.res=tile.create(0,0,data.res);
-        tile.influence={freedom:0,unrest:0};
         /* global Building*/
         tile.building=Building.createNew(data.building);
         tile.addChild(tile.building);
@@ -83,7 +82,7 @@ var Board={
         // returns all the *indice* of the res type
         board.findRes=function(type){return Board.findRes(board,type)};
         // returns all the *indice* of the building type(nullable)/subtype(nullable)
-        board.findBuilding=function(type,subtype){return Board.findBuilding(board,type,subtype)};
+        board.findBuilding=function(type,subtype,effect){return Board.findBuilding(board,type,subtype,effect)};
         //build new shanty town next to a random road tile and return index
         board.buildShanty=function(){return Board.buildShanty(board)};
         // go to next turn
@@ -272,19 +271,22 @@ var Board={
                 res.push(i);
         return res;
     },
-    findBuilding: function(b,type,subtype){
+    findBuilding: function(b,type,subtype,effect){
         var res=[];
         var N=b.tileCount();
         for(var i=0;i<N;i++){
             var bld=b.at(i).getBuilding();
-            if((bld.type===type || !type) && (bld.subtype===subtype || !subtype)){
-                res.push(i);
+            if(bld.name !== null){
+                if((bld.type===type || !type) && (bld.subtype===subtype || !subtype)
+                    && (bld.effects.type===effect || !effect)){
+                    res.push(i);
+                }
             }
         }
         return res;
     },
     buildShanty: function(board){
-        var roads = board.findBuilding(null,"road");
+        var roads = board.findBuilding(null,"road",null);
         var choices = [];
         var distance = 0;
         
@@ -332,16 +334,13 @@ var Board={
     // to next turn
     nextTurn: function(b){
         // DFS call nextTurn
-        var stack=[b];
-        while(stack.length>0){
-            var node=stack.pop();
-            if(node.nextTurn && node!==b) node.nextTurn();
-            for(var i=0;i<node.children.length;i++){
-                stack.push(node.children[i]);
-            }
-        }
-        
-        /* global updatePopulation */
-        updatePopulation();
+        // var stack=[b];
+        // while(stack.length>0){
+        //     var node=stack.pop();
+        //     if(node.nextTurn && node!==b) node.nextTurn();
+        //     for(var i=0;i<node.children.length;i++){
+        //         stack.push(node.children[i]);
+        //     }
+        // }
     },
 };

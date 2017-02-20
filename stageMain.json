@@ -181,7 +181,7 @@
         {"terrain": "grass","res": null,"building": null},
 
         {"terrain": "water","res": null,"building": null},
-        {"terrain": "grass","res": null,"building": null}
+        {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": "forest","building": null},
         {"terrain": "grass","res": null,"building": null},
@@ -193,20 +193,22 @@
         {"terrain": "coast","res": null,"building": null},
         {"terrain": "grass","res": null,"building": null},
         {"terrain": "water","res": null,"building": null},
-        {"terrain": "grass","res": null,"building": null}
+        {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": null,"building": null}
     ],
 
     "population": [
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0}
+        {"type": 0,"workplace": null,"home": 80},
+        {"type": 0,"workplace": null,"home": 94},
+        {"type": 0,"workplace": 95,"home": 142},
+        {"type": 0,"workplace": 95,"home": 142},
+        {"type": 0,"workplace": 95,"home": 142},
+        {"type": 0,"workplace": 95,"home": 142},
+        {"type": 0,"workplace": 95,"home": 142},
+        {"type": 0,"workplace": 109,"home": 142},
+        {"type": 0,"workplace": 109,"home": 142},
+        {"type": 0,"workplace": 112,"home": 142},
+        {"type": 0,"workplace": 112,"home": 142},
+        {"type": 0,"workplace": 141,"home": 142}
     ]
 }

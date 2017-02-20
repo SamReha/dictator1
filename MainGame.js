@@ -53,6 +53,7 @@ var MainGame={
         // create board
         var stage1=MainGame.game.cache.getJSON('stage1');
         var stage2 = MainGame.game.cache.getJSON('stage2');
+        var stageMain = MainGame.game.cache.getJSON('stageMain');
 
         /*global Board*/
         MainGame.board=Board.fromJSON(JSON.stringify(stage2));
@@ -65,13 +66,18 @@ var MainGame={
 
         /*global Hud*/
         MainGame.hud = Hud.createNew();
+
+        /*global updatePopulation*/
+        updatePopulation();
+        //MainGame.global.updateFreedomUnrest();
     },
     
     nextTurn: function(){
-        MainGame.board.nextTurn();
+        // MainGame.board.nextTurn();
 
-        MainGame.population.nextTurn();
+        // MainGame.population.nextTurn();
         
+        // Everything is currently being handled in Global.nextTurn()
         MainGame.global.nextTurn();
         // TODO
     },
