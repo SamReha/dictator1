@@ -305,9 +305,9 @@ var Board={
             for(var roadIndex=0;roadIndex<roads.length;++roadIndex){
                 var check = board.allAdjacent(roads[roadIndex],distance);
                 if(distance>1){
-                    var remove = board.allAdjacent(roads[i],distance-1);
+                    var remove = board.allAdjacent(roads[roadIndex],distance-1);
                     for(var removeIndex=0;removeIndex<remove.length;++removeIndex){
-                        var ind = check.indexOf(remove[removeIndex])
+                        var ind = check.indexOf(remove[removeIndex]);
                         if(ind != -1){  check.splice(ind,1);    }
                     }
                 }
