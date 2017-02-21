@@ -34,7 +34,7 @@ var Hud = {
         hud.addChild(btnExit);
 
         // "Next Turn" button
-        var btnNextTurn=MainGame.game.make.button(1280, 720, 'med_generic_button',
+        var btnNextTurn=MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
             MainGame.nextTurn, MainGame, 0, 1, 2, 2);
         btnNextTurn.name = 'btnNextTurn';
         btnNextTurn.anchor.x = 1;
@@ -150,29 +150,6 @@ var Hud = {
         roadText.anchor.y = 1;
         buyRoad.addChild(roadText);
         militaryGroup.addChild(buyRoad);
-
-        // hud.buildMenu.buildingPurchaseList = [
-        //     BuildingPurchaseOption.createNew(null, "Mansion",   10),
-        //     BuildingPurchaseOption.createNew(null, "Suburbs",   10),
-        //     BuildingPurchaseOption.createNew(null, "Apartment", 10),
-        //     BuildingPurchaseOption.createNew(null, "School",    15),
-        //     BuildingPurchaseOption.createNew(null, "Factory",   30),
-        //     BuildingPurchaseOption.createNew(null, "Army Base", 30)
-        // ];
-        // // create a text
-        // // var style = { font: "32px STKaiti", fill: "#ff0044 ", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00 " };
-        // // var text = MainGame.game.make.text(200, 200, "Buy Apartment", style);
-        // // text.anchor.set(0.5);
-
-        // var button = MainGame.game.make.button(0, 0, 'buttonSprite', null, null, 0, 1, 2, 3);
-        // button.name="TopLeft";
-        // hud.addChild(button);
-        // button.testFunc=function(){console.log("Calling topleft's test func.");console.log("and this param is"+this.name);this.visible=false;};
-
-        // /*global MainGame*/
-        // hud.buildMenuButton = MainGame.game.add.button(150, MainGame.game.world.height, 'buttonSprite', button.testFunc, button, 0, 1, 2, 3);
-        // hud.buildMenuButton.anchor.y = 1;  // Anchor on bottom left corner
-        // hud.buildMenuButton.name="Bottom";
         
         return hud;
     },
