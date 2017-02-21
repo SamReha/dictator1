@@ -30,7 +30,7 @@ var Person={
         p.loyalty=(p.type>=Person.Hi?0:null);
 
         // Class funcs
-        p.nextTurn=function(board){return Person.nextTurn(p,board)};
+        p.update=function(board){return Person.update(p,board)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
         p.findHousing=function(pop){return Person.findHousing(p,pop)};
         p.toString=function(){return "PPL:"+p.type};
@@ -41,7 +41,7 @@ var Person={
     },
 
     // Class func: Implementation
-    nextTurn: function(p,board){
+    update: function(p,board){
         // TODO
         if(p.type===Person.Low){
             p.updateFreeUn(board);
@@ -92,8 +92,8 @@ var Person={
     updateFreeUn: function(p,board){
         if(p.home!==null){
             var house = board.at(p.home).getBuilding();
-            p.freedom = Math.min(p.health,50) + Math.min(p.education,50) + house.aoeFreedom;
-            p.unrest = Math.max(50-p.health,0) + Math.max(50-p.shelter,0) + house.aoeUnrest;
+            p.freedom = Phaser.Math.clamp(Math.min(p.health,50) + Math.min(p.education,50) + house.aoeFreedom,0,100);
+            p.unrest = Phaser.Math.clamp(Math.max(50-p.health,0) + Math.max(50-p.shelter,0) + house.aoeUnrest,0,100);
         }
         else{
             p.freedom = 0;
@@ -115,7 +115,7 @@ var Population={
 
         // Class funcs
         pop.at=function(index){return pop.people[index]};
-        pop.nextTurn=function(){return Population.nextTurn(pop)};
+        pop.update=function(){return Population.update(pop)};
         pop.count=function(){return pop.people.length};
         pop.report=function(){return Population.report(pop)};  // Class func: Declaration
         pop.increase=function(amount){return Population.increase(pop,amount)};
@@ -174,10 +174,9 @@ var Population={
     },
 
     // Class func: Implementation
-    nextTurn: function(pop){
+    update: function(pop){
         /*global MainGame*/
-        pop.people.forEach(function(p){p.nextTurn(MainGame.board)});
-        pop.increase(Math.floor(Math.random()*3)+1);
+        pop.people.forEach(function(p){p.update(MainGame.board)});
     },
     
     report: function(pop){
@@ -191,7 +190,7 @@ var Population={
     
     increase: function(pop,amount){
         for(var i = 0; i < amount; i++) {
-            var per=Person.createNew({"type":0});
+            var per=Person.createNew({"type":0,"workplace":null,"home":null});
             pop.people.push(per);
             if(!per.findHousing(pop)){
                 /*global MainGame*/
@@ -267,7 +266,6 @@ var Population={
             return false;
         }else{
             var h=pop.findEmployed();
-            console.log(h);
             for(var j=0;j<h.length;j++){
                 if(pop.people[h[j]].workplace===tileIndex){
                     bld.removePerson();

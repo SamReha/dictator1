@@ -285,6 +285,7 @@ var BuildingPlacer = {
                 startTurn += 2;
                 newTint = 0x444444;
             }
+            
             // Create a building object
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
             newBuilding.tint = newTint;
@@ -293,6 +294,9 @@ var BuildingPlacer = {
             
             // Bill the player
             Global.money -= newBuilding.cost;
+
+            /*global updatePopulation*/
+            updatePopulation(false,false);
             
             // End build mode
             self.cancelBuild();
@@ -448,6 +452,8 @@ var MapSelector = {
                         buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
                     }
                 }
+                /*global updatePopulation*/
+                updatePopulation(false,false);
             }, ms, 0, 1, 2, 3);
         buildingDetail.addChild(buildingDetail.addPersonButton);
 
@@ -496,6 +502,8 @@ var MapSelector = {
                         buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
                     }
                 }
+                /*global updatePopulation*/
+                updatePopulation(false,false);
             }, ms, 0,1,2,3);
         buildingDetail.addChild(buildingDetail.removePersonButton);
 

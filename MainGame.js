@@ -68,7 +68,7 @@ var MainGame={
         MainGame.hud = Hud.createNew();
 
         /*global updatePopulation*/
-        updatePopulation();
+        updatePopulation(false,true);
         //MainGame.global.updateFreedomUnrest();
     },
     
