@@ -51,7 +51,7 @@ var Global={
         }
 
         /*globabl updatePopulation*/
-        updatePopulation();
+        updatePopulation(true,true);
 
         Global.updateFreedomUnrest();
     },
@@ -64,18 +64,18 @@ var Global={
         var freeAv = 0;
         var unrestAv = 0;
         /*global MainGame*/
-        var pop = MainGame.population;
-        var lowList = pop.lowList();
+        var lowList = MainGame.population.lowList();
         
-        for(var index in lowList){
-            console.log("Person of type "+pop.at(index).type+" living at "+pop.at(index).home+" - Freedom: "+pop.at(index).freedom+" - Unrest: "+pop.at(index).unrest);
-            freeAv += pop.at(index).freedom;
-            unrestAv += pop.at(index).unrest;
+        for(var index=0;index<lowList.length;++index){
+            console.log("Person of type "+lowList[index].type+" living at "+lowList[index].home+" - Freedom: "+lowList[index].freedom+" - Unrest: "+lowList[index].unrest);
+            freeAv += lowList[index].freedom;
+            unrestAv += lowList[index].unrest;
         }
-        freeAv = freeAv/pop.length;
-        unrestAv = unrestAv/pop.length;
-
+        console.log("freeTotal: "+freeAv+" unrestTotal: "+unrestAv+" low people: "+lowList.length);
+        freeAv = Math.round(freeAv/lowList.length,0);
+        unrestAv = Math.round(unrestAv/lowList.length,0);
+        console.log(MainGame.board.findBuilding(null,"road",null).length);
         Global.freedom = freeAv + MainGame.board.findBuilding(null,"road",null).length;
-        Global.unrest = unrestAv;
+        Global.unrest = unrestAv + MainGame.population.findNotEmployed().length;
     },
 };
