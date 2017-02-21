@@ -259,8 +259,10 @@ var Board={
             var r=b.rectOf(i,b.currentScale);
             r.x+=b.x;
             r.y+=b.y;
-            if(px>r.x && px<r.x+r.w && py>r.y && py<r.y+r.h)
+            if(px>r.x && px<r.x+r.w && py>r.y && py<r.y+r.h){
+                console.log("hitTest: index=",i);
                 return i;
+            }
         }
         return null;
     },
