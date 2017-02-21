@@ -60,8 +60,6 @@ var Board={
         board.currentScale=1.0;
         board.currentZoomLevel=Board.defaultZoomLevel;
 
-        board._offset={x:0, y:0};
-
         // Class funcs
         // returns the JSON string representation
         board.toJSON=function(){return Board.toJSON(board)};
@@ -100,59 +98,8 @@ var Board={
         // let camera move by (x,y)
         board.cameraMoveBy=function(x,y){return Board.cameraMoveBy(board,x,y)};
 
-        // click == center on
-        MainGame.game.input.onDown.add(function(p){
-            console.log("Mouse down at:",p.x,p.y)
-            board.cameraCenterOn(board.hitTest(p.x,p.y));
-        });
-
-        // E == zoom out
-        var keyboardE=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.E);
-        keyboardE.onUp.add(function(){
-            console.log("Keyboard E: zoom out");
-            var curLevel=board.currentZoomLevel-1;
-            if(curLevel<0) curLevel=0;
-            console.log("abc",curLevel);
-            board.cameraZoomAt(curLevel);
-        });
-        // Q == zoom in
-        var keyboardQ=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        keyboardQ.onUp.add(function(){
-            console.log("Keyboard Q: zoom in");
-            var curLevel=board.currentZoomLevel+1;
-            if(curLevel>=Board.zoomLevelList.length) curLevel=Board.zoomLevelList.length-1;
-            board.cameraZoomAt(curLevel);
-        });
-
-        // WSAD == move camera
-        var keyboardW=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
-        keyboardW.onDown.add(function(){
-            console.log("Keyboard W: move");
-            board.cameraMoveBy(0,-100);
-        });
-        var keyboardS=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.S);
-        keyboardS.onDown.add(function(){
-            console.log("Keyboard S: move");
-            board.cameraMoveBy(0,100);
-        });
-        var keyboardA=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.A);
-        keyboardA.onDown.add(function(){
-            console.log("Keyboard A: move");
-            board.cameraMoveBy(-150,0);
-        });
-        var keyboardD=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.D);
-        keyboardD.onDown.add(function(){
-            console.log("Keyboard D: move");
-            board.cameraMoveBy(150,0);
-        });
-
-
-        // bP.clickHandler, bP, bP, MainGame.game.input.activePointer
-
-        // // returns an array of tiles that have one type of building on them
-        // // returns the index of the given building's tile
-         // board.indexOfBuilding=function(building){return Board.indexOfBuilding(board,building)};        
-         // board.getAllOfSubtype=function(buildingSubtype){return Board.getAllOfSubtype(board,buildingSubtype)};
+        // create the Controller
+        board.controller=BoardController.createNew(board);
 
         // init tiles
         var tileData=data.tiles;
