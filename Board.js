@@ -83,10 +83,14 @@ var Board={
         board.findRes=function(type){return Board.findRes(board,type)};
         // returns all the *indice* of the building type(nullable)/subtype(nullable)
         board.findBuilding=function(type,subtype,effect){return Board.findBuilding(board,type,subtype,effect)};
-        //build new shanty town next to a random road tile and return index
+        // build new shanty town next to a random road tile and return index
         board.buildShanty=function(){return Board.buildShanty(board)};
         // go to next turn
         board.nextTurn=function(){return Board.nextTurn(board)};
+
+        // apply a camera setting (cx,cy,zoom=1.0). cx and cy is the grid position.
+        board.applyCamera=function(cx,cy,zoom){return Board.applyCamera(board,cx,cy,zoom)};
+
         // // returns an array of tiles that have one type of building on them
         // // returns the index of the given building's tile
          // board.indexOfBuilding=function(building){return Board.indexOfBuilding(board,building)};        
