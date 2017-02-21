@@ -56,10 +56,10 @@ var MainGame={
         var stageMain = MainGame.game.cache.getJSON('stageMain');
 
         /*global Board*/
-        MainGame.board=Board.fromJSON(JSON.stringify(stage2));
+        MainGame.board=Board.fromJSON(JSON.stringify(stageMain));
 
         /*global Population*/
-        MainGame.population=Population.createNew(stage2.population);
+        MainGame.population=Population.createNew(stageMain.population);
 
         /*global MapSelector*/
         MainGame.mapSelector=MapSelector.createNew();

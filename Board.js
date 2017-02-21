@@ -43,6 +43,9 @@ var Tile={
 
 // Board as turnSystem
 var Board={
+    zoomLevelList: [0.5, 0.75, 1.0, 1.25, 1.5],
+    defaultZoomLevel: 2,
+
     // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
         // create the board
@@ -55,6 +58,9 @@ var Board={
         board.gridHeight=data.gridHeight;
         board.tileWidth=data.tileWidth;
         board.currentScale=1.0;
+        board.currentZoomLevel=Board.defaultZoomLevel;
+
+        board._offset={x:0, y:0};
 
         // Class funcs
         // returns the JSON string representation
@@ -69,7 +75,7 @@ var Board={
         board.tileCount=function(){return board.gridWidth*board.gridHeight};
         // returns the (gx,gy) of i
         board.xyOf=function(i){return Board.xyOf(board,i)};
-        // returns the rect of i
+        // returns the *relative* rect of i (relative==assuming the left-top of board is {0,0})
         board.rectOf=function(i,scale){return Board.rectOf(board,i,scale)};
         // returns the index of (x,y); nullable
         board.hitTest=function(px,py){return Board.hitTest(board,px,py)};
@@ -87,9 +93,61 @@ var Board={
         board.buildShanty=function(){return Board.buildShanty(board)};
         // go to next turn
         board.nextTurn=function(){return Board.nextTurn(board)};
+        // let camera center itself on i
+        board.cameraCenterOn=function(i){return Board.cameraCenterOn(board,i)};
+        // let camera zoom itself as zoom
+        board.cameraZoomAt=function(zoom){return Board.cameraZoomAt(board,zoom)};
+        // let camera move by (x,y)
+        board.cameraMoveBy=function(x,y){return Board.cameraMoveBy(board,x,y)};
 
-        // apply a camera setting (cx,cy,zoom=1.0). cx and cy is the grid position.
-        board.applyCamera=function(cx,cy,zoom){return Board.applyCamera(board,cx,cy,zoom)};
+        // click == center on
+        MainGame.game.input.onDown.add(function(p){
+            console.log("Mouse down at:",p.x,p.y)
+            board.cameraCenterOn(board.hitTest(p.x,p.y));
+        });
+
+        // E == zoom out
+        var keyboardE=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        keyboardE.onUp.add(function(){
+            console.log("Keyboard E: zoom out");
+            var curLevel=board.currentZoomLevel-1;
+            if(curLevel<0) curLevel=0;
+            console.log("abc",curLevel);
+            board.cameraZoomAt(curLevel);
+        });
+        // Q == zoom in
+        var keyboardQ=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        keyboardQ.onUp.add(function(){
+            console.log("Keyboard Q: zoom in");
+            var curLevel=board.currentZoomLevel+1;
+            if(curLevel>=Board.zoomLevelList.length) curLevel=Board.zoomLevelList.length-1;
+            board.cameraZoomAt(curLevel);
+        });
+
+        // WSAD == move camera
+        var keyboardW=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        keyboardW.onDown.add(function(){
+            console.log("Keyboard W: move");
+            board.cameraMoveBy(0,-100);
+        });
+        var keyboardS=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        keyboardS.onDown.add(function(){
+            console.log("Keyboard S: move");
+            board.cameraMoveBy(0,100);
+        });
+        var keyboardA=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.A);
+        keyboardA.onDown.add(function(){
+            console.log("Keyboard A: move");
+            board.cameraMoveBy(-150,0);
+        });
+        var keyboardD=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        keyboardD.onDown.add(function(){
+            console.log("Keyboard D: move");
+            board.cameraMoveBy(150,0);
+        });
+
+
+        // bP.clickHandler, bP, bP, MainGame.game.input.activePointer
 
         // // returns an array of tiles that have one type of building on them
         // // returns the index of the given building's tile
@@ -199,6 +257,8 @@ var Board={
         var N=b.gridWidth*b.gridHeight;
         for(var i=0;i<N;i++){
             var r=b.rectOf(i,b.currentScale);
+            r.x+=b.x;
+            r.y+=b.y;
             if(px>r.x && px<r.x+r.w && py>r.y && py<r.y+r.h)
                 return i;
         }
@@ -346,5 +406,64 @@ var Board={
         //         stack.push(node.children[i]);
         //     }
         // }
+    },
+
+    // let camera move (x,y)
+    cameraMoveBy: function(b,x,y){
+        b.x-=x;
+        b.y-=y;
+    },
+
+    // let camera center on i
+    cameraCenterOn: function(b,i){
+        console.assert(i>=0 && i<b.tileCount());
+
+        /*global MainGame*/
+
+        // calc the current center pos of i (with consideration of board.scale)
+        var rect_i=b.rectOf(i, b.currentScale);
+        var center_i={x:rect_i.x+0.5*rect_i.w, y:rect_i.y+0.5*rect_i.h};
+        // console.log("Center of i is:",center_i);
+
+        // calc the geo center of the screen
+        var screenCenter={x:MainGame.game.camera.x+MainGame.game.camera.width*0.5,
+            y:MainGame.game.camera.y+MainGame.game.camera.height*0.5};
+        // console.log("Center of camera:",screenCenter);
+
+        // set offset of the board
+        b.x=(screenCenter.x-center_i.x);
+        b.y=(screenCenter.y-center_i.y);
+        // console.log("Now, board's x and y:",b.x,b.y);
+    },
+
+    // let camera zoom at zoom
+    cameraZoomAt: function(b,zoomLevel){
+        var zoom=1.0;
+        if(zoomLevel!==null && zoomLevel!==undefined){
+            console.assert(zoomLevel>=0 && zoomLevel<Board.zoomLevelList.length);
+            b.currentZoomLevel=zoomLevel;
+            zoom=Board.zoomLevelList[zoomLevel];
+            console.log("zoom level ",zoomLevel, Board.zoomLevelList);
+        }else{
+            b.currentZoomLevel=Board.defaultZoomLevel;
+        }
+        console.log("cameraZoomAt: zoom is ",zoom);
+
+        /*global MainGame*/
+        // 1. get the anchor/pivot point
+        var screenCenter={x:MainGame.game.camera.x+MainGame.game.camera.width*0.5,
+            y:MainGame.game.camera.y+MainGame.game.camera.height*0.5};
+        var xy={x:screenCenter.x-b.x, y:screenCenter.y-b.y};
+        var anchor={x:xy.x/b.width, y:xy.y/b.height};
+        // console.log("anchor is",anchor);
+
+        // 2. scale
+        b.scale.set(zoom,zoom);
+        b.currentScale=zoom;
+
+        // 3. reset (x,y) according to the anchor point
+        b.x=MainGame.game.camera.width*0.5-anchor.x*b.width;
+        b.y=MainGame.game.camera.height*0.5-anchor.y*b.height;
+        // console.log("new xy is:",b.x,b.y);
     },
 };

@@ -73,9 +73,8 @@ function create() {
     /*global MainGame*/
     MainGame.start();
 
-    // font test
-    // var style={font: "50px 'myKaiti'", fill: "#ffffff", align: "center"};
-    // var text=g.add.text(g.world.centerX, g.world.centerY, "Hello 汉", style);
+    MainGame.board.cameraCenterOn(0);
+    MainGame.board.cameraZoomAt();
 }
 
 function update() {
