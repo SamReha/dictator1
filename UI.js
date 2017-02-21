@@ -329,11 +329,13 @@ var MapSelector = {
         ms.addChild(ms.tileInfo);
         ms.addChild(ms.buildingDetail);
 
-
         // Class funcs
         ms.updateTileInfo = function() {MapSelector.updateTileInfo(ms)};
         ms.updateBuildingDetail = function() {MapSelector.updateBuildingDetail(ms)};
         ms.updateAll = function() {MapSelector.updateAll(ms)};
+        ms.clickHandler = function(activePointer) { MapSelector.clickHandler(ms, activePointer); };
+
+        MainGame.game.input.onDown.add(ms.clickHandler, ms, ms, MainGame.game.input.activePointer);
 
         return ms;
     },
@@ -602,5 +604,17 @@ var MapSelector = {
 
     updateBuildingDetail: function(ms) {
 
+    },
+
+    clickHandler: function(ms, activePointer) {
+        var tile = MainGame.board.at(ms.curIndex);
+
+        if (tile.hasBuilding()) {
+            ms.buildingDetail.visible = !ms.buildingDetail.visible;
+        } else {
+            // Make sure the detail menu is hidden if the user is trying to click away
+            ms.buildingDetail.visible = false;
+        }
+        
     },
 };
