@@ -494,12 +494,8 @@ var MapSelector={
 
         // If this tile has no building, display terrain info
         if (bld === null || bld.isEmpty()) {
-            // If this terrain has a natural resource, display that
-            if (tile.resource != undefined) {
-                displayName = 'test coal';
-            } else {
-                displayName = tile.terrain.key; // May need to change this if tile.terrain.key is not meant to be player-facing
-            }
+            // If this terrain has a natural resource, display that, otherwise display the terrain name
+            displayName = tile.getRes().key === '__default' ? tile.terrain.key : tile.getRes().key;
 
             this.buildingInfo.label2.text = ''; // Make sure this text gets cleared if it's not going to be used
         } else {
@@ -511,7 +507,7 @@ var MapSelector={
             } else {
                 this.buildingInfo.label2.text = "People: " + bld.people + "/" + bld.maxPeople;
             }
-            
+
             // var str3="";
             // var str4="";
             // var str5="";
