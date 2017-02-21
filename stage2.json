@@ -7,35 +7,35 @@
         {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": null,"building": null},
-        {"terrain": "grass","res": null,"building": null},
+        {"terrain": "grass","res": null,"building": {"name": "arableFarm","level": 1,"startingTurn": 1,"people": 5}},
         {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": null,"building": null},
 
+        {"terrain": "grass","res": "forest","building": null},
         {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": null,"building": null},
-        {"terrain": "grass","res": null,"building": {"name": "palace","level": 1,"startingTurn": 1,"people": 0}},
         {"terrain": "grass","res": null,"building": {"name": "road","level": 1,"startingTurn": 1,"people": 0}},
-        {"terrain": "grass","res": null,"building": null},
+        {"terrain": "grass","res": null,"building": {"name": "apartment","level": 1,"startingTurn": 1,"people": 10}},
         {"terrain": "grass","res": null,"building": null},
 
+        {"terrain": "grass","res": null,"building": {"name": "palace","level": 1,"startingTurn": 1,"people": 0}},
         {"terrain": "grass","res": null,"building": null},
+        {"terrain": "grass","res": "forest","building": {"name": "lumberYard","level": 1,"startingTurn": 1,"people": 2}},
         {"terrain": "grass","res": null,"building": null},
-        {"terrain": "grass","res": null,"building": null},
-        {"terrain": "grass","res": null,"building": null},
-        {"terrain": "grass","res": null,"building": null},
+        {"terrain": "grass","res": null,"building": {"name": "school","level": 1,"startingTurn": 1,"people": 3}},
         {"terrain": "grass","res": null,"building": null}
     ],
 
     "population": [
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0},
-        {"type": 0}
+        {"type": 0,"workplace": 3,"home": 10},
+        {"type": 0,"workplace": 3,"home": 10},
+        {"type": 0,"workplace": 3,"home": 10},
+        {"type": 0,"workplace": 3,"home": 10},
+        {"type": 0,"workplace": 3,"home": 10},
+        {"type": 0,"workplace": 14,"home": 10},
+        {"type": 0,"workplace": 14,"home": 10},
+        {"type": 0,"workplace": 16,"home": 10},
+        {"type": 0,"workplace": 16,"home": 10},
+        {"type": 0,"workplace": 16,"home": 10}
     ]
 }

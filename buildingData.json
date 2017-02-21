@@ -5,12 +5,12 @@
     "cost": 0,
     "health": 0,
     "education": 0,
+    "aoeFreedom": 0,
+    "aoeUnrest": 0,
     "shelter": 0,
     "maxShelter": 10,
-    "people": 0,
     "maxPeople": 5,
-    "maxPeopleStep": -1,
-    "effects": []
+    "effects": [{"type": null}]
   },
   "apartment": {
     "type": "?",
@@ -18,12 +18,12 @@
     "cost": 10,
     "health": 0,
     "education": 0,
+    "aoeFreedom": 0,
+    "aoeUnrest": 0,
     "shelter": 0,
     "maxShelter": 60,
-    "people": 0,
     "maxPeople": 10,
-    "maxPeopleStep": -1,
-    "effects": []
+    "effects": [{"type": null}]
   },
   "mansion": {
     "type": "?",
@@ -31,12 +31,12 @@
     "cost": 10,
     "health": 0,
     "education": 0,
+    "aoeFreedom": 0,
+    "aoeUnrest": 0,
     "shelter": 0,
     "maxShelter": 100,
-    "people": 0,
     "maxPeople": 1,
-    "maxPeopleStep": -1,
-    "effects": []
+    "effects": [{"type": null}]
   },
   "palace":{
     "type": "?",
@@ -44,23 +44,25 @@
     "cost": 0,
     "health": 100,
     "education": 100,
+    "aoeFreedom": 0,
+    "aoeUnrest": 0,
     "shelter": 100,
     "maxShelter": 100,
-    "people": 0,
-    "maxPeople": 0
+    "maxPeople": 0,
+    "effects": [{"type": null}]
   },
 
   "weakFarm": {
     "type": "?",
     "subtype": "health",
     "cost": 10,
-    "people": 0,
     "maxPeople": 5,
     "effects": [
       {
         "type": "health",
         "range": 2,
-        "outputTable": [0, 5, 10, 15, 20, 25]
+        "outputTable": [0, 5, 10, 15, 20, 25],
+        "range": 2
       }
     ]
   },
@@ -68,13 +70,13 @@
     "type": "?",
     "subtype": "health",
     "cost": 10,
-    "people": 0,
     "maxPeople": 5,
     "effects": [
       {
         "type": "health",
         "range": 2,
-        "outputTable": [0, 10, 20, 30, 40, 50]
+        "outputTable": [0, 10, 20, 30, 40, 50],
+        "range": 2
       }
     ]
   },
@@ -82,13 +84,12 @@
     "type": "!",
     "subtype": "millitary",
     "cost": 15,
-    "people": 0,
     "maxPeople": 3,
-    "effect": [
+    "effects": [
       {
-        "type": "antiFreedom",
-        "value": 10,
-        "radius": 2
+        "type": "freedom",
+        "outputTable": [0, -5, -10, -15],
+        "range": 2
       }
     ]
   },
@@ -96,15 +97,13 @@
     "type": "!",
     "subtype": "millitary",
     "cost": 30,
-    "people": 0,
     "maxPeople": 5,
-    "effects": []
+    "effects": [{"type": null}]
   },
   "lumberYard": {
     "type": "$",
     "subtype": "production",
     "cost": 30,
-    "people": 0,
     "maxPeople": 7,
     "effects": [
       {
@@ -118,27 +117,23 @@
     "subtype": "road",
     "cost": 2,
     "maxPeople": 0,
-    "effects": [
-      {
-        "type": "freedom",
-        "outputTable": [4]
-      }
-    ]
+    "effects": [{"type": null}]
   },
   "school": {
     "type": "?",
     "subtype": "education",
     "cost": 15,
-    "people": 0,
     "maxPeople": 3,
     "effects": [
       {
         "type": "freedom",
-        "outputTable": [0, 3, 6, 9]
+        "outputTable": [0, 3, 6, 9],
+        "range": 2
       },
       {
         "type": "education",
-        "outputTable": [0, 30, 60, 90]
+        "outputTable": [0, 20, 40, 60],
+        "range": 2
       }
     ]
   },

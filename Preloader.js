@@ -32,10 +32,11 @@ var Preloader={
 
         // load ui assets
         var uiDir = imageDir + 'ui/';
-        g.load.image('grpBldInfo',   uiDir + 'grpBldInfo.png');
-        g.load.image('grpBuildMenu', uiDir + 'grpBuildMenu.png');
-        g.load.image('grpStatsMenu', uiDir + 'grpStatsMenu.png');
-        g.load.image('topBar',       uiDir + 'topBar.png');
+        g.load.image('grpBldInfo',           uiDir + 'grpBldInfo.png');
+        g.load.image('grpBuildMenu',         uiDir + 'grpBuildMenu.png');
+        g.load.image('grpStatsMenu',         uiDir + 'grpStatsMenu.png');
+        g.load.image('topBar',               uiDir + 'topBar.png');
+        g.load.image('tile_hover_backpanel', uiDir + 'tile_hover_backpanel.png');
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
@@ -50,6 +51,7 @@ var Preloader={
         // load json files
         g.load.json('stage1','stage1.json');
         g.load.json('stage2','stage2.json');
+        g.load.json('stageMain','stageMain.json');
         g.load.json('buildingData','buildingData.json');
     }
 };

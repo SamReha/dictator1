@@ -2,8 +2,16 @@
 var updatePopulation = function() {
 	/* global MainGame */
 	var pop = MainGame.population;
+	var houseList = MainGame.board.findBuilding(null,"housing",null);
 	//var workMap = pop.getWorkMap();
-	//var houseMap = pop.getHouseMap();
+	// var houseMap = pop.getHouseMap();
+
+	if(MainGame.global.turn!==1){pop.nextTurn();}
+
+	for(var houseIndex in houseList){
+		if(MainGame.board.at(houseIndex).building.name==="palace"){continue;}
+		updateHome(houseIndex);
+	}
 
 	for (var personIndex in pop.lowList()) {
 		var person = pop.at(personIndex);
@@ -16,16 +24,15 @@ var updatePopulation = function() {
 			var home = MainGame.board.at(homeIndex).building;
 	
 			// Get new health
-			var totalBuildingHealth = getEffectOutputInRangeByType(homeIndex, "health");
-			person.health = totalBuildingHealth;
+			person.health = home.health;
 	
 			// Get new shelter
 			person.shelter = home.maxShelter;
 	
 			// Get new education
-			var totalBuildingEdu = getEffectOutputInRangeByType(homeIndex, "education");
-			if (person.education < totalBuildingEdu) {
-				person.education = clampedSum(person.education, person.learningSpeed, totalBuildingEdu);
+			if (person.education < home.education) {
+				/*global Person*/
+				person.education = clampedSum(person.education, Person.learningSpeed, home.education);
 			}
 		}
 		
@@ -39,12 +46,32 @@ var clampedSum = function(a, b, max) {
 	return sum > max ? max : sum;
 }
 
+var updateHomesNearOutput = function(tileIndex,range){
+	/*global MainGame*/
+	var homes = MainGame.board.findBuilding(null,"housing",null);
+	for(var houseIndex in homes){
+		if(MainGame.board.distanceOf(tileIndex,houseIndex) <= 2 && MainGame.board.at(houseIndex).building.name!=="palace"){
+			updateHome(houseIndex);
+		}
+	}
+}
+
+var updateHome = function(houseIndex){
+	var home = MainGame.board.at(houseIndex).building;
+	home.health = getEffectOutputInRangeByType(houseIndex, "health");
+	home.education = getEffectOutputInRangeByType(houseIndex, "education");
+	home.aoeFreedom = getEffectOutputInRangeByType(houseIndex, "freedom");
+	home.aoeUnrest = getEffectOutputInRangeByType(houseIndex, "unrest");
+	/*global Global*/
+	home.shelter = home.shelter * (Global.turn - home.startingTurn) / 20;
+}
+
 var getEffectOutputInRangeByType = function(homeIndex, type) {
 	var totalOutput = 0;
-	var allBuildingIndexes = MainGame.board.findBuilding(null, type);
+	var allBuildingIndexes = MainGame.board.findBuilding(null, null, type);
 	
 	for (var i in allBuildingIndexes) {
-		var buildingData = MainGame.board.at(i).building.buildingData;
+		var buildingData = MainGame.board.at(i).building;
 		
 		// If the distance between the two buildings is <= the range of the eduBuilding, accumulate education
 		for (var effect in buildingData.effects) {

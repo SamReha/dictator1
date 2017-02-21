@@ -17,8 +17,8 @@ var Person={
         p.type=data.type;               // must be one of Person.types
         p.name=data.name;               // nullable
         p.portIndex=data.portIndex;     // nullable
-        p.workplace=null;               // nullable, index of the tile
-        p.home=null;                    // nullable, index of the tile
+        p.workplace=data.workplace;     // nullable, index of the tile
+        p.home=data.home;               // nullable, index of the tile
         p.health=0;         // int
         p.education=0;      // int
         p.shelter=0;        // int
@@ -57,7 +57,7 @@ var Person={
     findHousing: function(p,pop){
         /*global MainGame*/
         var board = MainGame.board;
-        var housingIndices=board.findBuilding(null,"housing");
+        var housingIndices=board.findBuilding(null,"housing",null);
         console.log("housingIndices"+ housingIndices);
         
         for(var i=0;i<housingIndices.length;++i){
@@ -91,8 +91,9 @@ var Person={
     
     updateFreeUn: function(p,board){
         if(p.home!==null){
-      p.freedom = Math.min(p.health,50) + Math.min(p.education,50) + board.at(p.home).influence.freedom;
-      p.unrest = Math.max(50-p.health,0) + Math.max(50-p.shelter,0) + board.at(p.home).influence.unrest;
+            var house = board.at(p.home).getBuilding();
+            p.freedom = Math.min(p.health,50) + Math.min(p.education,50) + house.aoeFreedom;
+            p.unrest = Math.max(50-p.health,0) + Math.max(50-p.shelter,0) + house.aoeUnrest;
         }
         else{
             p.freedom = 0;
@@ -195,8 +196,7 @@ var Population={
             if(!per.findHousing(pop)){
                 /*global MainGame*/
                 var shanty = MainGame.board.buildShanty();
-                console.log("shanty town at: "+shanty);
-                pop.hirePersonAt(per, shanty);
+                if(shanty!==null){  pop.hirePersonAt(per, shanty);  }
             }
         }
     },
