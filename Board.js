@@ -341,9 +341,16 @@ var Board={
         for(var i=0;i<N;i++){
             var bld=b.at(i).getBuilding();
             if(bld.name !== null){
-                if((bld.type===type || !type) && (bld.subtype===subtype || !subtype)
-                    && (bld.effects.type===effect || !effect)){
-                    res.push(i);
+                if((bld.type===type || !type) && (bld.subtype===subtype || !subtype)){
+                    if(!effect){res.push(i);}
+                    else{
+                        for(var bIndex=0;bIndex<bld.effects.length;++bIndex){
+                            if(bld.effects[bIndex].type===effect){
+                                res.push(i);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -357,25 +364,25 @@ var Board={
         //checking all tiles up to three steps removed from a road
         do{
             ++distance;
-            for(var i = 0; i < roads.length; ++i){
-                var check = board.allAdjacent(roads[i],distance);
+            for(var roadIndex=0;roadIndex<roads.length;++roadIndex){
+                var check = board.allAdjacent(roads[roadIndex],distance);
                 if(distance>1){
-                    var remove = board.allAdjacent(roads[i],distance-1);
-                    for(var removeIndex in remove){
-                        var ind = check.indexOf(removeIndex)
+                    var remove = board.allAdjacent(roads[roadIndex],distance-1);
+                    for(var removeIndex=0;removeIndex<remove.length;++removeIndex){
+                        var ind = check.indexOf(remove[removeIndex]);
                         if(ind != -1){  check.splice(ind,1);    }
                     }
                 }
-                for(var j = 0; j < check.length; ++j){
-                    if(!board.at(check[j]).hasBuilding()){
-                        for(var k = 0; k < choices.length; ++k){
-                            if(check[j] === choices[k]){
-                                check[j] = null;
+                for(var adjIndex=0;adjIndex<check.length;++adjIndex){
+                    if(!board.at(check[adjIndex]).hasBuilding()){
+                        for(var choiceIndex=0;choiceIndex<choices.length;++choiceIndex){
+                            if(check[adjIndex] === choices[choiceIndex]){
+                                check[adjIndex] = null;
                                 break;
                             }
                         }
 
-                        if(check[j]!==null){   choices.push(check[j]);  }
+                        if(check[adjIndex]!==null){   choices.push(check[adjIndex]);  }
                     }
                 }
             }
