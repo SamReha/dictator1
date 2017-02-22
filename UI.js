@@ -26,8 +26,9 @@ var Hud = {
         }, topText);
 
         // "Next Turn" button
-        var btnNextTurn=MainGame.game.make.button(750,0,"btnNextTurn",
-            MainGame.nextTurn,MainGame,0,1,2,3);
+        var btnNextTurn=MainGame.game.make.button(750,0,"btnNextTurn",function(){            
+            MainGame.nextTurn();
+        },MainGame,0,1,2,3);
         btnNextTurn.name="btnNextTurn";
         hud.addChild(btnNextTurn);
 
