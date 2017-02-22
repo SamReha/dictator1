@@ -49,7 +49,7 @@ var Board={
     // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
         // create the board
-        var board=MainGame.game.add.group();
+        var board = MainGame.game.add.sprite(0, 0);
         // decode JSON
         var data=JSON.parse(json);
 
@@ -102,16 +102,20 @@ var Board={
         // let camera move by (x,y)
         board.cameraMoveBy=function(x,y){return Board.cameraMoveBy(board,x,y)};
 
+        board.inputEnabled = true;
+        board.input.priorityID = 0;
+
         // click == center on
         MainGame.game.input.onDown.add(function(p){
-            console.log("Mouse down at:",p.x,p.y)
+            //console.log("Mouse down at:",p.x,p.y);
             board.cameraCenterOn(board.hitTest(p.x,p.y));
-        });
+            console.log("Handler invoked with priority 0!");
+        }, null, 0);
 
         // E == zoom out
         var keyboardE=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.E);
         keyboardE.onUp.add(function(){
-            console.log("Keyboard E: zoom out");
+            //console.log("Keyboard E: zoom out");
             var curLevel=board.currentZoomLevel-1;
             if(curLevel<0) curLevel=0;
             console.log("abc",curLevel);
@@ -120,7 +124,7 @@ var Board={
         // Q == zoom in
         var keyboardQ=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.Q);
         keyboardQ.onUp.add(function(){
-            console.log("Keyboard Q: zoom in");
+            //console.log("Keyboard Q: zoom in");
             var curLevel=board.currentZoomLevel+1;
             if(curLevel>=Board.zoomLevelList.length) curLevel=Board.zoomLevelList.length-1;
             board.cameraZoomAt(curLevel);
@@ -129,22 +133,22 @@ var Board={
         // WSAD == move camera
         var keyboardW=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
         keyboardW.onDown.add(function(){
-            console.log("Keyboard W: move");
+            //console.log("Keyboard W: move");
             board.cameraMoveBy(0,-100);
         });
         var keyboardS=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.S);
         keyboardS.onDown.add(function(){
-            console.log("Keyboard S: move");
+            //console.log("Keyboard S: move");
             board.cameraMoveBy(0,100);
         });
         var keyboardA=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.A);
         keyboardA.onDown.add(function(){
-            console.log("Keyboard A: move");
+            //console.log("Keyboard A: move");
             board.cameraMoveBy(-150,0);
         });
         var keyboardD=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.D);
         keyboardD.onDown.add(function(){
-            console.log("Keyboard D: move");
+            //console.log("Keyboard D: move");
             board.cameraMoveBy(150,0);
         });
 

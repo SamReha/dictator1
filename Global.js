@@ -71,13 +71,14 @@ var Global={
         var lowList = MainGame.population.lowList();
         
         for(var index=0;index<lowList.length;++index){
-            console.log("Person of type "+lowList[index].type+" living at "+lowList[index].home+" - Freedom: "+lowList[index].freedom+" - Unrest: "+lowList[index].unrest);
+            //console.log("Person of type "+lowList[index].type+" living at "+lowList[index].home+" - Freedom: "+lowList[index].freedom+" - Unrest: "+lowList[index].unrest);
             freeAv += lowList[index].freedom;
             unrestAv += lowList[index].unrest;
         }
-        console.log("freeTotal: "+freeAv+" unrestTotal: "+unrestAv+" low people: "+lowList.length);
+        //console.log("freeTotal: "+freeAv+" unrestTotal: "+unrestAv+" low people: "+lowList.length);
         freeAv = Math.round(freeAv/lowList.length,0);
         unrestAv = Math.round(unrestAv/lowList.length,0);
+
         console.log(MainGame.board.findBuilding(null,"road",null).length);
         Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,"road",null).length,0,100);
         Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length,0,100);

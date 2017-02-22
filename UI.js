@@ -59,7 +59,10 @@ var Hud = {
         buildBtn.name="buildBtn";
         buildBtn.setChecked=true;
         buildBtn.anchor.y = 1;  // Anchor on bottom left corner
+        buildBtn.inputEnabled = true;
+        buildBtn.input.priorityID = 1;
         buildGroup.addChild(buildBtn);
+
         //      "Build" menu
         var buildMenu = MainGame.game.make.group();
         buildMenu.name="buildMenu";
@@ -208,11 +211,12 @@ var BuildingPlacer = {
         bP.update = function() { BuildingPlacer.update(bP); };
         bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer); };
         bP.cancelBuild = function() { BuildingPlacer.cancelBuild(bP); };
-        
-        //console.log(MainGame.game.input);
+
+        bP.inputEnabled = true;
+        bP.input.priorityID = 1;
         
         MainGame.game.time.events.loop(BuildingPlacer.deltaTime, bP.update, bP);
-        MainGame.game.input.onDown.add(bP.clickHandler, bP, bP, MainGame.game.input.activePointer);
+        MainGame.game.input.onDown.add(bP.clickHandler, bP, 10, MainGame.game.input.activePointer);
 
         return bP;
     },
@@ -248,15 +252,10 @@ var BuildingPlacer = {
     },
     
     clickHandler: function(self, pointer) {
-        // if (pointer.rightButton.isDown) {
-        //     self.cancelBuild();
-        //     return;
-        // }
-        
+        console.log("Handler invoked with priority 10!");
+
         if (self.canBuild) {
             var tile = MainGame.board.at(self.mapIndex);
-            // // Get the building data for our current building
-            // let buildingData = MainGame.game.cache.getJSON('buildingData')[self.buildingType];
             
             // Find building's starting turn
             /*global Global*/
