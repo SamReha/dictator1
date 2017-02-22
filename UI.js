@@ -194,6 +194,10 @@ var Hud = {
 var BuildingPlacer = {
     createNew: function(buildingType) {
         var bP = MainGame.game.add.sprite(0, 0, buildingType + '1');
+
+        var zoom = MainGame.board.currentScale;
+        bP.scale.set(zoom,zoom);
+
         bP.anchor.x = bP.anchor.y = 0.5;
         
         bP.deltaTime =  10; // How frequently update is called, in ms
@@ -219,7 +223,7 @@ var BuildingPlacer = {
         self.y = MainGame.game.input.y;
         
         // Is the mouse over a build-ready tile, or is if offsides?
-        self.mapIndex = MainGame.board.hitTest(MainGame.game.input.x, MainGame.game.input.y);
+        self.mapIndex = MainGame.board.hitTest(self.x, self.y);
         if (self.mapIndex != null) {
             let tile = MainGame.board.at(self.mapIndex);
             // Might be nice to move these into Tile as convenience methods...
@@ -471,7 +475,9 @@ var MapSelector = {
                         outType="Extra Unrest";
                         /*global updateHomesNearOutput*/
                         updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="money"){    outType="Money";    }
+                    }else if(outType==="money"){
+                        outType="Money";
+                        MainGame.global.updateMoneyPerTurn();                    }
 
                     if(outIndex===0){
                         buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
@@ -575,8 +581,11 @@ var MapSelector = {
         }
 
         ms.tileInfo.label.text = displayName;
-        ms.tileInfo.x = tile.x;
-        ms.tileInfo.y = tile.y;
+        var b = MainGame.board
+        var rect = b.rectOf(index,b.currentScale);
+        ms.tileInfo.x = rect.x-b._offset.x;
+        ms.tileInfo.y = rect.y-b._offset.y;
+        ms.tileInfo.scale.set(b.currentScale);
     },
 
     updateBuildingDetail: function(ms) {

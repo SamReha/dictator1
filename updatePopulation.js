@@ -25,7 +25,7 @@ var updatePopulation = function(nextTurn,updatingHomes) {
 		
 		// This check can be safely ignored once shanty towns are spawning correctly
 		if (MainGame.board.at(homeIndex) != undefined) {
-			var home = MainGame.board.at(homeIndex).building;
+			var home = MainGame.board.at(homeIndex).getBuilding();
 	
 			// Get new health
 			person.health = home.health;
@@ -47,6 +47,8 @@ var updatePopulation = function(nextTurn,updatingHomes) {
 
 	/*global Global*/
 	Global.updateFreedomUnrest();
+
+	Global.updateMoneyPerTurn();
 };
 
 var clampedSum = function(a, b, max) {

@@ -419,6 +419,8 @@ var Board={
 
     // let camera move (x,y)
     cameraMoveBy: function(b,x,y){
+        b._offset.x+=x;
+        b._offset.y+=y;
         b.x-=x;
         b.y-=y;
     },
@@ -440,6 +442,8 @@ var Board={
         // console.log("Center of camera:",screenCenter);
 
         // set offset of the board
+        b._offset.x+=b.x-(screenCenter.x-center_i.x);
+        b._offset.y+=b.y-(screenCenter.y-center_i.y);
         b.x=(screenCenter.x-center_i.x);
         b.y=(screenCenter.y-center_i.y);
         // console.log("Now, board's x and y:",b.x,b.y);
@@ -471,6 +475,8 @@ var Board={
         b.currentScale=zoom;
 
         // 3. reset (x,y) according to the anchor point
+        b._offset.x+=b.x-(MainGame.game.camera.width*0.5-anchor.x*b.width);
+        b._offset.y+=b.y-(MainGame.game.camera.height*0.5-anchor.y*b.height);
         b.x=MainGame.game.camera.width*0.5-anchor.x*b.width;
         b.y=MainGame.game.camera.height*0.5-anchor.y*b.height;
         // console.log("new xy is:",b.x,b.y);
