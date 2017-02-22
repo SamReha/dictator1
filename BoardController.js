@@ -22,11 +22,18 @@ var BoardController={
 	},
 
 	/* ------- Implementation ------- */
-	onMouseEvent: function(bc, type, pos){
+	onMouseEvent: function(bc, type){
+		// check if bc is enabled
 		if(!bc.enabled)
 			return;
+		// get the rel pos
+		var globalPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
+		var relPos={x:globalPos.x-bc.modelView.x, y:globalPos.y-bc.modelView.y};
+		console.log("RelPos is:",relPos);
+		// event processing
 		if(type==="up"){
-			bc.modelView.cameraCenterOn(bc.modelView.hitTest(pos.x,pos.y));
+			var i=Board.hitTest(bc.modelView, globalPos.x, globalPos.y);
+			bc.modelView.cameraCenterOn(i);
 		}else if(type==="down"){
 
 		}else{
@@ -65,7 +72,7 @@ var BoardController={
         bc.modelView.input.priorityID = 0;
 
         // Mouse Input
-        bc.modelView.events.onInputDown.add(function(pos){BoardController.onMouseEvent(bc,"up",pos)});		
+        bc.modelView.events.onInputUp.add(function(){BoardController.onMouseEvent(bc,"up")});
 
 		// Keyboard
 		//	E

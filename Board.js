@@ -79,8 +79,8 @@ var Board={
         board.iOfxy = function(x, y) { return 0; };
         // returns the *relative* rect of i (relative==assuming the left-top of board is {0,0})
         board.rectOf=function(i,scale){return Board.rectOf(board,i,scale)};
-        // returns the index of (x,y); nullable
-        board.hitTest=function(px,py){return Board.hitTest(board,px,py)};
+        // returns the (nullable) *index* of (x,y). Set isLocal true to use my local coorinate system.
+        board.hitTest=function(px,py,isLocal){return Board.hitTest(board,px,py,isLocal)};
         // returns the step distance between i and j
         board.distanceOf=function(i,j){return Board.distanceOf(board,i,j)};
         // returns whether i is connected with j
@@ -204,19 +204,21 @@ var Board={
         }
     },
     // returns the index of (x,y)
-    hitTest: function(b,px,py){
+    hitTest: function(b,px,py,isLocal){
         var N=b.gridWidth*b.gridHeight;
         for(var i=0;i<N;i++){
             var r=b.rectOf(i,b.currentScale);
-            r.x+=b.x;
-            r.y+=b.y;
+            if(!isLocal){
+                r.x+=b.x;
+                r.y+=b.y;
+            }
             if(px>r.x && px<r.x+r.w && py>r.y && py<r.y+r.h){
-                console.log("hitTest: index=",i);
                 return i;
             }
         }
         return null;
     },
+
     // returns the step distance between i and j
     distanceOf: function(b,i,j){
         var p0=b.xyOf(i), p1=b.xyOf(j);
@@ -378,7 +380,7 @@ var Board={
 
     // let camera center on i
     cameraCenterOn: function(b,i){
-        console.assert(i>=0 && i<b.tileCount());
+        console.assert(typeof(i)==="number" && i>=0 && i<b.tileCount(), "i must be an index.");
 
         /*global MainGame*/
 
