@@ -106,7 +106,7 @@ var Board={
         board.input.priorityID = 0;
 
         // click == center on
-        MainGame.game.input.onDown.add(function(p){
+        board.events.onInputDown.add(function(p){
             //console.log("Mouse down at:",p.x,p.y);
             board.cameraCenterOn(board.hitTest(p.x,p.y));
             console.log("Handler invoked with priority 0!");
