@@ -10,10 +10,8 @@ var BoardController={
 		bc.enabled=true;
 
 		// Class funcs
-
-		// disable/enable all inputs from keyboard/mouse
-		bc.disableInput=function(){bc.enabled=false};
-		bc.enableInput=function(){bc.enabled=true};
+		//	disable/enable all inputs from keyboard/mouse
+		bc.setEnabled=function(en){bc.enabled=en};
 
 		// setup event listener
 		BoardController.addInputCallbacks(bc);
@@ -24,6 +22,8 @@ var BoardController={
 
 	/* ------- Implementation ------- */
 	onMouseEvent: function(bc, type, pos){
+		if(!bc.enabled)
+			return;
 		if(type==="up"){
 			bc.modelView.cameraCenterOn(bc.modelView.hitTest(pos.x,pos.y));
 		}else if(type==="down"){
@@ -32,12 +32,28 @@ var BoardController={
 			console.assert(false);
 		}
 	},
+
 	onKeyboardEvent: function(bc, type, key){
-		if(type==="up"){
-
-		}else if(type==="down"){
-
-		}else{
+		if(!bc.enabled)
+			return;
+		if(key==="E" && type==="up"){
+			var curLevel=bc.modelView.currentZoomLevel-1;
+			if(curLevel<0) curLevel=0;
+			bc.modelView.cameraZoomAt(curLevel);			
+		}else if(key==="Q" && type==="up"){
+            var curLevel=bc.modelView.currentZoomLevel+1;
+            if(curLevel>=Board.zoomLevelList.length) curLevel=Board.zoomLevelList.length-1;
+            bc.modelView.cameraZoomAt(curLevel);
+		}else if(key==="W" && type==="up"){
+            bc.modelView.cameraMoveBy(0,-100);
+		}else if(key==="S" && type==="up"){
+			bc.modelView.cameraMoveBy(0,100);
+		}else if(key==="A" && type==="up"){
+			bc.modelView.cameraMoveBy(-150,0);
+		}else if(key==="D" && type==="up"){
+			bc.modelView.cameraMoveBy(150,0);
+		}
+		else{
 			console.assert(false);
 		}
 	},
@@ -49,48 +65,25 @@ var BoardController={
 		MainGame.game.input.onUp.add(function(pos){BoardController.onMouseEvent(bc,"up",pos)});
 		MainGame.game.input.onDown.add(function(pos){BoardController.onMouseEvent(bc,"down",pos)});
 
-		// E == zoom out
-
-		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.E).onUp.add(function(){
-			if(!bc.enabled) return;
-			var curLevel=bc.modelView.currentZoomLevel-1;
-			if(curLevel<0) curLevel=0;
-			bc.modelView.cameraZoomAt(curLevel);
-		});
-		// Q == zoom in
-        MainGame.game.input.keyboard.addKey(Phaser.Keyboard.Q).onUp.add(function(){
-        	if(!bc.enabled) return;
-            var curLevel=bc.modelView.currentZoomLevel+1;
-            if(curLevel>=Board.zoomLevelList.length) curLevel=Board.zoomLevelList.length-1;
-            bc.modelView.cameraZoomAt(curLevel);
-        });
-
-        // WSAD == move camera
-        var keyboardW=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
-        keyboardW.onDown.add(function(){
-        	if(!bc.enabled) return;
-            bc.modelView.cameraMoveBy(0,-100);
-        });
-        var keyboardS=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.S);
-        keyboardS.onDown.add(function(){
-        	if(!bc.enabled) return;
-            bc.modelView.cameraMoveBy(0,100);
-        });
-        var keyboardA=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.A);
-        keyboardA.onDown.add(function(){
-        	if(!bc.enabled) return;
-            bc.modelView.cameraMoveBy(-150,0);
-        });
-        var keyboardD=MainGame.game.input.keyboard.addKey(Phaser.Keyboard.D);
-        keyboardD.onDown.add(function(){
-        	if(!bc.enabled) return;
-            bc.modelView.cameraMoveBy(150,0);
-        });
+		// Keyboard
+		//	E
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.E).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","E")});
+		//	Q
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.Q).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","Q")});
+		//	W
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.W).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","W")});
+		//	S
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.S).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","S")});
+		//	A
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.A).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","A")});
+		//	D
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.D).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","D")});
 
 	},
-	removeInputCallbacks: function(bc){
-		// remove mouse
-		MainGame.game.input.onDown
-	},
-
 };
