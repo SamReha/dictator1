@@ -11,7 +11,7 @@ var Building = {
         }
     },
     createNew: function(data){
-        console.log("[Building] createNew, the building's textureKey must be name+level.");
+        //console.log("[Building] createNew, the building's textureKey must be name+level.");
 
         // load building data (first time only)
         Building.loadBuildingData();

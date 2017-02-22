@@ -61,10 +61,11 @@ var BoardController={
 
 	addInputCallbacks: function(bc){
 		/* global MainGame */
-		
-		// Mouse Click == Center on that tile		
-		MainGame.game.input.onUp.add(function(pos){BoardController.onMouseEvent(bc,"up",pos)},null,-1);
-		MainGame.game.input.onDown.add(function(pos){BoardController.onMouseEvent(bc,"down",pos)},null,-1);
+		bc.modelView.inputEnabled=true;
+        bc.modelView.input.priorityID = 0;
+
+        // Mouse Input
+        bc.modelView.events.onInputDown.add(function(pos){BoardController.onMouseEvent(bc,"up",pos)});		
 
 		// Keyboard
 		//	E

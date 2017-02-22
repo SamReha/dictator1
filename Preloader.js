@@ -1,39 +1,52 @@
 var Preloader={
-    preload: function(g){
+    preload: function(g) {
+        var imageDir = 'images/';
+
         // Builings
-        g.load.image('apartment1', 'images/buildings/apartments.png');
-        g.load.image('arableFarm1', 'images/buildings/arableFarm.png');
-        g.load.image('armyBase1', 'images/buildings/armyBase.png');
-        g.load.image('factory1', 'images/buildings/factory.png');
-        g.load.image('hospital1', 'images/buildings/hospital.png');
-        g.load.image('lumberYard1', 'images/buildings/lumberYard.png');
-        g.load.image('mansion1', 'images/buildings/mansion.png');                
-        g.load.image('palace1', 'images/buildings/palace.png');
-        g.load.image('road1', 'images/buildings/road.png');
-        g.load.image('school1','images/buildings/school.png');
-        g.load.image('shanty1', 'images/buildings/shanties.png');
-        g.load.image('weakFarm1', 'images/buildings/weakFarm.png');
+        var buildingDir = imageDir + 'buildings/';
+        g.load.image('apartment1',  buildingDir + 'apartments.png');
+        g.load.image('arableFarm1', buildingDir + 'arableFarm.png');
+        g.load.image('armyBase1',   buildingDir + 'armyBase.png');
+        g.load.image('factory1',    buildingDir + 'factory.png');
+        g.load.image('hospital1',   buildingDir + 'hospital.png');
+        g.load.image('lumberYard1', buildingDir + 'lumberYard.png');
+        g.load.image('mansion1',    buildingDir + 'mansion.png');                
+        g.load.image('palace1',     buildingDir + 'palace.png');
+        g.load.image('road1',       buildingDir + 'road.png');
+        g.load.image('school1',     buildingDir + 'school.png');
+        g.load.image('shanty1',     buildingDir + 'shanties.png');
+        g.load.image('weakFarm1',   buildingDir + 'weakFarm.png');
 
         // Resources
-        g.load.image('forest', 'images/resources/forest.png');
-        g.load.image('oil', 'images/resources/oil.png');
+        var resourceDir = imageDir + 'resources/';
+        g.load.image('forest', resourceDir + 'forest.png');
+        g.load.image('oil',    resourceDir + 'oil.png');
         
         // Terrain
-        g.load.image('coast', 'images/terrains/coast_tile.png');
-        g.load.image('desert', 'images/terrains/desert_tile.png');
-        g.load.image('grass', 'images/terrains/grass_tile.png');
-        g.load.image('mountain', 'images/terrains/mountain_tile.png');
-        g.load.image('water', 'images/terrains/water_tile.png');
+        var resourceDir = imageDir + 'terrains/';
+        g.load.image('coast',    resourceDir + 'coast_tile.png');
+        g.load.image('desert',   resourceDir + 'desert_tile.png');
+        g.load.image('grass',    resourceDir + 'grass_tile.png');
+        g.load.image('mountain', resourceDir + 'mountain_tile.png');
+        g.load.image('water',    resourceDir + 'water_tile.png');
 
         // load ui assets
-        g.load.spritesheet('buttonSprite', 'images/ui/button_spritesheet.png', 128, 48, 4);
-        g.load.image('grpBldInfo', 'images/ui/grpBldInfo.png');
-        g.load.spritesheet('btnHire', 'images/ui/btnHire.png', 64, 20, 4);
-        g.load.spritesheet('btnFire', 'images/ui/btnFire.png', 64, 20, 4);
-        g.load.spritesheet('btnNextTurn', 'images/ui/btnNextTurn.png', 64, 20, 4);
-        g.load.image('grpBuildMenu', 'images/ui/grpBuildMenu.png');
-        g.load.image('grpStatsMenu', 'images/ui/grpStatsMenu.png');
-        g.load.image('topBar','images/ui/topBar.png');
+        var uiDir = imageDir + 'ui/';
+        g.load.image('grpBldInfo',           uiDir + 'grpBldInfo.png');
+        g.load.image('grpBuildMenu',         uiDir + 'grpBuildMenu.png');
+        g.load.image('grpStatsMenu',         uiDir + 'grpStatsMenu.png');
+        g.load.image('topBar',               uiDir + 'topBar.png');
+        g.load.image('tile_hover_backpanel', uiDir + 'tile_hover_backpanel.png');
+
+        //// load button spritesheets
+        var buttonDir = uiDir + 'buttons/';
+        g.load.spritesheet('btnHire',              buttonDir + 'btnHire.png', 64, 20, 4);
+        g.load.spritesheet('btnFire',              buttonDir + 'btnFire.png', 64, 20, 4);
+        g.load.spritesheet('btnNextTurn',          buttonDir + 'btnNextTurn.png', 64, 20, 4);
+        g.load.spritesheet('buttonSprite',         buttonDir + 'button_spritesheet.png', 128, 48, 4);
+        g.load.spritesheet('small_generic_button', buttonDir + 'small_generic_button.png', 120, 48, 3);
+        g.load.spritesheet('med_generic_button',   buttonDir + 'med_generic_button.png', 144, 80, 3);
+        g.load.spritesheet('large_generic_button', buttonDir + 'large_generic_button.png', 240, 96, 3);
         
         // load json files
         g.load.json('stage1','stage1.json');

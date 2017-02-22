@@ -62,7 +62,7 @@ var MainGame={
         MainGame.population=Population.createNew(stageMain.population);
 
         /*global MapSelector*/
-        MainGame.mapSelector=MapSelector.createNew();
+        MainGame.mapSelector = MapSelector.createNew();
 
         /*global Hud*/
         MainGame.hud = Hud.createNew();

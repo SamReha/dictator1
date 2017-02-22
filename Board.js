@@ -49,7 +49,7 @@ var Board={
     // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
         // create the board
-        var board=MainGame.game.add.group();
+        var board = MainGame.game.add.sprite(0, 0);
         // decode JSON
         var data=JSON.parse(json);
 
@@ -59,6 +59,8 @@ var Board={
         board.tileWidth=data.tileWidth;
         board.currentScale=1.0;
         board.currentZoomLevel=Board.defaultZoomLevel;
+        // maybe removed in the future
+        board._offset={x:0,y:0};
 
         // Class funcs
         // returns the JSON string representation
@@ -73,6 +75,8 @@ var Board={
         board.tileCount=function(){return board.gridWidth*board.gridHeight};
         // returns the (gx,gy) of i
         board.xyOf=function(i){return Board.xyOf(board,i)};
+        // Returns the index of the tile present at the given x,y pair
+        board.iOfxy = function(x, y) { return 0; };
         // returns the *relative* rect of i (relative==assuming the left-top of board is {0,0})
         board.rectOf=function(i,scale){return Board.rectOf(board,i,scale)};
         // returns the index of (x,y); nullable
@@ -366,6 +370,8 @@ var Board={
 
     // let camera move (x,y)
     cameraMoveBy: function(b,x,y){
+        b._offset.x+=x;
+        b._offset.y+=y;
         b.x-=x;
         b.y-=y;
     },
@@ -387,6 +393,8 @@ var Board={
         // console.log("Center of camera:",screenCenter);
 
         // set offset of the board
+        b._offset.x+=b.x-(screenCenter.x-center_i.x);
+        b._offset.y+=b.y-(screenCenter.y-center_i.y);
         b.x=(screenCenter.x-center_i.x);
         b.y=(screenCenter.y-center_i.y);
         // console.log("Now, board's x and y:",b.x,b.y);
@@ -418,6 +426,8 @@ var Board={
         b.currentScale=zoom;
 
         // 3. reset (x,y) according to the anchor point
+        b._offset.x+=b.x-(MainGame.game.camera.width*0.5-anchor.x*b.width);
+        b._offset.y+=b.y-(MainGame.game.camera.height*0.5-anchor.y*b.height);
         b.x=MainGame.game.camera.width*0.5-anchor.x*b.width;
         b.y=MainGame.game.camera.height*0.5-anchor.y*b.height;
         // console.log("new xy is:",b.x,b.y);
