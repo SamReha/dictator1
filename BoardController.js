@@ -28,11 +28,11 @@ var BoardController={
 			return;
 		// get the rel pos
 		var globalPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
-		var relPos={x:globalPos.x-bc.modelView.x, y:globalPos.y-bc.modelView.y};
-		console.log("RelPos is:",relPos);
+		var localPos={x:globalPos.x-bc.modelView.x, y:globalPos.y-bc.modelView.y};
 		// event processing
 		if(type==="up"){
-			var i=Board.hitTest(bc.modelView, globalPos.x, globalPos.y);
+			// call hitTest() and set isLocal to true
+			var i=Board.hitTest(bc.modelView, localPos.x, localPos.y, true);
 			bc.modelView.cameraCenterOn(i);
 		}else if(type==="down"){
 
