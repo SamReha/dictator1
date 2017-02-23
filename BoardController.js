@@ -22,7 +22,7 @@ var BoardController={
 	},
 
 	/* ------- Implementation ------- */
-	onMouseEvent: function(bc, type){
+	onMouseEvent: function(bc, type, arg){
 		// check if bc is enabled
 		if(!bc.enabled)
 			return;
@@ -36,9 +36,20 @@ var BoardController={
 			bc.modelView.cameraCenterOn(i);
 		}else if(type==="down"){
 
-		}else{
+		}else if(type==="over"){
+			console.log("Input Over:",arg);
+		}else if(type==="out"){
+			console.log("Input Out:",arg);
+		}
+		else{
 			console.assert(false);
 		}
+	},
+	updateTileInfo: function(bc){
+		var globalPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
+		var localPos={x:globalPos.x-bc.modelView.x, y:globalPos.y-bc.modelView.y};
+
+		console.log("Now update tile info:", globalPos, localPos);
 	},
 
 	onKeyboardEvent: function(bc, type, key){
@@ -73,6 +84,26 @@ var BoardController={
 
         // Mouse Input
         bc.modelView.events.onInputUp.add(function(){BoardController.onMouseEvent(bc,"up")});
+        // bc.modelView.events.onInputOver.add(function(){BoardController.onMouseEvent(bc,"over")});
+        // bc.modelView.events.onInputOut.add(function(){BoardController.onMouseEvent(bc,"out")});
+        function createFunc(index, isInputOver){
+        	return function(){BoardController.onMouseEvent(bc,isInputOver?"over":"out",index)};
+        }
+        var tileCount=bc.modelView.tileCount();
+        var inputOverCallbacks=[];
+        var inputOutCallbacks=[];
+        for(var i=0;i<tileCount;i++){
+        	inputOverCallbacks[i]=createFunc(i, true);
+        	inputOutCallbacks[i]=createFunc(i, false);
+        }
+        for(var j=0;j<tileCount;j++){
+        	var tile=bc.modelView.at(j);
+        	tile.inputEnabled=true;
+        	tile.input.priorityID=1;
+        	tile.events.onInputOver.add(inputOverCallbacks[j]);
+        	tile.events.onInputOut.add(inputOutCallbacks[j]);
+        }
+
 
 		// Keyboard
 		//	E

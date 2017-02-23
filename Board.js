@@ -4,13 +4,15 @@ var Tile={
     fromJSON: function(json){
         // create the tile
         /*global MainGame*/
-        var tile=MainGame.game.make.group();
+        var tile=MainGame.game.make.sprite(0,0);
         // decode json
         var data=JSON.parse(json);
 
         // Class members
-        tile.terrain=tile.create(0,0,data.terrain);
-        tile.res=tile.create(0,0,data.res);
+        tile.terrain=MainGame.game.make.sprite(0,0,data.terrain);
+        tile.addChild(tile.terrain);
+        tile.res=MainGame.game.make.sprite(0,0,data.res);
+        tile.addChild(tile.res);
         /* global Building*/
         tile.building=Building.createNew(data.building);
         tile.addChild(tile.building);
@@ -102,9 +104,6 @@ var Board={
         // let camera move by (x,y)
         board.cameraMoveBy=function(x,y){return Board.cameraMoveBy(board,x,y)};
 
-        // create the Controller
-        board.controller=BoardController.createNew(board);
-
         // init tiles
         var tileData=data.tiles;
         var N=board.gridWidth*board.gridHeight;
@@ -117,6 +116,9 @@ var Board={
             oneTile.y=rect.y;
             board.addChild(oneTile);
         }
+
+        // create the Controller
+        board.controller=BoardController.createNew(board);
 
         return board;
     },
