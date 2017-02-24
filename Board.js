@@ -378,6 +378,9 @@ var Board={
         b._offset.y+=y;
         b.x-=x;
         b.y-=y;
+
+        /*global MainGame*/
+        MainGame.mapSelector.positionBuildingDetail(b);
     },
 
     // let camera center on i
@@ -402,6 +405,9 @@ var Board={
         b.x=(screenCenter.x-center_i.x);
         b.y=(screenCenter.y-center_i.y);
         // console.log("Now, board's x and y:",b.x,b.y);
+
+        /*global MainGame*/
+        MainGame.mapSelector.positionBuildingDetail(b);
     },
 
     // let camera zoom at zoom
@@ -435,5 +441,8 @@ var Board={
         b.x=MainGame.game.camera.width*0.5-anchor.x*b.width;
         b.y=MainGame.game.camera.height*0.5-anchor.y*b.height;
         // console.log("new xy is:",b.x,b.y);
+        
+        /*global MainGame*/
+        MainGame.mapSelector.positionBuildingDetail(b);
     },
 };

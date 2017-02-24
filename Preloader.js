@@ -37,6 +37,7 @@ var Preloader={
         g.load.image('grpStatsMenu',         uiDir + 'grpStatsMenu.png');
         g.load.image('topBar',               uiDir + 'topBar.png');
         g.load.image('tile_hover_backpanel', uiDir + 'tile_hover_backpanel.png');
+        g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png')
         g.load.image('flag_background',      uiDir + 'flag_background.png');
 
         //// load button spritesheets
