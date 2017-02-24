@@ -12,6 +12,7 @@ var Tile={
         tile.terrain=MainGame.game.make.sprite(0,0,data.terrain);
         tile.addChild(tile.terrain);
         tile.res=MainGame.game.make.sprite(0,0,data.res);
+        tile.resType=data.res;
         tile.addChild(tile.res);
         /* global Building*/
         tile.building=Building.createNew(data.building);
@@ -19,6 +20,7 @@ var Tile={
 
         // Class funcs
         tile.getTerrain=function(){return tile.terrain};
+        tile.getResType=function(){return tile.resType};
         tile.getRes=function(){return tile.res};
         tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
         tile.getBuilding=function(){return tile.building};

@@ -325,13 +325,10 @@ var MapSelector = {
         ms.curIndex = -1;
         ms.activeIndex = null;
         // ms.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, ms, ms);
-        ms.tileInfo = MapSelector.makeTileInfo(ms);
         ms.buildingDetail = MapSelector.makeBuildingDetail(ms);
-        ms.addChild(ms.tileInfo);
         ms.addChild(ms.buildingDetail);
 
         // Class funcs
-        ms.updateTileInfo = function(tileIndex) {MapSelector.updateTileInfo(ms,tileIndex)};
         ms.updateBuildingDetail = function(tileIndex) {MapSelector.updateBuildingDetail(ms,tileIndex)};
         ms.positionBuildingDetail = function(b) {MapSelector.positionBuildingDetail(ms,b)};
         // ms.updateAll = function() {MapSelector.updateAll(ms)};
@@ -340,37 +337,6 @@ var MapSelector = {
         // MainGame.game.input.onDown.add(ms.clickHandler, ms, ms, MainGame.game.input.activePointer);
 
         return ms;
-    },
-
-    makeTileInfo: function(ms) {
-        var bInfo = MainGame.game.make.group();
-        // Test text style
-        //var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, align: "center", backgroundColor: "#ffff00 " };
-        var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" };
-
-        // bg (the grad)
-        bInfo.bg = MainGame.game.make.sprite(0, 0, 'tile_hover_backpanel');
-        //bInfo.bg.anchor.x = 0.5;
-        //bInfo.bg.anchor.y = 0.5;
-        bInfo.addChild(bInfo.bg);
-
-        var labelX = Math.floor(bInfo.bg.texture.width / 2);
-        var labelY = Math.floor(bInfo.bg.texture.height / 2);
-
-        // label (bld name/lv)
-        bInfo.label = MainGame.game.make.text(labelX, labelY - 20, "", style, bInfo);
-        bInfo.label.anchor.x = 0.5;
-        bInfo.label.anchor.y = 0.5;
-        bInfo.addChild(bInfo.label);
-
-        // label2 (people)
-        bInfo.label2 = MainGame.game.make.text(labelX, labelY + 30, "", style, bInfo);
-        bInfo.label2.anchor.x = 0.5;
-        bInfo.label2.anchor.y = 0.5;
-        bInfo.addChild(bInfo.label2);
-
-        bInfo.visible = false;
-        return bInfo;
     },
 
     makeBuildingDetail: function(ms) {
@@ -520,67 +486,6 @@ var MapSelector = {
         return buildingDetail;
     },
 
-    // updateAll: function(ms) {
-    //     ms.updateTileInfo(ms);
-    //     ms.updateBuildingDetail(ms);
-    // },
-
-    updateTileInfo: function(ms, tileIndex) {
-        ms.tileInfo.visible = true;
-
-        // var mouseX = MainGame.game.input.x;
-        // var mouseY = MainGame.game.input.y;
-        // var tileIndex = MainGame.board.hitTest(mouseX, mouseY);
-        // var tileIndex = MainGame.board.iOfxy(mouseX, mouseY);
-
-        // If we have a null index, then the mouse is not over a tile
-        if (tileIndex===null) {
-            ms.tileInfo.visible=false;
-            return;
-        }
-
-        // If we're already looking at this index, do nothing.
-        if (ms.curIndex===tileIndex) {
-            return;
-        }
-        ms.curIndex=tileIndex;
-
-        if (ms.curIndex===ms.activeIndex){
-            ms.tileInfo.visible=false;
-            return;
-        }
-
-        /*global MainGame*/
-        var b = MainGame.board;
-        var tile=b.at(tileIndex);
-        var bld=tile.getBuilding();
-
-        // Let's figure out what kind of info we need to display
-        var displayName = '';
-
-        // If this tile has no building, display terrain info
-        if (bld === null || bld.isEmpty()) {
-            // If this terrain has a natural resource, display that, otherwise display the terrain name
-            displayName = tile.getRes().key === '__default' ? tile.terrain.key : tile.getRes().key;
-
-            ms.tileInfo.label2.text = ''; // Make sure this text gets cleared if it's not going to be used
-        } else {
-            displayName = bld.name;// + " Lv"+bld.level;
-
-            // Most buildings can contain people, but some (like roads) cannot. Be sure to correct for that.
-            if (bld.subtype === 'road') {
-                ms.tileInfo.label2.text = '';
-            } else {
-                ms.tileInfo.label2.text = "People: " + bld.people + "/" + bld.maxPeople;
-            }
-        }
-
-        ms.tileInfo.label.text = displayName;
-        var rect = b.rectOf(tileIndex,b.currentScale);
-        ms.tileInfo.x = rect.x-b._offset.x;
-        ms.tileInfo.y = rect.y-b._offset.y;
-        ms.tileInfo.scale.set(b.currentScale);
-    },
 
     updateBuildingDetail: function(ms, tileIndex) {
         ms.buildingDetail.visible = true;

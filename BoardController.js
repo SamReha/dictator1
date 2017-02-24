@@ -6,9 +6,11 @@ var BoardController={
 		// create the instance
 		var bc={};
 
-		bc.modelView=board;		
+		bc.modelView=board;
 		bc.enabled=true;
 		bc.mouseTimer=MainGame.game.time.create(false);
+		bc.briefView=null;
+		bc.detailView=null;
 
 /////////////////////////////////////////////////////////////
 		// Class funcs
@@ -39,8 +41,7 @@ var BoardController={
 			// for a click: center the map with index [arg]. 
 			if(!bc.mouseTimer._isDrag_){				
 				bc.modelView.cameraCenterOn(arg);
-				BoardController.showTileDetail(bc);
-				// MainGame.mapSelector.updateBuildingDetail(arg);
+				BoardController.showTileDetail(bc, arg);
 			}
 			bc.mouseTimer._isDrag_=false;
 		}else if(type==="down"){
@@ -52,7 +53,6 @@ var BoardController={
 			bc.mouseTimer._boardPos_={x:bc.modelView.x, y:bc.modelView.y};
 			// start the timer!
 			bc.mouseTimer.loop(100, function(){
-				console.log("Mousetimer running!");
 				var newPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
 				if(Math.abs(newPos.x-bc.mouseTimer._startPos_.x)>10 || Math.abs(newPos.y-bc.mouseTimer._startPos_.y)>10){
 					bc.mouseTimer._isDrag_=true;
@@ -64,8 +64,7 @@ var BoardController={
 			});
 			bc.mouseTimer.start();
 		}else if(type==="over"){
-			BoardController.showTileBrief(bc);
-			// MainGame.mapSelector.updateTileInfo(arg);
+			BoardController.showTileBrief(bc, arg);
 		}else if(type==="out"){
 			BoardController.hideTileBrief(bc);
 		}
@@ -74,17 +73,52 @@ var BoardController={
 		}
 	},
 
-	showTileBrief: function(bc, index){
-		console.log("Now showHide tile info:");
+	showTileBrief: function(bc, index){		
+		console.log("Now show tile brief:"+index);
+		/* global TileBriefInfoView */
+		if(index===null || index===undefined)
+			return;
+		if(bc.briefView){
+			bc.briefView.destroy();
+			bc.briefView=null;
+		}
+		var tile=bc.modelView.at(index);
+		console.assert(tile);
+		bc.briefView=TileBriefInfoView.createNew();
+		bc.briefView.updateInfo(tile);
+		bc.briefView.x=bc.modelView.x+tile.x*bc.modelView.currentScale;
+		bc.briefView.y=bc.modelView.y+tile.y*bc.modelView.currentScale;
 	},
 	hideTileBrief: function(bc){
-
+		console.log("Now hide tile brief");
+		if(bc.briefView){
+			bc.briefView.destroy();
+			bc.briefView=null;
+		}
 	},
 	showTileDetail: function(bc, index){
-		console.log("Now showHide tile detail:");
+		console.log("Now show tile detail:"+index);
+		/* global TileDetailInfoView */
+		if(index===null || index===undefined)
+			return;
+		if(bc.detailView){
+			bc.detailView.destroy();
+			bc.detailView=null;
+		}
+		var tile=bc.modelView.at(index);
+		console.assert(tile);
+		bc.detailView=TileDetailInfoView.createNew(index);
+		bc.detailView.updateInfo(tile);
+		var globalPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
+		bc.detailView.x=bc.modelView.x+tile.x*bc.modelView.currentScale;
+		bc.detailView.y=bc.modelView.y+tile.y*bc.modelView.currentScale;
 	},
 	hideTileDetail: function(bc, index){
-
+		console.log("Now hide tile detail");
+		if(bc.detailView){
+			bc.detailView.destroy();
+			bc.detailView=null;
+		}
 	},
 
 	onKeyboardEvent: function(bc, type, key){
