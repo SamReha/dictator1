@@ -2,11 +2,13 @@
 
 var BoardController={	
 	createNew: function(board){
+		/* global MainGame */
 		// create the instance
 		var bc={};
 
 		bc.modelView=board;		
 		bc.enabled=true;
+		bc.mouseTimer=MainGame.game.time.create(false);
 
 /////////////////////////////////////////////////////////////
 		// Class funcs
@@ -23,6 +25,7 @@ var BoardController={
 
 	/* ------- Implementation ------- */
 	onMouseEvent: function(bc, type, arg){
+		/* global MainGame */
 		// check if bc is enabled
 		if(!bc.enabled)
 			return;
@@ -31,31 +34,57 @@ var BoardController={
 		var localPos={x:globalPos.x-bc.modelView.x, y:globalPos.y-bc.modelView.y};
 		// event processing
 		if(type==="up"){
-			// call hitTest() and set isLocal to true
-			console.log("up");
-			// var i=Board.hitTest(bc.modelView, localPos.x, localPos.y, true);
-			// bc.modelView.cameraCenterOn(i);
-			bc.modelView.cameraCenterOn(arg);
-			/*global MainGame*/
-			MainGame.mapSelector.updateBuildingDetail(arg);
+			// end the timer
+			bc.mouseTimer.stop();
+			// for a click: center the map with index [arg]. 
+			if(!bc.mouseTimer._isDrag_){				
+				bc.modelView.cameraCenterOn(arg);
+				BoardController.showTileDetail(bc);
+				// MainGame.mapSelector.updateBuildingDetail(arg);
+			}
+			bc.mouseTimer._isDrag_=false;
 		}else if(type==="down"){
-
+			// hide tile brief/detail
+			BoardController.hideTileBrief(bc);
+			BoardController.hideTileDetail(bc);
+			// set the current mouse pos of mouseTimer!
+			bc.mouseTimer._startPos_={x:globalPos.x, y:globalPos.y};
+			bc.mouseTimer._boardPos_={x:bc.modelView.x, y:bc.modelView.y};
+			// start the timer!
+			bc.mouseTimer.loop(100, function(){
+				console.log("Mousetimer running!");
+				var newPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
+				if(Math.abs(newPos.x-bc.mouseTimer._startPos_.x)>10 || Math.abs(newPos.y-bc.mouseTimer._startPos_.y)>10){
+					bc.mouseTimer._isDrag_=true;
+				}
+				if(bc.mouseTimer._isDrag_){
+					bc.modelView.x=bc.mouseTimer._boardPos_.x+(newPos.x-bc.mouseTimer._startPos_.x);
+					bc.modelView.y=bc.mouseTimer._boardPos_.y+(newPos.y-bc.mouseTimer._startPos_.y);
+				}
+			});
+			bc.mouseTimer.start();
 		}else if(type==="over"){
-			// console.log("Input Over:",arg);
-			/*global MainGame*/
-			MainGame.mapSelector.updateTileInfo(arg);
+			BoardController.showTileBrief(bc);
+			// MainGame.mapSelector.updateTileInfo(arg);
 		}else if(type==="out"){
-			// console.log("Input Out:",arg);
+			BoardController.hideTileBrief(bc);
 		}
 		else{
 			console.assert(false);
 		}
 	},
-	updateTileInfo: function(bc){
-		var globalPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
-		var localPos={x:globalPos.x-bc.modelView.x, y:globalPos.y-bc.modelView.y};
 
-		console.log("Now update tile info:", globalPos, localPos);
+	showTileBrief: function(bc, index){
+		console.log("Now showHide tile info:");
+	},
+	hideTileBrief: function(bc){
+
+	},
+	showTileDetail: function(bc, index){
+		console.log("Now showHide tile detail:");
+	},
+	hideTileDetail: function(bc, index){
+
 	},
 
 	onKeyboardEvent: function(bc, type, key){
@@ -84,36 +113,29 @@ var BoardController={
 	},
 
 	addInputCallbacks: function(bc){
-		/* global MainGame */
-		bc.modelView.inputEnabled=true;
-        bc.modelView.input.priorityID = 0;
-
         // Mouse Input
         var inputUpCallbacks=[];
+        var inputDownCallbacks=[];
         var inputOverCallbacks=[];
         var inputOutCallbacks=[];
-
-        // bc.modelView.events.onInputUp.add(function(){BoardController.onMouseEvent(bc,"up")});
-        // bc.modelView.events.onInputOver.add(function(){BoardController.onMouseEvent(bc,"over")});
-        // bc.modelView.events.onInputOut.add(function(){BoardController.onMouseEvent(bc,"out")});
+        var tileCount=bc.modelView.tileCount();
         function createFunc(index, type){
         	return function(){BoardController.onMouseEvent(bc,type,index)};
         }
-        var tileCount=bc.modelView.tileCount();
         for(var i=0;i<tileCount;i++){
         	inputUpCallbacks[i]=createFunc(i, "up");
+        	inputDownCallbacks[i]=createFunc(i, "down");
         	inputOverCallbacks[i]=createFunc(i, "over");
         	inputOutCallbacks[i]=createFunc(i, "out");
         }
         for(var j=0;j<tileCount;j++){
         	var tile=bc.modelView.at(j);
         	tile.inputEnabled=true;
-        	tile.input.priorityID=1;
         	tile.events.onInputUp.add(inputUpCallbacks[j]);
+        	tile.events.onInputDown.add(inputDownCallbacks[j]);
         	tile.events.onInputOver.add(inputOverCallbacks[j]);
         	tile.events.onInputOut.add(inputOutCallbacks[j]);
         }
-
 
 		// Keyboard
 		//	E
