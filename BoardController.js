@@ -32,14 +32,19 @@ var BoardController={
 		// event processing
 		if(type==="up"){
 			// call hitTest() and set isLocal to true
+			console.log("up");
 			var i=Board.hitTest(bc.modelView, localPos.x, localPos.y, true);
 			bc.modelView.cameraCenterOn(i);
+			/*global MainGame*/
+			MainGame.mapSelector.updateBuildingDetail(arg);
 		}else if(type==="down"){
 
 		}else if(type==="over"){
-			console.log("Input Over:",arg);
+			// console.log("Input Over:",arg);
+			/*global MainGame*/
+			MainGame.mapSelector.updateTileInfo(arg);
 		}else if(type==="out"){
-			console.log("Input Out:",arg);
+			// console.log("Input Out:",arg);
 		}
 		else{
 			console.assert(false);

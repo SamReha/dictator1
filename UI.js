@@ -4,6 +4,7 @@
 
 var Hud = {
     styleNormal: {font:"32px myKaiti", fill:"#ffffff"},
+    styleButton: {font:"32px myKaiti", fill:"#000000"},
 
     createNew: function() {
 
@@ -33,6 +34,10 @@ var Hud = {
         btnExit.name = 'Exit Button';
         hud.addChild(btnExit);
 
+        var btnExitText = MainGame.game.make.text(0, 0, 'Exit', Hud.styleButton);
+        btnExit.addChild(btnExitText);
+
+
         // "Next Turn" button
         var btnNextTurn=MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
             MainGame.nextTurn, MainGame, 0, 1, 2, 2);
@@ -40,6 +45,11 @@ var Hud = {
         btnNextTurn.anchor.x = 1;
         btnNextTurn.anchor.y = 1;
         hud.addChild(btnNextTurn);
+
+        var btnNextTurnText=MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
+        btnNextTurnText.anchor.x = 1;
+        btnNextTurnText.anchor.y = 1;
+        btnNextTurn.addChild(btnNextTurnText);
 
         // Group2: Build
         var buildGroup=MainGame.game.make.group();
@@ -303,19 +313,20 @@ var MapSelector = {
         // Class vars
         ms.name = "MapSelector";
         ms.curIndex = -1;
-        ms.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, ms, ms);
+        ms.activeIndex = null;
+        // ms.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, ms, ms);
         ms.tileInfo = MapSelector.makeTileInfo(ms);
         ms.buildingDetail = MapSelector.makeBuildingDetail(ms);
         ms.addChild(ms.tileInfo);
         ms.addChild(ms.buildingDetail);
 
         // Class funcs
-        ms.updateTileInfo = function() {MapSelector.updateTileInfo(ms)};
-        ms.updateBuildingDetail = function() {MapSelector.updateBuildingDetail(ms)};
-        ms.updateAll = function() {MapSelector.updateAll(ms)};
-        ms.clickHandler = function(activePointer) { MapSelector.clickHandler(ms, activePointer); };
+        ms.updateTileInfo = function(tileIndex) {MapSelector.updateTileInfo(ms,tileIndex)};
+        ms.updateBuildingDetail = function(tileIndex) {MapSelector.updateBuildingDetail(ms,tileIndex)};
+        // ms.updateAll = function() {MapSelector.updateAll(ms)};
+        // ms.clickHandler = function(activePointer) { MapSelector.clickHandler(ms, activePointer); };
 
-        MainGame.game.input.onDown.add(ms.clickHandler, ms, ms, MainGame.game.input.activePointer);
+        // MainGame.game.input.onDown.add(ms.clickHandler, ms, ms, MainGame.game.input.activePointer);
 
         return ms;
     },
@@ -495,33 +506,39 @@ var MapSelector = {
         return buildingDetail;
     },
 
-    updateAll: function(ms) {
-        ms.updateTileInfo(ms);
-        ms.updateBuildingDetail(ms);
-    },
+    // updateAll: function(ms) {
+    //     ms.updateTileInfo(ms);
+    //     ms.updateBuildingDetail(ms);
+    // },
 
-    updateTileInfo: function(ms) {
+    updateTileInfo: function(ms, tileIndex) {
         ms.tileInfo.visible = true;
 
-        /*global MainGame*/
-        var mouseX = MainGame.game.input.x;
-        var mouseY = MainGame.game.input.y;
-        var index = MainGame.board.hitTest(mouseX, mouseY);
-        // var index = MainGame.board.iOfxy(mouseX, mouseY);
+        // var mouseX = MainGame.game.input.x;
+        // var mouseY = MainGame.game.input.y;
+        // var tileIndex = MainGame.board.hitTest(mouseX, mouseY);
+        // var tileIndex = MainGame.board.iOfxy(mouseX, mouseY);
 
         // If we have a null index, then the mouse is not over a tile
-        if (index===null) {
+        if (tileIndex===null) {
             ms.tileInfo.visible=false;
             return;
         }
 
         // If we're already looking at this index, do nothing.
-        if (ms.curIndex===index) {
+        if (ms.curIndex===tileIndex) {
             return;
         }
-        ms.curIndex=index;
+        ms.curIndex=tileIndex;
 
-        var tile=MainGame.board.at(index);
+        if (ms.curIndex===ms.activeIndex){
+            ms.tileInfo.visible=false;
+            return;
+        }
+
+        /*global MainGame*/
+        var b = MainGame.board;
+        var tile=b.at(tileIndex);
         var bld=tile.getBuilding();
 
         // Let's figure out what kind of info we need to display
@@ -541,6 +558,50 @@ var MapSelector = {
                 ms.tileInfo.label2.text = '';
             } else {
                 ms.tileInfo.label2.text = "People: " + bld.people + "/" + bld.maxPeople;
+            }
+        }
+
+        ms.tileInfo.label.text = displayName;
+        var rect = b.rectOf(tileIndex,b.currentScale);
+        ms.tileInfo.x = rect.x-b._offset.x;
+        ms.tileInfo.y = rect.y-b._offset.y;
+        ms.tileInfo.scale.set(b.currentScale);
+    },
+
+    updateBuildingDetail: function(ms, tileIndex) {
+        ms.buildingDetail.visible = true;
+
+        if(tileIndex===null){
+            ms.buildingDetail.visible = false;
+            return;
+        }
+
+        if(ms.activeIndex===tileIndex){
+            return;
+        }
+        ms.activeIndex=tileIndex;
+
+        var b = MainGame.board;
+        var tile = b.at(ms.activeIndex);
+        var bld = tile.getBuilding();
+
+        // Let's figure out what kind of info we need to display
+        var displayName = '';
+
+        // If this tile has no building, display terrain info
+        if (bld === null || bld.isEmpty()) {
+            // If this terrain has a natural resource, display that, otherwise display the terrain name
+            displayName = tile.getRes().key === '__default' ? tile.terrain.key : tile.getRes().key;
+
+            ms.buildingDetail.label2.text = ''; // Make sure this text gets cleared if it's not going to be used
+        } else {
+            displayName = bld.name;// + " Lv"+bld.level;
+
+            // Most buildings can contain people, but some (like roads) cannot. Be sure to correct for that.
+            if (bld.subtype === 'road') {
+                ms.buildingDetail.label2.text = '';
+            } else {
+                ms.buildingDetail.label2.text = "People: " + bld.people + "/" + bld.maxPeople;
             }
 
             // var str3="";
@@ -574,32 +635,41 @@ var MapSelector = {
             //         }
             //     }
             // }
-            // this.tileInfo.label3.text=str3;
-            // this.tileInfo.label4.text=str4;
-            // this.tileInfo.label5.text=str5;
+            // this.buildingDetail.label3.text=str3;
+            // this.buildingDetail.label4.text=str4;
+            // this.buildingDetail.label5.text=str5;
         }
 
-        ms.tileInfo.label.text = displayName;
-        var b = MainGame.board
-        var rect = b.rectOf(index,b.currentScale);
-        ms.tileInfo.x = rect.x-b._offset.x;
-        ms.tileInfo.y = rect.y-b._offset.y;
-        ms.tileInfo.scale.set(b.currentScale);
+        ms.buildingDetail.label.text = displayName;
+
+        var rect = b.rectOf(ms.activeIndex,b.currentScale);
+        ms.buildingDetail.x = rect.x-b._offset.x;
+        ms.buildingDetail.y = rect.y-b._offset.y;
+        ms.buildingDetail.scale.set(b.currentScale);
     },
 
-    updateBuildingDetail: function(ms) {
+    // clickHandler: function(ms, activePointer) {
+    //     var b = MainGame.board;
+    //     var index = MainGame.board.hitTest(activePointer.x, activePointer.y);
 
-    },
+    //     if(index===null){
+    //         ms.buildingDetail.visible = false;
+    //         return;
+    //     }
+    //     if(ms.activeIndex===index){
+    //         return;
+    //     }
+    //     ms.activeIndex = index;
 
-    clickHandler: function(ms, activePointer) {
-        var tile = MainGame.board.at(ms.curIndex);
-
-        if (tile.hasBuilding()) {
-            ms.buildingDetail.visible = !ms.buildingDetail.visible;
-        } else {
-            // Make sure the detail menu is hidden if the user is trying to click away
-            ms.buildingDetail.visible = false;
-        }
+    //     if (b.at(index).hasBuilding()) {
+    //         var rect = b.rectOf(ms.activeIndex,b.currentScale);
+    //         ms.buildingDetail.x = rect.x-b._offset.x;
+    //         ms.buildingDetail.y = rect.y-b._offset.y;
+    //         ms.buildingDetail.visible = true;
+    //     } else {
+    //         // Make sure the detail menu is hidden if the user is trying to click away
+    //         ms.buildingDetail.visible = false;
+    //     }
         
-    },
+    // },
 };
