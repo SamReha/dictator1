@@ -18,11 +18,17 @@ var Hud = {
         var topGroup=MainGame.game.add.group();
         topGroup.name="topGroup";
         hud.addChild(topGroup);
+
         //      top bar bg
         var topBg = topGroup.create(0,0,'topBar');
+
         //      global vars
         var topText = MainGame.game.make.text(140, 0, '', Hud.styleNormal);
         topGroup.addChild(topText);
+
+        //      Coalition Flag
+        topGroup.coalitionFlag = CoalitionFlag.createNew();
+        //topGroup.addChild(topGroup.coalitionFlag);
 
         // Have the top-bar text update itself every half second
         topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
@@ -326,7 +332,6 @@ var MapSelector = {
         ms.activeIndex = null;
         // ms.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, ms, ms);
         ms.buildingDetail = MapSelector.makeBuildingDetail(ms);
-        ms.addChild(ms.buildingDetail);
 
         // Class funcs
         ms.updateBuildingDetail = function(tileIndex) {MapSelector.updateBuildingDetail(ms,tileIndex)};

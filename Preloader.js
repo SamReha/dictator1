@@ -32,12 +32,13 @@ var Preloader={
 
         // load ui assets
         var uiDir = imageDir + 'ui/';
-        g.load.image('grpBldInfo',                  uiDir + 'grpBldInfo.png');
-        g.load.image('grpBuildMenu',                uiDir + 'grpBuildMenu.png');
-        g.load.image('grpStatsMenu',                uiDir + 'grpStatsMenu.png');
-        g.load.image('topBar',                      uiDir + 'topBar.png');
-        g.load.image('tile_hover_backpanel',        uiDir + 'tile_hover_backpanel.png');
-        g.load.image('building_detail_backpanel',   uiDir + 'building_detail_backpanel.png')
+        g.load.image('grpBldInfo',           uiDir + 'grpBldInfo.png');
+        g.load.image('grpBuildMenu',         uiDir + 'grpBuildMenu.png');
+        g.load.image('grpStatsMenu',         uiDir + 'grpStatsMenu.png');
+        g.load.image('topBar',               uiDir + 'topBar.png');
+        g.load.image('tile_hover_backpanel', uiDir + 'tile_hover_backpanel.png');
+        g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png')
+        g.load.image('flag_background',      uiDir + 'flag_background.png');
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
