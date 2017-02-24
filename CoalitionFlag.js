@@ -3,7 +3,7 @@ var CoalitionFlag = {
 		var coalitionFlag = MainGame.game.make.group();
 
 		// Properties
-		coalitionFlag.bannerSprite = MainGame.game.make.sprite();
+		coalitionFlag.bannerSprite = MainGame.game.make.sprite(0, 0, 'flag_background');
 		coalitionFlag.addChild(coalitionFlag.bannerSprite);
 
 		coalitionFlag.beauroGroup = MainGame.game.make.group();
