@@ -9,18 +9,23 @@ var Hud = {
 
         /*global MainGame*/
         var hud = MainGame.game.add.group();
-
         hud.name = "HUD"; // Useful for debugging
 
         // Group1: Top Stats
         var topGroup=MainGame.game.add.group();
         topGroup.name="topGroup";
         hud.addChild(topGroup);
+
         //      top bar bg
         var topBg = topGroup.create(0,0,'topBar');
+
         //      global vars
         var topText = MainGame.game.make.text(140, 0, '', Hud.styleNormal);
         topGroup.addChild(topText);
+
+        //      Coalition Flag
+        topGroup.coalitionFlag = CoalitionFlag.createNew();
+        topGroup.addChild(topGroup.coalitionFlag);
 
         // Have the top-bar text update itself every half second
         topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
