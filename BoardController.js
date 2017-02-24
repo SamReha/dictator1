@@ -33,8 +33,9 @@ var BoardController={
 		if(type==="up"){
 			// call hitTest() and set isLocal to true
 			console.log("up");
-			var i=Board.hitTest(bc.modelView, localPos.x, localPos.y, true);
-			bc.modelView.cameraCenterOn(i);
+			// var i=Board.hitTest(bc.modelView, localPos.x, localPos.y, true);
+			// bc.modelView.cameraCenterOn(i);
+			bc.modelView.cameraCenterOn(arg);
 			/*global MainGame*/
 			MainGame.mapSelector.updateBuildingDetail(arg);
 		}else if(type==="down"){
@@ -88,23 +89,27 @@ var BoardController={
         bc.modelView.input.priorityID = 0;
 
         // Mouse Input
-        bc.modelView.events.onInputUp.add(function(){BoardController.onMouseEvent(bc,"up")});
-        // bc.modelView.events.onInputOver.add(function(){BoardController.onMouseEvent(bc,"over")});
-        // bc.modelView.events.onInputOut.add(function(){BoardController.onMouseEvent(bc,"out")});
-        function createFunc(index, isInputOver){
-        	return function(){BoardController.onMouseEvent(bc,isInputOver?"over":"out",index)};
-        }
-        var tileCount=bc.modelView.tileCount();
+        var inputUpCallbacks=[];
         var inputOverCallbacks=[];
         var inputOutCallbacks=[];
+
+        // bc.modelView.events.onInputUp.add(function(){BoardController.onMouseEvent(bc,"up")});
+        // bc.modelView.events.onInputOver.add(function(){BoardController.onMouseEvent(bc,"over")});
+        // bc.modelView.events.onInputOut.add(function(){BoardController.onMouseEvent(bc,"out")});
+        function createFunc(index, type){
+        	return function(){BoardController.onMouseEvent(bc,type,index)};
+        }
+        var tileCount=bc.modelView.tileCount();
         for(var i=0;i<tileCount;i++){
-        	inputOverCallbacks[i]=createFunc(i, true);
-        	inputOutCallbacks[i]=createFunc(i, false);
+        	inputUpCallbacks[i]=createFunc(i, "up");
+        	inputOverCallbacks[i]=createFunc(i, "over");
+        	inputOutCallbacks[i]=createFunc(i, "out");
         }
         for(var j=0;j<tileCount;j++){
         	var tile=bc.modelView.at(j);
         	tile.inputEnabled=true;
         	tile.input.priorityID=1;
+        	tile.events.onInputUp.add(inputUpCallbacks[j]);
         	tile.events.onInputOver.add(inputOverCallbacks[j]);
         	tile.events.onInputOut.add(inputOutCallbacks[j]);
         }
