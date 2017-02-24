@@ -9,10 +9,22 @@ var Tile={
         var data=JSON.parse(json);
 
         // Class members
+        var tempTerrain = data.terrain;
+        data.terrain+=MainGame.game.rnd.integerInRange(1,3);
         tile.terrain=MainGame.game.make.sprite(0,0,data.terrain);
+        tile.terrain.key=tempTerrain;
         tile.addChild(tile.terrain);
-        tile.res=MainGame.game.make.sprite(0,0,data.res);
-        tile.addChild(tile.res);
+
+        if(data.res==='forest'){
+            data.res+=MainGame.game.rnd.integerInRange(1,2);
+            tile.res=MainGame.game.make.sprite(0,0,data.res);
+            tile.res.key='forest';
+            tile.addChild(tile.res);
+        }else{
+            tile.res=MainGame.game.make.sprite(0,0,data.res);
+            tile.addChild(tile.res);
+        }
+
         /* global Building*/
         tile.building=Building.createNew(data.building);
         tile.addChild(tile.building);

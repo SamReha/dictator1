@@ -126,7 +126,7 @@ var Hud = {
         buyMansionBtn.addChild(mansionText);
         bureauGroup.addChild(buyMansionBtn);
 
-        var buySuburbBtn = MainGame.game.make.button(200, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
+        var buySuburbBtn = MainGame.game.make.button(200, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'suburb');}, buildMenu, 0, 1, 2, 3);
         buySuburbBtn.input.priorityID = hudInputPriority;
         buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
         var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n$10K", Hud.styleNormal);
