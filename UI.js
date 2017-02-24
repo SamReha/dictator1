@@ -10,6 +10,7 @@ var Hud = {
 
         /*global MainGame*/
         var hud = MainGame.game.add.group();
+        var hudInputPriority = 2;
 
         hud.name = "HUD"; // Useful for debugging
 
@@ -32,6 +33,7 @@ var Hud = {
         // Exit / Pause button
         var btnExit = MainGame.game.make.button(0, 0, 'small_generic_button', null, MainGame, 0, 1, 2, 2);
         btnExit.name = 'Exit Button';
+        btnExit.input.priorityID = hudInputPriority;
         hud.addChild(btnExit);
 
         var btnExitText = MainGame.game.make.text(0, 0, 'Exit', Hud.styleButton);
@@ -42,6 +44,7 @@ var Hud = {
         var btnNextTurn=MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
             MainGame.nextTurn, MainGame, 0, 1, 2, 2);
         btnNextTurn.name = 'btnNextTurn';
+        btnNextTurn.input.priorityID = hudInputPriority;
         btnNextTurn.anchor.x = 1;
         btnNextTurn.anchor.y = 1;
         hud.addChild(btnNextTurn);
@@ -116,6 +119,7 @@ var Hud = {
 
         // buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
         var buyMansionBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'mansion');}, buildMenu, 0, 1, 2, 3);
+        buyMansionBtn.input.priorityID = hudInputPriority;
         buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
         var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n$10K", Hud.styleNormal);
         mansionText.anchor.y = 1;
@@ -123,6 +127,7 @@ var Hud = {
         bureauGroup.addChild(buyMansionBtn);
 
         var buySuburbBtn = MainGame.game.make.button(200, 0, 'buttonSprite', null, buildMenu, 0, 1, 2, 3);
+        buySuburbBtn.input.priorityID = hudInputPriority;
         buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
         var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n$10K", Hud.styleNormal);
         suburbText.anchor.y = 1;
@@ -130,6 +135,7 @@ var Hud = {
         bureauGroup.addChild(buySuburbBtn);
 
         var buyApartmentBtn = MainGame.game.make.button(400, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'apartment');}, buildMenu, 0, 1, 2, 3);
+        buyApartmentBtn.input.priorityID = hudInputPriority;
         buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
         var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n$10K", Hud.styleNormal);
         apartmentText.anchor.y = 1;
@@ -137,6 +143,7 @@ var Hud = {
         bureauGroup.addChild(buyApartmentBtn);
 
         var buySchoolBtn = MainGame.game.make.button(600, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'school');}, buildMenu, 0, 1, 2, 3);
+        buySchoolBtn.input.priorityID = hudInputPriority;
         buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
         var schoolText = MainGame.game.make.text(0, -40, "Buy School\n$15K", Hud.styleNormal);
         schoolText.anchor.y = 1;
@@ -144,6 +151,7 @@ var Hud = {
         bureauGroup.addChild(buySchoolBtn);
 
         var buyFactoryBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
+        buyFactoryBtn.input.priorityID = hudInputPriority;
         buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
         var factoryText = MainGame.game.make.text(0, -40, "Buy LumberYard\n$30K", Hud.styleNormal);
         factoryText.anchor.y = 1;
@@ -151,6 +159,7 @@ var Hud = {
         merchantGroup.addChild(buyFactoryBtn);
 
         var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'armyBase');}, buildMenu, 0, 1, 2, 3);
+        buyArmyBaseBtn.input.priorityID = hudInputPriority;
         buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
         var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n$30K", Hud.styleNormal);
         armyBaseText.anchor.y = 1;
@@ -158,6 +167,7 @@ var Hud = {
         militaryGroup.addChild(buyArmyBaseBtn);
 
         var buyRoad = MainGame.game.make.button(200, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'road');}, buildMenu, 0, 1, 2, 3);
+        buyRoad.input.priorityID = hudInputPriority;
         buyRoad.anchor.y = 1;  // Anchor on bottom left corner
         var roadText = MainGame.game.make.text(0, -40, "Buy Road\n$2K", Hud.styleNormal);
         roadText.anchor.y = 1;
@@ -365,6 +375,7 @@ var MapSelector = {
 
     makeBuildingDetail: function(ms) {
         var buildingDetail = MainGame.game.make.group();
+        var buildingDetailInputPriority = 2;
 
         var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" };
 
@@ -449,6 +460,7 @@ var MapSelector = {
                 /*global updatePopulation*/
                 updatePopulation(false,false);
             }, ms, 0, 1, 2, 3);
+        buildingDetail.addPersonButton.input.priorityID = buildingDetailInputPriority;
         buildingDetail.addChild(buildingDetail.addPersonButton);
 
         // Fire button
@@ -501,6 +513,7 @@ var MapSelector = {
                 /*global updatePopulation*/
                 updatePopulation(false,false);
             }, ms, 0,1,2,3);
+        buildingDetail.removePersonButton.input.priorityID = buildingDetailInputPriority;
         buildingDetail.addChild(buildingDetail.removePersonButton);
 
         buildingDetail.visible = false;

@@ -108,7 +108,7 @@ var BoardController={
         for(var j=0;j<tileCount;j++){
         	var tile=bc.modelView.at(j);
         	tile.inputEnabled=true;
-        	tile.input.priorityID=0;
+        	tile.input.priorityID=1;
         	tile.events.onInputUp.add(inputUpCallbacks[j]);
         	tile.events.onInputOver.add(inputOverCallbacks[j]);
         	tile.events.onInputOut.add(inputOutCallbacks[j]);
