@@ -41,7 +41,7 @@ var BoardController={
 			// for a click: center the map with index [arg]. 
 			if(!bc.mouseTimer._isDrag_){				
 				bc.modelView.cameraCenterOn(arg);
-				BoardController.showTileDetail(bc);
+				BoardController.showTileDetail(bc, arg);
 				// MainGame.mapSelector.updateBuildingDetail(arg);
 			}
 			bc.mouseTimer._isDrag_=false;
@@ -77,16 +77,18 @@ var BoardController={
 	},
 
 	showTileBrief: function(bc, index){
-		console.log("Now showHide tile info:");
+		//console.log("Now showHide tile info:");
 	},
 	hideTileBrief: function(bc){
 
 	},
 	showTileDetail: function(bc, index){
-		console.log("Now showHide tile detail:");
+		console.log("Now show tile detail:", index);
+		bc.buildingDetail.updateSelf(index);
 	},
-	hideTileDetail: function(bc, index){
-
+	hideTileDetail: function(bc){
+		console.log("Now hide tile detail");
+		bc.buildingDetail.visible = false;
 	},
 
 	onKeyboardEvent: function(bc, type, key){
@@ -172,8 +174,8 @@ var BuildingDetail = {
 
         // Class vars
         buildingDetail.name = "BuildingDetail";
-        buildingDetail.curIndex = -1;		// Need explanation for what makes these two different
-        buildingDetail.activeIndex = null;
+        buildingDetail.curIndex = 0;		// Need explanation for what makes these two different
+        //buildingDetail.activeIndex = null;
         // buildingDetail.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, buildingDetail, buildingDetail);
 
         // bg (the grad)
@@ -210,16 +212,16 @@ var BuildingDetail = {
         // Hire button
         buildingDetail.addPersonButton = MainGame.game.make.button(30, -labelY+200, "btnHire", 
             function() {
-                //console.log("[MapSelector] Hire people for index: ",ms.curIndex);
+                //console.log("[MapSelector] Hire people for index: ",buildingDetail.curIndex);
                 // TODO
                 /*global MainGame*/
-                var bld = MainGame.board.at(ms.curIndex).building;
+                var bld = MainGame.board.at(buildingDetail.curIndex).building;
                 if (bld.people >= bld.maxPeople) {
                     return;
                 }
                 
                 //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                MainGame.population.hire(ms.curIndex);
+                MainGame.population.hire(buildingDetail.curIndex);
                 //bld.people=bld.people+actual; [this is now done in building.addPerson()]
                 // update display
                 buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
@@ -229,19 +231,19 @@ var BuildingDetail = {
                     if(outType==="health"){ 
                         outType="Health";
                         /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
+                        updateHomesNearOutput(buildingDetail.curIndex);
                     }else if(outType==="education"){
                         outType="Edu";
                         /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
+                        updateHomesNearOutput(buildingDetail.curIndex);
                     }else if(outType==="freedom"){
                         outType="Extra Freedom";
                         /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
+                        updateHomesNearOutput(buildingDetail.curIndex);
                     }else if(outType==="unrest"){
                         outType="Extra Unrest";
                         /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
+                        updateHomesNearOutput(buildingDetail.curIndex);
                     }else if(outType==="money"){    outType="Money";    }
 
                     if(outIndex===0){
@@ -262,12 +264,12 @@ var BuildingDetail = {
         buildingDetail.removePersonButton = MainGame.game.make.button(100, -labelY+200, "btnFire",
             function() {
                 /*global MainGame*/
-                var bld=MainGame.board.at(ms.curIndex).building;
+                var bld=MainGame.board.at(buildingDetail.curIndex).building;
                 if(bld.people<=0){
                     return;
                 }
                 
-                MainGame.population.fire(ms.curIndex);
+                MainGame.population.fire(buildingDetail.curIndex);
 
                 // update display
                 buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
@@ -277,19 +279,19 @@ var BuildingDetail = {
                     if(outType==="health"){ 
                         outType="Health";
                         /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
+                        updateHomesNearOutput(buildingDetail.curIndex);
                     }else if(outType==="education"){
                         outType="Edu";
                         /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
+                        updateHomesNearOutput(buildingDetail.curIndex);
                     }else if(outType==="freedom"){
                         outType="Extra Freedom";
                         /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
+                        updateHomesNearOutput(buildingDetail.curIndex);
                     }else if(outType==="unrest"){
                         outType="Extra Unrest";
                         /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
+                        updateHomesNearOutput(buildingDetail.curIndex);
                     }else if(outType==="money"){
                         outType="Money";
                         MainGame.global.updateMoneyPerTurn();                    }
@@ -311,16 +313,18 @@ var BuildingDetail = {
         buildingDetail.visible = false;
 
         // Class funcs
-        //buildingDetail.update = function(tileIndex) { BuildingDetail.update(buildingDetail, tileIndex) };
+        buildingDetail.updateSelf = function(tileIndex) { BuildingDetail.updateSelf(buildingDetail, tileIndex) };
         buildingDetail.positionBuildingDetail = function(b) { BuildingDetail.positionBuildingDetail(buildingDetail, b) };
 
         return buildingDetail;
     },
 
-    update: function(buildingDetail, tileIndex) {
+    updateSelf: function(buildingDetail, tileIndex) {
+    	console.log("Updating buildingDetail");
         buildingDetail.visible = true;
+        buildingDetail.curIndex = tileIndex;
 
-        if (tileIndex === null) {
+        if (tileIndex === null || tileIndex === undefined) {
             buildingDetail.visible = false;
             return;
         }
@@ -336,7 +340,8 @@ var BuildingDetail = {
         }
 
         var b = MainGame.board;
-        var tile = b.at(ms.activeIndex);
+        //var tile = b.at(buildingDetail.activeIndex);
+        var tile = b.at(tileIndex);
         var bld = tile.getBuilding();
 
         // Let's figure out what kind of info we need to display
@@ -396,37 +401,40 @@ var BuildingDetail = {
 
         buildingDetail.label.text = displayName;
 
-        buildingDetail.positionBuildingDetail(b);
+        // Finally, do the buttons
+
+
+        buildingDetail.positionBuildingDetail(b, tileIndex);
     },
 
-    positionBuildingDetail: function(buildingDetail, b){
-        var rect = b.rectOf(ms.activeIndex,b.currentScale);
+    positionBuildingDetail: function(buildingDetail, b, tileIndex){
+        var rect = b.rectOf(tileIndex, b.currentScale);
         buildingDetail.x = rect.x-b._offset.x+rect.w*.85;
         buildingDetail.y = rect.y-b._offset.y+rect.h*.5;
-        mbuildingDetail.scale.set(b.currentScale);
+        buildingDetail.scale.set(b.currentScale);
     },
 
-    // clickHandler: function(ms, activePointer) {
+    // clickHandler: function(buildingDetail, activePointer) {
     //     var b = MainGame.board;
     //     var index = MainGame.board.hitTest(activePointer.x, activePointer.y);
 
     //     if(index===null){
-    //         ms.buildingDetail.visible = false;
+    //         buildingDetail.buildingDetail.visible = false;
     //         return;
     //     }
-    //     if(ms.activeIndex===index){
+    //     if(buildingDetail.activeIndex===index){
     //         return;
     //     }
-    //     ms.activeIndex = index;
+    //     buildingDetail.activeIndex = index;
 
     //     if (b.at(index).hasBuilding()) {
-    //         var rect = b.rectOf(ms.activeIndex,b.currentScale);
-    //         ms.buildingDetail.x = rect.x-b._offset.x;
-    //         ms.buildingDetail.y = rect.y-b._offset.y;
-    //         ms.buildingDetail.visible = true;
+    //         var rect = b.rectOf(buildingDetail.activeIndex,b.currentScale);
+    //         buildingDetail.buildingDetail.x = rect.x-b._offset.x;
+    //         buildingDetail.buildingDetail.y = rect.y-b._offset.y;
+    //         buildingDetail.buildingDetail.visible = true;
     //     } else {
     //         // Make sure the detail menu is hidden if the user is trying to click away
-    //         ms.buildingDetail.visible = false;
+    //         buildingDetail.buildingDetail.visible = false;
     //     }
         
     // },
