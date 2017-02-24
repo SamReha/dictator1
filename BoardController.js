@@ -85,6 +85,7 @@ var BoardController={
 	showTileDetail: function(bc, index){
 		console.log("Now show tile detail:", index);
 		bc.buildingDetail.updateSelf(index);
+		bc.buildingDetail.visible = true;
 	},
 	hideTileDetail: function(bc){
 		console.log("Now hide tile detail");
@@ -321,7 +322,6 @@ var BuildingDetail = {
 
     updateSelf: function(buildingDetail, tileIndex) {
     	console.log("Updating buildingDetail");
-        buildingDetail.visible = true;
         buildingDetail.curIndex = tileIndex;
 
         if (tileIndex === null || tileIndex === undefined) {
