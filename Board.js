@@ -15,6 +15,8 @@ var Tile={
         tile.terrain.key=tempTerrain;
         tile.addChild(tile.terrain);
 
+        //tile.res=MainGame.game.make.sprite(0,0,data.res);
+        tile.resType=data.res;
         if(data.res==='forest'){
             data.res+=MainGame.game.rnd.integerInRange(1,2);
             tile.res=MainGame.game.make.sprite(0,0,data.res);
@@ -25,12 +27,14 @@ var Tile={
             tile.addChild(tile.res);
         }
 
+
         /* global Building*/
         tile.building=Building.createNew(data.building);
         tile.addChild(tile.building);
 
         // Class funcs
         tile.getTerrain=function(){return tile.terrain};
+        tile.getResType=function(){return tile.resType};
         tile.getRes=function(){return tile.res};
         tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
         tile.getBuilding=function(){return tile.building};

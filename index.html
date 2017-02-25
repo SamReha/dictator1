@@ -13,8 +13,10 @@
     <script type="text/javascript" src="MainGame.js"></script>
     <script type="text/javascript" src="CoalitionFlag.js"></script>
     <script type="text/javascript" src="UI.js"></script>
+    <script type="text/javascript" src="UiTest.js"></script>
     <script type="text/javascript" src="People.js"></script>
     <script type="text/javascript" src="Preloader.js"></script>
+    <script type="text/javascript" src="TileInfoView.js"></script>
     <script type="text/javascript" src="updatePopulation.js"></script>
     <script type="application/JSON" src="stage1.json"></script>
     
@@ -57,7 +59,7 @@ function init(){
                 continue;
             var res=ch.findChild(name);
             if(res)
-                return res;        
+                return res;
         }
         return false;
     };
@@ -77,6 +79,9 @@ function create() {
 
     MainGame.board.cameraCenterOn(0);
     MainGame.board.cameraZoomAt();
+
+    /*global UiTest*/
+    // UiTest.init(g);
 }
 
 function update() {
