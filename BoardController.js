@@ -226,34 +226,34 @@ var BuildingDetail = {
         buildingDetail.y -= labelY;
 
         // label (bld name/lv)
-        buildingDetail.label = MainGame.game.make.text(labelX, -labelY+30, "", style, buildingDetail);
+        buildingDetail.label = MainGame.game.make.text(labelX, -labelY+130, "", style, buildingDetail);
         buildingDetail.label.anchor.x = 0.5;
         buildingDetail.label.anchor.y = 0.5;
         buildingDetail.addChild(buildingDetail.label);
 
         // label2 (people)
-        buildingDetail.label2 = MainGame.game.make.text(10, -labelY+60, "", style, buildingDetail);
+        buildingDetail.label2 = MainGame.game.make.text(10, -labelY+160, "", style, buildingDetail);
         buildingDetail.label2.anchor.y = 0.5;
         buildingDetail.addChild(buildingDetail.label2);
 
         // label3 (health)
-        buildingDetail.label3=MainGame.game.make.text(10,-labelY+90,"",style,buildingDetail);
+        buildingDetail.label3=MainGame.game.make.text(10,-labelY+190,"",style,buildingDetail);
         buildingDetail.label3.anchor.y = 0.5;
         buildingDetail.addChild(buildingDetail.label3);
 
         // label3 (health)
-        buildingDetail.label4=MainGame.game.make.text(10,-labelY+120,"",style,buildingDetail);
+        buildingDetail.label4=MainGame.game.make.text(10,-labelY+220,"",style,buildingDetail);
         buildingDetail.label4.anchor.y = 0.5;
         buildingDetail.addChild(buildingDetail.label4);
 
         // label3 (health)
-        buildingDetail.label5=MainGame.game.make.text(10,-labelY+150,"",style,buildingDetail);
+        buildingDetail.label5=MainGame.game.make.text(10,-labelY+250,"",style,buildingDetail);
         buildingDetail.label5.anchor.y = 0.5;
         buildingDetail.addChild(buildingDetail.label5);
 
         // Hire button
         if(tile.hasBuilding()){
-	        buildingDetail.addPersonButton = MainGame.game.make.button(30, -labelY+200, "btnHire", 
+	        buildingDetail.addPersonButton = MainGame.game.make.button(30, -labelY+300, "btnHire", 
 	            function() {
 	                //console.log("[MapSelector] Hire people for index: ",buildingDetail.curIndex);
 	                // TODO
@@ -304,7 +304,7 @@ var BuildingDetail = {
 	        buildingDetail.addChild(buildingDetail.addPersonButton);
 
 	        // Fire button
-	        buildingDetail.removePersonButton = MainGame.game.make.button(100, -labelY+200, "btnFire",
+	        buildingDetail.removePersonButton = MainGame.game.make.button(100, -labelY+300, "btnFire",
 	            function() {
 	                /*global MainGame*/
 	                var bld=MainGame.board.at(buildingDetail.curIndex).building;
