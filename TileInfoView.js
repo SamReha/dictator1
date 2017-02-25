@@ -33,8 +33,8 @@ var TileBriefInfoView={
 
         if(tile.hasBuilding()){
         	var bld=tile.getBuilding();
-        	var bldStr=bld.name;
-        	bldStr+=("People:"+bld.people+"/"+bld.maxPeople);
+        	var bldStr=bld.name.toUpperCase();
+        	bldStr+=("\nwith people:"+bld.people+"/"+bld.maxPeople);
 	        t.label2.text=bldStr;
         }
 	}
