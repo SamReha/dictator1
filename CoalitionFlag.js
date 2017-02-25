@@ -1,9 +1,11 @@
 var CoalitionFlag = {
 	createNew: function() {
 		var coalitionFlag = MainGame.game.make.group();
+		coalitionFlag.x = MainGame.game.width;
 
 		// Properties
 		coalitionFlag.bannerSprite = MainGame.game.make.sprite(0, 0, 'flag_background');
+		coalitionFlag.bannerSprite.anchor.x = 1;
 		coalitionFlag.addChild(coalitionFlag.bannerSprite);
 
 		coalitionFlag.beauroGroup = MainGame.game.make.group();
