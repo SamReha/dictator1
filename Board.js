@@ -9,10 +9,22 @@ var Tile={
         var data=JSON.parse(json);
 
         // Class members
+        var tempTerrain = data.terrain;
+        data.terrain+=MainGame.game.rnd.integerInRange(1,3);
         tile.terrain=MainGame.game.make.sprite(0,0,data.terrain);
+        tile.terrain.key=tempTerrain;
         tile.addChild(tile.terrain);
-        tile.res=MainGame.game.make.sprite(0,0,data.res);
-        tile.addChild(tile.res);
+
+        if(data.res==='forest'){
+            data.res+=MainGame.game.rnd.integerInRange(1,2);
+            tile.res=MainGame.game.make.sprite(0,0,data.res);
+            tile.res.key='forest';
+            tile.addChild(tile.res);
+        }else{
+            tile.res=MainGame.game.make.sprite(0,0,data.res);
+            tile.addChild(tile.res);
+        }
+
         /* global Building*/
         tile.building=Building.createNew(data.building);
         tile.addChild(tile.building);
@@ -378,6 +390,9 @@ var Board={
         b._offset.y+=y;
         b.x-=x;
         b.y-=y;
+
+        /*global MainGame*/
+        MainGame.mapSelector.positionBuildingDetail(b);
     },
 
     // let camera center on i
@@ -402,6 +417,9 @@ var Board={
         b.x=(screenCenter.x-center_i.x);
         b.y=(screenCenter.y-center_i.y);
         // console.log("Now, board's x and y:",b.x,b.y);
+
+        /*global MainGame*/
+        MainGame.mapSelector.positionBuildingDetail(b);
     },
 
     // let camera zoom at zoom
@@ -435,5 +453,8 @@ var Board={
         b.x=MainGame.game.camera.width*0.5-anchor.x*b.width;
         b.y=MainGame.game.camera.height*0.5-anchor.y*b.height;
         // console.log("new xy is:",b.x,b.y);
+        
+        /*global MainGame*/
+        MainGame.mapSelector.positionBuildingDetail(b);
     },
 };
