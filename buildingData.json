@@ -25,6 +25,19 @@
     "maxPeople": 10,
     "effects": [{"type": null}]
   },
+  "suburb": {
+    "type": "?",
+    "subtype": "housing",
+    "cost": 10,
+    "health": 0,
+    "education": 0,
+    "aoeFreedom": 0,
+    "aoeUnrest": 0,
+    "shelter": 0,
+    "maxShelter": 80,
+    "maxPeople": 5,
+    "effects": [{"type": null}]
+  },
   "mansion": {
     "type": "?",
     "subtype": "housing",
@@ -78,6 +91,24 @@
       }
     ]
   },
+  "school": {
+    "type": "?",
+    "subtype": "education",
+    "cost": 15,
+    "maxPeople": 3,
+    "effects": [
+      {
+        "type": "freedom",
+        "outputTable": [0, 3, 6, 9],
+        "range": 2
+      },
+      {
+        "type": "education",
+        "outputTable": [0, 20, 40, 60],
+        "range": 2
+      }
+    ]
+  },
   "policeStation":{
     "type": "!",
     "subtype": "millitary",
@@ -116,24 +147,6 @@
     "cost": 2,
     "maxPeople": 0,
     "effects": [{"type": null}]
-  },
-  "school": {
-    "type": "?",
-    "subtype": "education",
-    "cost": 15,
-    "maxPeople": 3,
-    "effects": [
-      {
-        "type": "freedom",
-        "outputTable": [0, 3, 6, 9],
-        "range": 2
-      },
-      {
-        "type": "education",
-        "outputTable": [0, 20, 40, 60],
-        "range": 2
-      }
-    ]
   },
 
   "_Notice_": "1)keep the #count===maxPeople+1 when adjusting the output tables"
