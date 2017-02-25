@@ -15,7 +15,7 @@ var Tile={
         tile.terrain.key=tempTerrain;
         tile.addChild(tile.terrain);
 
-        tile.res=MainGame.game.make.sprite(0,0,data.res);
+        //tile.res=MainGame.game.make.sprite(0,0,data.res);
         tile.resType=data.res;
         if(data.res==='forest'){
             data.res+=MainGame.game.rnd.integerInRange(1,2);
