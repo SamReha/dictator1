@@ -5,12 +5,8 @@ var Preloader={
         // Builings
         var buildingDir = imageDir + 'buildings/';
         // Placeholder assets
-        // g.load.image('apartment1',  buildingDir + 'apartments.png');
-        // g.load.image('armyBase1',   buildingDir + 'armyBase_old.png');
         g.load.image('hospital1',   buildingDir + 'hospital.png');
-        // g.load.image('mansion1',    buildingDir + 'mansion.png');                
         g.load.image('shanty1',     buildingDir + 'shanties.png');
-        // g.load.image('weakFarm1',   buildingDir + 'weakFarm_old.png');
         // Vertical Slice assets
         g.load.image('apartment1',  buildingDir + 'apartment.png');
         g.load.image('arableFarm1', buildingDir + 'arableFarm.png');
