@@ -1,49 +1,55 @@
-var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" };
+var fontBrief=[
+	{font:"30px myKaiti", fill:"yellow", boundsAlignH:"top", boundsAlignV:"middle"},
+	{font:"30px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
+	{font:"30px myKaiti", fill:"lightgreen", boundsAlignH:"top", boundsAlignV:"middle"}
+];
 
 var TileBriefInfoView={
-    style:{font: "20px myKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" },
+    style:{font: "30px myKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" },
 	createNew: function(index){
 		/* global MainGame */
 		var game=MainGame.game;
 		// bg
-		var tbiView=game.add.sprite(0,0,"tile_hover_backpanel");
+		var view=game.add.sprite(0,0,"tile_hover_backpanel");
 		// label position
-		var centerPos={x:tbiView.texture.width*0.5, y:tbiView.texture.height*0.5};
+		var centerPos={x:view.texture.width*0.5, y:view.texture.height*0.5-30};
 		// tile index
-		tbiView.index=index;
-		// label1 (building name/lv)
-		tbiView.label=game.make.text(centerPos.x, centerPos.y-20, "", TileBriefInfoView.style);
-		tbiView.label.anchor.x=0.5;
-		tbiView.label.anchor.y=0.5;
-		tbiView.addChild(tbiView.label);
-		// label2 (people)
-		tbiView.label2=game.make.text(centerPos.x, centerPos.y+30, "", TileBriefInfoView.style);
-		tbiView.label2.anchor.x=0.5;
-		tbiView.label2.anchor.y=0.5;
-		tbiView.addChild(tbiView.label2);
+		view.index=index;
+
+		// creates 3 lines
+		var lines=["terrain", "building", "people"];
+		for(var i=0;i<lines.length;i++){
+			var oneLine=game.make.text(centerPos.x, centerPos.y+35*i,"",fontBrief[i]);
+			oneLine.anchor.x=0.5;
+			oneLine.anchor.y=0.5;
+			view.addChild(oneLine);
+			view[lines[i]]=oneLine;
+		}
+		// Class members
+		// You can use:
+		// view.terrain, view.building, view.people
 
 		// Class func
-		tbiView.updateInfo=function(tile){return TileBriefInfoView.updateInfo(tbiView,tile)};
-		tbiView.updatePos=function(){return TileBriefInfoView.updatePos(tbiView)};
-		return tbiView;
+		view.updateInfo=function(tile){return TileBriefInfoView.updateInfo(view,tile)};
+		view.updatePos=function(){return TileBriefInfoView.updatePos(view)};
+		return view;
 	},
 	updateInfo: function(t, tile){
 		console.assert(tile);
         // Let's figure out what kind of info we need to display
-        t.label.text=tile.terrain.key+ (tile.getResType()?" ("+tile.getResType()+")":"" );
+        t.terrain.text=tile.terrain.key+ (tile.getResType()?" ("+tile.getResType()+")":"" );
 
         if(tile.hasBuilding()){
         	var bld=tile.getBuilding();
         	var bldStr=bld.name.toUpperCase();
-        	bldStr+=("\nwith people:"+bld.people+"/"+bld.maxPeople);
-	        t.label2.text=bldStr;
+        	t.building.text=bldStr;
+        	t.people.text="with people:"+bld.people+"/"+bld.maxPeople;
         }
 	},
 	updatePos: function(t){
         /*global MainGame*/
         var board=MainGame.board;
         var tile=board.at(t.index);
-
         t.x=board.x+tile.x*board.currentScale;
         t.y=board.y+tile.y*board.currentScale;
         t.scale.set(board.currentScale);
