@@ -1,5 +1,5 @@
 var fontBrief=[
-	{font:"30px myKaiti", fill:"yellow", boundsAlignH:"top", boundsAlignV:"middle"},
+	{font:"30px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
 	{font:"30px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
 	{font:"30px myKaiti", fill:"lightgreen", boundsAlignH:"top", boundsAlignV:"middle"}
 ];
@@ -20,14 +20,15 @@ var TileBriefInfoView={
 		var lines=["terrain", "building", "people"];
 		for(var i=0;i<lines.length;i++){
 			var oneLine=game.make.text(centerPos.x, centerPos.y+35*i,"",fontBrief[i]);
-			oneLine.anchor.x=0.5;
-			oneLine.anchor.y=0.5;
+			oneLine.anchor.set(0.5);
 			view.addChild(oneLine);
 			view[lines[i]]=oneLine;
 		}
-		// Class members
-		// You can use:
-		// view.terrain, view.building, view.people
+		// Class vars
+		// view.terrain
+		// view.building
+		// view.people
+		// --- the above class vars can be accessed now ---
 
 		// Class func
 		view.updateInfo=function(tile){return TileBriefInfoView.updateInfo(view,tile)};
@@ -36,14 +37,28 @@ var TileBriefInfoView={
 	},
 	updateInfo: function(t, tile){
 		console.assert(tile);
-        // Let's figure out what kind of info we need to display
+        // show terrain+res info
         t.terrain.text=tile.terrain.key+ (tile.getResType()?" ("+tile.getResType()+")":"" );
 
+        // show building+people info
         if(tile.hasBuilding()){
+        	// show building info
         	var bld=tile.getBuilding();
-        	var bldStr=bld.name.toUpperCase();
-        	t.building.text=bldStr;
-        	t.people.text="with people:"+bld.people+"/"+bld.maxPeople;
+        	t.building.text=bld.name.toUpperCase();
+        	// show people info
+        	if(bld.maxPeople){
+	        	if(bld.subtype==="housing")
+	        		t.people.text="Residents:"+bld.people+"/"+bld.maxPeople;
+	        	else
+	        		t.people.text="Jobs:"+bld.people+"/"+bld.maxPeople;
+        	}
+        	else
+        		t.people.text=" - "
+        	// now add color!
+        	var colorTable={"?":"yellow", "!":"orangered", "$":"seagreen", "-":"white"};
+        	console.assert(colorTable[bld.type], "Unknown building type! Must be ?(bureau), !(mil) or $(commercial).");
+        	t.building.addColor(colorTable[bld.type],0);
+        	t.people.addColor(colorTable[bld.type],0);
         }
 	},
 	updatePos: function(t){
