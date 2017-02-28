@@ -1,13 +1,12 @@
 // Singleton
 var Notification={
-	var info={},
-	waitOnce: function(type,name){
-
+	entries: [],
+	observe: function(name,callback){
+		Notification.entries.push({name:name, callback:callback});
 	},
-	waitAlways: function(type,name){
-
-	},
-	notify: function(type,name,args){
-
+	notify: function(name,args){
+		for(var i=0;i<Notification.entries.length;i++)
+			if(Notification.entries[i].name===name)
+				Notification.entries[i].callback(args);
 	},
 };
