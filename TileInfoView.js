@@ -22,7 +22,7 @@ function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
 		peopleTextView.text=" - ";
 	}
 	// now add color!
-	var colorTable={"?":"yellow", "!":"orangered", "$":"seagreen", "-":"white"};
+	var colorTable={"?":"yellow", "!":"orangered", "$":"lawngreen", "-":"white"};
 	console.assert(colorTable[building.type], "Unknown building type! Must be ?(bureau), !(mil), $(commercial) or -(no type).");
 	buildingTextView.addColor(colorTable[building.type], 0);
 	peopleTextView.addColor(colorTable[building.type], 0);
@@ -116,7 +116,7 @@ var TileDetailView={
         var building=board.at(index).getBuilding();
         console.log(building.startingTurn+" "+MainGame.global.turn);
 
-        if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn>=MainGame.global.turn){
+        if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn<=MainGame.global.turn){
         	if(building.people<building.maxPeople){
         		// Hire button
 		        view.addPersonButton = game.make.button(30, 200, "btnHire", 
