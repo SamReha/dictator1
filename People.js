@@ -30,11 +30,11 @@ var Person={
         p.loyalty=(p.type>=Person.Hi?0:null);
 
         // Class funcs
-        p.update=function(board){return Person.update(p,board)};
+        p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
         p.findHousing=function(pop){return Person.findHousing(p,pop)};
         p.toString=function(){return "PPL:"+p.type};
-        p.updateStats=function(board){return Person.updateStats(p,board)};
+        p.updateStats=function(board,nextTurn){return Person.updateStats(p,board,nextTurn)};
         p.updateFreeUn=function(board){return Person.updateFreeUn(p,board)};
 
         p.setLowClass = function() { return Person.setLowClass(p); };
@@ -45,9 +45,8 @@ var Person={
     },
 
     // Class func: Implementation
-    update: function(p, board){
-        console.log('People.js, update, fuck my life');
-        // TODO
+    update: function(p, board,nextTurn){
+        p.updateStats(board,nextTurn);
         if (p.type === Person.Low) {
             p.updateFreeUn(board);
         }
@@ -86,19 +85,33 @@ var Person={
         return false;
     },
     
-    updateStats: function(p,board){
-        var house=board.at(p.home).getBuilding();
-        p.health=house.health;
-        p.shelter=house.shelter;
-        //To be removed when the system changes
-        p.education=house.education;
-
+    updateStats: function(p,board,nextTurn){
+        if(p.home!==null){
+            var house = board.at(p.home).getBuilding();
+    
+            // Get new health
+            p.health = house.health;
+    
+            // Get new shelter
+            p.shelter = house.shelter;
+    
+            // Get new education
+            if (p.education < house.education && nextTurn) {
+                /*global Person*/
+                p.education = clampedSum(p.education, Person.learningSpeed, house.education);
+            }
+        }
+        else{
+            p.health = 0;
+            p.shelter = 0;
+        }
         // Update social class
         if (p.health < 50 || p.shelter < 50 || p.education < 50) {
             p.setLowClass();
         } else {
             // Don't set mid class if they're already high class!
             if (p.type != Person.Hi) {
+                console.log("promotion!");
                 p.setMidClass();
             }
         }
@@ -123,10 +136,10 @@ var Person={
     setMidClass: function(p) {
         p.type = Person.Mid;
 
-        if (p.coalitionType === undefined) {
+        if (p.role === undefined) {
             // Give them a random coalition type. In the future, we might look at their current or most recent place of employment
             var typeArray = ['bureaucrat', 'merchant', 'military'];
-            p.coalitionType = typeArray[Math.floor(Math.random() * typeArray.length)];
+            p.role = typeArray[Math.floor(Math.random() * typeArray.length)];
         }
     },
 
@@ -148,7 +161,7 @@ var Population={
 
         // Class funcs
         pop.at=function(index){return pop.people[index]};
-        pop.update=function(){return Population.update(pop)};
+        pop.update=function(nextTurn){return Population.update(pop,nextTurn)};
         pop.count=function(){return pop.people.length};
         pop.report=function(){return Population.report(pop)};  // Class func: Declaration
         pop.increase=function(amount){return Population.increase(pop,amount)};
@@ -211,9 +224,9 @@ var Population={
     },
 
     // Class func: Implementation
-    update: function(pop){
+    update: function(pop,nextTurn){
         /*global MainGame*/
-        pop.people.forEach(function(p){p.update(MainGame.board)});
+        pop.people.forEach(function(p){p.update(MainGame.board,nextTurn)});
     },
     
     report: function(pop){
@@ -364,4 +377,9 @@ var Population={
         return "Pop[low,mid,hi]=["+stats[0]+","+stats[1]+","+stats[2]+"]"
         +" Pop[housed,employed]=["+pop.findHoused().length+","+pop.findEmployed().length+"]";
     }
+};
+
+var clampedSum = function(a, b, max) {
+    var sum = a + b;
+    return sum > max ? max : sum;
 };

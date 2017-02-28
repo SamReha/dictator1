@@ -131,7 +131,7 @@ var AddCoalitionMenu = {
 	updateSelf: function(addCoMenu) {
 		var socialElite = MainGame.population.midList();
 
-        console.log("LowList", MainGame.population.lowList());
+        console.log("MidList", MainGame.population.midList());
         console.log(socialElite);
 	},
 };
