@@ -116,7 +116,7 @@ var TileDetailView={
         var building=board.at(index).getBuilding();
         console.log(building.startingTurn+" "+MainGame.global.turn);
 
-        if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn>=MainGame.global.turn){
+        if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn<=MainGame.global.turn){
         	if(building.people<building.maxPeople){
         		// Hire button
 		        view.addPersonButton = game.make.button(30, 200, "btnHire", 

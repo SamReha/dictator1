@@ -85,7 +85,7 @@ var BoardController={
 	},
 
 	showTileBrief: function(bc, index){		
-		/* global TileBriefInfoView */
+		/* global TileBriefView */
 		if(index===null || index===undefined)
 			return;
 		if(bc.briefView){
@@ -98,7 +98,7 @@ var BoardController={
 		}
 		var tile=bc.modelView.at(index);
 		console.assert(tile);
-		bc.briefView=TileBriefInfoView.createNew(index);
+		bc.briefView=TileBriefView.createNew(index);
 		bc.briefView.updateInfo(tile);
 		bc.briefView.updatePos();
 		bc.mouseOverTimer.loop(50,bc.briefView.updatePos);
