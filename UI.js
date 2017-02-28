@@ -605,4 +605,4 @@ var BuildingPlacer = {
     //     }
         
     // },
-};
+// };

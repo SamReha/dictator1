@@ -431,8 +431,7 @@ var Board={
         console.log(b._offset);
         // console.log("Now, board's x and y:",b.x,b.y);
 
-        /*global MainGame*/
-        MainGame.mapSelector.positionBuildingDetail(b);
+        // MainGame.mapSelector.positionBuildingDetail(b);
     },
 
     // let camera zoom at zoom
@@ -469,7 +468,6 @@ var Board={
         b._offset.y+=oldY-b.y;
         // console.log("new xy is:",b.x,b.y);
         
-        /*global MainGame*/
-        MainGame.mapSelector.positionBuildingDetail(b);
+        // MainGame.mapSelector.positionBuildingDetail(b);
     },
 };
