@@ -23,22 +23,30 @@ var CoalitionFlag = {
 		coalitionFlag.militaryGroup.y = 48;
 		coalitionFlag.addChild(coalitionFlag.militaryGroup);
 
+		coalitionFlag.addCoalitionMenu = AddCoalitionMenu.createNew();
+
+		// Create the add member buttons
+		var addBureaucratButton = AddCoalitionButton.createNew('bureaucrat', coalitionFlag.addCoalitionMenu);
+		coalitionFlag.beauroGroup.addChild(addBureaucratButton);
+		coalitionFlag.merchantGroup.addChild(AddCoalitionButton.createNew('merchant', coalitionFlag.addCoalitionMenu));
+		coalitionFlag.militaryGroup.addChild(AddCoalitionButton.createNew('military', coalitionFlag.addCoalitionMenu));
+
 		// Functions
 		// Update - updates data only, should be called every half second
-		coalitionFlag.update = function() { CoalitionFlag.update(coalitionFlag); };
-		coalitionFlag.updateLoop = MainGame.game.time.events.loop(500, coalitionFlag.update, coalitionFlag);
+		coalitionFlag.updateSelf = function() { CoalitionFlag.updateSelf(coalitionFlag); };
+		//coalitionFlag.updateLoop = MainGame.game.time.events.loop(500, coalitionFlag.update, coalitionFlag);
 
 		return coalitionFlag;
 	},
 	
-	update: function(coalitionFlag) {
-		// KILL ALL CHILDREN
-		coalitionFlag.beauroGroup.removeAll();
-		coalitionFlag.merchantGroup.removeAll();
-		coalitionFlag.militaryGroup.removeAll();
+	updateSelf: function(coalitionFlag) {
+		// KILL ALL CHILDREN (except don't we should probably track the view buttons in separate groups from the add buttons)
+		//coalitionFlag.beauroGroup.removeAll();
+		//coalitionFlag.merchantGroup.removeAll();
+		//coalitionFlag.militaryGroup.removeAll();
 		
 		// Get list of coalition members
-		var coalition = [];//MainGame.population.getCoalition();
+		var coalition = MainGame.population.highList();
 		
 		// Create all the viewButtons
 		for (var i in coalition) {
@@ -52,18 +60,13 @@ var CoalitionFlag = {
 				coalitionFlag.militaryGroup.addChild(ViewCoalitionButton.createNew(coalitionMember));
 			}
 		}
-		
-		// Create the add member buttons
-		coalitionFlag.beauroGroup.addChild(AddCoalitionButton.createNew('bureaucrat'));
-		coalitionFlag.merchantGroup.addChild(AddCoalitionButton.createNew('merchant'));
-		coalitionFlag.militaryGroup.addChild(AddCoalitionButton.createNew('military'));
 	},
 	
 	
 };
 
 var AddCoalitionButton = {
-	createNew: function(typeString) {
+	createNew: function(typeString, addCoalitionMenu) {
 		// First, figure out a texture
 		var textureString = '';
 		if (typeString === 'military') {
@@ -74,14 +77,18 @@ var AddCoalitionButton = {
 			textureString = 'add_beauro_button';
 		}
 		
-		var addButton = MainGame.game.make.button(0, 0, textureString, 0, 1, 2);
+		var addButton = MainGame.game.make.button(0, 0, textureString, function() { AddCoalitionButton.clickHandler(addCoalitionMenu); }, addButton, 2, 0, 1);
 		addButton.anchor.x = 1;
-
-		// Set a click handler - open a hire menu for the given type
+		addButton.name = 'Add ' + typeString + ' Button';
 
 		return addButton;
+	},
+
+	clickHandler: function(addCoalitionMenu) {
+		addCoalitionMenu.updateSelf();
+		addCoalitionMenu.visible = !addCoalitionMenu.visible;
 	}
-}
+};
 
 var ViewCoalitionButton = {
 	createNew: function(coalitionMember) {
@@ -96,10 +103,35 @@ var ViewCoalitionButton = {
 		}
 		
 		var viewButton = MainGame.game.make.button(0, 0, textureString);
-		viewButton.anchor.x = 1;
+		//viewButton.anchor.x = 1;
 
 		// Set a click handler - open the detail panel for the given person
 
 		return viewButton;
 	}
-}
+};
+
+var AddCoalitionMenu = {
+	createNew: function() {
+		// Use this texture as a placeholder until we get a proper generic menu bg
+		var addCoalitionMenu = MainGame.game.add.sprite(0, 0, 'building_detail_backpanel');
+		addCoalitionMenu.anchor.x = 0.5;
+		addCoalitionMenu.anchor.y = 0.5;
+		addCoalitionMenu.x = MainGame.game.width / 2;
+		addCoalitionMenu.y = MainGame.game.height / 2;
+
+		// Set class functions
+        addCoalitionMenu.updateSelf = function() { AddCoalitionMenu.updateSelf(addCoalitionMenu); };
+
+		addCoalitionMenu.visible = false;
+
+		return addCoalitionMenu;
+	},
+
+	updateSelf: function(addCoMenu) {
+		var socialElite = MainGame.population.midList();
+
+        console.log("LowList", MainGame.population.lowList());
+        console.log(socialElite);
+	},
+};

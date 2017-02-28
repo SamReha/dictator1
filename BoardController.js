@@ -82,7 +82,7 @@ var BoardController={
 	},
 
 	showTileBrief: function(bc, index){		
-		console.log("Now show tile brief:"+index);
+		//console.log("Now show tile brief:"+index);
 		/* global TileBriefInfoView */
 		if(index===null || index===undefined)
 			return;
@@ -98,7 +98,7 @@ var BoardController={
 		bc.briefView.y=bc.modelView.y+tile.y*bc.modelView.currentScale;
 	},
 	hideTileBrief: function(bc){
-		console.log("Now hide tile brief");
+		//console.log("Now hide tile brief");
 		if(bc.briefView){
 			bc.briefView.destroy();
 			bc.briefView=null;
@@ -107,7 +107,7 @@ var BoardController={
 	showTileDetail: function(bc, index){
 		if(!bc.modelView.at(index).hasBuilding())
 			return;
-		console.log("Now show tile detail:"+index);
+		//console.log("Now show tile detail:"+index);
 		/* global TileDetailInfoView */
 		if(index===null || index===undefined)
 			return;
@@ -125,7 +125,7 @@ var BoardController={
 		bc.detailView.y=bc.modelView.y+tile.y*bc.modelView.currentScale;
 	},
 	hideTileDetail: function(bc, index){
-		console.log("Now hide tile detail");
+		//console.log("Now hide tile detail");
 		if(bc.detailView){
 			bc.detailView.destroy();
 			bc.detailView=null;

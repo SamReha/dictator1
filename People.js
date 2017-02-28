@@ -37,13 +37,18 @@ var Person={
         p.updateStats=function(board){return Person.updateStats(p,board)};
         p.updateFreeUn=function(board){return Person.updateFreeUn(p,board)};
 
+        p.setLowClass = function() { return Person.setLowClass(p); };
+        p.setMidClass = function() { return Person.setMidClass(p); };
+        p.setHighClass = function() { return Person.setHighClass(p); };
+
         return p;
     },
 
     // Class func: Implementation
-    update: function(p,board){
+    update: function(p, board){
+        console.log('People.js, update, fuck my life');
         // TODO
-        if(p.type===Person.Low){
+        if (p.type === Person.Low) {
             p.updateFreeUn(board);
         }
     },
@@ -87,6 +92,16 @@ var Person={
         p.shelter=house.shelter;
         //To be removed when the system changes
         p.education=house.education;
+
+        // Update social class
+        if (p.health < 50 || p.shelter < 50 || p.education < 50) {
+            p.setLowClass();
+        } else {
+            // Don't set mid class if they're already high class!
+            if (p.type != Person.Hi) {
+                p.setMidClass();
+            }
+        }
     },
     
     updateFreeUn: function(p,board){
@@ -99,6 +114,24 @@ var Person={
             p.freedom = 0;
             p.unrest = 0;
         }
+    },
+
+    setLowClass: function(p) {
+        p.type = Person.Low;
+    },
+
+    setMidClass: function(p) {
+        p.type = Person.Mid;
+
+        if (p.coalitionType === undefined) {
+            // Give them a random coalition type. In the future, we might look at their current or most recent place of employment
+            var typeArray = ['bureaucrat', 'merchant', 'military'];
+            p.coalitionType = typeArray[Math.floor(Math.random() * typeArray.length)];
+        }
+    },
+
+    setHighClass: function(p) {
+        p.type = Person.Hi;
     },
 };
 
@@ -123,8 +156,12 @@ var Population={
         pop.hirePersonAt=function(person,tileIndex){return Population.hirePersonAt(pop,person,tileIndex)};
         pop.fire=function(tileIndex){return Population.fire(pop,tileIndex)};
         pop.firePersonAt=function(person,tileIndex){return Population.firePersonAt()};
+
         // filter people
-        pop.lowList=function(){return pop.people.filter(function(p){return p.type===0})};
+        pop.lowList=function() { return pop.people.filter(function(p) { return p.type === 0; })};
+        pop.midList=function() { return pop.people.filter(function(p) { return p.type === 1; })};
+        pop.highList=function() { return pop.people.filter(function(p) { return p.type === 2; })};
+
         // returns the indice of housed/not housed people in lowList
         pop.findHoused=function(){return Population.findHousingStatus(pop,true)};
         pop.findNotHoused=function(){return Population.findHousingStatus(pop,false)};
