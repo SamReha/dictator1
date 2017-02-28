@@ -28,7 +28,7 @@ function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
 	peopleTextView.addColor(colorTable[building.type], 0);
 }
 
-var TileBriefInfoView={
+var TileBriefView={
     style:{font: "30px myKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" },
 	createNew: function(index){
 		console.assert(index || index===0);
@@ -56,8 +56,8 @@ var TileBriefInfoView={
 		// --- the above class vars can be accessed now ---
 
 		// Class func
-		view.updateInfo=function(tile){return TileBriefInfoView.updateInfo(view,tile)};
-		view.updatePos=function(){return TileBriefInfoView.updatePos(view)};
+		view.updateInfo=function(tile){return TileBriefView.updateInfo(view,tile)};
+		view.updatePos=function(){return TileBriefView.updatePos(view)};
 		return view;
 	},
 	updateInfo: function(t, tile){
