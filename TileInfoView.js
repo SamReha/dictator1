@@ -5,8 +5,8 @@ var fontBrief=[
 	{font:"30px myKaiti", fill:"lightgreen", boundsAlignH:"top", boundsAlignV:"middle"}
 ];
 var fontDetail=[
-	{font:"35px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
-	{font:"30px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"}
+	{font:"30px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
+	{font:"24px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"}
 ];
 
 var TileBriefInfoView={
@@ -19,8 +19,6 @@ var TileBriefInfoView={
 		var view=game.add.sprite(0,0,"tile_hover_backpanel");
 		// label position
 		var startPos={x:view.texture.width*0.5, y:view.texture.height*0.5-30};
-		// tile index
-		view.index=index;
 
 		// creates 3 lines
 		var lines=["terrain", "building", "people"];
@@ -30,7 +28,9 @@ var TileBriefInfoView={
 			view.addChild(oneLine);
 			view[lines[i]]=oneLine;
 		}
+
 		// Class vars
+		view.index=index;
 		// view.terrain
 		// view.building
 		// view.people
@@ -88,27 +88,33 @@ var TileDetailInfoView={
         var view = game.add.sprite(0, 0, 'building_detail_backpanel');
         var bdInputPriority = 2;
 
-        // Class vars
-        view.name = "BuildingDetail";
-        view.index = index;		// Need explanation for what makes these two different
-
         // bg (the grad)
-        var startPos={x:10, y:0};
+        var startPos={x:10, y:30};
 
-        // label (bld name/lv)
+        // creating 5 lines
         var lines=["building","people","health","education","shelter"];
         for(var i=0;i<lines.length;i++){
-        	var fontIndex=(i===0?0:1);
-        	var oneLine=game.make.text(startPos.x, startPos.y+30*i, fontDetail[fontIndex]);
-        	if(i===0)
+        	var oneLine=game.make.text(startPos.x, startPos.y+30*i, "", fontDetail[i?1:0]);
+        	if(i===0){
+        		oneLine.x=100;
         		oneLine.anchor.set(0.5);
+        	}
         	view.addChild(oneLine);
         	view[lines[i]]=oneLine;
         }
 
+        // Class vars
+        view.index = index;
+        // view.building
+        // view.people
+        // view.health
+        // view.education
+        // view.shelter
+		// --- the above class vars can be accessed now ---
+
         // Hire button
         if(board.at(index).hasBuilding()){
-	        view.addPersonButton = game.make.button(30, startPos.y-50, "btnHire", 
+	        view.addPersonButton = game.make.button(30, 200, "btnHire", 
 	            function() {
 	                //console.log("[MapSelector] Hire people for index: ",view.curIndex);
 	                // TODO
@@ -159,7 +165,7 @@ var TileDetailInfoView={
 	        view.addChild(view.addPersonButton);
 
 	        // Fire button
-	        view.removePersonButton = game.make.button(100, startPos.y-50, "btnFire",
+	        view.removePersonButton = game.make.button(100, 200, "btnFire",
 	            function() {
 	                /*global MainGame*/
 	                var bld=MainGame.board.at(view.index).building;
@@ -220,70 +226,63 @@ var TileDetailInfoView={
         var b = MainGame.board;
         var bld = tile.getBuilding();
 
-        // Let's figure out what kind of info we need to display
-        var displayName = '';
+        view.building.text=bld.name.toUpperCase();
 
-        // If this tile has no building, display terrain info
-        if (bld === null || bld.isEmpty()) {
-            // If this terrain has a natural resource, display that, otherwise display the terrain name
-            displayName = tile.getRes().key === '__default' ? tile.terrain.key : tile.getRes().key;
+    	// show people info
+    	if(bld.maxPeople){
+        	if(bld.subtype==="housing")
+        		view.people.text="Residents:"+bld.people+"/"+bld.maxPeople;
+        	else
+        		view.people.text="Jobs:"+bld.people+"/"+bld.maxPeople;
+    	}
+    	else
+    		view.people.text=" - "
 
-            view.people.text = ''; // Make sure this text gets cleared if it's not going to be used
-        } else {
-            displayName = bld.name;// + " Lv"+bld.level;
-
-            // Most buildings can contain people, but some (like roads) cannot. Be sure to correct for that.
-            if (bld.subtype === 'road') {
-                view.people.text = '';
-            } else {
-                view.people.text = "People: " + bld.people + "/" + bld.maxPeople;
-            }
-
-            var str3="";
-            var str4="";
-            var str5="";
-            
-            if(bld.subtype==="housing"){
-                str3="Health: "+bld.health;
-                str4="Education: "+bld.education;
-                str5="Shelter: "+bld.shelter;
-            }
-            if(bld.effects[0].type!==null){
-                for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-                    var outType = bld.effects[outIndex].type;
-                    var outValue = bld.effects[outIndex].outputTable[bld.people];
-                    if(outType==="health"){ outType="Health";   }
-                    else if(outType==="education"){ outType="Edu";  }
-                    else if(outType==="freedom"){   outType="Freedom";    }
-                    else if(outType==="unrest"){    outType="Unrest"; }
-                    else if(outType==="money"){
-                        outType="Money";
-                        outValue="$"+outValue+"K";
-                    }
-            
-                    if(outIndex===0){
-                        str3=outType+" Output: "+outValue;
-                    }else if(outIndex===1){
-                        str4=outType+" Output: "+outValue;
-                    }else if(outIndex===2){
-                        str5.text=outType+" Output: "+outValue;
-                    }
+        var str3="";
+        var str4="";
+        var str5="";
+        
+        if(bld.subtype==="housing"){
+            str3="Health: "+bld.health;
+            str4="Education: "+bld.education;
+            str5="Shelter: "+bld.shelter;
+        }
+        if(bld.effects[0].type!==null){
+            for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
+                var outType = bld.effects[outIndex].type;
+                var outValue = bld.effects[outIndex].outputTable[bld.people];
+                if(outType==="health"){ outType="Health";   }
+                else if(outType==="education"){ outType="Edu";  }
+                else if(outType==="freedom"){   outType="Freedom";    }
+                else if(outType==="unrest"){    outType="Unrest"; }
+                else if(outType==="money"){
+                    outType="Money";
+                    outValue="$"+outValue+"K";
+                }
+        
+                if(outIndex===0){
+                    str3=outType+" Output: "+outValue;
+                }else if(outIndex===1){
+                    str4=outType+" Output: "+outValue;
+                }else if(outIndex===2){
+                    str5.text=outType+" Output: "+outValue;
                 }
             }
-            view.health.text=str3;
-            view.education.text=str4;
-            view.shelter.text=str5;
         }
-
-        view.building.text = displayName;
+        view.health.text=str3;
+        view.education.text=str4;
+        view.shelter.text=str5;        
 	},
 	updatePos: function(view){
+		view.x=5;
+		view.y=100;
 		/*global MainGame*/
-		var board=MainGame.board;
-		var rect=board.rectOf(view.index,board.currentScale);
+		// var board=MainGame.board;
+		// var rect=board.rectOf(view.index,board.currentScale);
 
-        view.x=rect.x-board._offset.x+rect.w*.85;
-        view.y=rect.y-board._offset.y;
-        view.scale.set(board.currentScale);
+  //       view.x=rect.x-board._offset.x+rect.w*.85;
+  //       view.y=rect.y-board._offset.y;
+  //       view.scale.set(board.currentScale);
 	}
 };
+
