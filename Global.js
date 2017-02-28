@@ -48,6 +48,11 @@ var Global={
         var lowList = MainGame.population.lowList();
         
         for(var index=0;index<lowList.length;++index){
+            // =================================================================
+            // change later when influential members are a thing
+            if(lowList[index].health>=50 && lowList[index].education>=50 && lowList[index].shelter>=50)
+                continue;
+            // ===================================================================
             //console.log("Person of type "+lowList[index].type+" living at "+lowList[index].home+" - Freedom: "+lowList[index].freedom+" - Unrest: "+lowList[index].unrest);
             freeAv += lowList[index].freedom;
             unrestAv += lowList[index].unrest;
@@ -58,7 +63,7 @@ var Global={
 
         console.log(MainGame.board.findBuilding(null,"road",null).length);
         Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,"road",null).length,0,100);
-        Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length,0,100);
+        Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length,0,100);
     },
     updateMoneyPerTurn: function(){
         var totalIncome = 0;

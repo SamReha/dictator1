@@ -19,9 +19,9 @@ var Person={
         p.portIndex=data.portIndex;     // nullable
         p.workplace=data.workplace;     // nullable, index of the tile
         p.home=data.home;               // nullable, index of the tile
-        p.health=0;         // int
-        p.education=0;      // int
-        p.shelter=0;        // int
+        p.health=(data.health?data.health:0);           // int
+        p.education=(data.education?data.education:0);  // int
+        p.shelter=(data.shelter?data.shelter:0);        // int
         p.freedom=0;        // int
         p.unrest=0;         // int
         // Class vars (nullable)
@@ -303,8 +303,12 @@ var Population={
         var res=[];
         pop.people.forEach(function(p,i){
             console.assert(p.home!==undefined);
-            if(p.type===Person.Low && (p.home!==null && hasHouse || p.home===null && !hasHouse))
-                res.push(i);
+            if(p.type===Person.Low && (p.home!==null && hasHouse || p.home===null && !hasHouse)){
+                /*global MainGame*/
+                var name=MainGame.board.at(p.home).getBuilding().name;
+                if((name==="shantyTown" ? !hasHouse : hasHouse))
+                    res.push(i);
+            }
         })
         return res;
     },
