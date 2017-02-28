@@ -111,7 +111,7 @@ var BoardController={
 		}
 	},
 	showTileDetail: function(bc, index){
-		/* global TileDetailInfoView */
+		/* global TileDetailView */
 		if(index===null || index===undefined)
 			return;
 		if(bc.detailView){
@@ -127,7 +127,7 @@ var BoardController={
 		console.log("Now show tile detail:"+index);
 		var tile=bc.modelView.at(index);
 		console.assert(tile);
-		bc.detailView=TileDetailInfoView.createNew(index);
+		bc.detailView=TileDetailView.createNew(index);
 		bc.detailView.updateInfo(tile);
 		bc.detailView.updatePos();
 		bc.mouseTimer.loop(50,bc.detailView.updatePos);
