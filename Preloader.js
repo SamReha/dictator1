@@ -6,7 +6,7 @@ var Preloader={
         var buildingDir = imageDir + 'buildings/';
         // Placeholder assets
         g.load.image('hospital1',   buildingDir + 'hospital.png');
-        g.load.image('shanty1',     buildingDir + 'shanties.png');
+        // g.load.image('shanty1',     buildingDir + 'shanties.png');
         // Vertical Slice assets
         g.load.image('apartment1',  buildingDir + 'apartment.png');
         g.load.image('arableFarm1', buildingDir + 'arableFarm.png');
@@ -17,6 +17,7 @@ var Preloader={
         g.load.image('palace1',     buildingDir + 'palace.png');
         g.load.image('road1',       buildingDir + 'road.png');
         g.load.image('school1',     buildingDir + 'school.png');
+        g.load.image('shantyTown1', buildingDir + 'shantyTown.png');
         g.load.image('suburb1',     buildingDir + 'suburb.png');
         g.load.image('weakFarm1',   buildingDir + 'weakFarm.png');
 
