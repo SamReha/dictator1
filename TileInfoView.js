@@ -170,7 +170,9 @@ var TileDetailView={
                 outType="Extra Unrest";
                 /*global updateHomesNearOutput*/
                 updateHomesNearOutput(view.index);
-            }else if(outType==="money"){    outType="Money";    }
+            }else if(outType==="money"){    
+                outType="Money";
+            }
 
             // fix the apartment firing people bug
             if(bld.effects[outIndex].type===null)
@@ -219,7 +221,8 @@ var TileDetailView={
                 updateHomesNearOutput(view.index);
             }else if(outType==="money"){
                 outType="Money";
-                MainGame.global.updateMoneyPerTurn();                    }
+                MainGame.global.updateMoneyPerTurn();
+            }
 
             // fix the apartment firing people bug
             if(bld.effects[outIndex].type===null)
