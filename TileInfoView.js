@@ -77,7 +77,7 @@ var TileBriefInfoView={
 	}
 };
 
-var TileDetailInfoView={
+var TileDetailView={
     createNew: function(index) {
     	console.assert(index || index===0);
 
@@ -118,7 +118,7 @@ var TileDetailInfoView={
         if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn>=MainGame.global.turn){
         	if(building.people<building.maxPeople){
         		// Hire button
-		        view.addPersonButton = game.make.button(30, startPos.y-50, "btnHire", 
+		        view.addPersonButton = game.make.button(30, 200, "btnHire", 
 		            function() {
 		                //console.log("[MapSelector] Hire people for index: ",view.curIndex);
 		                // TODO
@@ -170,7 +170,7 @@ var TileDetailInfoView={
         	}
         	if(building.people>0){
 		        // Fire button
-		        view.removePersonButton = game.make.button(100, startPos.y-50, "btnFire",
+		        view.removePersonButton = game.make.button(100, 200, "btnFire",
 		            function() {
 		                /*global MainGame*/
 		                var bld=MainGame.board.at(view.index).building;
@@ -220,8 +220,8 @@ var TileDetailInfoView={
         	}
     	}
 		// Class func
-		view.updateInfo=function(tile){return TileDetailInfoView.updateInfo(view,tile)};
-		view.updatePos=function(){return TileDetailInfoView.updatePos(view)};
+		view.updateInfo=function(tile){return TileDetailView.updateInfo(view,tile)};
+		view.updatePos=function(){return TileDetailView.updatePos(view)};
 
         return view;
 	},

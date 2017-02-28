@@ -402,7 +402,7 @@ var Board={
         b.y-=y;
 
         /*global MainGame*/
-        MainGame.mapSelector.positionBuildingDetail(b);
+        // MainGame.mapSelector.positionBuildingDetail(b);
     },
 
     // let camera center on i
