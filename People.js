@@ -255,7 +255,6 @@ var Population={
         // unset home
         if(bld.subtype==="housing"){
             var h=pop.findHoused();
-            // console.log(h);
             for(var i=0;i<h.length;i++){
                 if(pop.people[h[i]].home===tileIndex){
                     bld.removePerson();
