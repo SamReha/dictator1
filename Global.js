@@ -25,31 +25,8 @@ var Global={
 
     nextTurn: function(){
         ++Global.turn;
-        // /*global MainGame*/
-        // var N=MainGame.board.gridWidth*MainGame.board.gridHeight;
-        // for(var i=0;i<N;++i){
-        //     var tile=MainGame.board.at(i);
-        //     var bld=tile.getBuilding();
-        //     if(bld && !bld.isEmpty()){
-        //         bld.nextTurn(Global.turn);
-
-        //         for(var out=0;out<bld.effects.length;++out){
-        //             var effect = bld.effects[out];
-        //             if(effect.type==="money"){
-        //                 Global.money += effect.outputTable[bld.people];
-        //             }
-        //         }
-        //         var outputCount=bld.outputCount;
-        //         for(var out=0;out<outputCount;++out){
-        //             var outputType=bld.outputTypes[out];
-        //             var outputTable=bld.outputTables[out];
-        //             console.assert(this.hasOwnProperty(outputType));
-        //             console.assert(typeof this[outputType] !== "function");
-        //             this[outputType]+=outputTable[bld.people];
-        //             console.log("[Global] nextTurn: add "+outputTable[bld.people]+" to "+outputType+", and now is:"+this[outputType]);
-        //         }
-        //     }
-        // }
+        /*global MainGame*/
+        MainGame.board.nextTurn(Global.turn);
 
         /*globabl updatePopulation*/
         updatePopulation(true,true);

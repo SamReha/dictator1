@@ -12,7 +12,7 @@ var MainGame={
     board: null,
     
     // the Map Selector
-    mapSelector: null,
+    // mapSelector: null,
 
     // The HUD
     hud: null,
@@ -61,8 +61,7 @@ var MainGame={
         /*global Population*/
         MainGame.population=Population.createNew(stageMain.population);
 
-        /*global MapSelector*/
-        MainGame.mapSelector = MapSelector.createNew();
+        // MainGame.mapSelector = MapSelector.createNew();
 
         /*global Hud*/
         MainGame.hud = Hud.createNew();

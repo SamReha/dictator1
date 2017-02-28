@@ -34,6 +34,7 @@ var Tile={
 
         // Class funcs
         tile.getTerrain=function(){return tile.terrain};
+        tile.getTerrainType=function(){return tile.terrain.key};
         tile.getResType=function(){return tile.resType};
         tile.getRes=function(){return tile.res};
         tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
@@ -112,7 +113,7 @@ var Board={
         // build new shanty town next to a random road tile and return index
         board.buildShanty=function(){return Board.buildShanty(board)};
         // go to next turn
-        board.nextTurn=function(){return Board.nextTurn(board)};
+        board.nextTurn=function(turn){return Board.nextTurn(board,turn)};
         // let camera center itself on i
         board.cameraCenterOn=function(i){return Board.cameraCenterOn(board,i)};
         // let camera zoom itself as zoom
@@ -296,7 +297,7 @@ var Board={
         var res=[];
         var N=b.tileCount();
         for(var i=0;i<N;i++)
-            if(b.at(i).getTerrain()===type)
+            if(b.at(i).getTerrainType()===type)
                 res.push(i);
         return res;
     },
@@ -304,7 +305,7 @@ var Board={
         var res=[];
         var N=b.tileCount();
         for(var i=0;i<N;i++)
-            if(b.at(i).getRes()===type)
+            if(b.at(i).getResType()===type)
                 res.push(i);
         return res;
     },
@@ -347,7 +348,9 @@ var Board={
                     }
                 }
                 for(var adjIndex=0;adjIndex<check.length;++adjIndex){
-                    if(!board.at(check[adjIndex]).hasBuilding()){
+                    if(!board.at(check[adjIndex]).hasBuilding() &&
+                        board.at(check[adjIndex]).getTerrainType()!=="water" &&
+                            board.at(check[adjIndex]).getTerrainType()!=="mountain"){
                         for(var choiceIndex=0;choiceIndex<choices.length;++choiceIndex){
                             if(check[adjIndex] === choices[choiceIndex]){
                                 check[adjIndex] = null;
@@ -364,7 +367,9 @@ var Board={
         // In case no index could be found at least 3 steps from a road
         if(choices.length === 0){
             for(var tileIndex = 0; tileIndex < board.tileCount(); ++tileIndex){
-                if(!board.at(tileIndex).hasBuilding()){
+                if(!board.at(tileIndex).hasBuilding() && 
+                    board.at(tileIndex).getTerrainType()!=="water" && 
+                        board.at(tileIndex).getTerrainType()!=="mountain"){
                     choices.push(tileIndex);
                 }
             }
@@ -372,20 +377,21 @@ var Board={
 
         var index = choices[Math.floor(Math.random()*choices.length)];
         /* global Building */
-        board.at(index).setBuilding(Building.createNew({name:"shanty",level:1,startingTurn:0,people:0}));
+        board.at(index).setBuilding(Building.createNew({name:"shantyTown",level:1,startingTurn:0,people:0}));
         return index;
     },
     // to next turn
-    nextTurn: function(b){
+    nextTurn: function(b,turn){
         // DFS call nextTurn
-        // var stack=[b];
-        // while(stack.length>0){
-        //     var node=stack.pop();
-        //     if(node.nextTurn && node!==b) node.nextTurn();
-        //     for(var i=0;i<node.children.length;i++){
-        //         stack.push(node.children[i]);
-        //     }
-        // }
+        var stack=[b];
+        while(stack.length>0){
+            var node=stack.pop();
+            if(node.nextTurn && node!==b)
+                node.nextTurn(turn);
+            for(var i=0;i<node.children.length;i++){
+                stack.push(node.children[i]);
+            }
+        }
     },
 
     // let camera move (x,y)
@@ -425,8 +431,7 @@ var Board={
         console.log(b._offset);
         // console.log("Now, board's x and y:",b.x,b.y);
 
-        /*global MainGame*/
-        MainGame.mapSelector.positionBuildingDetail(b);
+        // MainGame.mapSelector.positionBuildingDetail(b);
     },
 
     // let camera zoom at zoom
@@ -463,7 +468,6 @@ var Board={
         b._offset.y+=oldY-b.y;
         // console.log("new xy is:",b.x,b.y);
         
-        /*global MainGame*/
-        MainGame.mapSelector.positionBuildingDetail(b);
+        // MainGame.mapSelector.positionBuildingDetail(b);
     },
 };

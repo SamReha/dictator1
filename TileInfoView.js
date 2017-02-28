@@ -112,106 +112,112 @@ var TileDetailInfoView={
         // view.shelter
 		// --- the above class vars can be accessed now ---
 
-        // Hire button
-        if(board.at(index).hasBuilding()){
-	        view.addPersonButton = game.make.button(30, 200, "btnHire", 
-	            function() {
-	                //console.log("[MapSelector] Hire people for index: ",view.curIndex);
-	                // TODO
+        var building=board.at(index).getBuilding();
+        console.log(building.startingTurn+" "+MainGame.global.turn);
 
-	                /*global MainGame*/
-	                var bld = MainGame.board.at(view.index).building;
-	                if (bld.people >= bld.maxPeople)
-	                    return;
-	                
-	                //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-	                MainGame.population.hire(view.index);
-	                //bld.people=bld.people+actual; [this is now done in building.addPerson()]
-	                // update display
-	                view.people.text="People: "+bld.people+"/"+bld.maxPeople;
+        if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn>=MainGame.global.turn){
+        	if(building.people<building.maxPeople){
+        		// Hire button
+		        view.addPersonButton = game.make.button(30, startPos.y-50, "btnHire", 
+		            function() {
+		                //console.log("[MapSelector] Hire people for index: ",view.curIndex);
+		                // TODO
 
-	                for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-	                    var outType = bld.effects[outIndex].type;
-	                    if(outType==="health"){ 
-	                        outType="Health";
-	                        /*global updateHomesNearOutput*/
-	                        updateHomesNearOutput(view.index);
-	                    }else if(outType==="education"){
-	                        outType="Edu";
-	                        /*global updateHomesNearOutput*/
-	                        updateHomesNearOutput(view.index);
-	                    }else if(outType==="freedom"){
-	                        outType="Extra Freedom";
-	                        /*global updateHomesNearOutput*/
-	                        updateHomesNearOutput(view.index);
-	                    }else if(outType==="unrest"){
-	                        outType="Extra Unrest";
-	                        /*global updateHomesNearOutput*/
-	                        updateHomesNearOutput(view.index);
-	                    }else if(outType==="money"){    outType="Money";    }
+		                /*global MainGame*/
+		                var bld = MainGame.board.at(view.index).building;
+		                if (bld.people >= bld.maxPeople)
+		                    return;
+		                
+		                //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
+		                MainGame.population.hire(view.index);
+		                //bld.people=bld.people+actual; [this is now done in building.addPerson()]
+		                // update display
+		                view.people.text="People: "+bld.people+"/"+bld.maxPeople;
 
-	                    if(outIndex===0){
-	                        view.health.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-	                    }else if(outIndex===1){
-	                        view.education.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-	                    }else if(outIndex===2){
-	                        view.shelter.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-	                    }
-	                }
-	                /*global updatePopulation*/
-	                updatePopulation(false,false);
-	            }, view, 0, 1, 2, 3);
-	        view.addPersonButton.input.priorityID = bdInputPriority;
-	        view.addChild(view.addPersonButton);
+		                for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
+		                    var outType = bld.effects[outIndex].type;
+		                    if(outType==="health"){ 
+		                        outType="Health";
+		                        /*global updateHomesNearOutput*/
+		                        updateHomesNearOutput(view.index);
+		                    }else if(outType==="education"){
+		                        outType="Edu";
+		                        /*global updateHomesNearOutput*/
+		                        updateHomesNearOutput(view.index);
+		                    }else if(outType==="freedom"){
+		                        outType="Extra Freedom";
+		                        /*global updateHomesNearOutput*/
+		                        updateHomesNearOutput(view.index);
+		                    }else if(outType==="unrest"){
+		                        outType="Extra Unrest";
+		                        /*global updateHomesNearOutput*/
+		                        updateHomesNearOutput(view.index);
+		                    }else if(outType==="money"){    outType="Money";    }
 
-	        // Fire button
-	        view.removePersonButton = game.make.button(100, 200, "btnFire",
-	            function() {
-	                /*global MainGame*/
-	                var bld=MainGame.board.at(view.index).building;
-	                if(bld.people<=0)
-	                    return;
-	                
-	                MainGame.population.fire(view.index);
+		                    if(outIndex===0){
+		                        view.health.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+		                    }else if(outIndex===1){
+		                        view.education.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+		                    }else if(outIndex===2){
+		                        view.shelter.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+		                    }
+		                }
+		                /*global updatePopulation*/
+		                updatePopulation(false,false);
+		            }, view, 0, 1, 2, 3);
+		        view.addPersonButton.input.priorityID = bdInputPriority;
+		        view.addChild(view.addPersonButton);
+        	}
+        	if(building.people>0){
+		        // Fire button
+		        view.removePersonButton = game.make.button(100, startPos.y-50, "btnFire",
+		            function() {
+		                /*global MainGame*/
+		                var bld=MainGame.board.at(view.index).building;
+		                if(bld.people<=0)
+		                    return;
+		                
+		                MainGame.population.fire(view.index);
 
-	                // update display
-	                view.people.text="People: "+bld.people+"/"+bld.maxPeople;
+		                // update display
+		                view.people.text="People: "+bld.people+"/"+bld.maxPeople;
 
-	                for(var outIndex = 0; outIndex < bld.effects.length; outIndex++) {
-	                    var outType = bld.effects[outIndex].type;
-	                    if(outType==="health"){ 
-	                        outType="Health";
-	                        /*global updateHomesNearOutput*/
-	                        updateHomesNearOutput(view.index);
-	                    }else if(outType==="education"){
-	                        outType="Edu";
-	                        /*global updateHomesNearOutput*/
-	                        updateHomesNearOutput(view.index);
-	                    }else if(outType==="freedom"){
-	                        outType="Extra Freedom";
-	                        /*global updateHomesNearOutput*/
-	                        updateHomesNearOutput(view.index);
-	                    }else if(outType==="unrest"){
-	                        outType="Extra Unrest";
-	                        /*global updateHomesNearOutput*/
-	                        updateHomesNearOutput(view.index);
-	                    }else if(outType==="money"){
-	                        outType="Money";
-	                        MainGame.global.updateMoneyPerTurn();                    }
+		                for(var outIndex = 0; outIndex < bld.effects.length; outIndex++) {
+		                    var outType = bld.effects[outIndex].type;
+		                    if(outType==="health"){ 
+		                        outType="Health";
+		                        /*global updateHomesNearOutput*/
+		                        updateHomesNearOutput(view.index);
+		                    }else if(outType==="education"){
+		                        outType="Edu";
+		                        /*global updateHomesNearOutput*/
+		                        updateHomesNearOutput(view.index);
+		                    }else if(outType==="freedom"){
+		                        outType="Extra Freedom";
+		                        /*global updateHomesNearOutput*/
+		                        updateHomesNearOutput(view.index);
+		                    }else if(outType==="unrest"){
+		                        outType="Extra Unrest";
+		                        /*global updateHomesNearOutput*/
+		                        updateHomesNearOutput(view.index);
+		                    }else if(outType==="money"){
+		                        outType="Money";
+		                        MainGame.global.updateMoneyPerTurn();                    }
 
-	                    if(outIndex===0){
-	                        view.health.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-	                    }else if(outIndex===1){
-	                        view.education.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-	                    }else if(outIndex===2){
-	                        view.shelter.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-	                    }
-	                }
-	                /*global updatePopulation*/
-	                updatePopulation(false,false);
-	            }, view, 0,1,2,3);
-	        view.removePersonButton.input.priorityID = bdInputPriority;
-	        view.addChild(view.removePersonButton);
+		                    if(outIndex===0){
+		                        view.health.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+		                    }else if(outIndex===1){
+		                        view.education.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+		                    }else if(outIndex===2){
+		                        view.shelter.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+		                    }
+		                }
+		                /*global updatePopulation*/
+		                updatePopulation(false,false);
+		            }, view, 0,1,2,3);
+		        view.removePersonButton.input.priorityID = bdInputPriority;
+		        view.addChild(view.removePersonButton);
+        	}
     	}
 		// Class func
 		view.updateInfo=function(tile){return TileDetailInfoView.updateInfo(view,tile)};
@@ -276,13 +282,6 @@ var TileDetailInfoView={
 	updatePos: function(view){
 		view.x=5;
 		view.y=100;
-		/*global MainGame*/
-		// var board=MainGame.board;
-		// var rect=board.rectOf(view.index,board.currentScale);
-
-  //       view.x=rect.x-board._offset.x+rect.w*.85;
-  //       view.y=rect.y-board._offset.y;
-  //       view.scale.set(board.currentScale);
 	}
 };
 

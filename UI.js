@@ -321,265 +321,265 @@ var BuildingPlacer = {
 
 // add me before HUD!!!
 // Does useful things with display map data in-game, include the mouse-hover label and the buildingDetailMenu
-var MapSelector = {
-    createNew: function(){
-        /*global MainGame*/
-        var ms = MainGame.game.add.group();        
+// var MapSelector = {
+//     createNew: function(){
+//         /*global MainGame*/
+//         var ms = MainGame.game.add.group();        
 
-        // Class vars
-        ms.name = "MapSelector";
-        ms.curIndex = -1;
-        ms.activeIndex = null;
-        // ms.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, ms, ms);
-        ms.buildingDetail = MapSelector.makeBuildingDetail(ms);
+//         // Class vars
+//         ms.name = "MapSelector";
+//         ms.curIndex = -1;
+//         ms.activeIndex = null;
+//         // ms.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, ms, ms);
+//         ms.buildingDetail = MapSelector.makeBuildingDetail(ms);
 
-        // Class funcs
-        ms.updateBuildingDetail = function(tileIndex) {MapSelector.updateBuildingDetail(ms,tileIndex)};
-        ms.positionBuildingDetail = function(b) {MapSelector.positionBuildingDetail(ms,b)};
-        // ms.updateAll = function() {MapSelector.updateAll(ms)};
-        // ms.clickHandler = function(activePointer) { MapSelector.clickHandler(ms, activePointer); };
+//         // Class funcs
+//         ms.updateBuildingDetail = function(tileIndex) {MapSelector.updateBuildingDetail(ms,tileIndex)};
+//         ms.positionBuildingDetail = function(b) {MapSelector.positionBuildingDetail(ms,b)};
+//         // ms.updateAll = function() {MapSelector.updateAll(ms)};
+//         // ms.clickHandler = function(activePointer) { MapSelector.clickHandler(ms, activePointer); };
 
-        // MainGame.game.input.onDown.add(ms.clickHandler, ms, ms, MainGame.game.input.activePointer);
+//         // MainGame.game.input.onDown.add(ms.clickHandler, ms, ms, MainGame.game.input.activePointer);
 
-        return ms;
-    },
+//         return ms;
+//     },
 
-    makeBuildingDetail: function(ms) {
-        var buildingDetail = MainGame.game.make.group();
-        var buildingDetailInputPriority = 2;
+//     makeBuildingDetail: function(ms) {
+//         var buildingDetail = MainGame.game.make.group();
+//         var buildingDetailInputPriority = 2;
 
-        var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" };
+//         var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" };
 
-        // bg (the grad)
-        buildingDetail.bg = MainGame.game.make.sprite(0, 0, 'building_detail_backpanel');
-        var labelX = Math.floor(buildingDetail.bg.texture.width / 2);
-        var labelY = Math.floor(buildingDetail.bg.texture.height / 2);
-        buildingDetail.bg.y -= labelY;
-        buildingDetail.addChild(buildingDetail.bg);
+//         // bg (the grad)
+//         buildingDetail.bg = MainGame.game.make.sprite(0, 0, 'building_detail_backpanel');
+//         var labelX = Math.floor(buildingDetail.bg.texture.width / 2);
+//         var labelY = Math.floor(buildingDetail.bg.texture.height / 2);
+//         buildingDetail.bg.y -= labelY;
+//         buildingDetail.addChild(buildingDetail.bg);
 
-        // label (bld name/lv)
-        buildingDetail.label = MainGame.game.make.text(labelX, -labelY+30, "", style, buildingDetail);
-        buildingDetail.label.anchor.x = 0.5;
-        buildingDetail.label.anchor.y = 0.5;
-        buildingDetail.addChild(buildingDetail.label);
+//         // label (bld name/lv)
+//         buildingDetail.label = MainGame.game.make.text(labelX, -labelY+30, "", style, buildingDetail);
+//         buildingDetail.label.anchor.x = 0.5;
+//         buildingDetail.label.anchor.y = 0.5;
+//         buildingDetail.addChild(buildingDetail.label);
 
-        // label2 (people)
-        buildingDetail.label2 = MainGame.game.make.text(10, -labelY+60, "", style, buildingDetail);
-        buildingDetail.label2.anchor.y = 0.5;
-        buildingDetail.addChild(buildingDetail.label2);
+//         // label2 (people)
+//         buildingDetail.label2 = MainGame.game.make.text(10, -labelY+60, "", style, buildingDetail);
+//         buildingDetail.label2.anchor.y = 0.5;
+//         buildingDetail.addChild(buildingDetail.label2);
 
-        // label3 (health)
-        buildingDetail.label3=MainGame.game.make.text(10,-labelY+90,"",style,buildingDetail);
-        buildingDetail.label3.anchor.y = 0.5;
-        buildingDetail.addChild(buildingDetail.label3);
+//         // label3 (health)
+//         buildingDetail.label3=MainGame.game.make.text(10,-labelY+90,"",style,buildingDetail);
+//         buildingDetail.label3.anchor.y = 0.5;
+//         buildingDetail.addChild(buildingDetail.label3);
 
-        // label3 (health)
-        buildingDetail.label4=MainGame.game.make.text(10,-labelY+120,"",style,buildingDetail);
-        buildingDetail.label4.anchor.y = 0.5;
-        buildingDetail.addChild(buildingDetail.label4);
+//         // label3 (health)
+//         buildingDetail.label4=MainGame.game.make.text(10,-labelY+120,"",style,buildingDetail);
+//         buildingDetail.label4.anchor.y = 0.5;
+//         buildingDetail.addChild(buildingDetail.label4);
 
-        // label3 (health)
-        buildingDetail.label5=MainGame.game.make.text(10,-labelY+150,"",style,buildingDetail);
-        buildingDetail.label5.anchor.y = 0.5;
-        buildingDetail.addChild(buildingDetail.label5);
+//         // label3 (health)
+//         buildingDetail.label5=MainGame.game.make.text(10,-labelY+150,"",style,buildingDetail);
+//         buildingDetail.label5.anchor.y = 0.5;
+//         buildingDetail.addChild(buildingDetail.label5);
 
-        // Hire button
-        buildingDetail.addPersonButton = MainGame.game.make.button(30, -labelY+200, "btnHire", 
-            function() {
-                //console.log("[MapSelector] Hire people for index: ",ms.curIndex);
-                // TODO
-                /*global MainGame*/
-                var bld = MainGame.board.at(ms.curIndex).building;
-                if (bld.people >= bld.maxPeople) {
-                    return;
-                }
+//         // Hire button
+//         buildingDetail.addPersonButton = MainGame.game.make.button(30, -labelY+200, "btnHire", 
+//             function() {
+//                 //console.log("[MapSelector] Hire people for index: ",ms.curIndex);
+//                 // TODO
+//                 /*global MainGame*/
+//                 var bld = MainGame.board.at(ms.curIndex).building;
+//                 if (bld.people >= bld.maxPeople) {
+//                     return;
+//                 }
                 
-                //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                MainGame.population.hire(ms.curIndex);
-                //bld.people=bld.people+actual; [this is now done in building.addPerson()]
-                // update display
-                buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
+//                 //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
+//                 MainGame.population.hire(ms.curIndex);
+//                 //bld.people=bld.people+actual; [this is now done in building.addPerson()]
+//                 // update display
+//                 buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
 
-                for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-                    var outType = bld.effects[outIndex].type;
-                    if(outType==="health"){ 
-                        outType="Health";
-                        /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="education"){
-                        outType="Edu";
-                        /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="freedom"){
-                        outType="Extra Freedom";
-                        /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="unrest"){
-                        outType="Extra Unrest";
-                        /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="money"){    outType="Money";    }
+//                 for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
+//                     var outType = bld.effects[outIndex].type;
+//                     if(outType==="health"){ 
+//                         outType="Health";
+//                         /*global updateHomesNearOutput*/
+//                         updateHomesNearOutput(ms.curIndex);
+//                     }else if(outType==="education"){
+//                         outType="Edu";
+//                         /*global updateHomesNearOutput*/
+//                         updateHomesNearOutput(ms.curIndex);
+//                     }else if(outType==="freedom"){
+//                         outType="Extra Freedom";
+//                         /*global updateHomesNearOutput*/
+//                         updateHomesNearOutput(ms.curIndex);
+//                     }else if(outType==="unrest"){
+//                         outType="Extra Unrest";
+//                         /*global updateHomesNearOutput*/
+//                         updateHomesNearOutput(ms.curIndex);
+//                     }else if(outType==="money"){    outType="Money";    }
 
-                    if(outIndex===0){
-                        buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-                    }else if(outIndex===1){
-                        buildingDetail.label4.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-                    }else if(outIndex===2){
-                        buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-                    }
-                }
-                /*global updatePopulation*/
-                updatePopulation(false,false);
-            }, ms, 0, 1, 2, 3);
-        buildingDetail.addPersonButton.input.priorityID = buildingDetailInputPriority;
-        buildingDetail.addChild(buildingDetail.addPersonButton);
+//                     if(outIndex===0){
+//                         buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+//                     }else if(outIndex===1){
+//                         buildingDetail.label4.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+//                     }else if(outIndex===2){
+//                         buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+//                     }
+//                 }
+//                 /*global updatePopulation*/
+//                 updatePopulation(false,false);
+//             }, ms, 0, 1, 2, 3);
+//         buildingDetail.addPersonButton.input.priorityID = buildingDetailInputPriority;
+//         buildingDetail.addChild(buildingDetail.addPersonButton);
 
-        // Fire button
-        buildingDetail.removePersonButton = MainGame.game.make.button(100, -labelY+200, "btnFire",
-            function() {
-                //console.log("[MapSelector] Fire people for index: ",ms.curIndex);
-                // TODO
-                /*global MainGame*/
-                var bld=MainGame.board.at(ms.curIndex).building;
-                if(bld.people<=0){
-                    return;
-                }
+//         // Fire button
+//         buildingDetail.removePersonButton = MainGame.game.make.button(100, -labelY+200, "btnFire",
+//             function() {
+//                 //console.log("[MapSelector] Fire people for index: ",ms.curIndex);
+//                 // TODO
+//                 /*global MainGame*/
+//                 var bld=MainGame.board.at(ms.curIndex).building;
+//                 if(bld.people<=0){
+//                     return;
+//                 }
                 
-                //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-                MainGame.population.fire(ms.curIndex);
-                //bld.people=bld.people-actual; [this is now done in building.addPerson()]
-                // update display
-                buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
+//                 //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
+//                 MainGame.population.fire(ms.curIndex);
+//                 //bld.people=bld.people-actual; [this is now done in building.addPerson()]
+//                 // update display
+//                 buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
 
-                for(var outIndex = 0; outIndex < bld.effects.length; outIndex++) {
-                    var outType = bld.effects[outIndex].type;
-                    if(outType==="health"){ 
-                        outType="Health";
-                        /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="education"){
-                        outType="Edu";
-                        /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="freedom"){
-                        outType="Extra Freedom";
-                        /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="unrest"){
-                        outType="Extra Unrest";
-                        /*global updateHomesNearOutput*/
-                        updateHomesNearOutput(ms.curIndex);
-                    }else if(outType==="money"){
-                        outType="Money";
-                        MainGame.global.updateMoneyPerTurn();                    }
+//                 for(var outIndex = 0; outIndex < bld.effects.length; outIndex++) {
+//                     var outType = bld.effects[outIndex].type;
+//                     if(outType==="health"){ 
+//                         outType="Health";
+//                         /*global updateHomesNearOutput*/
+//                         updateHomesNearOutput(ms.curIndex);
+//                     }else if(outType==="education"){
+//                         outType="Edu";
+//                         /*global updateHomesNearOutput*/
+//                         updateHomesNearOutput(ms.curIndex);
+//                     }else if(outType==="freedom"){
+//                         outType="Extra Freedom";
+//                         /*global updateHomesNearOutput*/
+//                         updateHomesNearOutput(ms.curIndex);
+//                     }else if(outType==="unrest"){
+//                         outType="Extra Unrest";
+//                         /*global updateHomesNearOutput*/
+//                         updateHomesNearOutput(ms.curIndex);
+//                     }else if(outType==="money"){
+//                         outType="Money";
+//                         MainGame.global.updateMoneyPerTurn();                    }
 
-                    if(outIndex===0){
-                        buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-                    }else if(outIndex===1){
-                        buildingDetail.label4.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-                    }else if(outIndex===2){
-                        buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-                    }
-                }
-                /*global updatePopulation*/
-                updatePopulation(false,false);
-            }, ms, 0,1,2,3);
-        buildingDetail.removePersonButton.input.priorityID = buildingDetailInputPriority;
-        buildingDetail.addChild(buildingDetail.removePersonButton);
+//                     if(outIndex===0){
+//                         buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+//                     }else if(outIndex===1){
+//                         buildingDetail.label4.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+//                     }else if(outIndex===2){
+//                         buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+//                     }
+//                 }
+//                 /*global updatePopulation*/
+//                 updatePopulation(false,false);
+//             }, ms, 0,1,2,3);
+//         buildingDetail.removePersonButton.input.priorityID = buildingDetailInputPriority;
+//         buildingDetail.addChild(buildingDetail.removePersonButton);
 
-        buildingDetail.visible = false;
-        return buildingDetail;
-    },
+//         buildingDetail.visible = false;
+//         return buildingDetail;
+//     },
 
 
-    updateBuildingDetail: function(ms, tileIndex) {
-        ms.buildingDetail.visible = true;
+//     updateBuildingDetail: function(ms, tileIndex) {
+//         ms.buildingDetail.visible = true;
 
-        if(tileIndex===null){
-            ms.buildingDetail.visible = false;
-            return;
-        }
+//         if(tileIndex===null){
+//             ms.buildingDetail.visible = false;
+//             return;
+//         }
 
-        if(ms.activeIndex===tileIndex){
-            return;
-        }
-        ms.activeIndex=tileIndex;
+//         if(ms.activeIndex===tileIndex){
+//             return;
+//         }
+//         ms.activeIndex=tileIndex;
 
-        if(!MainGame.board.at(tileIndex).hasBuilding()){
-            ms.buildingDetail.visible = false;
-            return;
-        }
+//         if(!MainGame.board.at(tileIndex).hasBuilding()){
+//             ms.buildingDetail.visible = false;
+//             return;
+//         }
 
-        var b = MainGame.board;
-        var tile = b.at(ms.activeIndex);
-        var bld = tile.getBuilding();
+//         var b = MainGame.board;
+//         var tile = b.at(ms.activeIndex);
+//         var bld = tile.getBuilding();
 
-        // Let's figure out what kind of info we need to display
-        var displayName = '';
+//         // Let's figure out what kind of info we need to display
+//         var displayName = '';
 
-        // If this tile has no building, display terrain info
-        if (bld === null || bld.isEmpty()) {
-            // If this terrain has a natural resource, display that, otherwise display the terrain name
-            displayName = tile.getRes().key === '__default' ? tile.terrain.key : tile.getRes().key;
+//         // If this tile has no building, display terrain info
+//         if (bld === null || bld.isEmpty()) {
+//             // If this terrain has a natural resource, display that, otherwise display the terrain name
+//             displayName = tile.getRes().key === '__default' ? tile.terrain.key : tile.getRes().key;
 
-            ms.buildingDetail.label2.text = ''; // Make sure this text gets cleared if it's not going to be used
-        } else {
-            displayName = bld.name;// + " Lv"+bld.level;
+//             ms.buildingDetail.label2.text = ''; // Make sure this text gets cleared if it's not going to be used
+//         } else {
+//             displayName = bld.name;// + " Lv"+bld.level;
 
-            // Most buildings can contain people, but some (like roads) cannot. Be sure to correct for that.
-            if (bld.subtype === 'road') {
-                ms.buildingDetail.label2.text = '';
-            } else {
-                ms.buildingDetail.label2.text = "People: " + bld.people + "/" + bld.maxPeople;
-            }
+//             // Most buildings can contain people, but some (like roads) cannot. Be sure to correct for that.
+//             if (bld.subtype === 'road') {
+//                 ms.buildingDetail.label2.text = '';
+//             } else {
+//                 ms.buildingDetail.label2.text = "People: " + bld.people + "/" + bld.maxPeople;
+//             }
 
-            var str3="";
-            var str4="";
-            var str5="";
+//             var str3="";
+//             var str4="";
+//             var str5="";
             
-            if(bld.subtype==="housing"){
-                str3="Health: "+bld.health;
-                str4="Education: "+bld.education;
-                str5="Shelter: "+bld.shelter;
-            }
-            if(bld.effects[0].type!==null){
-                for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-                    var outType = bld.effects[outIndex].type;
-                    var outValue = bld.effects[outIndex].outputTable[bld.people];
-                    if(outType==="health"){ outType="Health";   }
-                    else if(outType==="education"){ outType="Edu";  }
-                    else if(outType==="freedom"){   outType="Freedom";    }
-                    else if(outType==="unrest"){    outType="Unrest"; }
-                    else if(outType==="money"){
-                        outType="Money";
-                        outValue="$"+outValue+"K";
-                    }
+//             if(bld.subtype==="housing"){
+//                 str3="Health: "+bld.health;
+//                 str4="Education: "+bld.education;
+//                 str5="Shelter: "+bld.shelter;
+//             }
+//             if(bld.effects[0].type!==null){
+//                 for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
+//                     var outType = bld.effects[outIndex].type;
+//                     var outValue = bld.effects[outIndex].outputTable[bld.people];
+//                     if(outType==="health"){ outType="Health";   }
+//                     else if(outType==="education"){ outType="Edu";  }
+//                     else if(outType==="freedom"){   outType="Freedom";    }
+//                     else if(outType==="unrest"){    outType="Unrest"; }
+//                     else if(outType==="money"){
+//                         outType="Money";
+//                         outValue="$"+outValue+"K";
+//                     }
             
-                    if(outIndex===0){
-                        str3=outType+" Output: "+outValue;
-                    }else if(outIndex===1){
-                        str4=outType+" Output: "+outValue;
-                    }else if(outIndex===2){
-                        str5.text=outType+" Output: "+outValue;
-                    }
-                }
-            }
-            ms.buildingDetail.label3.text=str3;
-            ms.buildingDetail.label4.text=str4;
-            ms.buildingDetail.label5.text=str5;
-        }
+//                     if(outIndex===0){
+//                         str3=outType+" Output: "+outValue;
+//                     }else if(outIndex===1){
+//                         str4=outType+" Output: "+outValue;
+//                     }else if(outIndex===2){
+//                         str5.text=outType+" Output: "+outValue;
+//                     }
+//                 }
+//             }
+//             ms.buildingDetail.label3.text=str3;
+//             ms.buildingDetail.label4.text=str4;
+//             ms.buildingDetail.label5.text=str5;
+//         }
 
-        ms.buildingDetail.label.text = displayName;
+//         ms.buildingDetail.label.text = displayName;
 
-        ms.positionBuildingDetail(b);
-    },
+//         ms.positionBuildingDetail(b);
+//     },
 
-    positionBuildingDetail: function(ms, b){
-        var rect = b.rectOf(ms.activeIndex,b.currentScale);
-        ms.buildingDetail.x = rect.x-b._offset.x+rect.w*.85;
-        ms.buildingDetail.y = rect.y-b._offset.y+rect.h*.5;
-        ms.buildingDetail.scale.set(b.currentScale);
-    },
+//     positionBuildingDetail: function(ms, b){
+//         var rect = b.rectOf(ms.activeIndex,b.currentScale);
+//         ms.buildingDetail.x = rect.x-b._offset.x+rect.w*.85;
+//         ms.buildingDetail.y = rect.y-b._offset.y+rect.h*.5;
+//         ms.buildingDetail.scale.set(b.currentScale);
+//     },
 
     // clickHandler: function(ms, activePointer) {
     //     var b = MainGame.board;
@@ -605,4 +605,4 @@ var MapSelector = {
     //     }
         
     // },
-};
+// };

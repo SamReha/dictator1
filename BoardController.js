@@ -58,7 +58,7 @@ var BoardController={
 			bc.mouseTimer._startPos_={x:globalPos.x, y:globalPos.y};
 			bc.mouseTimer._boardPos_={x:bc.modelView.x, y:bc.modelView.y};
 			// start the timer!
-			bc.panTimer.loop(100, function(){
+			bc.panTimer.loop(50, function(){
 				var newPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
 				if(Math.abs(newPos.x-bc.mouseTimer._startPos_.x)>10 || Math.abs(newPos.y-bc.mouseTimer._startPos_.y)>10){
 					bc.mouseTimer._isDrag_=true;

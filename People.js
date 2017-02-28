@@ -58,7 +58,7 @@ var Person={
         /*global MainGame*/
         var board = MainGame.board;
         var housingIndices=board.findBuilding(null,"housing",null);
-        console.log("housingIndices"+ housingIndices);
+        // console.log("housingIndices "+ housingIndices);
         
         for(var i=0;i<housingIndices.length;++i){
             var bld1 = board.at(housingIndices[i]);
@@ -71,12 +71,12 @@ var Person={
                 }
             }
         }
-        console.log("housingIndices"+ housingIndices);
+        // console.log("housingIndices "+ housingIndices);
         for (var i=0;i<housingIndices.length;i++) {
-            console.log(i);
-            if (pop.hirePersonAt(p, housingIndices[i])) {
+            if(board.at(housingIndices[i]).getBuilding().startingTurn>MainGame.global.turn)
+                continue;
+            if (pop.hirePersonAt(p, housingIndices[i]))
                 return true;
-            }
         }
         return false;
     },
@@ -201,10 +201,10 @@ var Population={
     },
     
     hire: function(pop,tileIndex){
-        console.log("work and house map:");
+        // console.log("work and house map:");
         /*global MainGame*/
         var bld=MainGame.board.at(tileIndex).getBuilding();
-        console.assert(bld);
+        // console.assert(bld);
         // set home for person
         if(bld.subtype==="housing"){
             var hl=pop.findNotHoused();
@@ -228,7 +228,7 @@ var Population={
     },
     
     hirePersonAt: function(pop, person, tileIndex){
-        console.log("hirePersonAt: " + tileIndex);
+        // console.log("hirePersonAt: " + tileIndex);
         /*global MainGame*/
         var bld = MainGame.board.at(tileIndex).getBuilding();
         //set location for person
@@ -251,11 +251,11 @@ var Population={
     fire: function(pop,tileIndex){
         /*global MainGame*/
         var bld=MainGame.board.at(tileIndex).getBuilding();
-        console.assert(bld);
+        // console.assert(bld);
         // unset home
         if(bld.subtype==="housing"){
             var h=pop.findHoused();
-            console.log(h);
+            // console.log(h);
             for(var i=0;i<h.length;i++){
                 if(pop.people[h[i]].home===tileIndex){
                     bld.removePerson();
