@@ -23,18 +23,12 @@ var Hud = {
         var topBg = topGroup.create(0,0,'topBar');
 
         //      global vars
-        var topText = MainGame.game.make.text(140, 0, '', Hud.styleNormal);
-        topGroup.addChild(topText);
+        var topStatsGroup = TopStats.createNew();
+        topGroup.addChild(topStatsGroup);
 
         //      Coalition Flag
         topGroup.coalitionFlag = CoalitionFlag.createNew();
         //topGroup.addChild(topGroup.coalitionFlag);
-
-        // Have the top-bar text update itself every half second
-        topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
-        MainGame.game.time.events.loop(500, function() {
-            topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
-        }, topText);
 
         // Exit / Pause button
         var btnExit = MainGame.game.make.button(0, 0, 'small_generic_button', null, MainGame, 0, 1, 2, 2);
@@ -318,6 +312,103 @@ var BuildingPlacer = {
         self.kill();
     }
 };
+
+/* UI group that holds the sprites + text for the stats on the top bar */
+var TopStats = {
+    createNew: function() {
+        var unitWidth = 120;
+        var style = { font: "32px STKaiti", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle" };
+        var topStats = MainGame.game.make.group();
+
+        // Year
+        topStats.yearGroup = MainGame.game.make.group();
+        topStats.yearGroup.x = unitWidth;
+        topStats.yearGroup.sprite = MainGame.game.make.sprite(0, 0, 'year_icon');
+        topStats.yearGroup.addChild(topStats.yearGroup.sprite);
+        topStats.yearGroup.textLabel = MainGame.game.make.text(48, 6, '1950', style);
+        topStats.yearGroup.addChild(topStats.yearGroup.textLabel);
+        topStats.addChild(topStats.yearGroup);
+
+        // Population
+        topStats.popGroup = MainGame.game.make.group();
+        topStats.popGroup.x = unitWidth * 2;
+        topStats.popGroup.sprite = MainGame.game.make.sprite(0, 0, 'population_icon');
+        topStats.popGroup.addChild(topStats.popGroup.sprite);
+        topStats.popGroup.textLabel = MainGame.game.make.text(48, 6, '0', style);
+        topStats.popGroup.addChild(topStats.popGroup.textLabel);
+        topStats.addChild(topStats.popGroup);
+
+        // Freedom
+        topStats.freeGroup = MainGame.game.make.group();
+        topStats.freeGroup.x = unitWidth * 3;
+        topStats.freeGroup.sprite = MainGame.game.make.sprite(0, 0, 'freedom_icon');
+        topStats.freeGroup.addChild(topStats.freeGroup.sprite);
+        topStats.freeGroup.textLabel = MainGame.game.make.text(48, 6, '0%', style);
+        topStats.freeGroup.addChild(topStats.freeGroup.textLabel);
+        topStats.addChild(topStats.freeGroup);
+
+        // Unrest
+        topStats.unrestGroup = MainGame.game.make.group();
+        topStats.unrestGroup.x = unitWidth * 4;
+        topStats.unrestGroup.sprite = MainGame.game.make.sprite(0, 0, 'unrest_icon');
+        topStats.unrestGroup.addChild(topStats.unrestGroup.sprite);
+        topStats.unrestGroup.textLabel = MainGame.game.make.text(48, 6, '0%', style);
+        topStats.unrestGroup.addChild(topStats.unrestGroup.textLabel);
+        topStats.addChild(topStats.unrestGroup);
+
+        // Money per Turn
+        topStats.moneyPerTurnGroup = MainGame.game.make.group();
+        topStats.moneyPerTurnGroup.x = unitWidth * 5;
+        topStats.moneyPerTurnGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
+        topStats.moneyPerTurnGroup.addChild(topStats.moneyPerTurnGroup.sprite);
+        topStats.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48, 6, '$0', style);
+        topStats.moneyPerTurnGroup.addChild(topStats.moneyPerTurnGroup.textLabel);
+        topStats.addChild(topStats.moneyPerTurnGroup);
+
+        // State Money (warchest)
+        topStats.warchestGroup = MainGame.game.make.group();
+        topStats.warchestGroup.x = unitWidth * 6;
+        topStats.warchestGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
+        topStats.warchestGroup.addChild(topStats.warchestGroup.sprite);
+        topStats.warchestGroup.textLabel = MainGame.game.make.text(48, 6, '$0', style);
+        topStats.warchestGroup.addChild(topStats.warchestGroup.textLabel);
+        topStats.addChild(topStats.warchestGroup);
+
+        // Swiss Bank (personal money)
+        topStats.swissGroup = MainGame.game.make.group();
+        topStats.swissGroup.x = unitWidth * 7;
+        topStats.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
+        topStats.swissGroup.addChild(topStats.swissGroup.sprite);
+        topStats.swissGroup.textLabel = MainGame.game.make.text(48, 6, '$0', style);
+        topStats.swissGroup.addChild(topStats.swissGroup.textLabel);
+        topStats.addChild(topStats.swissGroup);
+
+        // Set update loop
+        MainGame.game.time.events.loop(500, function() {
+            var globalStats = MainGame.global;
+
+            var newPop = MainGame.population.count();
+            var newYear = 1949 + globalStats.turn;
+            var newUnrest = globalStats.unrest;
+            var newFreedom = globalStats.freedom;
+            var newMoneyPerTurn = globalStats.moneyPerTurn;
+            var newWarchest = globalStats.money;
+            var newSwissAccount = 0;
+
+            topStats.popGroup.textLabel.text = newPop;
+            topStats.freeGroup.textLabel.text = newFreedom;
+            topStats.unrestGroup.textLabel.text = newUnrest;
+            topStats.yearGroup.textLabel.text = newYear;
+            topStats.moneyPerTurnGroup.textLabel.text = newMoneyPerTurn;
+            topStats.warchestGroup.textLabel.text = newWarchest;
+            topStats.swissGroup.textLabel.text = newSwissAccount;
+
+            //topStats.textLabel.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
+        }, topStats);
+
+        return topStats;
+    },
+}
 
 // add me before HUD!!!
 // Does useful things with display map data in-game, include the mouse-hover label and the buildingDetailMenu
