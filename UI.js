@@ -389,11 +389,11 @@ var TopStats = {
 
             var newPop = MainGame.population.count();
             var newYear = 1949 + globalStats.turn;
-            var newUnrest = globalStats.unrest;
-            var newFreedom = globalStats.freedom;
-            var newMoneyPerTurn = globalStats.moneyPerTurn;
-            var newWarchest = globalStats.money;
-            var newSwissAccount = 0;
+            var newUnrest = globalStats.unrest + '%';
+            var newFreedom = globalStats.freedom + '%';
+            var newMoneyPerTurn = '$' + globalStats.moneyPerTurn;
+            var newWarchest = '$' + globalStats.money;
+            var newSwissAccount = '$' + 0;
 
             topStats.popGroup.textLabel.text = newPop;
             topStats.freeGroup.textLabel.text = newFreedom;
