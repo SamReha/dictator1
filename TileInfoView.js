@@ -114,7 +114,7 @@ var TileDetailView={
 		// --- the above class vars can be accessed now ---
 
         var building=board.at(index).getBuilding();
-        console.log(building.startingTurn+" "+MainGame.global.turn);
+        // console.log(building.startingTurn+" "+MainGame.global.turn);
 
         if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn<=MainGame.global.turn){
     		// Hire button
@@ -171,7 +171,13 @@ var TileDetailView={
                 outType="Extra Unrest";
                 /*global updateHomesNearOutput*/
                 updateHomesNearOutput(view.index);
-            }else if(outType==="money"){    outType="Money";    }
+            }else if(outType==="money"){    
+                outType="Money";
+            }
+
+            // fix the apartment firing people bug
+            if(bld.effects[outIndex].type===null)
+                break;
 
             if(outIndex===0){
                 view.health.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
@@ -218,7 +224,12 @@ var TileDetailView={
                 updateHomesNearOutput(view.index);
             }else if(outType==="money"){
                 outType="Money";
-                MainGame.global.updateMoneyPerTurn();                    }
+                MainGame.global.updateMoneyPerTurn();
+            }
+
+            // fix the apartment firing people bug
+            if(bld.effects[outIndex].type===null)
+                break;
 
             if(outIndex===0){
                 view.health.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
