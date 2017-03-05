@@ -117,20 +117,19 @@ var TileDetailView={
         console.log(building.startingTurn+" "+MainGame.global.turn);
 
         if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn<=MainGame.global.turn){
-        	if(building.people<building.maxPeople){
-        		// Hire button
-		        view.addPersonButton = game.make.button(30, 200, "btnHire", 
-		            function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 1, 2, 3);
+    		// Hire button
+	        view.addPersonButton = game.make.button(30, 200, "btnHire", 
+	            function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 1, 2, 3);
 
-		        view.addChild(view.addPersonButton);
-        	}
-        	if(building.people>0){
-		        // Fire button
-		        view.removePersonButton = game.make.button(100, 200, "btnFire",
-		            function() {TileDetailView._onFireButtonPressed_(view)}, view, 0, 1, 2, 3);
+	        view.addChild(view.addPersonButton);
+            if(building.people>=building.maxPeople){view.addPersonButton.visible=false;}
+	        
+            // Fire button
+	        view.removePersonButton = game.make.button(100, 200, "btnFire",
+	            function() {TileDetailView._onFireButtonPressed_(view)}, view, 0, 1, 2, 3);
 
-		        view.addChild(view.removePersonButton);
-        	}
+	        view.addChild(view.removePersonButton);
+            if(building.people<=0){view.removePersonButton.visible=false;}
     	}
 		// Class func
 		view.updateInfo=function(tile){return TileDetailView.updateInfo(view,tile)};
@@ -148,6 +147,8 @@ var TileDetailView={
         if (bld.people >= bld.maxPeople)
             return;
         MainGame.population.hire(view.index);
+        if(bld.people>=bld.maxPeople){view.addPersonButton.visible=false;}
+        view.removePersonButton.visible=true;
 
         // update display
         _showBuildingAndPeople_(bld, view.building, view.people);
@@ -191,6 +192,8 @@ var TileDetailView={
             return;
         
         MainGame.population.fire(view.index);
+        if(bld.people<=0){view.removePersonButton.visible=false;}
+        view.addPersonButton.visible=true;
 
         // update display
         _showBuildingAndPeople_(bld, view.building, view.people);
