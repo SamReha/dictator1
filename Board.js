@@ -76,6 +76,7 @@ var Board={
         board.gridWidth=data.gridWidth;
         board.gridHeight=data.gridHeight;
         board.tileWidth=data.tileWidth;
+        board.tileHeight=data.tileHeight;
         board.currentScale=1.0;
         board.currentZoomLevel=Board.defaultZoomLevel;
         // maybe removed in the future
@@ -142,7 +143,7 @@ var Board={
     // save to JSON
     toJSON: function(b){
         var tiles=[];
-        var data={gridWidth:b.gridWidth, gridHeight:b.gridHeight, tileWidth:b.tileWidth, tiles:tiles};
+        var data={gridWidth:b.gridWidth, gridHeight:b.gridHeight, tileWidth:b.tileWidth, tileHeight:b.tileHeight, tiles:tiles};
         var N=b.gridWidth*b.gridHeight;
         for(var i=0;i<N;i++){
             tiles[i]=JSON.parse(b.at(i).toJSON());
@@ -205,7 +206,7 @@ var Board={
         if(!scale || scale<=0) scale=1.0;
         var ixy=b.xyOf(i);
         var pw=b.tileWidth*scale;
-        var ph=pw*1.732/2.0;
+        var ph=b.tileHeight*scale;
         var x=pw*0.75*ixy.x;
         var y=ph*ixy.y;
         if(ixy.x%2===1){
