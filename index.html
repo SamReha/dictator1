@@ -16,6 +16,7 @@
     <script type="text/javascript" src="UI.js"></script>
     <script type="text/javascript" src="UiTest.js"></script>
     <script type="text/javascript" src="People.js"></script>
+    <script type="text/javascript" src="PeopleView.js"></script>
     <script type="text/javascript" src="Preloader.js"></script>
     <script type="text/javascript" src="TileInfoView.js"></script>
     <script type="text/javascript" src="updatePopulation.js"></script>
@@ -78,8 +79,12 @@ function create() {
     /*global MainGame*/
     MainGame.start();
 
-    MainGame.board.cameraCenterOn(0);
+    // for test
+    MainGame.board.cameraCenterOn(83);
     MainGame.board.cameraZoomAt();
+
+    // for test People View
+    PeopleView.createNew();
 
     /*global UiTest*/
     // UiTest.init(g);
