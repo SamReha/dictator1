@@ -2,6 +2,7 @@
     "gridWidth": 15,
     "gridHeight": 12,
     "tileWidth": 256,
+    "tileHeight": 222,
 
     "tiles": [
         {"terrain": "grass","res": null,"building": null},
