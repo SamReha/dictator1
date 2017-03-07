@@ -302,10 +302,13 @@ var Population={
         var res=[];
         pop.people.forEach(function(p,i){
             console.assert(p.home!==undefined);
-            if(p.type===Person.Low && (p.home!==null && hasHouse || p.home===null && !hasHouse)){
-                /*global MainGame*/
-                var name=MainGame.board.at(p.home).getBuilding().name;
-                if((name==="shantyTown" ? !hasHouse : hasHouse))
+            if(p.type===Person.Low){
+                if(p.home!==null && hasHouse){
+                    /*global MainGame*/
+                    var name=MainGame.board.at(p.home).getBuilding().name;
+                    if((name==="shantyTown" ? !hasHouse : hasHouse))
+                        res.push(i);
+                }else if(p.home===null && !hasHouse)
                     res.push(i);
             }
         })
