@@ -3,11 +3,11 @@
 var DListView={
 	// ****************** Attention ****************** //	
 	// textureInfo: {normal, *high, *disabled};
-	// itemInfo: {size:{w,h}, count};
+	// itemInfo: {size:{w,h}, *clickedCallback, *change};
 	// *marginInfo: {*l, *r, *t, *b};
 	// *isVertical
 	// * === optional
-	createNew: function(textureInfo, itemInfo, marginInfo, isVertical, itemSelectedCallback){
+	createNew: function(textureInfo, marginInfo, itemInfo, isVertical){
 		console.log("DListView: creating a list view requires:");
 		console.log("textureInfo:{normal:,*high:,*disabled}, itemInfo:{size,count}, *marginInfo:{*l,*r,*t,*b} and *isVertical");
 		// set the normal texture
@@ -21,12 +21,14 @@ var DListView={
 		// set the state to "normal"
 		v.state="normal";
 		// create the children group that contains all children
-		v.childrenGroup=v.game.make.group(marginInfo.l?marginInfo.l:0, marginInfo.t?marginInfo.t:0);
+		v.childrenGroup=MainGame.game.make.group();
+		v.childrenGroup.x=marginInfo.l?marginInfo.l:0;
+		v.childrenGroup.y=marginInfo.t?marginInfo.t:0;
 		v.addChild(v.childrenGroup);
 
 		// enable the input for v
-		v.prevSelected=-1;
-		v.selected=-1;
+		v.prevSelected=null;
+		v.selected=null;
 		v.inputEnabled=true;
         v.events.onInputUp.add(DListView.onItemSelected,v);
 
@@ -34,7 +36,7 @@ var DListView={
 		// returns the [i]th item
 		v.at=function(i){return v.childrenGroup[i]};
 		// adds an item [itemSprite] at [i]
-		v.addItemAt=function(itemSprite,index){return v.childrenGroup.addChildAt(itemSprite,index)};
+		v.addItem=function(itemSprite){return DListView.addItem(v,itemSprite)};
 		// removes an item at [i]
 		v.removeItemAt=function(index){return v.childrenGroup.removeChildAt(index)};
 		// returns the item count
@@ -49,6 +51,15 @@ var DListView={
 		v.hitTest=function(px,py,isLocal){return DListView.hitTest(v,px,py,isLocal)};
 
 		return v;
+	},
+	addItem: function(view, itemSprite){
+		var index=view.childrenGroup.length;
+		view.childrenGroup.addChild(itemSprite);
+		if(view.isVertical){
+			itemSprite.y=index*view.itemInfo.size.h;
+		}else{
+			itemSprite.x=index*view.itemInfo.size.w;
+		}
 	},
 	setState: function(view, state){
 		console.assert(state==="normal" || state==="high" || state==="disabled");
@@ -80,7 +91,8 @@ var DListView={
 		this.prevSelected=this.selected;
 		this.selected=DListView.hitTest(this, this.game.input.x, this.game.input.y, false);
 		// call the callback func with index
-		this.itemSelectedCallback(this.prevSelected,this.selected);
+		if(this.selected)
+			this.itemSelectedCallback(this.prevSelected,this.selected);
 	},
 };
 
@@ -88,19 +100,24 @@ var PeopleView={
 	createNew: function(){
 		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
 
-		pv.left=DListView.createNew({normal:"peopleViewLeftBg"}, {size:{w:200,h:100}}, {l:56,t:50}, true, function(prev,cur){
-			console.log("Item selected: prev, cur="+prev+","+cur);
-		});
+		pv.left=DListView.createNew(
+			{normal:"peopleViewLeftBg"}, 
+			{l:56,t:50}, 
+			{size:{w:200,h:100}}, 
+			true, 
+			function(prev,cur){
+				console.log("Item selected: prev, cur="+prev+","+cur);
+			}
+		);
 		pv.addChild(pv.left);
 
 		// test: create 3 texts
 		var text1=MainGame.game.make.text(0,0,"Text1");
-		pv.left.addItemAt(text1,0);
-		var text2=MainGame.game.make.text(0,100,"Text2");
-		pv.left.addItemAt(text2,1);
-		var text3=MainGame.game.make.text(0,200,"Text3");
-		pv.left.addItemAt(text3,2);
-
+		pv.left.addItem(text1,0);
+		var text2=MainGame.game.make.text(0,0,"Text2");
+		pv.left.addItem(text2,1);
+		var text3=MainGame.game.make.text(0,0,"Text3");
+		pv.left.addItem(text3,2);
 
 		// Class funcs
 		pv.setVisible=function(value){pv.visible=value};
