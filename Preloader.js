@@ -59,8 +59,8 @@ var Preloader={
         g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png')
         g.load.image('flag_background',         uiDir + 'flag_background.png');
         g.load.image('peopleViewBg',            uiDir + 'peopleViewBg.jpg');
-        g.load.image('peopleViewLeftBg',        uiDir + 'peopleViewLeftBg.jpg');
-        g.load.image('peopleViewRightBg',       uiDir + 'peopleViewRightBg.jpg');
+        g.load.image('peopleViewLeftBg',        uiDir + 'peopleViewLeftBg.png');
+        g.load.image('peopleViewRightBg',       uiDir + 'peopleViewRightBg.png');
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
