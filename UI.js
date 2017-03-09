@@ -19,12 +19,12 @@ var Hud = {
         topGroup.name="topGroup";
         hud.addChild(topGroup);
 
-        //      top bar bg
-        var topBg = topGroup.create(0,0,'topBar');
-
         //      global vars
-        var topStatsGroup = TopStats.createNew();
-        topGroup.addChild(topStatsGroup);
+        var statsPanel = StatsPanel.createNew();
+        hud.addChild(statsPanel);
+
+        var funPanel = FunPanel.createNew();
+        hud.addChild(funPanel);
 
         //      Coalition Flag
         topGroup.coalitionFlag = CoalitionFlag.createNew();
@@ -93,28 +93,6 @@ var Hud = {
         buildMenu.name="buildMenu";
         buildMenu.visible = false;
         buildGroup.addChild(buildMenu);
-
-        // Group3: Stats
-       /* var statsGroup=MainGame.game.make.group();
-        statsGroup.name="statsGroup";
-        hud.addChild(statsGroup);
-        //      "Stats" button
-        var statsBtn=MainGame.game.make.button(900, 650, 'buttonSprite',
-            function(){
-                var menu=hud.findChild("statsMenu");
-                console.assert(menu);
-                menu.visible=!menu.visible;
-                if(menu.visible){
-                    hud.findChild("buildBtn").visible=false;
-                }
-            }, null,0,1,2,3);
-        statsBtn.name="statsBtn";
-        statsGroup.addChild(statsBtn);
-        //      "Stats" menu
-        var statsMenu=MainGame.game.make.group();
-        statsMenu.name="statsMenu";
-        statsMenu.visible=false;
-        statsGroup.addChild(statsMenu); */
 
         // buildMenu: UI groups
         var bureauGroup = MainGame.game.make.group();
@@ -398,75 +376,63 @@ var BuildingPlacer = {
     }
 };
 
-/* UI group that holds the sprites + text for the stats on the top bar */
-var TopStats = {
+/* UI group that holds the sprites + text for the major stats */
+var StatsPanel = {
+    unitWidth: 140,
+    unitHeight: 48,
+    verticalPad: 2,
+    horizontalPad: 6,
+    textStyle: { font: '30px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle' },
+
     createNew: function() {
-        var unitWidth = 120;
-        var style = { font: "32px STKaiti", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle" };
-        var topStats = MainGame.game.make.group();
+        var statsPanel = MainGame.game.make.group();
+        statsPanel.x = MainGame.game.width - StatsPanel.unitWidth + StatsPanel.verticalPad;
+        statsPanel.y = MainGame.game.height / 2;
 
         // Year
-        topStats.yearGroup = MainGame.game.make.group();
-        topStats.yearGroup.x = unitWidth;
-        topStats.yearGroup.sprite = MainGame.game.make.sprite(0, 0, 'year_icon');
-        topStats.yearGroup.addChild(topStats.yearGroup.sprite);
-        topStats.yearGroup.textLabel = MainGame.game.make.text(48, 6, '1950', style);
-        topStats.yearGroup.addChild(topStats.yearGroup.textLabel);
-        topStats.addChild(topStats.yearGroup);
+        statsPanel.yearGroup = MainGame.game.make.group();
+        statsPanel.yearGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 0;
+        statsPanel.yearGroup.sprite = MainGame.game.make.sprite(0, 0, 'year_icon');
+        statsPanel.yearGroup.addChild(statsPanel.yearGroup.sprite);
+        statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '1950', StatsPanel.textStyle);
+        statsPanel.yearGroup.addChild(statsPanel.yearGroup.textLabel);
+        statsPanel.addChild(statsPanel.yearGroup);
 
         // Population
-        topStats.popGroup = MainGame.game.make.group();
-        topStats.popGroup.x = unitWidth * 2;
-        topStats.popGroup.sprite = MainGame.game.make.sprite(0, 0, 'population_icon');
-        topStats.popGroup.addChild(topStats.popGroup.sprite);
-        topStats.popGroup.textLabel = MainGame.game.make.text(48, 6, '0', style);
-        topStats.popGroup.addChild(topStats.popGroup.textLabel);
-        topStats.addChild(topStats.popGroup);
-
-        // Freedom
-        topStats.freeGroup = MainGame.game.make.group();
-        topStats.freeGroup.x = unitWidth * 3;
-        topStats.freeGroup.sprite = MainGame.game.make.sprite(0, 0, 'freedom_icon');
-        topStats.freeGroup.addChild(topStats.freeGroup.sprite);
-        topStats.freeGroup.textLabel = MainGame.game.make.text(48, 6, '0%', style);
-        topStats.freeGroup.addChild(topStats.freeGroup.textLabel);
-        topStats.addChild(topStats.freeGroup);
-
-        // Unrest
-        topStats.unrestGroup = MainGame.game.make.group();
-        topStats.unrestGroup.x = unitWidth * 4;
-        topStats.unrestGroup.sprite = MainGame.game.make.sprite(0, 0, 'unrest_icon');
-        topStats.unrestGroup.addChild(topStats.unrestGroup.sprite);
-        topStats.unrestGroup.textLabel = MainGame.game.make.text(48, 6, '0%', style);
-        topStats.unrestGroup.addChild(topStats.unrestGroup.textLabel);
-        topStats.addChild(topStats.unrestGroup);
+        statsPanel.popGroup = MainGame.game.make.group();
+        statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 1;
+        statsPanel.popGroup.sprite = MainGame.game.make.sprite(0, 0, 'population_icon');
+        statsPanel.popGroup.addChild(statsPanel.popGroup.sprite);
+        statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '0', StatsPanel.textStyle);
+        statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
+        statsPanel.addChild(statsPanel.popGroup);
 
         // Money per Turn
-        topStats.moneyPerTurnGroup = MainGame.game.make.group();
-        topStats.moneyPerTurnGroup.x = unitWidth * 5;
-        topStats.moneyPerTurnGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
-        topStats.moneyPerTurnGroup.addChild(topStats.moneyPerTurnGroup.sprite);
-        topStats.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48, 6, '+0', style);
-        topStats.moneyPerTurnGroup.addChild(topStats.moneyPerTurnGroup.textLabel);
-        topStats.addChild(topStats.moneyPerTurnGroup);
+        statsPanel.moneyPerTurnGroup = MainGame.game.make.group();
+        statsPanel.moneyPerTurnGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 2;
+        statsPanel.moneyPerTurnGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
+        statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.sprite);
+        statsPanel.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '+0', StatsPanel.textStyle);
+        statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.textLabel);
+        statsPanel.addChild(statsPanel.moneyPerTurnGroup);
 
         // State Money (warchest)
-        topStats.warchestGroup = MainGame.game.make.group();
-        topStats.warchestGroup.x = unitWidth * 6;
-        topStats.warchestGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
-        topStats.warchestGroup.addChild(topStats.warchestGroup.sprite);
-        topStats.warchestGroup.textLabel = MainGame.game.make.text(48, 6, '$0', style);
-        topStats.warchestGroup.addChild(topStats.warchestGroup.textLabel);
-        topStats.addChild(topStats.warchestGroup);
+        statsPanel.warchestGroup = MainGame.game.make.group();
+        statsPanel.warchestGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 3;
+        statsPanel.warchestGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
+        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.sprite);
+        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '$0', StatsPanel.textStyle);
+        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
+        statsPanel.addChild(statsPanel.warchestGroup);
 
         // Swiss Bank (personal money)
-        topStats.swissGroup = MainGame.game.make.group();
-        topStats.swissGroup.x = unitWidth * 7;
-        topStats.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'swiss_icon');
-        topStats.swissGroup.addChild(topStats.swissGroup.sprite);
-        topStats.swissGroup.textLabel = MainGame.game.make.text(48, 6, '$0', style);
-        topStats.swissGroup.addChild(topStats.swissGroup.textLabel);
-        topStats.addChild(topStats.swissGroup);
+        statsPanel.swissGroup = MainGame.game.make.group();
+        statsPanel.swissGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 4;
+        statsPanel.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'swiss_icon');
+        statsPanel.swissGroup.addChild(statsPanel.swissGroup.sprite);
+        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '$0', StatsPanel.textStyle);
+        statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
+        statsPanel.addChild(statsPanel.swissGroup);
 
         // Set update loop
         MainGame.game.time.events.loop(500, function() {
@@ -474,311 +440,59 @@ var TopStats = {
 
             var newPop = MainGame.population.count();
             var newYear = 1949 + globalStats.turn;
-            var newUnrest = globalStats.unrest + '%';
-            var newFreedom = globalStats.freedom + '%';
             var newMoneyPerTurn = '+' + globalStats.moneyPerTurn;
             var newWarchest = '$' + globalStats.money;
             var newSwissAccount = '$' + 0;
 
-            topStats.popGroup.textLabel.text = newPop;
-            topStats.freeGroup.textLabel.text = newFreedom;
-            topStats.unrestGroup.textLabel.text = newUnrest;
-            topStats.yearGroup.textLabel.text = newYear;
-            topStats.moneyPerTurnGroup.textLabel.text = newMoneyPerTurn;
-            topStats.warchestGroup.textLabel.text = newWarchest;
-            topStats.swissGroup.textLabel.text = newSwissAccount;
+            statsPanel.popGroup.textLabel.text = newPop;
+            statsPanel.yearGroup.textLabel.text = newYear;
+            statsPanel.moneyPerTurnGroup.textLabel.text = newMoneyPerTurn;
+            statsPanel.warchestGroup.textLabel.text = newWarchest;
+            statsPanel.swissGroup.textLabel.text = newSwissAccount;
+        }, statsPanel);
 
-            //topStats.textLabel.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
-        }, topStats);
-
-        return topStats;
+        return statsPanel;
     },
 }
 
-// add me before HUD!!!
-// Does useful things with display map data in-game, include the mouse-hover label and the buildingDetailMenu
-// var MapSelector = {
-//     createNew: function(){
-//         /*global MainGame*/
-//         var ms = MainGame.game.add.group();        
+/* A separate UI element from the stats panel that accentuates the Freedom and Unrest Stats. Should be near the top of the screen */
+var FunPanel = {
+    unitWidth: 120,
+    horizontalPad: 5,
 
-//         // Class vars
-//         ms.name = "MapSelector";
-//         ms.curIndex = -1;
-//         ms.activeIndex = null;
-//         // ms.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, ms, ms);
-//         ms.buildingDetail = MapSelector.makeBuildingDetail(ms);
+    createNew: function() {
+        var funPanel = MainGame.game.make.group();
+        funPanel.x = MainGame.game.width / 2;
 
-//         // Class funcs
-//         ms.updateBuildingDetail = function(tileIndex) {MapSelector.updateBuildingDetail(ms,tileIndex)};
-//         ms.positionBuildingDetail = function(b) {MapSelector.positionBuildingDetail(ms,b)};
-//         // ms.updateAll = function() {MapSelector.updateAll(ms)};
-//         // ms.clickHandler = function(activePointer) { MapSelector.clickHandler(ms, activePointer); };
+        // Freedom
+        funPanel.freeGroup = MainGame.game.make.group();
+        funPanel.freeGroup.x = -(FunPanel.unitWidth + FunPanel.horizontalPad/2);
+        funPanel.freeGroup.sprite = MainGame.game.make.sprite(0, 0, 'freedom_icon');
+        funPanel.freeGroup.addChild(funPanel.freeGroup.sprite);
+        funPanel.freeGroup.textLabel = MainGame.game.make.text(48, 6, '0%', StatsPanel.textStyle);
+        funPanel.freeGroup.addChild(funPanel.freeGroup.textLabel);
+        funPanel.addChild(funPanel.freeGroup);
 
-//         // MainGame.game.input.onDown.add(ms.clickHandler, ms, ms, MainGame.game.input.activePointer);
+        // Unrest
+        funPanel.unrestGroup = MainGame.game.make.group();
+        funPanel.unrestGroup.x = FunPanel.horizontalPad/2;
+        funPanel.unrestGroup.sprite = MainGame.game.make.sprite(0, 0, 'unrest_icon');
+        funPanel.unrestGroup.addChild(funPanel.unrestGroup.sprite);
+        funPanel.unrestGroup.textLabel = MainGame.game.make.text(48, 6, '0%', StatsPanel.textStyle);
+        funPanel.unrestGroup.addChild(funPanel.unrestGroup.textLabel);
+        funPanel.addChild(funPanel.unrestGroup);
 
-//         return ms;
-//     },
+        // Set update loop
+        MainGame.game.time.events.loop(500, function() {
+            var globalStats = MainGame.global;
 
-//     makeBuildingDetail: function(ms) {
-//         var buildingDetail = MainGame.game.make.group();
-//         var buildingDetailInputPriority = 2;
+            var newFreedom = globalStats.freedom + '%';
+            var newUnrest = globalStats.unrest + '%';
 
-//         var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" };
+            funPanel.freeGroup.textLabel.text = newFreedom;
+            funPanel.unrestGroup.textLabel.text = newUnrest;
+        }, funPanel);
 
-//         // bg (the grad)
-//         buildingDetail.bg = MainGame.game.make.sprite(0, 0, 'building_detail_backpanel');
-//         var labelX = Math.floor(buildingDetail.bg.texture.width / 2);
-//         var labelY = Math.floor(buildingDetail.bg.texture.height / 2);
-//         buildingDetail.bg.y -= labelY;
-//         buildingDetail.addChild(buildingDetail.bg);
-
-//         // label (bld name/lv)
-//         buildingDetail.label = MainGame.game.make.text(labelX, -labelY+30, "", style, buildingDetail);
-//         buildingDetail.label.anchor.x = 0.5;
-//         buildingDetail.label.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label);
-
-//         // label2 (people)
-//         buildingDetail.label2 = MainGame.game.make.text(10, -labelY+60, "", style, buildingDetail);
-//         buildingDetail.label2.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label2);
-
-//         // label3 (health)
-//         buildingDetail.label3=MainGame.game.make.text(10,-labelY+90,"",style,buildingDetail);
-//         buildingDetail.label3.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label3);
-
-//         // label3 (health)
-//         buildingDetail.label4=MainGame.game.make.text(10,-labelY+120,"",style,buildingDetail);
-//         buildingDetail.label4.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label4);
-
-//         // label3 (health)
-//         buildingDetail.label5=MainGame.game.make.text(10,-labelY+150,"",style,buildingDetail);
-//         buildingDetail.label5.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label5);
-
-//         // Hire button
-//         buildingDetail.addPersonButton = MainGame.game.make.button(30, -labelY+200, "btnHire", 
-//             function() {
-//                 //console.log("[MapSelector] Hire people for index: ",ms.curIndex);
-//                 // TODO
-//                 /*global MainGame*/
-//                 var bld = MainGame.board.at(ms.curIndex).building;
-//                 if (bld.people >= bld.maxPeople) {
-//                     return;
-//                 }
-                
-//                 //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-//                 MainGame.population.hire(ms.curIndex);
-//                 //bld.people=bld.people+actual; [this is now done in building.addPerson()]
-//                 // update display
-//                 buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
-
-//                 for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-//                     var outType = bld.effects[outIndex].type;
-//                     if(outType==="health"){ 
-//                         outType="Health";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="education"){
-//                         outType="Edu";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="freedom"){
-//                         outType="Extra Freedom";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="unrest"){
-//                         outType="Extra Unrest";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="money"){    outType="Money";    }
-
-//                     if(outIndex===0){
-//                         buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }else if(outIndex===1){
-//                         buildingDetail.label4.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }else if(outIndex===2){
-//                         buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }
-//                 }
-//                 /*global updatePopulation*/
-//                 updatePopulation(false,false);
-//             }, ms, 0, 1, 2, 3);
-//         buildingDetail.addPersonButton.input.priorityID = buildingDetailInputPriority;
-//         buildingDetail.addChild(buildingDetail.addPersonButton);
-
-//         // Fire button
-//         buildingDetail.removePersonButton = MainGame.game.make.button(100, -labelY+200, "btnFire",
-//             function() {
-//                 //console.log("[MapSelector] Fire people for index: ",ms.curIndex);
-//                 // TODO
-//                 /*global MainGame*/
-//                 var bld=MainGame.board.at(ms.curIndex).building;
-//                 if(bld.people<=0){
-//                     return;
-//                 }
-                
-//                 //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-//                 MainGame.population.fire(ms.curIndex);
-//                 //bld.people=bld.people-actual; [this is now done in building.addPerson()]
-//                 // update display
-//                 buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
-
-//                 for(var outIndex = 0; outIndex < bld.effects.length; outIndex++) {
-//                     var outType = bld.effects[outIndex].type;
-//                     if(outType==="health"){ 
-//                         outType="Health";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="education"){
-//                         outType="Edu";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="freedom"){
-//                         outType="Extra Freedom";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="unrest"){
-//                         outType="Extra Unrest";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="money"){
-//                         outType="Money";
-//                         MainGame.global.updateMoneyPerTurn();                    }
-
-//                     if(outIndex===0){
-//                         buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }else if(outIndex===1){
-//                         buildingDetail.label4.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }else if(outIndex===2){
-//                         buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }
-//                 }
-//                 /*global updatePopulation*/
-//                 updatePopulation(false,false);
-//             }, ms, 0,1,2,3);
-//         buildingDetail.removePersonButton.input.priorityID = buildingDetailInputPriority;
-//         buildingDetail.addChild(buildingDetail.removePersonButton);
-
-//         buildingDetail.visible = false;
-//         return buildingDetail;
-//     },
-
-
-//     updateBuildingDetail: function(ms, tileIndex) {
-//         ms.buildingDetail.visible = true;
-
-//         if(tileIndex===null){
-//             ms.buildingDetail.visible = false;
-//             return;
-//         }
-
-//         if(ms.activeIndex===tileIndex){
-//             return;
-//         }
-//         ms.activeIndex=tileIndex;
-
-//         if(!MainGame.board.at(tileIndex).hasBuilding()){
-//             ms.buildingDetail.visible = false;
-//             return;
-//         }
-
-//         var b = MainGame.board;
-//         var tile = b.at(ms.activeIndex);
-//         var bld = tile.getBuilding();
-
-//         // Let's figure out what kind of info we need to display
-//         var displayName = '';
-
-//         // If this tile has no building, display terrain info
-//         if (bld === null || bld.isEmpty()) {
-//             // If this terrain has a natural resource, display that, otherwise display the terrain name
-//             displayName = tile.getRes().key === '__default' ? tile.terrain.key : tile.getRes().key;
-
-//             ms.buildingDetail.label2.text = ''; // Make sure this text gets cleared if it's not going to be used
-//         } else {
-//             displayName = bld.name;// + " Lv"+bld.level;
-
-//             // Most buildings can contain people, but some (like roads) cannot. Be sure to correct for that.
-//             if (bld.subtype === 'road') {
-//                 ms.buildingDetail.label2.text = '';
-//             } else {
-//                 ms.buildingDetail.label2.text = "People: " + bld.people + "/" + bld.maxPeople;
-//             }
-
-//             var str3="";
-//             var str4="";
-//             var str5="";
-            
-//             if(bld.subtype==="housing"){
-//                 str3="Health: "+bld.health;
-//                 str4="Education: "+bld.education;
-//                 str5="Shelter: "+bld.shelter;
-//             }
-//             if(bld.effects[0].type!==null){
-//                 for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-//                     var outType = bld.effects[outIndex].type;
-//                     var outValue = bld.effects[outIndex].outputTable[bld.people];
-//                     if(outType==="health"){ outType="Health";   }
-//                     else if(outType==="education"){ outType="Edu";  }
-//                     else if(outType==="freedom"){   outType="Freedom";    }
-//                     else if(outType==="unrest"){    outType="Unrest"; }
-//                     else if(outType==="money"){
-//                         outType="Money";
-//                         outValue="$"+outValue+"K";
-//                     }
-            
-//                     if(outIndex===0){
-//                         str3=outType+" Output: "+outValue;
-//                     }else if(outIndex===1){
-//                         str4=outType+" Output: "+outValue;
-//                     }else if(outIndex===2){
-//                         str5.text=outType+" Output: "+outValue;
-//                     }
-//                 }
-//             }
-//             ms.buildingDetail.label3.text=str3;
-//             ms.buildingDetail.label4.text=str4;
-//             ms.buildingDetail.label5.text=str5;
-//         }
-
-//         ms.buildingDetail.label.text = displayName;
-
-//         ms.positionBuildingDetail(b);
-//     },
-
-//     positionBuildingDetail: function(ms, b){
-//         var rect = b.rectOf(ms.activeIndex,b.currentScale);
-//         ms.buildingDetail.x = rect.x-b._offset.x+rect.w*.85;
-//         ms.buildingDetail.y = rect.y-b._offset.y+rect.h*.5;
-//         ms.buildingDetail.scale.set(b.currentScale);
-//     },
-
-    // clickHandler: function(ms, activePointer) {
-    //     var b = MainGame.board;
-    //     var index = MainGame.board.hitTest(activePointer.x, activePointer.y);
-
-    //     if(index===null){
-    //         ms.buildingDetail.visible = false;
-    //         return;
-    //     }
-    //     if(ms.activeIndex===index){
-    //         return;
-    //     }
-    //     ms.activeIndex = index;
-
-    //     if (b.at(index).hasBuilding()) {
-    //         var rect = b.rectOf(ms.activeIndex,b.currentScale);
-    //         ms.buildingDetail.x = rect.x-b._offset.x;
-    //         ms.buildingDetail.y = rect.y-b._offset.y;
-    //         ms.buildingDetail.visible = true;
-    //     } else {
-    //         // Make sure the detail menu is hidden if the user is trying to click away
-    //         ms.buildingDetail.visible = false;
-    //     }
-        
-    // },
-// };
+        return funPanel;
+    }
+}
