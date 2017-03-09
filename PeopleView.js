@@ -15,12 +15,12 @@ var PeopleView={
 		/*global DListView*/
 		pv.left=DListView.createNew(
 			{normal:"peopleViewLeftBg",high:"peopleViewRightBg"}, 
-			{l:56,t:50}, 
-			{w:200,h:50}, 
-			function(prev,cur){
+			{l:56,t:50}, 			// margin
+			{w:200,h:50}, 			// item size
+			function(prev,cur){		// item callback
 				console.log("Item selected: prev, cur="+prev+","+cur);
 			},
-			false
+			false					// is horizontal
 		);
 		pv.addChild(pv.left);
 

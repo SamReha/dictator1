@@ -55,7 +55,7 @@ var DListView={
 	add: function(view, itemSprite){
 		var index=view.childrenGroup.length;
 		view.childrenGroup.addChild(itemSprite);
-		if(view.isHorizontal){
+		if(!view.isHorizontal){
 			itemSprite.y=index*view.itemSize.h;
 		}else{
 			itemSprite.x=index*view.itemSize.w;
@@ -78,7 +78,7 @@ var DListView={
 		// now pos is the local position relative to view.childrenGroup
 		var itemSize=view.itemSize;
 		var index=0;
-		if(view.isHorizontal)
+		if(!view.isHorizontal)
 			index=Math.floor(pos.y/itemSize.h);			
 		else
 			index=Math.floor(pos.x/itemSize.w);
