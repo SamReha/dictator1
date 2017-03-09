@@ -76,6 +76,7 @@ var Preloader={
         g.load.spritesheet('population_icon', iconDir + 'population_icon.png');
         g.load.spritesheet('unrest_icon',     iconDir + 'unrest_icon.png');
         g.load.spritesheet('year_icon',       iconDir + 'year_icon.png');
+        g.load.spritesheet('swiss_icon',      iconDir + 'swiss_account_icon.png');
         
         // load json files
         g.load.json('stage1','stage1.json');

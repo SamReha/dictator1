@@ -446,7 +446,7 @@ var TopStats = {
         topStats.moneyPerTurnGroup.x = unitWidth * 5;
         topStats.moneyPerTurnGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
         topStats.moneyPerTurnGroup.addChild(topStats.moneyPerTurnGroup.sprite);
-        topStats.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48, 6, '$0', style);
+        topStats.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48, 6, '+0', style);
         topStats.moneyPerTurnGroup.addChild(topStats.moneyPerTurnGroup.textLabel);
         topStats.addChild(topStats.moneyPerTurnGroup);
 
@@ -462,7 +462,7 @@ var TopStats = {
         // Swiss Bank (personal money)
         topStats.swissGroup = MainGame.game.make.group();
         topStats.swissGroup.x = unitWidth * 7;
-        topStats.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
+        topStats.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'swiss_icon');
         topStats.swissGroup.addChild(topStats.swissGroup.sprite);
         topStats.swissGroup.textLabel = MainGame.game.make.text(48, 6, '$0', style);
         topStats.swissGroup.addChild(topStats.swissGroup.textLabel);
@@ -476,7 +476,7 @@ var TopStats = {
             var newYear = 1949 + globalStats.turn;
             var newUnrest = globalStats.unrest + '%';
             var newFreedom = globalStats.freedom + '%';
-            var newMoneyPerTurn = '$' + globalStats.moneyPerTurn;
+            var newMoneyPerTurn = '+' + globalStats.moneyPerTurn;
             var newWarchest = '$' + globalStats.money;
             var newSwissAccount = '$' + 0;
 
