@@ -61,7 +61,7 @@ var Global={
         freeAv = Math.round(freeAv/lowList.length,0);
         unrestAv = Math.round(unrestAv/lowList.length,0);
 
-        console.log(MainGame.board.findBuilding(null,"road",null).length);
+        // console.log(MainGame.board.findBuilding(null,"road",null).length);
         Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,"road",null).length,0,100);
         Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length,0,100);
     },
@@ -75,7 +75,7 @@ var Global={
             var effectList = building.effects;
             for(var effIndex=0;effIndex<effectList.length;++effIndex){
                 if(effectList[effIndex].type==="money"){
-                    console.log("Building: "+building.name+" people: "+building.people+" output: "+effectList[effIndex].outputTable[building.people]);
+                    // console.log("Building: "+building.name+" people: "+building.people+" output: "+effectList[effIndex].outputTable[building.people]);
                     totalIncome+=effectList[effIndex].outputTable[building.people];
                 }
             }

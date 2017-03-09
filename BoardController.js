@@ -8,6 +8,9 @@ var BoardController={
 
 		bc.modelView=board;
 		bc.enabled=true;
+		bc.cameraSpeed = {x:150,y:100};
+		bc.cameraKey = {w:false,a:false,s:false,d:false};
+		bc.cameraTimer=MainGame.game.time.create(false);
 		bc.panTimer=MainGame.game.time.create(false);
 		bc.mouseTimer=MainGame.game.time.create(false);
 		bc.mouseOverTimer=MainGame.game.time.create(false);
@@ -22,6 +25,9 @@ var BoardController={
 
 		// setup event listener
 		BoardController.addInputCallbacks(bc);
+
+		// setup camera loop
+		bc.cameraTimer.loop(10,BoardController.updateCameraMove,null,bc);
 
 		// returns the created instance
 		return bc;
@@ -152,18 +158,54 @@ var BoardController={
             var curLevel=bc.modelView.currentZoomLevel+1;
             if(curLevel>=Board.zoomLevelList.length) curLevel=Board.zoomLevelList.length-1;
             bc.modelView.cameraZoomAt(curLevel);
+		}else if(key==="W" && type==="down"){
+			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
+            bc.cameraKey.w = true;
+		}else if(key==="S" && type==="down"){
+			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
+            bc.cameraKey.s = true;
+		}else if(key==="A" && type==="down"){
+			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
+            bc.cameraKey.a = true;
+		}else if(key==="D" && type==="down"){
+			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
+            bc.cameraKey.d = true;
 		}else if(key==="W" && type==="up"){
-            bc.modelView.cameraMoveBy(0,-100);
+            bc.cameraKey.w = false;
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d){bc.cameraTimer.stop(false);}
 		}else if(key==="S" && type==="up"){
-			bc.modelView.cameraMoveBy(0,100);
+            bc.cameraKey.s = false;
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d){bc.cameraTimer.stop(false);}
 		}else if(key==="A" && type==="up"){
-			bc.modelView.cameraMoveBy(-150,0);
+            bc.cameraKey.a = false;
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d){bc.cameraTimer.stop(false);}
 		}else if(key==="D" && type==="up"){
-			bc.modelView.cameraMoveBy(150,0);
+            bc.cameraKey.d = false;
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d){bc.cameraTimer.stop(false);}
 		}
 		else{
 			console.assert(false);
 		}
+	},
+
+	updateCameraMove: function(bc){
+		var xSum=0;
+		var ySum=0;
+
+		if(bc.cameraKey.w){
+			ySum-=bc.cameraSpeed.y;
+		}
+		if(bc.cameraKey.s){
+			ySum+=bc.cameraSpeed.y;
+		}
+		if(bc.cameraKey.a){
+			xSum-=bc.cameraSpeed.x;
+		}
+		if(bc.cameraKey.d){
+			xSum+=bc.cameraSpeed.x;
+		}
+
+		bc.modelView.cameraMoveBy(xSum*bc.cameraTimer.elapsed*.01,ySum*bc.cameraTimer.elapsed*.01);
 	},
 
 	addInputCallbacks: function(bc){
@@ -199,15 +241,23 @@ var BoardController={
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.Q).onUp.
 			add(function(){BoardController.onKeyboardEvent(bc,"up","Q")});
 		//	W
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.W).onDown.
+			add(function(){BoardController.onKeyboardEvent(bc,"down","W")});
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.W).onUp.
 			add(function(){BoardController.onKeyboardEvent(bc,"up","W")});
 		//	S
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.S).onDown.
+			add(function(){BoardController.onKeyboardEvent(bc,"down","S")});
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.S).onUp.
 			add(function(){BoardController.onKeyboardEvent(bc,"up","S")});
 		//	A
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.A).onDown.
+			add(function(){BoardController.onKeyboardEvent(bc,"down","A")});
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.A).onUp.
 			add(function(){BoardController.onKeyboardEvent(bc,"up","A")});
 		//	D
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.D).onDown.
+			add(function(){BoardController.onKeyboardEvent(bc,"down","D")});
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.D).onUp.
 			add(function(){BoardController.onKeyboardEvent(bc,"up","D")});
 

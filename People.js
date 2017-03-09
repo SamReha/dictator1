@@ -253,10 +253,13 @@ var Population={
         var bld=MainGame.board.at(tileIndex).getBuilding();
         // console.assert(bld);
         // unset home
+        console.log("firing");
         if(bld.subtype==="housing"){
+            console.log(tileIndex);
             var h=pop.findHoused();
             for(var i=0;i<h.length;i++){
                 if(pop.people[h[i]].home===tileIndex){
+                    console.log("found");
                     bld.removePerson();
                     pop.people[h[i]].home=null;
                     return true;
@@ -302,10 +305,13 @@ var Population={
         var res=[];
         pop.people.forEach(function(p,i){
             console.assert(p.home!==undefined);
-            if(p.type===Person.Low && (p.home!==null && hasHouse || p.home===null && !hasHouse)){
-                /*global MainGame*/
-                var name=MainGame.board.at(p.home).getBuilding().name;
-                if((name==="shantyTown" ? !hasHouse : hasHouse))
+            if(p.type===Person.Low){
+                if(p.home!==null){
+                    /*global MainGame*/
+                    var name=MainGame.board.at(p.home).getBuilding().name;
+                    if((name==="shantyTown" ? true : hasHouse))
+                        res.push(i);
+                }else if(p.home===null && !hasHouse)
                     res.push(i);
             }
         })
