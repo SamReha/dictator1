@@ -121,8 +121,10 @@ var BoardController={
 		if(index===null || index===undefined)
 			return;
 		if(bc.detailView){
-			if(bc.detailView.index===index)
+			if (bc.detailView.index === index) {
+                BoardController.hideTileDetail(bc);
 				return;
+            }
 			else{
 				bc.mouseTimer.stop(true);
 				BoardController.hideTileDetail(bc);
