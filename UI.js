@@ -4,7 +4,7 @@
 
 var Hud = {
     styleNormal: {font:"32px myKaiti", fill:"#ffffff"},
-    styleButton: {font:"32px myKaiti", fill:"#000000"},
+    styleButton: {font:"32px myKaiti", fill:"#ffffff"},
 
     createNew: function() {
 
@@ -37,8 +37,11 @@ var Hud = {
         hud.addChild(btnExit);
 
         var btnExitText = MainGame.game.make.text(0, 0, 'Exit', Hud.styleButton);
+        btnExitText.anchor.x = 0.5;
+        btnExitText.anchor.y = 0.5;
+        btnExitText.x = btnExit.width / 2;
+        btnExitText.y = btnExit.height / 2;
         btnExit.addChild(btnExitText);
-
 
         // "Next Turn" button
         var btnNextTurn=MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
@@ -49,9 +52,11 @@ var Hud = {
         btnNextTurn.anchor.y = 1;
         hud.addChild(btnNextTurn);
 
-        var btnNextTurnText=MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
-        btnNextTurnText.anchor.x = 1;
-        btnNextTurnText.anchor.y = 1;
+        var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
+        btnNextTurnText.anchor.x = 0.5;
+        btnNextTurnText.anchor.y = 0.5;
+        btnNextTurnText.x = -btnNextTurn.width / 2;
+        btnNextTurnText.y = -btnNextTurn.height / 2;
         btnNextTurn.addChild(btnNextTurnText);
 
         // Group2: Build
@@ -59,7 +64,7 @@ var Hud = {
         buildGroup.name="buildGroup";
         hud.addChild(buildGroup);
         //      "Build" button
-        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'buttonSprite', 
+        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'med_generic_button', 
             function(){
                 var menu=hud.findChild("buildMenu");
                 console.assert(menu);
@@ -75,6 +80,13 @@ var Hud = {
         buildBtn.inputEnabled = true;
         buildBtn.input.priorityID = 1;
         buildGroup.addChild(buildBtn);
+
+        var buildBtnText = MainGame.game.make.text(0, 0, 'Build', Hud.styleButton);
+        buildBtnText.anchor.x = 0.5;
+        buildBtnText.anchor.y = 0.5;
+        buildBtnText.x = buildBtn.width / 2;
+        buildBtnText.y = -buildBtn.height / 2;
+        buildBtn.addChild(buildBtnText);
 
         //      "Build" menu
         var buildMenu = MainGame.game.make.group();
@@ -118,7 +130,7 @@ var Hud = {
         buildMenu.addChild(militaryGroup);
 
         // buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
-        var buyMansionBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'mansion');}, buildMenu, 0, 1, 2, 3);
+        var buyMansionBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'mansion');}, buildMenu, 0, 1, 2, 3);
         buyMansionBtn.input.priorityID = hudInputPriority;
         buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
         var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n$10K", Hud.styleNormal);
@@ -126,7 +138,15 @@ var Hud = {
         buyMansionBtn.addChild(mansionText);
         bureauGroup.addChild(buyMansionBtn);
 
-        var buySuburbBtn = MainGame.game.make.button(200, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'suburb');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buyMansionBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyMansionBtnText.anchor.x = 0.5;
+        buyMansionBtnText.anchor.y = 0.5;
+        buyMansionBtnText.x = buyMansionBtn.width / 2;
+        buyMansionBtnText.y = -buyMansionBtn.height / 2;
+        buyMansionBtn.addChild(buyMansionBtnText);
+
+        var buySuburbBtn = MainGame.game.make.button(200, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'suburb');}, buildMenu, 0, 1, 2, 3);
         buySuburbBtn.input.priorityID = hudInputPriority;
         buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
         var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n$10K", Hud.styleNormal);
@@ -134,7 +154,15 @@ var Hud = {
         buySuburbBtn.addChild(suburbText);
         bureauGroup.addChild(buySuburbBtn);
 
-        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'apartment');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buySuburbBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buySuburbBtnText.anchor.x = 0.5;
+        buySuburbBtnText.anchor.y = 0.5;
+        buySuburbBtnText.x = buySuburbBtn.width / 2;
+        buySuburbBtnText.y = -buySuburbBtn.height / 2;
+        buySuburbBtn.addChild(buySuburbBtnText);
+
+        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'apartment');}, buildMenu, 0, 1, 2, 3);
         buyApartmentBtn.input.priorityID = hudInputPriority;
         buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
         var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n$10K", Hud.styleNormal);
@@ -142,7 +170,15 @@ var Hud = {
         buyApartmentBtn.addChild(apartmentText);
         bureauGroup.addChild(buyApartmentBtn);
 
-        var buySchoolBtn = MainGame.game.make.button(600, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'school');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buyApartmentBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyApartmentBtnText.anchor.x = 0.5;
+        buyApartmentBtnText.anchor.y = 0.5;
+        buyApartmentBtnText.x = buyApartmentBtn.width / 2;
+        buyApartmentBtnText.y = -buyApartmentBtn.height / 2;
+        buyApartmentBtn.addChild(buyApartmentBtnText);
+
+        var buySchoolBtn = MainGame.game.make.button(600, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'school');}, buildMenu, 0, 1, 2, 3);
         buySchoolBtn.input.priorityID = hudInputPriority;
         buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
         var schoolText = MainGame.game.make.text(0, -40, "Buy School\n$15K", Hud.styleNormal);
@@ -150,7 +186,15 @@ var Hud = {
         buySchoolBtn.addChild(schoolText);
         bureauGroup.addChild(buySchoolBtn);
 
-        var buyFactoryBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buySchoolBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buySchoolBtnText.anchor.x = 0.5;
+        buySchoolBtnText.anchor.y = 0.5;
+        buySchoolBtnText.x = buySchoolBtn.width / 2;
+        buySchoolBtnText.y = -buySchoolBtn.height / 2;
+        buySchoolBtn.addChild(buySchoolBtnText);
+
+        var buyFactoryBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
         buyFactoryBtn.input.priorityID = hudInputPriority;
         buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
         var factoryText = MainGame.game.make.text(0, -40, "Buy LumberYard\n$30K", Hud.styleNormal);
@@ -158,7 +202,15 @@ var Hud = {
         buyFactoryBtn.addChild(factoryText);
         merchantGroup.addChild(buyFactoryBtn);
 
-        var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'armyBase');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buyFactoryBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyFactoryBtnText.anchor.x = 0.5;
+        buyFactoryBtnText.anchor.y = 0.5;
+        buyFactoryBtnText.x = buyFactoryBtn.width / 2;
+        buyFactoryBtnText.y = -buyFactoryBtn.height / 2;
+        buyFactoryBtn.addChild(buyFactoryBtnText);
+
+        var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'armyBase');}, buildMenu, 0, 1, 2, 3);
         buyArmyBaseBtn.input.priorityID = hudInputPriority;
         buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
         var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n$30K", Hud.styleNormal);
@@ -166,13 +218,46 @@ var Hud = {
         buyArmyBaseBtn.addChild(armyBaseText);
         militaryGroup.addChild(buyArmyBaseBtn);
 
-        var buyRoad = MainGame.game.make.button(200, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'road');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buyArmyBaseBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyArmyBaseBtnText.anchor.x = 0.5;
+        buyArmyBaseBtnText.anchor.y = 0.5;
+        buyArmyBaseBtnText.x = buyArmyBaseBtn.width / 2;
+        buyArmyBaseBtnText.y = -buyArmyBaseBtn.height / 2;
+        buyArmyBaseBtn.addChild(buyArmyBaseBtnText);
+
+        var buyRoad = MainGame.game.make.button(200, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'road');}, buildMenu, 0, 1, 2, 3);
         buyRoad.input.priorityID = hudInputPriority;
         buyRoad.anchor.y = 1;  // Anchor on bottom left corner
         var roadText = MainGame.game.make.text(0, -40, "Buy Road\n$2K", Hud.styleNormal);
         roadText.anchor.y = 1;
         buyRoad.addChild(roadText);
         militaryGroup.addChild(buyRoad);
+
+        // Setup buildMenu purchase button text
+        var buyRoadText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyRoadText.anchor.x = 0.5;
+        buyRoadText.anchor.y = 0.5;
+        buyRoadText.x = buyRoad.width / 2;
+        buyRoadText.y = -buyRoad.height / 2;
+        buyRoad.addChild(buyRoadText);
+
+        // Need to adjust beginBuilding() to handle arable vs weak farms
+        var buyFarm = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'arableFarm');}, buildMenu, 0, 1, 2, 3);
+        buyFarm.input.priorityID = hudInputPriority;
+        buyFarm.anchor.y = 1;  // Anchor on bottom left corner
+        var farmText = MainGame.game.make.text(0, -40, "Buy Farm\n$10K", Hud.styleNormal);
+        farmText.anchor.y = 1;
+        buyFarm.addChild(farmText);
+        militaryGroup.addChild(buyFarm);
+
+        // Setup buildMenu purchase button text
+        var buyFarmText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyFarmText.anchor.x = 0.5;
+        buyFarmText.anchor.y = 0.5;
+        buyFarmText.x = buyFarm.width / 2;
+        buyFarmText.y = -buyFarm.height / 2;
+        buyFarm.addChild(buyFarmText);
         
         return hud;
     },
