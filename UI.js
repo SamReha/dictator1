@@ -108,7 +108,7 @@ var Hud = {
         buildMenu.addChild(militaryGroup);
 
         // buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
-        var buyMansionBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'mansion');}, buildMenu, 0, 1, 2, 3);
+        var buyMansionBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buyMansionBtn, 'mansion');}, buildMenu, 0, 1, 2, 3);
         buyMansionBtn.input.priorityID = hudInputPriority;
         buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
         var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n$10K", Hud.styleNormal);
@@ -124,7 +124,7 @@ var Hud = {
         buyMansionBtnText.y = -buyMansionBtn.height / 2;
         buyMansionBtn.addChild(buyMansionBtnText);
 
-        var buySuburbBtn = MainGame.game.make.button(200, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'suburb');}, buildMenu, 0, 1, 2, 3);
+        var buySuburbBtn = MainGame.game.make.button(200, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buySuburbBtn, 'suburb');}, buildMenu, 0, 1, 2, 3);
         buySuburbBtn.input.priorityID = hudInputPriority;
         buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
         var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n$10K", Hud.styleNormal);
@@ -140,7 +140,7 @@ var Hud = {
         buySuburbBtnText.y = -buySuburbBtn.height / 2;
         buySuburbBtn.addChild(buySuburbBtnText);
 
-        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'apartment');}, buildMenu, 0, 1, 2, 3);
+        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buyApartmentBtn, 'apartment');}, buildMenu, 0, 1, 2, 3);
         buyApartmentBtn.input.priorityID = hudInputPriority;
         buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
         var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n$10K", Hud.styleNormal);
@@ -156,7 +156,7 @@ var Hud = {
         buyApartmentBtnText.y = -buyApartmentBtn.height / 2;
         buyApartmentBtn.addChild(buyApartmentBtnText);
 
-        var buySchoolBtn = MainGame.game.make.button(600, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'school');}, buildMenu, 0, 1, 2, 3);
+        var buySchoolBtn = MainGame.game.make.button(600, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buySchoolBtn, 'school');}, buildMenu, 0, 1, 2, 3);
         buySchoolBtn.input.priorityID = hudInputPriority;
         buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
         var schoolText = MainGame.game.make.text(0, -40, "Buy School\n$15K", Hud.styleNormal);
@@ -172,7 +172,7 @@ var Hud = {
         buySchoolBtnText.y = -buySchoolBtn.height / 2;
         buySchoolBtn.addChild(buySchoolBtnText);
 
-        var buyFactoryBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
+        var buyFactoryBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buyFactoryBtn, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
         buyFactoryBtn.input.priorityID = hudInputPriority;
         buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
         var factoryText = MainGame.game.make.text(0, -40, "Buy LumberYard\n$30K", Hud.styleNormal);
@@ -188,7 +188,7 @@ var Hud = {
         buyFactoryBtnText.y = -buyFactoryBtn.height / 2;
         buyFactoryBtn.addChild(buyFactoryBtnText);
 
-        var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'armyBase');}, buildMenu, 0, 1, 2, 3);
+        var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buyArmyBaseBtn, 'armyBase');}, buildMenu, 0, 1, 2, 3);
         buyArmyBaseBtn.input.priorityID = hudInputPriority;
         buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
         var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n$30K", Hud.styleNormal);
@@ -204,7 +204,7 @@ var Hud = {
         buyArmyBaseBtnText.y = -buyArmyBaseBtn.height / 2;
         buyArmyBaseBtn.addChild(buyArmyBaseBtnText);
 
-        var buyRoad = MainGame.game.make.button(200, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'road');}, buildMenu, 0, 1, 2, 3);
+        var buyRoad = MainGame.game.make.button(200, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buyRoad, 'road');}, buildMenu, 0, 1, 2, 3);
         buyRoad.input.priorityID = hudInputPriority;
         buyRoad.anchor.y = 1;  // Anchor on bottom left corner
         var roadText = MainGame.game.make.text(0, -40, "Buy Road\n$2K", Hud.styleNormal);
@@ -221,7 +221,7 @@ var Hud = {
         buyRoad.addChild(buyRoadText);
 
         // Need to adjust beginBuilding() to handle arable vs weak farms
-        var buyFarm = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'arableFarm');}, buildMenu, 0, 1, 2, 3);
+        var buyFarm = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buyFarm, 'arableFarm');}, buildMenu, 0, 1, 2, 3);
         buyFarm.input.priorityID = hudInputPriority;
         buyFarm.anchor.y = 1;  // Anchor on bottom left corner
         var farmText = MainGame.game.make.text(0, -40, "Buy Farm\n$10K", Hud.styleNormal);
@@ -262,10 +262,13 @@ var Hud = {
     showStatusMenu: function(){
 
     },
-    beginBuilding: function(menu, buildingType) {
-        console.log(buildingType);
-        console.log( MainGame.game.cache.getJSON('buildingData')[buildingType].cost);
+    beginBuilding: function(menu, button, buildingType) {
+        //console.log(buildingType);
+        //console.log( MainGame.game.cache.getJSON('buildingData')[buildingType].cost);
         if (Global.money >= MainGame.game.cache.getJSON('buildingData')[buildingType].cost) {
+            // Reset the button state (quick hack)
+            button.frame = 1; // This should be whatever frame corresponds to the default state in the sprite sheet
+
             // Hide build menu
             menu.visible = false;
     
