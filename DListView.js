@@ -1,7 +1,7 @@
 /* global MainGame */
 var DListView={
 	// ****************** Attention ****************** //	
-	// textures: {normal, *high, *disabled}
+	// textures: {*normal, *high, *disabled}
 	// margin: {*l, *r, *t, *b}
 	// itemSize: {w, h}
 	// *itemCallback: function(index, *prevIndex)
@@ -67,7 +67,7 @@ var DListView={
 		view.state=state;
 		if(view.textures[state])
 			view.loadTexture(view.textures[state]);
-		else
+		else if(view.textures.normal)
 			view.loadTexture(view.textures.normal);
 	},
 	hitTest: function(view, px, py, isLocal){
