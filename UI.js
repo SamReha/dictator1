@@ -350,8 +350,12 @@ var BuildingPlacer = {
             }
             
             // Create a building object
+            if (self.buildingType === 'arableFarm' && tile.getResType() !== 'wheat') {
+                self.buildingType = 'weakFarm';
+            }
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
             newBuilding.tint = newTint;
+
             // Set the tile's building to that object
             tile.setBuilding(newBuilding);
             
