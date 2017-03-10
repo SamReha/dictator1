@@ -2,7 +2,7 @@
 var DListView={
 	// ****************** Attention ****************** //	
 	// textures: {*normal, *high, *disabled}
-	// margin: {*l, *r, *t, *b}
+	// margin: {*l, *t}
 	// itemSize: {w, h}
 	// *itemCallback: function(index, *prevIndex)
 	// *isHorizontal: true or false
@@ -73,7 +73,7 @@ var DListView={
 	hitTest: function(view, px, py, isLocal){
 		var pos={x:px, y:py};
 		if(!isLocal)
-			pos={x:pos.x-view.x-view.childrenGroup.x, y:pos.y-view.y-view.childrenGroup.y};
+			pos={x:pos.x-view.world.x-view.childrenGroup.x, y:pos.y-view.world.y-view.childrenGroup.y};
 		// now pos is the local position relative to view.childrenGroup
 		var itemSize=view.itemSize;
 		var index=0;
