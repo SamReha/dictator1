@@ -183,7 +183,6 @@ var PeopleView={
 		if(!merData){
 			merData=[
 				{name:"MJ",port:"smallPort1"},
-				{name:"MJ2",port:"smallPort1"},
 			];
 		}
 		if(!milData){

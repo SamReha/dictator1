@@ -9,7 +9,7 @@ var DPageIndicator={
 	// (* === optional)
 	createNew: function(pageCount, layout, pageChangedCallback){
 		var v=MainGame.game.add.group();
-		v.pageCount=pageCount;
+		v.pageCount=(pageCount?pageCount:1);
 		v.curPage=0;
 		v.pageChangedCallback=pageChangedCallback;
 		// add two buttons as sprites
@@ -37,7 +37,7 @@ var DPageIndicator={
 		v.getCurPage=function(){return v.curPage};
 		// sets the callback func of PageChanged
 		v.setPageChangedCallback=function(callback){v.pageChangedCallback=callback};
-		
+
 		return v;
 	},
 	onPrevPage: function(){
