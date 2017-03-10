@@ -439,17 +439,17 @@ var Board = {
 
     // let camera zoom at zoom
     cameraZoomAt: function(b, zoomLevel){
-        console.log('zoomLevel: ', zoomLevel)
+        //console.log('zoomLevel: ', zoomLevel)
         var zoom = Board.zoomLevelList[Board.defaultZoomIndex];
         if(zoomLevel!==null && zoomLevel!==undefined){
             console.assert(zoomLevel>=0 && zoomLevel<Board.zoomLevelList.length);
             b.currentZoomIndex=zoomLevel;
             zoom = Board.zoomLevelList[zoomLevel];
-            console.log("zoom level ", zoomLevel, Board.zoomLevelList);
+            //console.log("zoom level ", zoomLevel, Board.zoomLevelList);
         }else{
             b.currentZoomIndex = Board.defaultZoomIndex;
         }
-        console.log("cameraZoomAt: zoom is ", zoom);
+        //console.log("cameraZoomAt: zoom is ", zoom);
 
         /*global MainGame*/
         // 1. get the anchor/pivot point
