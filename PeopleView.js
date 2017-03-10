@@ -86,21 +86,21 @@ var PeopleLeftView={
 		for(var i=0;i<3;i++){
 			v.listViews[i]=DListView.createNew(
 				{},
-				{l:5,t:5},				// margin
-				{w:50,h:50},			// each item's size
-				function(){},
-				// createCallback(i,true),	// callback func
+				{l:5,t:5},				// margin - TODO: adjust it!
+				{w:80,h:64},			// each item's size
+				createCallback(i,true),	// callback func
 				true 					// is horizontal
 			);
-			v.listViews[i].y=150*i;
+			v.listViews[i].x=10;		// TODO: adjust it!
+			v.listViews[i].y=50+150*i;	// TODO: adjust it!
 			v.addChild(v.listViews[i]);
 			v.pageIndicators[i]=DPageIndicator.createNew(
 				Math.ceil(v.data3[i].length/midHiPeoplePerPage),	// items per page
 				{width:400,textPos:{x:180,y:5}},	// width & pos of "4/6"
-				function(){}
-				// createCallback(i,false)				// callback func
+				createCallback(i,false)				// callback func
 			);
-			v.pageIndicators[i].y=100+150*i;
+			v.pageIndicators[i].x=10;			// TODO: adjust it!
+			v.pageIndicators[i].y=140+150*i;	// TODO: adjust it!
 			v.addChild(v.pageIndicators[i]);
 		}
 		// now setup the 3 pages!
@@ -109,14 +109,18 @@ var PeopleLeftView={
 		return v;
 	},
 	onPersonSelected: function(view,type,index){
-		console.log("Person selected! type,index=",type,index);
+		var globalIndex=view.pageIndicators[type].getCurPage()*midHiPeoplePerPage+index;
+		console.log("Person selected! type,index=",type,globalIndex);
+		// TODO: show the detail info of that mid-hi person
 	},
 	onPageChanged: function(view,type,index){
 		console.log("Page changed! type,index=",type,index);
+		PeopleLeftView._setupPage_(view,type,index);
 	},
+	// makes the portrait + name. TODO: re-arrange the visual elements
 	_makeEntry_: function(oneEntryData){
 		var entrySprite=MainGame.game.make.sprite(0,0,oneEntryData.port);
-		var entryText=MainGame.game.make.text(0,0,oneEntryData.name);
+		var entryText=MainGame.game.make.text(0,50,oneEntryData.name);
 		entrySprite.addChild(entryText);
 		return entrySprite;
 	},
@@ -167,16 +171,25 @@ var PeopleView={
 		if(!buData){
 			buData=[
 				{name:"Yi",port:"smallPort0"},
+				{name:"Yi2",port:"smallPort0"},
+				{name:"Yi3",port:"smallPort0"},
+				{name:"Yi4",port:"smallPort0"},
+				{name:"Yi5",port:"smallPort0"},
+				{name:"Yi6",port:"smallPort0"},
+				{name:"Yi7",port:"smallPort0"},
+				{name:"Yi8",port:"smallPort0"},
 			];
 		}
 		if(!merData){
 			merData=[
 				{name:"MJ",port:"smallPort1"},
+				{name:"MJ2",port:"smallPort1"},
 			];
 		}
 		if(!milData){
 			milData=[
 				{name:"Erin",port:"smallPort2"},
+				{name:"Erin2",port:"smallPort2"},
 			];
 		}
 
