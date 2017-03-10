@@ -5,7 +5,7 @@ var lowPeoplePerPage=10;
 
 // shows FirstName, LastName, Health, Edu, Shelter
 var PeopleRightView={
-	style: {font:"30px myKaiti", fill:"black"},
+	style: {font:"25px myKaiti", fill:"black"},
 	createNew: function(data){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewRightBg");
 		// name, health, edu, shelter
@@ -13,17 +13,17 @@ var PeopleRightView={
 		// ListView: [lowPeoplePerPage] items (slots)
 			// createNew(textures, margin, itemSize, itemCallback, isHorizontal)
 		v.listView=DListView.createNew(
-			{},
-			{},
-			{w:400, h:45},
-			function(index){PeopleRightView.onPersonSelected(v,index)}
+			{},				// don't need textures
+			{l:15,t:40},	// margin inside the list view
+			{w:400, h:40},	// size of an item
+			function(index){PeopleRightView.onPersonSelected(v,index)}	// forwards the callback
 		);
 		v.addChild(v.listView);
 		// PageIndicator: N pages
 		var pageCount=Math.ceil(data.length/lowPeoplePerPage);
 		v.pageIndicator=DPageIndicator.createNew(
 			pageCount,
-			{width:400,textPos:{x:200,y:0}},
+			{width:400,textPos:{x:180,y:5}},	// width of the pi & pos of "4/7"
 			function(index){PeopleRightView.onPageChanged(v,index)}
 		);
 		v.pageIndicator.y=440;
@@ -85,6 +85,8 @@ var PeopleLeftView={
 var PeopleView={
 	createNew: function(lowData, buData, merData, milData){
 		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
+
+		// TODO: setup the actual position
 		pv.x=100, pv.y=100;
 
 		// create low people view (right)
