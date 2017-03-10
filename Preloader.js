@@ -67,6 +67,9 @@ var Preloader={
         g.load.image('peopleViewBg',            uiDir + 'peopleViewBg.jpg');
         g.load.image('peopleViewLeftBg',        uiDir + 'peopleViewLeftBg.png');
         g.load.image('peopleViewRightBg',       uiDir + 'peopleViewRightBg.png');
+        g.load.image('peopleViewContractBg',    uiDir + 'peopleViewContractBg.png');
+        g.load.image('incButton',               uiDir + 'incButton.png');
+        g.load.image('decButton',               uiDir + 'decButton.png');
         g.load.image("pi_prevPage",             uiDir + "pi_prevPage.png");
         g.load.image("pi_nextPage",             uiDir + "pi_nextPage.png");
         g.load.image("uiMask",                  uiDir + "uiMask.png");

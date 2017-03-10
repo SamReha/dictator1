@@ -72,9 +72,9 @@ var PeopleRightView={
 var midHiPeoplePerPage=5;
 // shows the 3 lists(bu,mer,mil) with portraits
 var PeopleLeftView={
-	BuType: 0,
-	MerType: 1,
-	MilType: 2,
+	BuType: 0,	// for us to remember, not actually in use, may be removed ITF.
+	MerType: 1,	// ditto.
+	MilType: 2,	// ditto.
 	createNew: function(buData,merData,milData){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewLeftBg");
 		// let left view block click events
@@ -148,6 +148,73 @@ var PeopleLeftView={
 	},
 };
 
+var PeopleContractView={
+	pays: [1,2,3,5,7,10,15,20,30,40,50,75,100,150,200,300,500],
+	createNew: function(personData){
+		var v=MainGame.game.make.sprite(0,0,'peopleViewContractBg');
+		if(!personData){
+			personData={
+				name: "Tobe Hired",
+				port: "smallPort0",
+				payLevel: 0,
+				hired: false
+			};
+		}
+		v.data=JSON.parse(JSON.stringify(personData));
+		v.inputEnabled=true;
+		v.input.PriorityID=102;
+
+		// setup its elements
+			// port & name
+		v.port=MainGame.game.make.sprite(10,10,personData.port);
+		v.addChild(v.port);
+		v.nameLabel=MainGame.game.make.text(100,10,personData.name);
+		v.addChild(v.nameLabel);
+			// "-" payment "+"
+		v.decButton=MainGame.game.make.sprite(10,150,"decButton");
+		v.decButton.inputEnabled=true;
+		v.decButton.input.priorityID=110;
+		v.addChild(v.decButton);
+		v.incButton=MainGame.game.make.sprite(100,150,"incButton");
+		v.incButton.inputEnabled=true;
+		v.incButton.input.priorityID=110;
+		v.addChild(v.incButton);
+		v.payLabel=MainGame.game.make.text(50,150,""+PeopleContractView.pays[personData.payLevel]);
+		v.addChild(v.payLabel);
+		v.decButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,false)});
+		v.incButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,true)});
+		if(personData.payLevel===0)
+			v.decButton.visible=false;
+		if(personData.payLevel===PeopleContractView.pays.length-1)
+			v.incButton.visible=false;
+			// "fire" workStatus "hire"
+		v.workLabel=MainGame.game.make.text(100,250,personData.hired?"Hired":"Not Hired");
+		v.addChild(v.workLabel);
+		v.fireButton=MainGame.game.make.sprite(10,250,"fireButton");
+		v.fireButton.inputEnabled=true;
+		v.fireButton.input.priorityID=110;
+		v.fireButton.events.onInputUp.add(function(){PeopleContractView.onWorkChanged(v,true)});
+		v.addChild(v.fireButton);
+		v.hireButton=MainGame.game.make.sprite(150,250,"hireButton");
+		v.hireButton.inputEnabled=true;
+		v.hireButton.input.priorityID=110;
+		v.hireButton.events.onInputUp.add(function(){PeopleContractView.onWorkChanged(v,false)});
+		v.addChild(v.hireButton);
+
+		return v;
+	},
+	onPaymentChanged: function(view, isInc){
+		view.data.payLevel+=(isInc?1:-1);
+		view["decButton"].visible=(view.data.payLevel>0);
+		view["incButton"].visible=(view.data.payLevel<PeopleContractView.pays.length-1);
+		view["payLabel"].text=""+PeopleContractView.pays[view.data.payLevel];
+	},
+	onWorkChanged: function(view, isFire){
+		view.data.hired=(!isFire);
+		view.workLabel.text=(view.data.hired?"Hired":"Not Hired");
+	},
+};
+
 var PeopleView={
 	// TODO: please see the required format of lowData, buData, etc.
 	createNew: function(lowData, buData, merData, milData){
@@ -168,50 +235,50 @@ var PeopleView={
 		//	for debug: if there's no data input
 		if(!lowData){
 			lowData=[		
-				{name:"Sam Reha",health:50,edu:50,shelter:50},
-				{name:"A Math",health:20,edu:50,shelter:30},
-				{name:"B Dee",health:30,edu:50,shelter:55},
-				{name:"C Eee",health:40,edu:32,shelter:10},
-				{name:"D FFF",health:50,edu:50,shelter:52},
-				{name:"Sam2",health:50,edu:50,shelter:50},
-				{name:"A2 Math",health:20,edu:5,shelter:50},
-				{name:"B2 Dee",health:30,edu:10,shelter:50},
-				{name:"C2 Eee",health:40,edu:5,shelter:50},
-				{name:"D2 FFF",health:50,edu:50,shelter:50},
-				{name:"Sam3Reha",health:50,edu:50,shelter:50},
-				{name:"A3Math",health:20,edu:50,shelter:50},
-				{name:"B Dee",health:30,edu:11,shelter:50},
-				{name:"C3 ee",health:40,edu:22,shelter:50},
-				{name:"D3FFF",health:50,edu:50,shelter:44},
-				{name:"Sa4 Reha",health:50,edu:50,shelter:50},
-				{name:"A4Math",health:20,edu:50,shelter:50},
-				{name:"B4Dee",health:30,edu:50,shelter:50},
-				{name:"C4Eee",health:40,edu:50,shelter:50},
-				{name:"D4FFF",health:50,edu:50,shelter:50},
-				{name:"Json File",health:50,edu:50,shelter:10},
+				{name:"Sam Reha",health:50,edu:50,shelter:50,index:11},
+				{name:"A Math",health:20,edu:50,shelter:30,index:12},
+				{name:"B Dee",health:30,edu:50,shelter:55,index:13},
+				{name:"C Eee",health:40,edu:32,shelter:10,index:14},
+				{name:"D FFF",health:50,edu:50,shelter:52,index:15},
+				{name:"Sam2",health:50,edu:50,shelter:50,index:16},
+				{name:"A2 Math",health:20,edu:5,shelter:50,index:17},
+				{name:"B2 Dee",health:30,edu:10,shelter:50,index:18},
+				{name:"C2 Eee",health:40,edu:5,shelter:50,index:19},
+				{name:"D2 FFF",health:50,edu:50,shelter:50,index:20},
+				{name:"Sam3Reha",health:50,edu:50,shelter:50,index:21},
+				{name:"A3Math",health:20,edu:50,shelter:50,index:22},
+				{name:"B Dee",health:30,edu:11,shelter:50,index:23},
+				{name:"C3 ee",health:40,edu:22,shelter:50,index:24},
+				{name:"D3FFF",health:50,edu:50,shelter:44,index:25},
+				{name:"Sa4 Reha",health:50,edu:50,shelter:50,index:26},
+				{name:"A4Math",health:20,edu:50,shelter:50,index:27},
+				{name:"B4Dee",health:30,edu:50,shelter:50,index:28},
+				{name:"C4Eee",health:40,edu:50,shelter:50,index:29},
+				{name:"D4FFF",health:50,edu:50,shelter:50,index:30},
+				{name:"Json File",health:50,edu:50,shelter:10,index:31},
 			];
 		}
 		if(!buData){
 			buData=[
-				{name:"Yi",port:"smallPort0"},
-				{name:"Yi2",port:"smallPort0"},
-				{name:"Yi3",port:"smallPort0"},
-				{name:"Yi4",port:"smallPort0"},
-				{name:"Yi5",port:"smallPort0"},
-				{name:"Yi6",port:"smallPort0"},
-				{name:"Yi7",port:"smallPort0"},
-				{name:"Yi8",port:"smallPort0"},
+				{name:"Yi",port:"smallPort0",index:0},
+				{name:"Yi2",port:"smallPort0",index:1},
+				{name:"Yi3",port:"smallPort0",index:2},
+				{name:"Yi4",port:"smallPort0",index:3},
+				{name:"Yi5",port:"smallPort0",index:4},
+				{name:"Yi6",port:"smallPort0",index:5},
+				{name:"Yi7",port:"smallPort0",index:6},
+				{name:"Yi8",port:"smallPort0",index:7},
 			];
 		}
 		if(!merData){
 			merData=[
-				{name:"MJ",port:"smallPort1"},
+				{name:"MJ",port:"smallPort1",index:8},
 			];
 		}
 		if(!milData){
 			milData=[
-				{name:"Erin",port:"smallPort2"},
-				{name:"Erin2",port:"smallPort2"},
+				{name:"Erin",port:"smallPort2",index:9},
+				{name:"Erin2",port:"smallPort2",index:10},
 			];
 		}
 
@@ -222,6 +289,11 @@ var PeopleView={
 		// People Left View
 		pv.left=PeopleLeftView.createNew(buData,merData,milData);
 		pv.addChild(pv.left);
+		// Mid-Hi Contract View (on the top of Low People, invisible by default)
+		pv.contract=PeopleContractView.createNew();
+		pv.contract.x=pv.right.x;
+		// pv.contract.visible=false;
+		pv.addChild(pv.contract);
 
 		// Class funcs
 		pv.setVisible=function(value){pv.visible=value};
