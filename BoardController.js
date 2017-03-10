@@ -132,7 +132,7 @@ var BoardController={
 		}
 		if(!bc.modelView.at(index).hasBuilding())
 			return;
-		console.log("Now show tile detail:"+index);
+		//console.log("Now show tile detail:"+index);
 		var tile=bc.modelView.at(index);
 		console.assert(tile);
 		bc.detailView=TileDetailView.createNew(index);
@@ -142,7 +142,7 @@ var BoardController={
 		bc.mouseTimer.start();
 	},
 	hideTileDetail: function(bc){
-		console.log("Now hide tile detail");
+		//console.log("Now hide tile detail");
 		if(bc.detailView){
 			bc.detailView.destroy();
 			bc.detailView=null;
