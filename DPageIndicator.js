@@ -31,6 +31,13 @@ var DPageIndicator={
 		v.addChild(v.pageText);
 		DPageIndicator._setPageText_(v);
 		v.pageText.x=layout.textPos.x, v.pageText.y=layout.textPos.y;
+
+		// Class funcs
+		// returns the current page index (starting 0)
+		v.getCurPage=function(){return v.curPage};
+		// sets the callback func of PageChanged
+		v.setPageChangedCallback=function(callback){v.pageChangedCallback=callback};
+		
 		return v;
 	},
 	onPrevPage: function(){
