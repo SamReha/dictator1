@@ -1,5 +1,7 @@
 /* global MainGame */
 var DPageIndicator={
+	// TODO: set font style here
+	style: {font:"30px myKaiti", fill:"black"},
 	// ****************** Attention ****************** //	
 	// pageCount
 	// layOut: {width,textPos}
@@ -24,7 +26,7 @@ var DPageIndicator={
 		v.nextPage.events.onInputDown.add(DPageIndicator.onNextPage,v);
 		v.addChild(v.nextPage);
 		// add & update page text 4/7
-		v.pageText=MainGame.game.make.text(0,0,"");
+		v.pageText=MainGame.game.make.text(0,0,"", DPageIndicator.style);
 		v.addChild(v.pageText);
 		DPageIndicator._setPageText_(v);
 		v.pageText.x=layout.textPos.x, v.pageText.y=layout.textPos.y;
