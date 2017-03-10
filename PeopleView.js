@@ -1,4 +1,4 @@
-
+/* global MainGame */
 var PeopleView={
 	createNew: function(){
 		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
@@ -27,7 +27,7 @@ var PeopleView={
 			width:300,
 			textPos:{x:200,y:50}
 		},function(index){
-			console.log("Page changed to:"+index);
+			console.log("PageIndicator: page changed to:",index);
 		});
 		pv.pageInd.x=50, pv.pageInd.y=300;
 		pv.addChild(pv.pageInd);
