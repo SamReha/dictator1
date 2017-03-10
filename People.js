@@ -15,7 +15,7 @@ var Person={
         
         // Class vars
         p.type=data.type;               // must be one of Person.types
-        p.name=data.name;               // nullable
+        p.name=(data.name?data.name:Person.randomName());   // either given or randomized
         p.portIndex=data.portIndex;     // nullable
         p.workplace=data.workplace;     // nullable, index of the tile
         p.home=data.home;               // nullable, index of the tile
@@ -51,6 +51,14 @@ var Person={
     report: function(p){
         console.log("[Person] type="+p.type+", name="+p.name);
         // TODO: add other infomation that needs to show
+    },
+
+    randomName: function(){
+        /*global MainGame*/
+        var nameList = MainGame.game.cache.getJSON('names');
+        var firstName = nameList.firstNames[Math.floor(Math.random()*nameList.firstNames.length)];
+        var lastName = nameList.lastNames[Math.floor(Math.random()*nameList.lastNames.length)];
+        return firstName+" "+lastName;
     },
 
     
