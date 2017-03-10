@@ -115,10 +115,17 @@ var PeopleLeftView={
 		console.log("Page changed! type,index=",type,index);
 	},
 	_makeEntry_: function(oneEntryData){
-
+		var entrySprite=MainGame.game.make.sprite(0,0,oneEntryData.port);
+		var entryText=MainGame.game.make.text(0,0,oneEntryData.name);
+		entrySprite.addChild(entryText);
+		return entrySprite;
 	},
 	_setupPage_: function(view,type,pageIndex){
-
+		view.listViews[type].removeAll();
+		var startIndex=pageIndex*midHiPeoplePerPage;
+		var endIndex=Math.min(startIndex+midHiPeoplePerPage,view.data3[type].length);
+		for(var i=startIndex;i<endIndex;i++)
+			view.listViews[type].add(PeopleLeftView._makeEntry_(view.data3[type][i]));
 	},
 };
 
@@ -134,39 +141,42 @@ var PeopleView={
 		//	for debug: if there's no data input
 		if(!lowData){
 			lowData=[		
-			{name:"Sam Reha",health:50,edu:50,shelter:50},
-			{name:"A Math",health:20,edu:50,shelter:50},
-			{name:"B Dee",health:30,edu:50,shelter:50},
-			{name:"C Eee",health:40,edu:50,shelter:50},
-			{name:"D FFF",health:50,edu:50,shelter:50},
-			{name:"Sam2",health:50,edu:50,shelter:50},
-			{name:"A2 Math",health:20,edu:50,shelter:50},
-			{name:"B2 Dee",health:30,edu:50,shelter:50},
-			{name:"C2 Eee",health:40,edu:50,shelter:50},
-			{name:"D2 FFF",health:50,edu:50,shelter:50},
-			{name:"Sam3Reha",health:50,edu:50,shelter:50},
-			{name:"A3Math",health:20,edu:50,shelter:50},
-			{name:"B Dee",health:30,edu:50,shelter:50},
-			{name:"C3 ee",health:40,edu:50,shelter:50},
-			{name:"D3FFF",health:50,edu:50,shelter:50},
-			{name:"Sa4 Reha",health:50,edu:50,shelter:50},
-			{name:"A4Math",health:20,edu:50,shelter:50},
-			{name:"B4Dee",health:30,edu:50,shelter:50},
-			{name:"C4Eee",health:40,edu:50,shelter:50},
-			{name:"D4FFF",health:50,edu:50,shelter:50},
-			{name:"Json File",health:50,edu:50,shelter:10},
+				{name:"Sam Reha",health:50,edu:50,shelter:50},
+				{name:"A Math",health:20,edu:50,shelter:50},
+				{name:"B Dee",health:30,edu:50,shelter:50},
+				{name:"C Eee",health:40,edu:50,shelter:50},
+				{name:"D FFF",health:50,edu:50,shelter:50},
+				{name:"Sam2",health:50,edu:50,shelter:50},
+				{name:"A2 Math",health:20,edu:50,shelter:50},
+				{name:"B2 Dee",health:30,edu:50,shelter:50},
+				{name:"C2 Eee",health:40,edu:50,shelter:50},
+				{name:"D2 FFF",health:50,edu:50,shelter:50},
+				{name:"Sam3Reha",health:50,edu:50,shelter:50},
+				{name:"A3Math",health:20,edu:50,shelter:50},
+				{name:"B Dee",health:30,edu:50,shelter:50},
+				{name:"C3 ee",health:40,edu:50,shelter:50},
+				{name:"D3FFF",health:50,edu:50,shelter:50},
+				{name:"Sa4 Reha",health:50,edu:50,shelter:50},
+				{name:"A4Math",health:20,edu:50,shelter:50},
+				{name:"B4Dee",health:30,edu:50,shelter:50},
+				{name:"C4Eee",health:40,edu:50,shelter:50},
+				{name:"D4FFF",health:50,edu:50,shelter:50},
+				{name:"Json File",health:50,edu:50,shelter:10},
 			];
 		}
 		if(!buData){
 			buData=[
+				{name:"Yi",port:"smallPort0"},
 			];
 		}
 		if(!merData){
 			merData=[
+				{name:"MJ",port:"smallPort1"},
 			];
 		}
 		if(!milData){
 			milData=[
+				{name:"Erin",port:"smallPort2"},
 			];
 		}
 

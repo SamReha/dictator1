@@ -49,6 +49,12 @@ var Preloader={
         g.load.image('water2',    resourceDir + 'water2.png');
         g.load.image('water3',    resourceDir + 'water3.png');
 
+        // load port assets
+        var portDir=imageDir+'ports/';
+        g.load.image("smallPort0",  portDir+"smallPort0.png");
+        g.load.image("smallPort1",  portDir+"smallPort1.png");
+        g.load.image("smallPort2",  portDir+"smallPort2.png");
+
         // load ui assets
         var uiDir = imageDir + 'ui/';
         g.load.image('grpBldInfo',              uiDir + 'grpBldInfo.png');
