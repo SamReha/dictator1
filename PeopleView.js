@@ -162,8 +162,9 @@ var PeopleContractView={
 		}
 		v.data=JSON.parse(JSON.stringify(personData));
 		v.inputEnabled=true;
-		v.input.PriorityID=102;
+		v.input.priorityID=120;
 
+		// TODO: adjust layout!!
 		// setup its elements
 			// port & name
 		v.port=MainGame.game.make.sprite(10,10,personData.port);
@@ -173,11 +174,11 @@ var PeopleContractView={
 			// "-" payment "+"
 		v.decButton=MainGame.game.make.sprite(10,150,"decButton");
 		v.decButton.inputEnabled=true;
-		v.decButton.input.priorityID=110;
+		v.decButton.input.priorityID=121;
 		v.addChild(v.decButton);
 		v.incButton=MainGame.game.make.sprite(100,150,"incButton");
 		v.incButton.inputEnabled=true;
-		v.incButton.input.priorityID=110;
+		v.incButton.input.priorityID=121;
 		v.addChild(v.incButton);
 		v.payLabel=MainGame.game.make.text(50,150,""+PeopleContractView.pays[personData.payLevel]);
 		v.addChild(v.payLabel);
@@ -188,16 +189,16 @@ var PeopleContractView={
 		if(personData.payLevel===PeopleContractView.pays.length-1)
 			v.incButton.visible=false;
 			// "fire" workStatus "hire"
-		v.workLabel=MainGame.game.make.text(100,250,personData.hired?"Hired":"Not Hired");
+		v.workLabel=MainGame.game.make.text(150,300,personData.hired?"Hired":"Not Hired");
 		v.addChild(v.workLabel);
-		v.fireButton=MainGame.game.make.sprite(10,250,"fireButton");
+		v.fireButton=MainGame.game.make.sprite(50,300,"btnFire");
 		v.fireButton.inputEnabled=true;
-		v.fireButton.input.priorityID=110;
+		v.fireButton.input.priorityID=121;
 		v.fireButton.events.onInputUp.add(function(){PeopleContractView.onWorkChanged(v,true)});
 		v.addChild(v.fireButton);
-		v.hireButton=MainGame.game.make.sprite(150,250,"hireButton");
+		v.hireButton=MainGame.game.make.sprite(300,300,"btnHire");
 		v.hireButton.inputEnabled=true;
-		v.hireButton.input.priorityID=110;
+		v.hireButton.input.priorityID=121;
 		v.hireButton.events.onInputUp.add(function(){PeopleContractView.onWorkChanged(v,false)});
 		v.addChild(v.hireButton);
 
