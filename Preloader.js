@@ -79,6 +79,15 @@ var Preloader={
         g.load.spritesheet('small_generic_button', buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',   buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button', buttonDir + 'large_generic_button.png', 240, 96, 3);
+
+        //// load icons
+        var iconDir = uiDir + 'icons/';
+        g.load.spritesheet('freedom_icon',    iconDir + 'freedom_icon.png');
+        g.load.spritesheet('money_icon',      iconDir + 'money_icon.png');
+        g.load.spritesheet('population_icon', iconDir + 'population_icon.png');
+        g.load.spritesheet('unrest_icon',     iconDir + 'unrest_icon.png');
+        g.load.spritesheet('year_icon',       iconDir + 'year_icon.png');
+        g.load.spritesheet('swiss_icon',      iconDir + 'swiss_account_icon.png');
         
         // load json files
         g.load.json('stage1','stage1.json');

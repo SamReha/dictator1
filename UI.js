@@ -4,7 +4,7 @@
 
 var Hud = {
     styleNormal: {font:"32px myKaiti", fill:"#ffffff"},
-    styleButton: {font:"32px myKaiti", fill:"#000000"},
+    styleButton: {font:"32px myKaiti", fill:"#ffffff"},
 
     createNew: function() {
 
@@ -19,22 +19,16 @@ var Hud = {
         topGroup.name="topGroup";
         hud.addChild(topGroup);
 
-        //      top bar bg
-        var topBg = topGroup.create(0,0,'topBar');
-
         //      global vars
-        var topText = MainGame.game.make.text(140, 0, '', Hud.styleNormal);
-        topGroup.addChild(topText);
+        var statsPanel = StatsPanel.createNew();
+        hud.addChild(statsPanel);
+
+        var funPanel = FunPanel.createNew();
+        hud.addChild(funPanel);
 
         //      Coalition Flag
         topGroup.coalitionFlag = CoalitionFlag.createNew();
         //topGroup.addChild(topGroup.coalitionFlag);
-
-        // Have the top-bar text update itself every half second
-        topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
-        MainGame.game.time.events.loop(500, function() {
-            topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
-        }, topText);
 
         // Exit / Pause button
         var btnExit = MainGame.game.make.button(0, 0, 'small_generic_button', null, MainGame, 0, 1, 2, 2);
@@ -43,8 +37,11 @@ var Hud = {
         hud.addChild(btnExit);
 
         var btnExitText = MainGame.game.make.text(0, 0, 'Exit', Hud.styleButton);
+        btnExitText.anchor.x = 0.5;
+        btnExitText.anchor.y = 0.5;
+        btnExitText.x = btnExit.width / 2;
+        btnExitText.y = btnExit.height / 2;
         btnExit.addChild(btnExitText);
-
 
         // "Next Turn" button
         var btnNextTurn=MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
@@ -55,9 +52,11 @@ var Hud = {
         btnNextTurn.anchor.y = 1;
         hud.addChild(btnNextTurn);
 
-        var btnNextTurnText=MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
-        btnNextTurnText.anchor.x = 1;
-        btnNextTurnText.anchor.y = 1;
+        var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
+        btnNextTurnText.anchor.x = 0.5;
+        btnNextTurnText.anchor.y = 0.5;
+        btnNextTurnText.x = -btnNextTurn.width / 2;
+        btnNextTurnText.y = -btnNextTurn.height / 2;
         btnNextTurn.addChild(btnNextTurnText);
 
         // Group2: Build
@@ -65,7 +64,7 @@ var Hud = {
         buildGroup.name="buildGroup";
         hud.addChild(buildGroup);
         //      "Build" button
-        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'buttonSprite', 
+        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'med_generic_button', 
             function(){
                 var menu=hud.findChild("buildMenu");
                 console.assert(menu);
@@ -82,33 +81,18 @@ var Hud = {
         buildBtn.input.priorityID = 1;
         buildGroup.addChild(buildBtn);
 
+        var buildBtnText = MainGame.game.make.text(0, 0, 'Build', Hud.styleButton);
+        buildBtnText.anchor.x = 0.5;
+        buildBtnText.anchor.y = 0.5;
+        buildBtnText.x = buildBtn.width / 2;
+        buildBtnText.y = -buildBtn.height / 2;
+        buildBtn.addChild(buildBtnText);
+
         //      "Build" menu
         var buildMenu = MainGame.game.make.group();
         buildMenu.name="buildMenu";
         buildMenu.visible = false;
         buildGroup.addChild(buildMenu);
-
-        // Group3: Stats
-       /* var statsGroup=MainGame.game.make.group();
-        statsGroup.name="statsGroup";
-        hud.addChild(statsGroup);
-        //      "Stats" button
-        var statsBtn=MainGame.game.make.button(900, 650, 'buttonSprite',
-            function(){
-                var menu=hud.findChild("statsMenu");
-                console.assert(menu);
-                menu.visible=!menu.visible;
-                if(menu.visible){
-                    hud.findChild("buildBtn").visible=false;
-                }
-            }, null,0,1,2,3);
-        statsBtn.name="statsBtn";
-        statsGroup.addChild(statsBtn);
-        //      "Stats" menu
-        var statsMenu=MainGame.game.make.group();
-        statsMenu.name="statsMenu";
-        statsMenu.visible=false;
-        statsGroup.addChild(statsMenu); */
 
         // buildMenu: UI groups
         var bureauGroup = MainGame.game.make.group();
@@ -124,7 +108,7 @@ var Hud = {
         buildMenu.addChild(militaryGroup);
 
         // buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
-        var buyMansionBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'mansion');}, buildMenu, 0, 1, 2, 3);
+        var buyMansionBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'mansion');}, buildMenu, 0, 1, 2, 3);
         buyMansionBtn.input.priorityID = hudInputPriority;
         buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
         var mansionText = MainGame.game.make.text(0, -40, "Buy Mansion\n$10K", Hud.styleNormal);
@@ -132,7 +116,15 @@ var Hud = {
         buyMansionBtn.addChild(mansionText);
         bureauGroup.addChild(buyMansionBtn);
 
-        var buySuburbBtn = MainGame.game.make.button(200, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'suburb');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buyMansionBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyMansionBtnText.anchor.x = 0.5;
+        buyMansionBtnText.anchor.y = 0.5;
+        buyMansionBtnText.x = buyMansionBtn.width / 2;
+        buyMansionBtnText.y = -buyMansionBtn.height / 2;
+        buyMansionBtn.addChild(buyMansionBtnText);
+
+        var buySuburbBtn = MainGame.game.make.button(200, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'suburb');}, buildMenu, 0, 1, 2, 3);
         buySuburbBtn.input.priorityID = hudInputPriority;
         buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
         var suburbText = MainGame.game.make.text(0, -40, "Buy Suburb\n$10K", Hud.styleNormal);
@@ -140,7 +132,15 @@ var Hud = {
         buySuburbBtn.addChild(suburbText);
         bureauGroup.addChild(buySuburbBtn);
 
-        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'apartment');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buySuburbBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buySuburbBtnText.anchor.x = 0.5;
+        buySuburbBtnText.anchor.y = 0.5;
+        buySuburbBtnText.x = buySuburbBtn.width / 2;
+        buySuburbBtnText.y = -buySuburbBtn.height / 2;
+        buySuburbBtn.addChild(buySuburbBtnText);
+
+        var buyApartmentBtn = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'apartment');}, buildMenu, 0, 1, 2, 3);
         buyApartmentBtn.input.priorityID = hudInputPriority;
         buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
         var apartmentText = MainGame.game.make.text(0, -40, "Buy Apartment\n$10K", Hud.styleNormal);
@@ -148,7 +148,15 @@ var Hud = {
         buyApartmentBtn.addChild(apartmentText);
         bureauGroup.addChild(buyApartmentBtn);
 
-        var buySchoolBtn = MainGame.game.make.button(600, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'school');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buyApartmentBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyApartmentBtnText.anchor.x = 0.5;
+        buyApartmentBtnText.anchor.y = 0.5;
+        buyApartmentBtnText.x = buyApartmentBtn.width / 2;
+        buyApartmentBtnText.y = -buyApartmentBtn.height / 2;
+        buyApartmentBtn.addChild(buyApartmentBtnText);
+
+        var buySchoolBtn = MainGame.game.make.button(600, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'school');}, buildMenu, 0, 1, 2, 3);
         buySchoolBtn.input.priorityID = hudInputPriority;
         buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
         var schoolText = MainGame.game.make.text(0, -40, "Buy School\n$15K", Hud.styleNormal);
@@ -156,7 +164,15 @@ var Hud = {
         buySchoolBtn.addChild(schoolText);
         bureauGroup.addChild(buySchoolBtn);
 
-        var buyFactoryBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buySchoolBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buySchoolBtnText.anchor.x = 0.5;
+        buySchoolBtnText.anchor.y = 0.5;
+        buySchoolBtnText.x = buySchoolBtn.width / 2;
+        buySchoolBtnText.y = -buySchoolBtn.height / 2;
+        buySchoolBtn.addChild(buySchoolBtnText);
+
+        var buyFactoryBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'lumberYard');}, buildMenu, 0, 1, 2, 3);
         buyFactoryBtn.input.priorityID = hudInputPriority;
         buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
         var factoryText = MainGame.game.make.text(0, -40, "Buy LumberYard\n$30K", Hud.styleNormal);
@@ -164,7 +180,15 @@ var Hud = {
         buyFactoryBtn.addChild(factoryText);
         merchantGroup.addChild(buyFactoryBtn);
 
-        var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'armyBase');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buyFactoryBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyFactoryBtnText.anchor.x = 0.5;
+        buyFactoryBtnText.anchor.y = 0.5;
+        buyFactoryBtnText.x = buyFactoryBtn.width / 2;
+        buyFactoryBtnText.y = -buyFactoryBtn.height / 2;
+        buyFactoryBtn.addChild(buyFactoryBtnText);
+
+        var buyArmyBaseBtn = MainGame.game.make.button(0, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'armyBase');}, buildMenu, 0, 1, 2, 3);
         buyArmyBaseBtn.input.priorityID = hudInputPriority;
         buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
         var armyBaseText = MainGame.game.make.text(0, -40, "Buy Army Base\n$30K", Hud.styleNormal);
@@ -172,13 +196,46 @@ var Hud = {
         buyArmyBaseBtn.addChild(armyBaseText);
         militaryGroup.addChild(buyArmyBaseBtn);
 
-        var buyRoad = MainGame.game.make.button(200, 0, 'buttonSprite', function() {Hud.beginBuilding(buildMenu, 'road');}, buildMenu, 0, 1, 2, 3);
+        // Setup buildMenu purchase button text
+        var buyArmyBaseBtnText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyArmyBaseBtnText.anchor.x = 0.5;
+        buyArmyBaseBtnText.anchor.y = 0.5;
+        buyArmyBaseBtnText.x = buyArmyBaseBtn.width / 2;
+        buyArmyBaseBtnText.y = -buyArmyBaseBtn.height / 2;
+        buyArmyBaseBtn.addChild(buyArmyBaseBtnText);
+
+        var buyRoad = MainGame.game.make.button(200, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'road');}, buildMenu, 0, 1, 2, 3);
         buyRoad.input.priorityID = hudInputPriority;
         buyRoad.anchor.y = 1;  // Anchor on bottom left corner
         var roadText = MainGame.game.make.text(0, -40, "Buy Road\n$2K", Hud.styleNormal);
         roadText.anchor.y = 1;
         buyRoad.addChild(roadText);
         militaryGroup.addChild(buyRoad);
+
+        // Setup buildMenu purchase button text
+        var buyRoadText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyRoadText.anchor.x = 0.5;
+        buyRoadText.anchor.y = 0.5;
+        buyRoadText.x = buyRoad.width / 2;
+        buyRoadText.y = -buyRoad.height / 2;
+        buyRoad.addChild(buyRoadText);
+
+        // Need to adjust beginBuilding() to handle arable vs weak farms
+        var buyFarm = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, 'arableFarm');}, buildMenu, 0, 1, 2, 3);
+        buyFarm.input.priorityID = hudInputPriority;
+        buyFarm.anchor.y = 1;  // Anchor on bottom left corner
+        var farmText = MainGame.game.make.text(0, -40, "Buy Farm\n$10K", Hud.styleNormal);
+        farmText.anchor.y = 1;
+        buyFarm.addChild(farmText);
+        militaryGroup.addChild(buyFarm);
+
+        // Setup buildMenu purchase button text
+        var buyFarmText = MainGame.game.make.text(0, 0, 'Buy', Hud.styleButton);
+        buyFarmText.anchor.x = 0.5;
+        buyFarmText.anchor.y = 0.5;
+        buyFarmText.x = buyFarm.width / 2;
+        buyFarmText.y = -buyFarm.height / 2;
+        buyFarm.addChild(buyFarmText);
         
         return hud;
     },
@@ -293,8 +350,12 @@ var BuildingPlacer = {
             }
             
             // Create a building object
+            if (self.buildingType === 'arableFarm' && tile.getResType() !== 'wheat') {
+                self.buildingType = 'weakFarm';
+            }
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
             newBuilding.tint = newTint;
+
             // Set the tile's building to that object
             tile.setBuilding(newBuilding);
             
@@ -319,290 +380,123 @@ var BuildingPlacer = {
     }
 };
 
-// add me before HUD!!!
-// Does useful things with display map data in-game, include the mouse-hover label and the buildingDetailMenu
-// var MapSelector = {
-//     createNew: function(){
-//         /*global MainGame*/
-//         var ms = MainGame.game.add.group();        
+/* UI group that holds the sprites + text for the major stats */
+var StatsPanel = {
+    unitWidth: 140,
+    unitHeight: 48,
+    verticalPad: 2,
+    horizontalPad: 6,
+    textStyle: { font: '30px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle' },
 
-//         // Class vars
-//         ms.name = "MapSelector";
-//         ms.curIndex = -1;
-//         ms.activeIndex = null;
-//         // ms.loopingTimer = MainGame.game.time.events.loop(50, MapSelector.updateAll, ms, ms);
-//         ms.buildingDetail = MapSelector.makeBuildingDetail(ms);
+    createNew: function() {
+        var statsPanel = MainGame.game.make.group();
+        statsPanel.x = MainGame.game.width - StatsPanel.unitWidth + StatsPanel.verticalPad;
+        statsPanel.y = MainGame.game.height / 2;
 
-//         // Class funcs
-//         ms.updateBuildingDetail = function(tileIndex) {MapSelector.updateBuildingDetail(ms,tileIndex)};
-//         ms.positionBuildingDetail = function(b) {MapSelector.positionBuildingDetail(ms,b)};
-//         // ms.updateAll = function() {MapSelector.updateAll(ms)};
-//         // ms.clickHandler = function(activePointer) { MapSelector.clickHandler(ms, activePointer); };
+        // Year
+        statsPanel.yearGroup = MainGame.game.make.group();
+        statsPanel.yearGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 0;
+        statsPanel.yearGroup.sprite = MainGame.game.make.sprite(0, 0, 'year_icon');
+        statsPanel.yearGroup.addChild(statsPanel.yearGroup.sprite);
+        statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '1950', StatsPanel.textStyle);
+        statsPanel.yearGroup.addChild(statsPanel.yearGroup.textLabel);
+        statsPanel.addChild(statsPanel.yearGroup);
 
-//         // MainGame.game.input.onDown.add(ms.clickHandler, ms, ms, MainGame.game.input.activePointer);
+        // Population
+        statsPanel.popGroup = MainGame.game.make.group();
+        statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 1;
+        statsPanel.popGroup.sprite = MainGame.game.make.sprite(0, 0, 'population_icon');
+        statsPanel.popGroup.addChild(statsPanel.popGroup.sprite);
+        statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '0', StatsPanel.textStyle);
+        statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
+        statsPanel.addChild(statsPanel.popGroup);
 
-//         return ms;
-//     },
+        // Money per Turn
+        statsPanel.moneyPerTurnGroup = MainGame.game.make.group();
+        statsPanel.moneyPerTurnGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 2;
+        statsPanel.moneyPerTurnGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
+        statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.sprite);
+        statsPanel.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '+0', StatsPanel.textStyle);
+        statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.textLabel);
+        statsPanel.addChild(statsPanel.moneyPerTurnGroup);
 
-//     makeBuildingDetail: function(ms) {
-//         var buildingDetail = MainGame.game.make.group();
-//         var buildingDetailInputPriority = 2;
+        // State Money (warchest)
+        statsPanel.warchestGroup = MainGame.game.make.group();
+        statsPanel.warchestGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 3;
+        statsPanel.warchestGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
+        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.sprite);
+        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '$0', StatsPanel.textStyle);
+        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
+        statsPanel.addChild(statsPanel.warchestGroup);
 
-//         var style = { font: "20px STKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" };
+        // Swiss Bank (personal money)
+        statsPanel.swissGroup = MainGame.game.make.group();
+        statsPanel.swissGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 4;
+        statsPanel.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'swiss_icon');
+        statsPanel.swissGroup.addChild(statsPanel.swissGroup.sprite);
+        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '$0', StatsPanel.textStyle);
+        statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
+        statsPanel.addChild(statsPanel.swissGroup);
 
-//         // bg (the grad)
-//         buildingDetail.bg = MainGame.game.make.sprite(0, 0, 'building_detail_backpanel');
-//         var labelX = Math.floor(buildingDetail.bg.texture.width / 2);
-//         var labelY = Math.floor(buildingDetail.bg.texture.height / 2);
-//         buildingDetail.bg.y -= labelY;
-//         buildingDetail.addChild(buildingDetail.bg);
+        // Set update loop
+        MainGame.game.time.events.loop(500, function() {
+            var globalStats = MainGame.global;
 
-//         // label (bld name/lv)
-//         buildingDetail.label = MainGame.game.make.text(labelX, -labelY+30, "", style, buildingDetail);
-//         buildingDetail.label.anchor.x = 0.5;
-//         buildingDetail.label.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label);
+            var newPop = MainGame.population.count();
+            var newYear = 1949 + globalStats.turn;
+            var newMoneyPerTurn = '+' + globalStats.moneyPerTurn;
+            var newWarchest = '$' + globalStats.money;
+            var newSwissAccount = '$' + 0;
 
-//         // label2 (people)
-//         buildingDetail.label2 = MainGame.game.make.text(10, -labelY+60, "", style, buildingDetail);
-//         buildingDetail.label2.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label2);
+            statsPanel.popGroup.textLabel.text = newPop;
+            statsPanel.yearGroup.textLabel.text = newYear;
+            statsPanel.moneyPerTurnGroup.textLabel.text = newMoneyPerTurn;
+            statsPanel.warchestGroup.textLabel.text = newWarchest;
+            statsPanel.swissGroup.textLabel.text = newSwissAccount;
+        }, statsPanel);
 
-//         // label3 (health)
-//         buildingDetail.label3=MainGame.game.make.text(10,-labelY+90,"",style,buildingDetail);
-//         buildingDetail.label3.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label3);
+        return statsPanel;
+    },
+}
 
-//         // label3 (health)
-//         buildingDetail.label4=MainGame.game.make.text(10,-labelY+120,"",style,buildingDetail);
-//         buildingDetail.label4.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label4);
+/* A separate UI element from the stats panel that accentuates the Freedom and Unrest Stats. Should be near the top of the screen */
+var FunPanel = {
+    unitWidth: 120,
+    horizontalPad: 5,
 
-//         // label3 (health)
-//         buildingDetail.label5=MainGame.game.make.text(10,-labelY+150,"",style,buildingDetail);
-//         buildingDetail.label5.anchor.y = 0.5;
-//         buildingDetail.addChild(buildingDetail.label5);
+    createNew: function() {
+        var funPanel = MainGame.game.make.group();
+        funPanel.x = MainGame.game.width / 2;
 
-//         // Hire button
-//         buildingDetail.addPersonButton = MainGame.game.make.button(30, -labelY+200, "btnHire", 
-//             function() {
-//                 //console.log("[MapSelector] Hire people for index: ",ms.curIndex);
-//                 // TODO
-//                 /*global MainGame*/
-//                 var bld = MainGame.board.at(ms.curIndex).building;
-//                 if (bld.people >= bld.maxPeople) {
-//                     return;
-//                 }
-                
-//                 //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-//                 MainGame.population.hire(ms.curIndex);
-//                 //bld.people=bld.people+actual; [this is now done in building.addPerson()]
-//                 // update display
-//                 buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
+        // Freedom
+        funPanel.freeGroup = MainGame.game.make.group();
+        funPanel.freeGroup.x = -(FunPanel.unitWidth + FunPanel.horizontalPad/2);
+        funPanel.freeGroup.sprite = MainGame.game.make.sprite(0, 0, 'freedom_icon');
+        funPanel.freeGroup.addChild(funPanel.freeGroup.sprite);
+        funPanel.freeGroup.textLabel = MainGame.game.make.text(48, 6, '0%', StatsPanel.textStyle);
+        funPanel.freeGroup.addChild(funPanel.freeGroup.textLabel);
+        funPanel.addChild(funPanel.freeGroup);
 
-//                 for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-//                     var outType = bld.effects[outIndex].type;
-//                     if(outType==="health"){ 
-//                         outType="Health";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="education"){
-//                         outType="Edu";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="freedom"){
-//                         outType="Extra Freedom";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="unrest"){
-//                         outType="Extra Unrest";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="money"){    outType="Money";    }
+        // Unrest
+        funPanel.unrestGroup = MainGame.game.make.group();
+        funPanel.unrestGroup.x = FunPanel.horizontalPad/2;
+        funPanel.unrestGroup.sprite = MainGame.game.make.sprite(0, 0, 'unrest_icon');
+        funPanel.unrestGroup.addChild(funPanel.unrestGroup.sprite);
+        funPanel.unrestGroup.textLabel = MainGame.game.make.text(48, 6, '0%', StatsPanel.textStyle);
+        funPanel.unrestGroup.addChild(funPanel.unrestGroup.textLabel);
+        funPanel.addChild(funPanel.unrestGroup);
 
-//                     if(outIndex===0){
-//                         buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }else if(outIndex===1){
-//                         buildingDetail.label4.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }else if(outIndex===2){
-//                         buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }
-//                 }
-//                 /*global updatePopulation*/
-//                 updatePopulation(false,false);
-//             }, ms, 0, 1, 2, 3);
-//         buildingDetail.addPersonButton.input.priorityID = buildingDetailInputPriority;
-//         buildingDetail.addChild(buildingDetail.addPersonButton);
+        // Set update loop
+        MainGame.game.time.events.loop(500, function() {
+            var globalStats = MainGame.global;
 
-//         // Fire button
-//         buildingDetail.removePersonButton = MainGame.game.make.button(100, -labelY+200, "btnFire",
-//             function() {
-//                 //console.log("[MapSelector] Fire people for index: ",ms.curIndex);
-//                 // TODO
-//                 /*global MainGame*/
-//                 var bld=MainGame.board.at(ms.curIndex).building;
-//                 if(bld.people<=0){
-//                     return;
-//                 }
-                
-//                 //console.log("[MapSelector] and the building's type/name is:["+bld.type+","+bld.name+"]");
-//                 MainGame.population.fire(ms.curIndex);
-//                 //bld.people=bld.people-actual; [this is now done in building.addPerson()]
-//                 // update display
-//                 buildingDetail.label2.text="People: "+bld.people+"/"+bld.maxPeople;
+            var newFreedom = globalStats.freedom + '%';
+            var newUnrest = globalStats.unrest + '%';
 
-//                 for(var outIndex = 0; outIndex < bld.effects.length; outIndex++) {
-//                     var outType = bld.effects[outIndex].type;
-//                     if(outType==="health"){ 
-//                         outType="Health";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="education"){
-//                         outType="Edu";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="freedom"){
-//                         outType="Extra Freedom";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="unrest"){
-//                         outType="Extra Unrest";
-//                         /*global updateHomesNearOutput*/
-//                         updateHomesNearOutput(ms.curIndex);
-//                     }else if(outType==="money"){
-//                         outType="Money";
-//                         MainGame.global.updateMoneyPerTurn();                    }
+            funPanel.freeGroup.textLabel.text = newFreedom;
+            funPanel.unrestGroup.textLabel.text = newUnrest;
+        }, funPanel);
 
-//                     if(outIndex===0){
-//                         buildingDetail.label3.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }else if(outIndex===1){
-//                         buildingDetail.label4.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }else if(outIndex===2){
-//                         buildingDetail.label5.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
-//                     }
-//                 }
-//                 /*global updatePopulation*/
-//                 updatePopulation(false,false);
-//             }, ms, 0,1,2,3);
-//         buildingDetail.removePersonButton.input.priorityID = buildingDetailInputPriority;
-//         buildingDetail.addChild(buildingDetail.removePersonButton);
-
-//         buildingDetail.visible = false;
-//         return buildingDetail;
-//     },
-
-
-//     updateBuildingDetail: function(ms, tileIndex) {
-//         ms.buildingDetail.visible = true;
-
-//         if(tileIndex===null){
-//             ms.buildingDetail.visible = false;
-//             return;
-//         }
-
-//         if(ms.activeIndex===tileIndex){
-//             return;
-//         }
-//         ms.activeIndex=tileIndex;
-
-//         if(!MainGame.board.at(tileIndex).hasBuilding()){
-//             ms.buildingDetail.visible = false;
-//             return;
-//         }
-
-//         var b = MainGame.board;
-//         var tile = b.at(ms.activeIndex);
-//         var bld = tile.getBuilding();
-
-//         // Let's figure out what kind of info we need to display
-//         var displayName = '';
-
-//         // If this tile has no building, display terrain info
-//         if (bld === null || bld.isEmpty()) {
-//             // If this terrain has a natural resource, display that, otherwise display the terrain name
-//             displayName = tile.getRes().key === '__default' ? tile.terrain.key : tile.getRes().key;
-
-//             ms.buildingDetail.label2.text = ''; // Make sure this text gets cleared if it's not going to be used
-//         } else {
-//             displayName = bld.name;// + " Lv"+bld.level;
-
-//             // Most buildings can contain people, but some (like roads) cannot. Be sure to correct for that.
-//             if (bld.subtype === 'road') {
-//                 ms.buildingDetail.label2.text = '';
-//             } else {
-//                 ms.buildingDetail.label2.text = "People: " + bld.people + "/" + bld.maxPeople;
-//             }
-
-//             var str3="";
-//             var str4="";
-//             var str5="";
-            
-//             if(bld.subtype==="housing"){
-//                 str3="Health: "+bld.health;
-//                 str4="Education: "+bld.education;
-//                 str5="Shelter: "+bld.shelter;
-//             }
-//             if(bld.effects[0].type!==null){
-//                 for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-//                     var outType = bld.effects[outIndex].type;
-//                     var outValue = bld.effects[outIndex].outputTable[bld.people];
-//                     if(outType==="health"){ outType="Health";   }
-//                     else if(outType==="education"){ outType="Edu";  }
-//                     else if(outType==="freedom"){   outType="Freedom";    }
-//                     else if(outType==="unrest"){    outType="Unrest"; }
-//                     else if(outType==="money"){
-//                         outType="Money";
-//                         outValue="$"+outValue+"K";
-//                     }
-            
-//                     if(outIndex===0){
-//                         str3=outType+" Output: "+outValue;
-//                     }else if(outIndex===1){
-//                         str4=outType+" Output: "+outValue;
-//                     }else if(outIndex===2){
-//                         str5.text=outType+" Output: "+outValue;
-//                     }
-//                 }
-//             }
-//             ms.buildingDetail.label3.text=str3;
-//             ms.buildingDetail.label4.text=str4;
-//             ms.buildingDetail.label5.text=str5;
-//         }
-
-//         ms.buildingDetail.label.text = displayName;
-
-//         ms.positionBuildingDetail(b);
-//     },
-
-//     positionBuildingDetail: function(ms, b){
-//         var rect = b.rectOf(ms.activeIndex,b.currentScale);
-//         ms.buildingDetail.x = rect.x-b._offset.x+rect.w*.85;
-//         ms.buildingDetail.y = rect.y-b._offset.y+rect.h*.5;
-//         ms.buildingDetail.scale.set(b.currentScale);
-//     },
-
-    // clickHandler: function(ms, activePointer) {
-    //     var b = MainGame.board;
-    //     var index = MainGame.board.hitTest(activePointer.x, activePointer.y);
-
-    //     if(index===null){
-    //         ms.buildingDetail.visible = false;
-    //         return;
-    //     }
-    //     if(ms.activeIndex===index){
-    //         return;
-    //     }
-    //     ms.activeIndex = index;
-
-    //     if (b.at(index).hasBuilding()) {
-    //         var rect = b.rectOf(ms.activeIndex,b.currentScale);
-    //         ms.buildingDetail.x = rect.x-b._offset.x;
-    //         ms.buildingDetail.y = rect.y-b._offset.y;
-    //         ms.buildingDetail.visible = true;
-    //     } else {
-    //         // Make sure the detail menu is hidden if the user is trying to click away
-    //         ms.buildingDetail.visible = false;
-    //     }
-        
-    // },
-// };
+        return funPanel;
+    }
+}

@@ -5,7 +5,7 @@ var fontBrief=[
 	{font:"30px myKaiti", fill:"lightgreen", boundsAlignH:"top", boundsAlignV:"middle"}
 ];
 var fontDetail=[
-	{font:"30px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
+	{font:"28px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
 	{font:"24px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"}
 ];
 
@@ -84,24 +84,34 @@ var TileDetailView={
     	console.assert(index || index===0);
 
         /*global MainGame*/
-        var game=MainGame.game;
+        var game = MainGame.game;
         var board = MainGame.board;
 
         var view = game.add.sprite(0, 0, 'building_detail_backpanel');
+        view.anchor.x = 0.5;
 
         // bg (the grad)
-        var startPos={x:10, y:30};
+        // Top left corners of the three data columns
+        var leftColPos   = {x:-200, y:30};
+        var centerColPos = {x:0, y:30};
+        var rightColPos  = {x:200, y:40};
 
         // creating 5 lines
-        var lines=["building","people","health","education","shelter"];
-        for(var i=0;i<lines.length;i++){
-        	var oneLine=game.make.text(startPos.x, startPos.y+30*i, "", fontDetail[i?1:0]);
-        	if(i===0){
-        		oneLine.x=100;
-        		oneLine.anchor.set(0.5);
-        	}
+        var leftLines = ["building", "people"];
+        var centerLines = ["health", "education", "shelter"];
+
+        for (var i = 0; i < leftLines.length; i++) {
+        	var oneLine = game.make.text(leftColPos.x, 20 + leftColPos.y*i, "", fontDetail[i?1:0]);
+            oneLine.anchor.x = 0.5;
         	view.addChild(oneLine);
-        	view[lines[i]]=oneLine;
+        	view[leftLines[i]] = oneLine;
+        }
+
+        for (var j = 0; j < centerLines.length; j++) {
+            var oneLine = game.make.text(centerColPos.x, 5 + centerColPos.y*j, "", fontDetail[1]);
+            oneLine.anchor.x = 0.5;
+            view.addChild(oneLine);
+            view[centerLines[j]] = oneLine;
         }
 
         // Class vars
@@ -116,22 +126,28 @@ var TileDetailView={
         var building=board.at(index).getBuilding();
         // console.log(building.startingTurn+" "+MainGame.global.turn);
 
-        if(building.subtype!=="road" && building.type!=="palace" && building.startingTurn<=MainGame.global.turn){
-        	if(building.people<building.maxPeople){
-        		// Hire button
-		        view.addPersonButton = game.make.button(30, 200, "btnHire", 
-		            function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 1, 2, 3);
+        if (building.subtype !== "road" && building.type !== "palace" && building.startingTurn<=MainGame.global.turn) {
+    		// Hire button
+	        view.addPersonButton = game.make.button(rightColPos.x, rightColPos.y, "btnHire", 
+	            function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 1, 2, 3);
 
-		        view.addChild(view.addPersonButton);
-        	}
-        	if(building.people>0){
-		        // Fire button
-		        view.removePersonButton = game.make.button(100, 200, "btnFire",
-		            function() {TileDetailView._onFireButtonPressed_(view)}, view, 0, 1, 2, 3);
+            view.addPersonButton.anchor.x = 0.5;
+            view.addPersonButton.anchor.y = 0.5;
 
-		        view.addChild(view.removePersonButton);
-        	}
+	        view.addChild(view.addPersonButton);
+            if(building.people>=building.maxPeople){view.addPersonButton.visible=false;}
+	        
+            // Fire button
+	        view.removePersonButton = game.make.button(rightColPos.x, rightColPos.y+20, "btnFire",
+	            function() {TileDetailView._onFireButtonPressed_(view)}, view, 0, 1, 2, 3);
+
+            view.removePersonButton.anchor.x = 0.5;
+            view.removePersonButton.anchor.y = 0.5;
+
+	        view.addChild(view.removePersonButton);
+            if(building.people<=0){view.removePersonButton.visible=false;}
     	}
+
 		// Class func
 		view.updateInfo=function(tile){return TileDetailView.updateInfo(view,tile)};
 		view.updatePos=function(){return TileDetailView.updatePos(view)};
@@ -148,6 +164,8 @@ var TileDetailView={
         if (bld.people >= bld.maxPeople)
             return;
         MainGame.population.hire(view.index);
+        if(bld.people>=bld.maxPeople){view.addPersonButton.visible=false;}
+        view.removePersonButton.visible=true;
 
         // update display
         _showBuildingAndPeople_(bld, view.building, view.people);
@@ -197,6 +215,8 @@ var TileDetailView={
             return;
         
         MainGame.population.fire(view.index);
+        if(bld.people<=0){view.removePersonButton.visible=false;}
+        view.addPersonButton.visible=true;
 
         // update display
         _showBuildingAndPeople_(bld, view.building, view.people);
@@ -284,8 +304,8 @@ var TileDetailView={
         view.shelter.text=str5;        
 	},
 	updatePos: function(view){
-		view.x=5;
-		view.y=100;
+		view.x = MainGame.game.width/2;
+		view.y = MainGame.game.height - 100;
 	}
 };
 
