@@ -61,9 +61,9 @@ var Tile={
 };
 
 // Board as turnSystem
-var Board={
-    zoomLevelList: [0.5, 0.75, 1.0, 1.25, 1.5],
-    defaultZoomLevel: 2,
+var Board = {
+    zoomLevelList: [0.33, 0.5, 0.66, 1.0],
+    defaultZoomIndex: 2,
 
     // create from JSON. json MUST be a string to prevent the ref issue.
     fromJSON: function(json){
@@ -77,10 +77,12 @@ var Board={
         board.gridHeight=data.gridHeight;
         board.tileWidth=data.tileWidth;
         board.tileHeight=data.tileHeight;
-        board.currentScale=1.0;
-        board.currentZoomLevel=Board.defaultZoomLevel;
+        board.currentScale = Board.zoomLevelList[Board.defaultZoomIndex];
+        board.currentZoomIndex = Board.defaultZoomIndex;
         // maybe removed in the future
         board._offset={x:0,y:0};
+
+        console.log(board.currentScale, board.currentZoomIndex);
 
         // Class funcs
         // returns the JSON string representation
@@ -436,17 +438,18 @@ var Board={
     },
 
     // let camera zoom at zoom
-    cameraZoomAt: function(b,zoomLevel){
-        var zoom=1.0;
+    cameraZoomAt: function(b, zoomLevel){
+        console.log('zoomLevel: ', zoomLevel)
+        var zoom = Board.zoomLevelList[Board.defaultZoomIndex];
         if(zoomLevel!==null && zoomLevel!==undefined){
             console.assert(zoomLevel>=0 && zoomLevel<Board.zoomLevelList.length);
-            b.currentZoomLevel=zoomLevel;
-            zoom=Board.zoomLevelList[zoomLevel];
-            console.log("zoom level ",zoomLevel, Board.zoomLevelList);
+            b.currentZoomIndex=zoomLevel;
+            zoom = Board.zoomLevelList[zoomLevel];
+            console.log("zoom level ", zoomLevel, Board.zoomLevelList);
         }else{
-            b.currentZoomLevel=Board.defaultZoomLevel;
+            b.currentZoomIndex = Board.defaultZoomIndex;
         }
-        console.log("cameraZoomAt: zoom is ",zoom);
+        console.log("cameraZoomAt: zoom is ", zoom);
 
         /*global MainGame*/
         // 1. get the anchor/pivot point

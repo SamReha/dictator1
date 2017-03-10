@@ -153,11 +153,11 @@ var BoardController={
 		if(!bc.enabled)
 			return;
 		if(key==="E" && type==="up"){
-			var curLevel=bc.modelView.currentZoomLevel-1;
+			var curLevel=bc.modelView.currentZoomIndex-1;
 			if(curLevel<0) curLevel=0;
 			bc.modelView.cameraZoomAt(curLevel);			
 		}else if(key==="Q" && type==="up"){
-            var curLevel=bc.modelView.currentZoomLevel+1;
+            var curLevel=bc.modelView.currentZoomIndex+1;
             if(curLevel>=Board.zoomLevelList.length) curLevel=Board.zoomLevelList.length-1;
             bc.modelView.cameraZoomAt(curLevel);
 		}else if(key==="W" && type==="down"){
