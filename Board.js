@@ -37,6 +37,7 @@ var Tile={
         tile.getTerrainType=function(){return tile.terrain.key};
         tile.getResType=function(){return tile.resType};
         tile.getRes=function(){return tile.res};
+        tile.removeRes = function() { Tile.removeRes(tile); };
         tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
         tile.getBuilding=function(){return tile.building};
         tile.setBuilding=function(building){Tile.setBuilding(tile,building)};
@@ -47,15 +48,42 @@ var Tile={
         var data={terrain:t.terrain.key, res:t.res.key, building:JSON.parse(t.building.toJSON())};
         return JSON.stringify(data);
     },
-    setBuilding: function(tile, building){
-        if(tile.building===building){
+
+    removeRes: function(tile) {
+        tile.resType = null;
+        tile.removeChild(tile.res);
+        tile.res = MainGame.game.make.sprite(0,0, null);
+        tile.addChild(tile.res);
+    },
+
+    setBuilding: function(tile, building) {
+        // If this building already exists on this tile, do nothing
+        if (tile.building === building) {
             return;
         }
-        if(tile.building){
+
+        // If we already have a building, remove it before the new building this placed.
+        if (tile.building) {
             tile.removeChild(tile.building);
-            tile.building=null;
+            tile.building = null;
         }
-        tile.building=building;
+
+        // Based on the type of the building, check to see if we need to remove the tile's resource (if any)
+        if (tile.getResType() !== null) {
+            console.log(building);
+            if (tile.getResType() === 'forest') {
+                if (building.name !== 'lumberYard') {
+                    tile.removeRes();
+                }
+            } else if (tile.getResType() === 'wheat') {
+                if (building.name !== 'arableFarm') {
+                    tile.removeRes();
+                }
+            }
+        }
+
+        // Apply the new building to the tile
+        tile.building = building;
         tile.addChild(building);
     },
 };
