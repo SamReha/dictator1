@@ -69,6 +69,7 @@ var Preloader={
         g.load.image('peopleViewRightBg',       uiDir + 'peopleViewRightBg.png');
         g.load.image("pi_prevPage",             uiDir + "pi_prevPage.png");
         g.load.image("pi_nextPage",             uiDir + "pi_nextPage.png");
+        g.load.image("uiMask",                  uiDir + "uiMask.png");
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';

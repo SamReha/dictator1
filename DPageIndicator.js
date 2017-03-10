@@ -7,7 +7,7 @@ var DPageIndicator={
 	// layOut: {width,textPos}
 	// *pageChangedCallback: function(pageIndex)
 	// (* === optional)
-	createNew: function(pageCount, layout, pageChangedCallback){
+	createNew: function(pageCount, layout, pageChangedCallback, priorityID){
 		var v=MainGame.game.add.group();
 		v.pageCount=(pageCount?pageCount:1);
 		v.curPage=0;
@@ -15,14 +15,14 @@ var DPageIndicator={
 		// add two buttons as sprites
 		v.prevPage=MainGame.game.make.sprite(0,0,"pi_prevPage");
 		v.prevPage.inputEnabled=true;
-		v.prevPage.input.priorityID=5;
+		v.prevPage.input.priorityID=priorityID;
 		v.prevPage.events.onInputDown.add(DPageIndicator.onPrevPage,v);
 		v.prevPage.visible=false;
 		v.addChild(v.prevPage);
 		v.nextPage=MainGame.game.make.sprite(0,0,"pi_nextPage");
 		v.nextPage.x=layout.width-v.nextPage.width;
 		v.nextPage.inputEnabled=true;
-		v.nextPage.input.priorityID=5;
+		v.nextPage.input.priorityID=priorityID;
 		v.nextPage.events.onInputDown.add(DPageIndicator.onNextPage,v);
 		v.nextPage.visible=(pageCount>1);
 		v.addChild(v.nextPage);

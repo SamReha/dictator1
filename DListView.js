@@ -7,7 +7,7 @@ var DListView={
 	// *itemCallback: function(index, *prevIndex)
 	// *isHorizontal: true or false
 	// (* === optional)
-	createNew: function(textures, margin, itemSize, itemCallback, isHorizontal){
+	createNew: function(textures, margin, itemSize, itemCallback, isHorizontal,priorityID){
 		// set the normal texture
 		var v=MainGame.game.add.sprite(0,0,textures.normal);
 		v.state="normal";
@@ -27,6 +27,7 @@ var DListView={
 		v.prevSelected=null;
 		v.selected=null;
 		v.inputEnabled=true;
+		v.input.priorityID=priorityID;
         v.events.onInputUp.add(DListView.onClicked,v);
 
 		// Class func
@@ -72,8 +73,10 @@ var DListView={
 	},
 	hitTest: function(view, px, py, isLocal){
 		var pos={x:px, y:py};
-		if(!isLocal)
-			pos={x:pos.x-view.world.x-view.childrenGroup.x, y:pos.y-view.world.y-view.childrenGroup.y};
+		if(!isLocal){
+			pos={x:pos.x-view.world.x-view.x-view.childrenGroup.x, 
+				y:pos.y-view.world.y-view.y-view.childrenGroup.y};
+		}
 		// now pos is the local position relative to view.childrenGroup
 		var itemSize=view.itemSize;
 		var index=0;

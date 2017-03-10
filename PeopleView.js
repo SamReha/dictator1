@@ -7,6 +7,10 @@ var PeopleRightView={
 	style: {font:"25px myKaiti", fill:"black"},
 	createNew: function(data){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewRightBg");
+		// let right view block click events
+		v.inputEnabled=true;
+		v.input.priorityID=101;
+
 		// name, health, edu, shelter
 		v.data=JSON.parse(JSON.stringify(data));
 		// ListView: [lowPeoplePerPage] items (slots)
@@ -15,7 +19,9 @@ var PeopleRightView={
 			{},				// don't need textures
 			{l:15,t:40},	// margin inside the list view
 			{w:400, h:40},	// size of an item
-			function(index){PeopleRightView.onPersonSelected(v,index)}	// forwards the callback
+			function(index){PeopleRightView.onPersonSelected(v,index)},	// forwards the callback
+			false,			// not horizontal
+			110				// priority ID
 		);
 		v.addChild(v.listView);
 		// PageIndicator: N pages
@@ -23,7 +29,8 @@ var PeopleRightView={
 		v.pageIndicator=DPageIndicator.createNew(
 			pageCount,
 			{width:400,textPos:{x:180,y:5}},	// width of the pi & pos of "4/7"
-			function(index){PeopleRightView.onPageChanged(v,index)}
+			function(index){PeopleRightView.onPageChanged(v,index)},
+			111				// priority ID
 		);
 		v.pageIndicator.y=440;
 		v.addChild(v.pageIndicator);
@@ -70,6 +77,10 @@ var PeopleLeftView={
 	MilType: 2,
 	createNew: function(buData,merData,milData){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewLeftBg");
+		// let left view block click events
+		v.inputEnabled=true;
+		v.input.priorityID=101;
+
 		// copies the data
 		v.data3=[
 			JSON.parse(JSON.stringify(buData)),
@@ -91,7 +102,8 @@ var PeopleLeftView={
 				{l:5,t:5},				// margin - TODO: adjust it!
 				{w:80,h:64},			// each item's size
 				createCallback(i,true),	// callback func
-				true 					// is horizontal
+				true, 					// is horizontal
+				110						// priorityID
 			);
 			v.listViews[i].x=10;		// TODO: adjust it!
 			v.listViews[i].y=50+150*i;	// TODO: adjust it!
@@ -99,7 +111,8 @@ var PeopleLeftView={
 			v.pageIndicators[i]=DPageIndicator.createNew(
 				Math.ceil(v.data3[i].length/midHiPeoplePerPage),// items per page
 				{width:400,textPos:{x:180,y:5}},	// width & pos of "4/6"
-				createCallback(i,false)				// callback func
+				createCallback(i,false),			// callback func
+				111									// priorityID
 			);
 			v.pageIndicators[i].x=10;			// TODO: adjust it!
 			v.pageIndicators[i].y=140+150*i;	// TODO: adjust it!
@@ -142,6 +155,14 @@ var PeopleView={
 
 		// TODO: setup the actual position
 		pv.x=100, pv.y=100;
+
+		// setup the mask
+		/* global DUiMask */
+		pv.uiMask=DUiMask.createNew(100,function(){
+			pv.destroy();
+		});
+		pv.addChild(pv.uiMask);
+		pv.uiMask.fillScreen(pv);
 
 		// create low people view (right)
 		//	for debug: if there's no data input
