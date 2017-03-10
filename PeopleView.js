@@ -2,7 +2,6 @@
 
 // change item per page here!
 var lowPeoplePerPage=10;
-
 // shows FirstName, LastName, Health, Edu, Shelter
 var PeopleRightView={
 	style: {font:"25px myKaiti", fill:"black"},
@@ -60,8 +59,11 @@ var PeopleRightView={
 	},
 };
 
-// shows the 3 lists(bu,mer,mil) with portraits
+/************************************************************************************/
+
+// change item per page here!
 var midHiPeoplePerPage=5;
+// shows the 3 lists(bu,mer,mil) with portraits
 var PeopleLeftView={
 	BuType: 0,
 	MerType: 1,
@@ -95,7 +97,7 @@ var PeopleLeftView={
 			v.listViews[i].y=50+150*i;	// TODO: adjust it!
 			v.addChild(v.listViews[i]);
 			v.pageIndicators[i]=DPageIndicator.createNew(
-				Math.ceil(v.data3[i].length/midHiPeoplePerPage),	// items per page
+				Math.ceil(v.data3[i].length/midHiPeoplePerPage),// items per page
 				{width:400,textPos:{x:180,y:5}},	// width & pos of "4/6"
 				createCallback(i,false)				// callback func
 			);
