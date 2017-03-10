@@ -1,3 +1,4 @@
+/* global MainGame */
 var DListView={
 	// ****************** Attention ****************** //	
 	// textures: {normal, *high, *disabled}
