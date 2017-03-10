@@ -24,6 +24,7 @@ var DPageIndicator={
 		v.nextPage.inputEnabled=true;
 		v.nextPage.input.priorityID=5;
 		v.nextPage.events.onInputDown.add(DPageIndicator.onNextPage,v);
+		v.nextPage.visible=(pageCount>1);
 		v.addChild(v.nextPage);
 		// add & update page text 4/7
 		v.pageText=MainGame.game.make.text(0,0,"", DPageIndicator.style);

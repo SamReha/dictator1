@@ -1,7 +1,7 @@
 /* global MainGame */
 
 // shows FirstName, LastName, Health, Edu, Shelter
-var PeopleRightView{
+var PeopleRightView={
 	style: {font:"30px myKaiti", fill:"black"},
 	createNew: function(data){
 		var v=MainGame.game.add.sprite(0,0,"peopleViewRightBg");
@@ -9,7 +9,7 @@ var PeopleRightView{
 		v.data=JSON.parse(JSON.stringify(data));
 		// ListView: 10 items (slots)
 			// createNew(textures, margin, itemSize, itemCallback, isHorizontal)
-		v.listView=DListView:createNew(
+		v.listView=DListView.createNew(
 			{normal:"peopleViewRightBg"},
 			{},
 			{w:400, h:50},
@@ -17,11 +17,11 @@ var PeopleRightView{
 		);
 		// PageIndicator: N pages
 		var pageCount=Math.ceil(data.length/10);
-		v.pageIndicator=DPageIndicator:createNew(
+		v.pageIndicator=DPageIndicator.createNew(
 			pageCount,
 			{width:400,textPos:{x:200,y:500}},
 			function(index){PeopleRightView.onPageChanged(v,index)}
-		);
+		);		
 		// setup the init page
 		PeopleRightView._setupPage_(v,0);
 		return v;
@@ -45,7 +45,8 @@ var PeopleRightView{
 	_setupPage_: function(view,pageIndex){
 		view.listView.removeAll();
 		var startIndex=pageIndex*10;
-		for(var i=startIndex;i<startIndex+10;i++){
+		var endIndex=Math.min(startIndex+9,view.data.length);
+		for(var i=startIndex;i<=endIndex;i++){
 			view.listView.add(PeopleRightView._makeEntry_(view.data[i]));
 		}
 	},
@@ -54,9 +55,14 @@ var PeopleRightView{
 var PeopleView={
 	createNew: function(){
 		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
-		
+
 		// create low people view (right)
-		pv.right=PeopleRightView.createNew();
+			// create low people data
+		var lowData=[{name:"Sam",health:50,edu:50,shelter:50}];
+		pv.right=PeopleRightView.createNew(lowData);
+		// TBD: set a precise x
+		pv.right.x=400;
+		pv.addChild(pv.right);
 
 		// Class funcs
 		pv.setVisible=function(value){pv.visible=value};
