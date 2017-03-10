@@ -31,7 +31,7 @@ var DPageIndicator={
 		return v;
 	},
 	onPrevPage: function(){
-		console.log("PageIndicator: onPrevPage");
+		// console.log("PageIndicator: onPrevPage");
 		this.curPage--;
 		if(this.curPage===0)
 			this.prevPage.visible=false;
@@ -41,7 +41,7 @@ var DPageIndicator={
 			this.pageChangedCallback(this.curPage);
 	},
 	onNextPage: function(){
-		console.log("PageIndicator: onNextPage");
+		// console.log("PageIndicator: onNextPage");
 		this.curPage++;
 		if(this.curPage===this.pageCount-1)
 			this.nextPage.visible=false;

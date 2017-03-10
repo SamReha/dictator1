@@ -8,8 +8,6 @@ var DListView={
 	// *isHorizontal: true or false
 	// (* === optional)
 	createNew: function(textures, margin, itemSize, itemCallback, isHorizontal){
-		console.log("DListView: creating a list view requires:");
-		console.log("textures:{normal:,*high:,*disabled}, itemSize:{size,count}, *margin:{*l,*r,*t,*b} and *isHorizontal");
 		// set the normal texture
 		var v=MainGame.game.add.sprite(0,0,textures.normal);
 		v.state="normal";
