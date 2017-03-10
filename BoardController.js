@@ -134,7 +134,7 @@ var BoardController={
 			return;
 		//console.log("Now show tile detail:"+index);
 		var tile=bc.modelView.at(index);
-		console.assert(tile);
+		//console.assert(tile);
 		bc.detailView=TileDetailView.createNew(index);
 		bc.detailView.updateInfo(tile);
 		bc.detailView.updatePos();
