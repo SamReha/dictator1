@@ -41,6 +41,7 @@ var PeopleRightView={
 		console.log("PeoplePageChanged: ",index);
 		PeopleRightView._setupPage_(view,index);
 	},
+	// each entry is like "Sam Reha | Hth:50 | Edu:50 | Sht:50"
 	_makeEntry_: function(oneEntryData){
 		var entrySprite=MainGame.game.make.sprite(0,0);
 		var entryString=""+oneEntryData.name+" | Hth:"+oneEntryData.health+" | Edu:"
@@ -49,6 +50,7 @@ var PeopleRightView={
 		entrySprite.addChild(entryText);
 		return entrySprite;
 	},
+	// each page contains [lowPeoplePerPage] entries
 	_setupPage_: function(view,pageIndex){
 		view.listView.removeAll();
 		var startIndex=pageIndex*lowPeoplePerPage;
@@ -59,20 +61,58 @@ var PeopleRightView={
 };
 
 // shows the 3 lists(bu,mer,mil) with portraits
+var midHiPeoplePerPage=5;
 var PeopleLeftView={
+	BuType: 0,
+	MerType: 1,
+	MilType: 2,
 	createNew: function(buData,merData,milData){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewLeftBg");
-		v.buData=JSON.parse(JSON.stringify(buData));
-		v.merData=JSON.parse(JSON.stringify(merData));
-		v.milData=JSON.parse(JSON.stringify(milData));
-		// TODO
+		// copies the data
+		v.data3=[
+			JSON.parse(JSON.stringify(buData)),
+			JSON.parse(JSON.stringify(merData)),
+			JSON.parse(JSON.stringify(milData))
+		];
+		v.listViews=[null,null,null];
+		v.pageIndicators=[null,null,null];
+		// create the 3 list views
+		function createCallback(type,isPersonFunc){
+			if(isPersonFunc)
+				return function(index){PeopleLeftView.onPersonSelected(v,type,index)};
+			else
+				return function(index){PeopleLeftView.onPageChanged(v,type,index)};
+		}
+		for(var i=0;i<3;i++){
+			v.listViews[i]=DListView.createNew(
+				{},
+				{l:5,t:5},				// margin
+				{w:50,h:50},			// each item's size
+				function(){},
+				// createCallback(i,true),	// callback func
+				true 					// is horizontal
+			);
+			v.listViews[i].y=150*i;
+			v.addChild(v.listViews[i]);
+			v.pageIndicators[i]=DPageIndicator.createNew(
+				Math.ceil(v.data3[i].length/midHiPeoplePerPage),	// items per page
+				{width:400,textPos:{x:180,y:5}},	// width & pos of "4/6"
+				function(){}
+				// createCallback(i,false)				// callback func
+			);
+			v.pageIndicators[i].y=100+150*i;
+			v.addChild(v.pageIndicators[i]);
+		}
+		// now setup the 3 pages!
+		for(var j=0;j<3;j++)
+			PeopleLeftView._setupPage_(v,j,0);
 		return v;
 	},
-	onPersonSelected: function(view,index){
-
+	onPersonSelected: function(view,type,index){
+		console.log("Person selected! type,index=",type,index);
 	},
 	onPageChanged: function(view,type,index){
-
+		console.log("Page changed! type,index=",type,index);
 	},
 	_makeEntry_: function(oneEntryData){
 
@@ -83,6 +123,7 @@ var PeopleLeftView={
 };
 
 var PeopleView={
+	// TODO: please see the required format of lowData, buData, etc.
 	createNew: function(lowData, buData, merData, milData){
 		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
 
@@ -90,7 +131,7 @@ var PeopleView={
 		pv.x=100, pv.y=100;
 
 		// create low people view (right)
-			// create low people data
+		//	for debug: if there's no data input
 		if(!lowData){
 			lowData=[		
 			{name:"Sam Reha",health:50,edu:50,shelter:50},
