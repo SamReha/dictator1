@@ -247,12 +247,12 @@ var PeopleView={
 		//	for debug: if there's no data input
 		if(!lowData){
 			lowData=[		
-				{name:"Sam Reha",health:50,edu:50,shelter:50,index:11},
-				{name:"A Math",health:20,edu:50,shelter:30,index:12},
-				{name:"B Dee",health:30,edu:50,shelter:55,index:13},
-				{name:"C Eee",health:40,edu:32,shelter:10,index:14},
-				{name:"D FFF",health:50,edu:50,shelter:52,index:15},
-				{name:"Sam2",health:50,edu:50,shelter:50,index:16},
+				{name:"A B",health:50,edu:50,shelter:50,index:11},
+				{name:"Longlong Test",health:20,edu:50,shelter:30,index:12},
+				{name:"C",health:30,edu:50,shelter:55,index:13},
+				{name:"Verylonglong Test",health:40,edu:32,shelter:10,index:14},
+				{name:"D F",health:50,edu:50,shelter:52,index:15},
+				{name:"E VerylongSurname",health:50,edu:50,shelter:50,index:16},
 				{name:"A2 Math",health:20,edu:5,shelter:50,index:17},
 				{name:"B2 Dee",health:30,edu:10,shelter:50,index:18},
 				{name:"C2 Eee",health:40,edu:5,shelter:50,index:19},

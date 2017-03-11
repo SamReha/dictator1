@@ -1,9 +1,8 @@
 {
 	"firstNames": [
-		"Max",
 		"Anton",
 		"Dylan",
-		"Elenora",
+		"Eleonora",
 		"Erin",
 		"Jeremy",
 		"Jun",
@@ -14,6 +13,7 @@
 		"Maddie",
 		"Mads",
 		"Matt",
+		"Max",
 		"Michael",
 		"Rayjo",
 		"Samuel",
@@ -23,7 +23,6 @@
 	],
 
 	"lastNames": [
-		"Fisher",
 		"Oldoak",
 		"Faust",
 		"Hackman",
@@ -37,6 +36,7 @@
 		"Julyk",
 		"Tessera",
 		"Kelly",
+		"Fisher",
 		"John",
 		"Fu",
 		"Reha",
