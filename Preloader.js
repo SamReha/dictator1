@@ -83,6 +83,12 @@ var Preloader={
         g.load.spritesheet('small_generic_button', buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',   buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button', buttonDir + 'large_generic_button.png', 240, 96, 3);
+        g.load.spritesheet('merchant_thumbnail',   buttonDir + 'merchant_thumbnail.png', 120, 48, 3);
+        g.load.spritesheet('military_thumbnail',   buttonDir + 'military_thumbnail.png', 120, 48, 3);
+        g.load.spritesheet('beauro_thumbnail',     buttonDir + 'beauro_thumbnail.png', 120, 48, 3);
+        g.load.spritesheet('add_merchant_button',  buttonDir + 'add_merchant_button.png', 120, 48, 3);
+        g.load.spritesheet('add_military_button',  buttonDir + 'add_military_button.png', 120, 48, 3);
+        g.load.spritesheet('add_beauro_button',    buttonDir + 'add_beauro_button.png', 120, 48, 3);
 
         //// load icons
         var iconDir = uiDir + 'icons/';
