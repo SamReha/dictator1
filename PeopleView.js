@@ -72,6 +72,7 @@ var PeopleRightView={
 var midHiPeoplePerPage=5;
 // shows the 3 lists(bu,mer,mil) with portraits
 var PeopleLeftView={
+	style: {font:"20px myKaiti", fill:"black"},
 	BuType: 0,	// for us to remember, not actually in use, may be removed ITF.
 	MerType: 1,	// ditto.
 	MilType: 2,	// ditto.
@@ -130,7 +131,8 @@ var PeopleLeftView={
 		console.log("Person selected! type,index=",type,globalIndex);
 		// show the detail info of that mid-hi person
 		if(view.lastSelected===globalIndex){
-			view.parent.showContractView();
+			view.parent.hideContractView();
+			view.lastSelected=null;
 		}else{
 			var personData=view.data3[type][index];
 			view.parent.showContractView(personData);
@@ -144,7 +146,7 @@ var PeopleLeftView={
 	// makes the portrait + name. TODO: re-arrange the visual elements
 	_makeEntry_: function(oneEntryData){
 		var entrySprite=MainGame.game.make.sprite(0,0,oneEntryData.port);
-		var entryText=MainGame.game.make.text(0,50,oneEntryData.name);
+		var entryText=MainGame.game.make.text(0,50,oneEntryData.name,PeopleLeftView.style);
 		entrySprite.addChild(entryText);
 		return entrySprite;
 	},
@@ -312,8 +314,6 @@ var PeopleView={
 			view.contract.destroy();
 			view.contract=null;
 		}
-		if(!personData)
-			return;
 		view.contract=PeopleContractView.createNew(personData);
 		view.contract.x=view.right.x;
 		view.addChild(view.contract);
