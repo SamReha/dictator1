@@ -1,35 +1,62 @@
 var CoalitionFlag = {
+	origin: {x:0,y:120},
+	unitWidth: 48,
+	vertPadding: 0,
+
 	createNew: function() {
 		/* global MainGame */
 		var coalitionFlag = MainGame.game.make.group();
 		coalitionFlag.x = MainGame.game.width;
 
 		// Properties
-		coalitionFlag.bannerSprite = MainGame.game.make.sprite(0, 0, 'flag_background');
-		coalitionFlag.bannerSprite.anchor.x = 1;
-		coalitionFlag.addChild(coalitionFlag.bannerSprite);
-
 		coalitionFlag.beauroGroup = MainGame.game.make.group();
-		coalitionFlag.beauroGroup.x = -120 * 2;
-		coalitionFlag.beauroGroup.y = 48;
+		coalitionFlag.beauroGroup.x = 0;
+		coalitionFlag.beauroGroup.y = CoalitionFlag.origin.y;
 		coalitionFlag.addChild(coalitionFlag.beauroGroup);
 
 		coalitionFlag.merchantGroup = MainGame.game.make.group();
-		coalitionFlag.merchantGroup.x = -120;
-		coalitionFlag.merchantGroup.y = 48;
+		coalitionFlag.merchantGroup.x = 0;
+		coalitionFlag.merchantGroup.y = CoalitionFlag.origin.y + CoalitionFlag.unitWidth*1;
 		coalitionFlag.addChild(coalitionFlag.merchantGroup);
 
 		coalitionFlag.militaryGroup = MainGame.game.make.group();
-		coalitionFlag.militaryGroup.y = 48;
+		coalitionFlag.militaryGroup.y = CoalitionFlag.origin.y + CoalitionFlag.unitWidth*2;
 		coalitionFlag.addChild(coalitionFlag.militaryGroup);
 
 		coalitionFlag.addCoalitionMenu = AddCoalitionMenu.createNew();
 
-		// Create the add member buttons
-		var addBureaucratButton = AddCoalitionButton.createNew('bureaucrat', coalitionFlag.addCoalitionMenu);
-		coalitionFlag.beauroGroup.addChild(addBureaucratButton);
+		// Do the initial creation of all our coaltion member UI elements
+		coalitionFlag.elementSize = {x:1,y:1};
+
+		// Get list of coalition members
+		var coalition = MainGame.population.highList();
+		coalitionFlag.bureaucrats = [];
+		coalitionFlag.merchants = [];
+		coalitionFlag.militaries = [];
+		
+		// Create all the viewButtons
+		for (var i in coalition) {
+			var coalitionMember = coalition[i];
+			
+			if (coalitionMember.type === 'bureaucrat') {
+				//coalitionFlag.beauroGroup.addChild(ViewCoalitionButton.createNew(coalitionMember)); should be adding to ListView
+				coalitionFlag.bureaucrats.push(coalitionMember);
+			} else if (coalitionMember.type === 'merchant') {
+				//coalitionFlag.merchantGroup.addChild(ViewCoalitionButton.createNew(coalitionMember));
+				coalitionFlag.merchants.push(coalitionMember);
+			} else if (coalitionMember.type === 'military') {
+				//coalitionFlag.militaryGroup.addChild(ViewCoalitionButton.createNew(coalitionMember));
+				coalitionFlag.militaries.push(coalitionMember);
+			}
+		}
+		coalitionFlag.beauroGroup.addChild(AddCoalitionButton.createNew('bureaucrat', coalitionFlag.addCoalitionMenu));
+		coalitionFlag.beauroGroup.addChild(DListView.createNew(textures, margin, coalitionFlag.elementSize, CoalitionFlag.showCoalitionContract(), true, 1));
+
 		coalitionFlag.merchantGroup.addChild(AddCoalitionButton.createNew('merchant', coalitionFlag.addCoalitionMenu));
+		coalitionFlag.merchantGroup.addChild(DListView.createNew());
+
 		coalitionFlag.militaryGroup.addChild(AddCoalitionButton.createNew('military', coalitionFlag.addCoalitionMenu));
+		coalitionFlag.militaryGroup.addChild(DListView.createNew());
 
 		// Functions
 		// Update - updates data only, should be called every half second
@@ -61,8 +88,10 @@ var CoalitionFlag = {
 			}
 		}
 	},
-	
-	
+
+	showCoalitionContract: function() {
+
+	}
 };
 
 var AddCoalitionButton = {

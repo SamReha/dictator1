@@ -28,7 +28,7 @@ var Hud = {
 
         //      Coalition Flag
         topGroup.coalitionFlag = CoalitionFlag.createNew();
-        //topGroup.addChild(topGroup.coalitionFlag);
+        topGroup.addChild(topGroup.coalitionFlag);
 
         // Exit / Pause button
         var btnExit = MainGame.game.make.button(0, 0, 'small_generic_button', null, MainGame, 0, 1, 2, 2);
