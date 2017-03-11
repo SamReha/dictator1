@@ -16,34 +16,34 @@ var updatePopulation = function(nextTurn,updatingHomes) {
 		}
 	}
 
-	var lowList = pop.lowList();
-	for (var personIndex=0;personIndex<lowList.length;++personIndex) {
-		var person = lowList[personIndex];
-		var homeIndex = person.home;
+	// var lowList = pop.lowList();
+	// for (var personIndex=0;personIndex<lowList.length;++personIndex) {
+	// 	var person = lowList[personIndex];
+	// 	var homeIndex = person.home;
 		
-		//console.log("updatePopulation health: " + person.health + " education: " + person.education + " shelter: " + person.shelter);
+	// 	//console.log("updatePopulation health: " + person.health + " education: " + person.education + " shelter: " + person.shelter);
 		
-		// This check can be safely ignored once shanty towns are spawning correctly
-		if (MainGame.board.at(homeIndex) != undefined) {
-			var home = MainGame.board.at(homeIndex).getBuilding();
+	// 	// This check can be safely ignored once shanty towns are spawning correctly
+	// 	if (MainGame.board.at(homeIndex) != undefined) {
+	// 		var home = MainGame.board.at(homeIndex).getBuilding();
 	
-			// Get new health
-			person.health = home.health;
+	// 		// Get new health
+	// 		person.health = home.health;
 	
-			// Get new shelter
-			person.shelter = home.shelter;
+	// 		// Get new shelter
+	// 		person.shelter = home.shelter;
 	
-			// Get new education
-			if (person.education < home.education && nextTurn) {
-				/*global Person*/
-				person.education = clampedSum(person.education, Person.learningSpeed, home.education);
-			}
-		}
+	// 		// Get new education
+	// 		if (person.education < home.education && nextTurn) {
+	// 			/*global Person*/
+	// 			person.education = clampedSum(person.education, Person.learningSpeed, home.education);
+	// 		}
+	// 	}
 		
 		// Make sure the global pop array gets updated
-		pop.people[personIndex] = person;
-	}
-	pop.update();
+	// 	pop.people[personIndex] = person;
+	// }
+	pop.update(nextTurn);
 
 	/*global Global*/
 	Global.updateFreedomUnrest();

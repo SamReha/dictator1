@@ -91,7 +91,7 @@ var BoardController={
 	},
 
 	showTileBrief: function(bc, index){		
-		/* global TileBriefView */
+		/* global TileBriefInfoView */
 		if(index===null || index===undefined)
 			return;
 		if(bc.briefView){
@@ -141,6 +141,7 @@ var BoardController={
 		bc.mouseTimer.loop(50,bc.detailView.updatePos);
 		bc.mouseTimer.start();
 	},
+
 	hideTileDetail: function(bc){
 		//console.log("Now hide tile detail");
 		if(bc.detailView){
