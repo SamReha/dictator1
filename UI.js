@@ -406,13 +406,18 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.yearGroup);
 
         // Population
-        statsPanel.popGroup = MainGame.game.make.group();
+        statsPanel.popGroup = MainGame.game.make.sprite(0,0);
         statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 1;
         statsPanel.popGroup.sprite = MainGame.game.make.sprite(0, 0, 'population_icon');
         statsPanel.popGroup.addChild(statsPanel.popGroup.sprite);
         statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '0', StatsPanel.textStyle);
         statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
         statsPanel.addChild(statsPanel.popGroup);
+        statsPanel.popGroup.inputEnabled=true;
+        statsPanel.popGroup.input.priorityID=50;
+        statsPanel.popGroup.events.onInputUp.add(function(){
+            PeopleView.createNew();
+        });
 
         // Money per Turn
         statsPanel.moneyPerTurnGroup = MainGame.game.make.group();

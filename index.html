@@ -9,6 +9,9 @@
     <script type="text/javascript" src="Board.js"></script>
     <script type="text/javascript" src="BoardController.js"></script>
     <script type="text/javascript" src="Building.js"></script>
+    <script type="text/javascript" src="DListView.js"></script>
+    <script type="text/javascript" src="DPageIndicator.js"></script>
+    <script type="text/javascript" src="DUiMask.js"></script>
     <script type="text/javascript" src="Global.js"></script>
     <script type="text/javascript" src="MainGame.js"></script>
     <script type="text/javascript" src="Notification.js"></script>
@@ -16,6 +19,7 @@
     <script type="text/javascript" src="UI.js"></script>
     <script type="text/javascript" src="UiTest.js"></script>
     <script type="text/javascript" src="People.js"></script>
+    <script type="text/javascript" src="PeopleView.js"></script>
     <script type="text/javascript" src="Preloader.js"></script>
     <script type="text/javascript" src="TileInfoView.js"></script>
     <script type="text/javascript" src="updatePopulation.js"></script>
@@ -78,7 +82,8 @@ function create() {
     /*global MainGame*/
     MainGame.start();
 
-    MainGame.board.cameraCenterOn(0);
+    // for test
+    MainGame.board.cameraCenterOn(83);
     MainGame.board.cameraZoomAt();
 
     /*global UiTest*/

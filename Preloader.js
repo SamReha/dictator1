@@ -49,15 +49,30 @@ var Preloader={
         g.load.image('water2',    resourceDir + 'water2.png');
         g.load.image('water3',    resourceDir + 'water3.png');
 
+        // load port assets
+        var portDir=imageDir+'ports/';
+        g.load.image("smallPort0",  portDir+"smallPort0.png");
+        g.load.image("smallPort1",  portDir+"smallPort1.png");
+        g.load.image("smallPort2",  portDir+"smallPort2.png");
+
         // load ui assets
         var uiDir = imageDir + 'ui/';
-        g.load.image('grpBldInfo',           uiDir + 'grpBldInfo.png');
-        g.load.image('grpBuildMenu',         uiDir + 'grpBuildMenu.png');
-        g.load.image('grpStatsMenu',         uiDir + 'grpStatsMenu.png');
-        g.load.image('topBar',               uiDir + 'topBar.png');
-        g.load.image('tile_hover_backpanel', uiDir + 'tile_hover_backpanel.png');
+        g.load.image('grpBldInfo',              uiDir + 'grpBldInfo.png');
+        g.load.image('grpBuildMenu',            uiDir + 'grpBuildMenu.png');
+        g.load.image('grpStatsMenu',            uiDir + 'grpStatsMenu.png');
+        g.load.image('topBar',                  uiDir + 'topBar.png');
+        g.load.image('tile_hover_backpanel',    uiDir + 'tile_hover_backpanel.png');
         g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png')
-        g.load.image('flag_background',      uiDir + 'flag_background.png');
+        g.load.image('flag_background',         uiDir + 'flag_background.png');
+        g.load.image('peopleViewBg',            uiDir + 'peopleViewBg.jpg');
+        g.load.image('peopleViewLeftBg',        uiDir + 'peopleViewLeftBg.png');
+        g.load.image('peopleViewRightBg',       uiDir + 'peopleViewRightBg.png');
+        g.load.image('peopleViewContractBg',    uiDir + 'peopleViewContractBg.png');
+        g.load.image('incButton',               uiDir + 'incButton.png');
+        g.load.image('decButton',               uiDir + 'decButton.png');
+        g.load.image("pi_prevPage",             uiDir + "pi_prevPage.png");
+        g.load.image("pi_nextPage",             uiDir + "pi_nextPage.png");
+        g.load.image("uiMask",                  uiDir + "uiMask.png");
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
