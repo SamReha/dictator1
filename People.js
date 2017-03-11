@@ -179,6 +179,28 @@ var Population={
         pop.firePersonAt=function(person,tileIndex){return Population.firePersonAt()};
 
         // filter people
+        pop.lowIndice=function(){
+            var list=[];
+            for(var i=0;i<pop.people.length;i++)
+                if(pop.people[i].type===0)
+                    list.push(i);
+            return list;
+        }
+        pop.midIndice=function(){
+            var list=[];
+            for(var i=0;i<pop.people.length;i++)
+                if(pop.people[i].type===1)
+                    list.push(i);
+            return list;
+        }
+        pop.highIndice=function(){
+            var list=[];
+            for(var i=0;i<pop.people.length;i++)
+                if(pop.people[i].type===2)
+                    list.push(i);
+            return list;
+        }
+
         pop.lowList=function() { return pop.people.filter(function(p) { return p.type === 0; })};
         pop.midList=function() { return pop.people.filter(function(p) { return p.type === 1; })};
         pop.highList=function() { return pop.people.filter(function(p) { return p.type === 2; })};

@@ -51,7 +51,7 @@ var PeopleRightView={
 	_makeEntry_: function(oneEntryData){
 		var entrySprite=MainGame.game.make.sprite(0,0);
 		var entryString=""+oneEntryData.name+" | Hth:"+oneEntryData.health+" | Edu:"
-			+oneEntryData.edu+" | Sht:"+oneEntryData.shelter;
+			+oneEntryData.education+" | Sht:"+oneEntryData.shelter;
 		var entryText=MainGame.game.make.text(0,0,entryString,PeopleRightView.style);
 		entrySprite.addChild(entryText);
 		return entrySprite;
@@ -145,7 +145,7 @@ var PeopleLeftView={
 	},
 	// makes the portrait + name. TODO: re-arrange the visual elements
 	_makeEntry_: function(oneEntryData){
-		var entrySprite=MainGame.game.make.sprite(0,0,oneEntryData.port);
+		var entrySprite=MainGame.game.make.sprite(0,0,"smallPort"+oneEntryData.portIndex);
 		var entryText=MainGame.game.make.text(0,50,oneEntryData.name,PeopleLeftView.style);
 		entrySprite.addChild(entryText);
 		return entrySprite;
@@ -178,7 +178,7 @@ var PeopleContractView={
 		// TODO: adjust layout!!
 		// setup its elements
 			// port & name
-		v.port=MainGame.game.make.sprite(10,10,personData.port);
+		v.port=MainGame.game.make.sprite(10,10,"smallPort"+personData.portIndex);
 		v.addChild(v.port);
 		v.nameLabel=MainGame.game.make.text(100,10,personData.name);
 		v.addChild(v.nameLabel);
@@ -246,51 +246,36 @@ var PeopleView={
 		// create low people view (right)
 		//	for debug: if there's no data input
 		if(!lowData){
-			lowData=[		
-				{name:"A B",health:50,edu:50,shelter:50,index:11},
-				{name:"Longlong Test",health:20,edu:50,shelter:30,index:12},
-				{name:"C",health:30,edu:50,shelter:55,index:13},
-				{name:"Verylonglong Test",health:40,edu:32,shelter:10,index:14},
-				{name:"D F",health:50,edu:50,shelter:52,index:15},
-				{name:"E VerylongSurname",health:50,edu:50,shelter:50,index:16},
-				{name:"A2 Math",health:20,edu:5,shelter:50,index:17},
-				{name:"B2 Dee",health:30,edu:10,shelter:50,index:18},
-				{name:"C2 Eee",health:40,edu:5,shelter:50,index:19},
-				{name:"D2 FFF",health:50,edu:50,shelter:50,index:20},
-				{name:"Sam3Reha",health:50,edu:50,shelter:50,index:21},
-				{name:"A3Math",health:20,edu:50,shelter:50,index:22},
-				{name:"B Dee",health:30,edu:11,shelter:50,index:23},
-				{name:"C3 ee",health:40,edu:22,shelter:50,index:24},
-				{name:"D3FFF",health:50,edu:50,shelter:44,index:25},
-				{name:"Sa4 Reha",health:50,edu:50,shelter:50,index:26},
-				{name:"A4Math",health:20,edu:50,shelter:50,index:27},
-				{name:"B4Dee",health:30,edu:50,shelter:50,index:28},
-				{name:"C4Eee",health:40,edu:50,shelter:50,index:29},
-				{name:"D4FFF",health:50,edu:50,shelter:50,index:30},
-				{name:"Json File",health:50,edu:50,shelter:10,index:31},
-			];
+			lowData=[];
+			var lowIndice=MainGame.population.lowIndice();
+			console.log("LowIndice",lowIndice);
+			for(var i=0;i<lowIndice.length;i++){
+				var one=MainGame.population.at(lowIndice[i]);
+				one.index=lowIndice[i];
+				lowData.push(one);
+			}
 		}
 		if(!buData){
 			buData=[
-				{name:"Yi",port:"smallPort0",payLevel:0,hired:true,index:0},
-				{name:"Yi2",port:"smallPort0",payLevel:0,hired:false,index:1},
-				{name:"Yi3",port:"smallPort0",payLevel:3,hired:true,index:2},
-				{name:"Yi4",port:"smallPort0",payLevel:0,hired:true,index:3},
-				{name:"Yi5",port:"smallPort0",payLevel:0,hired:false,index:4},
-				{name:"Yi6",port:"smallPort0",payLevel:0,hired:true,index:5},
-				{name:"Yi7",port:"smallPort0",payLevel:5,hired:true,index:6},
-				{name:"Yi8",port:"smallPort0",payLevel:0,hired:false,index:7},
+				{name:"Yi",portIndex:0,payLevel:0,hired:true,index:0},
+				{name:"Yi2",portIndex:0,payLevel:0,hired:false,index:1},
+				{name:"Yi3",portIndex:0,payLevel:3,hired:true,index:2},
+				{name:"Yi4",portIndex:0,payLevel:0,hired:true,index:3},
+				{name:"Yi5",portIndex:0,payLevel:0,hired:false,index:4},
+				{name:"Yi6",portIndex:0,payLevel:0,hired:true,index:5},
+				{name:"Yi7",portIndex:0,payLevel:5,hired:true,index:6},
+				{name:"Yi8",portIndex:0,payLevel:0,hired:false,index:7},
 			];
 		}
 		if(!merData){
 			merData=[
-				{name:"MJ",port:"smallPort1",payLevel:0,hired:true,index:8},
+				{name:"MJ",portIndex:1,payLevel:0,hired:true,index:8},
 			];
 		}
 		if(!milData){
 			milData=[
-				{name:"Erin",port:"smallPort2",payLevel:0,hired:false,index:9},
-				{name:"Erin2",port:"smallPort2",payLevel:0,hired:false,index:10},
+				{name:"Erin",portIndex:2,payLevel:0,hired:false,index:9},
+				{name:"Erin2",portIndex:2,payLevel:0,hired:false,index:10},
 			];
 		}
 
