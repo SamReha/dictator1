@@ -28,7 +28,7 @@ var Hud = {
 
         //      Coalition Flag
         topGroup.coalitionFlag = CoalitionFlag.createNew();
-        topGroup.addChild(topGroup.coalitionFlag);
+        //topGroup.addChild(topGroup.coalitionFlag);
 
         // Have the top-bar text update itself every half second
         topText.text = MainGame.global.toString() + ' Pop:' + MainGame.population.count();
