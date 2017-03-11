@@ -80,6 +80,8 @@ var PeopleLeftView={
 		// let left view block click events
 		v.inputEnabled=true;
 		v.input.priorityID=101;
+		// setup last selected
+		v.lastSelected=null;
 
 		// copies the data
 		v.data3=[
@@ -126,7 +128,14 @@ var PeopleLeftView={
 	onPersonSelected: function(view,type,index){
 		var globalIndex=view.pageIndicators[type].getCurPage()*midHiPeoplePerPage+index;
 		console.log("Person selected! type,index=",type,globalIndex);
-		// TODO: show the detail info of that mid-hi person
+		// show the detail info of that mid-hi person
+		if(view.lastSelected===globalIndex){
+			view.parent.showContractView();
+		}else{
+			var personData=view.data3[type][index];
+			view.parent.showContractView(personData);
+			view.lastSelected=globalIndex;
+		}
 	},
 	onPageChanged: function(view,type,index){
 		console.log("Page changed! type,index=",type,index);
@@ -261,25 +270,25 @@ var PeopleView={
 		}
 		if(!buData){
 			buData=[
-				{name:"Yi",port:"smallPort0",index:0},
-				{name:"Yi2",port:"smallPort0",index:1},
-				{name:"Yi3",port:"smallPort0",index:2},
-				{name:"Yi4",port:"smallPort0",index:3},
-				{name:"Yi5",port:"smallPort0",index:4},
-				{name:"Yi6",port:"smallPort0",index:5},
-				{name:"Yi7",port:"smallPort0",index:6},
-				{name:"Yi8",port:"smallPort0",index:7},
+				{name:"Yi",port:"smallPort0",payLevel:0,hired:true,index:0},
+				{name:"Yi2",port:"smallPort0",payLevel:0,hired:false,index:1},
+				{name:"Yi3",port:"smallPort0",payLevel:3,hired:true,index:2},
+				{name:"Yi4",port:"smallPort0",payLevel:0,hired:true,index:3},
+				{name:"Yi5",port:"smallPort0",payLevel:0,hired:false,index:4},
+				{name:"Yi6",port:"smallPort0",payLevel:0,hired:true,index:5},
+				{name:"Yi7",port:"smallPort0",payLevel:5,hired:true,index:6},
+				{name:"Yi8",port:"smallPort0",payLevel:0,hired:false,index:7},
 			];
 		}
 		if(!merData){
 			merData=[
-				{name:"MJ",port:"smallPort1",index:8},
+				{name:"MJ",port:"smallPort1",payLevel:0,hired:true,index:8},
 			];
 		}
 		if(!milData){
 			milData=[
-				{name:"Erin",port:"smallPort2",index:9},
-				{name:"Erin2",port:"smallPort2",index:10},
+				{name:"Erin",port:"smallPort2",payLevel:0,hired:false,index:9},
+				{name:"Erin2",port:"smallPort2",payLevel:0,hired:false,index:10},
 			];
 		}
 
@@ -290,15 +299,29 @@ var PeopleView={
 		// People Left View
 		pv.left=PeopleLeftView.createNew(buData,merData,milData);
 		pv.addChild(pv.left);
-		// Mid-Hi Contract View (on the top of Low People, invisible by default)
-		pv.contract=PeopleContractView.createNew();
-		pv.contract.x=pv.right.x;
-		// pv.contract.visible=false;
-		pv.addChild(pv.contract);
 
 		// Class funcs
 		pv.setVisible=function(value){pv.visible=value};
+		pv.showContractView=function(personData){PeopleView.showContractView(pv,personData)};
+		pv.hideContractView=function(){PeopleView.hideContractView(pv)};
 
 		return pv;
 	},
+	showContractView: function(view,personData){
+		if(view.contract){
+			view.contract.destroy();
+			view.contract=null;
+		}
+		if(!personData)
+			return;
+		view.contract=PeopleContractView.createNew(personData);
+		view.contract.x=view.right.x;
+		view.addChild(view.contract);
+	},
+	hideContractView: function(view){
+		if(view.contract){
+			view.contract.destroy();
+			view.contract=null;
+		}
+	}
 };
