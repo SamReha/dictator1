@@ -3,8 +3,12 @@
 <head> 
 	<meta charset="UTF-8" />
 	<title>Dictatorship!</title>
-    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
-    
+
+    <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
+    <!--Yi: Here are the include files for Phaser and FMOD. -->
+    <script src="phaser-2.6.2/build/phaser.min.js"></script>
+    <script type="text/javascript" src="fmod.js"></script>
+
     <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
     <script type="text/javascript" src="Board.js"></script>
     <script type="text/javascript" src="BoardController.js"></script>
@@ -88,11 +92,101 @@ function create() {
 
     /*global UiTest*/
     // UiTest.init(g);
+
+    // play bgm
+    playSound(0);
 }
 
 function update() {
 }
 
+// used by FMOD
+var FMOD={};
+FMOD['preRun']=fmodPrerun;
+FMOD['onRuntimeInitialized']=fmodMain;
+FMOD['TOTAL_MEMORY']=64*1024*1024;
+FMODModule(FMOD);
+
+var gSystem;
+var gSound=[];
+var gIOSInitialized=false;
+// var gChannel;
+// var gEffects;
+// var gDSP;
+function fmodCheckResult(result){
+    if(result!==FMOD.OK){
+        var msg="Error! "+FMOD.ErrorString(result);
+        console.error(msg);
+        throw msg;
+    }
+}
+function fmodPrerun(){
+    console.log("FMOD: pre run.");
+    var folderName="/";
+    var fileName=[
+        "HappyBirthday.mp3"
+    ];
+    var url="sounds/";
+    var result=FMOD.FS_createPreloadedFile("/","HappyBirthday.mp3","sounds/HappyBirthday.mp3",true,false);
+    // for(var i=0;i<fileName.length;i++){
+    //     var result=FMOD.FS_createPreloadedFile(folderName, fileName[i], url+fileName[i], true, false);
+    //     console.assert(result===FMOD.OK, "Can NOT load sound "+fileName[i]);
+    // }
+}
+function fmodMain(){
+    console.log("FMOD: main.");
+    var outval={};
+    var result;
+    // Create FMOD system
+    console.log("Create FMOD system object");
+    result=FMOD.System_Create(outval);
+    fmodCheckResult(result);
+    //  now we have the system gSystem
+    gSystem=outval.val;
+
+    console.log("Init FMOD");
+    //  1024 virtual channels
+    result=gSystem.init(1024, FMOD.INIT_NORMAL,null);
+    fmodCheckResult(result);
+
+    fmodInitApplication();
+    var iOS=/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if(iOS){
+        alert("For iOS, please touch screen when data has finished loading.");
+        window.addEventListener('touchend', function(){
+            if (!gIOSInitialized){
+                result = gSystem.setDriver(0);
+                gIOSInitialized = true;
+            }
+        }, false);
+    }
+
+    console.log("Start game loop");
+
+    return FMOD.OK;
+}
+function fmodInitApplication(){
+    console.log("Loading sounds\n");
+
+    // Create a sound that loops
+    var outval = {};
+    var result;
+    var exinfo = FMOD.CREATESOUNDEXINFO();
+
+    exinfo.userdata = 123456;
+    console.log("FMOD.CREATESOUNDEXINFO::userdata = " + exinfo.userdata)
+
+    result = gSystem.createSound("/HappyBirthday.mp3", FMOD.LOOP_OFF, null, outval);
+    fmodCheckResult(result);
+    gSound[0] = outval.val;
+}
+function playSound(soundid){
+    var channelOut={};
+    var result=gSystem.playSound(gSound[soundid], null, true, channelOut);
+    fmodCheckResult(result);
+    gChannel=channelOut.val;
+    gChannel.setPaused(false);
+}
 </script>
 
 </body>
