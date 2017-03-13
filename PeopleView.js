@@ -287,7 +287,7 @@ var PeopleView={
 		pv.left=PeopleLeftView.createNew(buData,merData,milData);
 		pv.addChild(pv.left);
 
-		// Class funcs
+		// // Class funcs
 		pv.setVisible=function(value){pv.visible=value};
 		pv.showContractView=function(personData){PeopleView.showContractView(pv,personData)};
 		pv.hideContractView=function(){PeopleView.hideContractView(pv)};

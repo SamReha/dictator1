@@ -6,7 +6,7 @@
 
     <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
     <!--Yi: Here are the include files for Phaser and FMOD. -->
-    <script src="phaser-2.6.2/build/phaser.min.js"></script>
+    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
     <script type="text/javascript" src="fmod.js"></script>
 
     <!--Yi: Please put our JS files here just like the #include thing in C++/C-->
@@ -50,10 +50,21 @@
 
 <script type="text/javascript">
 
-/*global Sound*/
-Sound.init(PhaserSetup);
-
+// the game variable
 var game=null;
+
+// set if we need the sound
+var needSound=false;
+
+if(needSound){
+    /*global Sound*/
+    Sound.init(PhaserSetup); 
+    // do other things if necessary
+}else{
+    PhaserSetup();
+    // do other things if necessary
+}
+
 function PhaserSetup(){
     /*global Phaser*/
     game = new Phaser.Game(1280, 720, Phaser.AUTO, '', 
@@ -101,7 +112,7 @@ function create() {
     // UiTest.init(game);
 
     // play bgm
-    Sound.playSound(0);
+    // Sound.playSound(0);
 }
 
 function update() {
