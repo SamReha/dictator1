@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="stylesheet" type="text/css" href="examples.css" media="all" />
+    <title>FMOD Examples - Event Parameter</title>
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <img class="logo" alt="FMOD Logo" src="images/logo.jpg">
+        </div>
+
+        <br/>
+        <br/>
+        <strong>Event Parameter</strong><br/>
+        Copyright (c) Firelight Technologies 2016.  For help using FMOD please visit <a href="http://www.fmod.org">http://www.fmod.org/</a><br/>
+        <br/>
+        <br/>
+        <form>
+            <label for="surfaceparameter">Surface Parameter Value</label>
+            <input id="surfaceparameter" type="range" min="0" max="3" step="1" value="1" oninput="paramChanged(this.value)" >
+            <output for="surfaceparameter" id="surfaceparameter_out">1</output>
+        </form>
+        <br/>        
+        0 = silent, 1 = carpet, 2 = short grass, 3 = wood</br>
+        <br/>
+
+
+        <div class = "bottominfo">
+            <output id="display_out">Please wait... Loading...</output><br/>
+            <br/>
+            <output id="display_out2"></output><br/>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="fmodstudio.js"></script>
+    <script type="text/javascript" src="event_parameter.js"></script>
+
+</body>
+</html>
