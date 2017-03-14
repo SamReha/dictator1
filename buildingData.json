@@ -109,6 +109,19 @@
       }
     ]
   },
+  "park":{
+    "type": "?",
+    "subtype": "public",
+    "cost": 15,
+    "maxPeople": 1,
+    "effects": [
+      {
+        "type": "unrest",
+        "outputTable": [0, -5],
+        "range": 2
+      }
+    ]
+  },
   "policeStation":{
     "type": "!",
     "subtype": "millitary",

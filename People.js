@@ -32,7 +32,7 @@ var Person={
         // Class funcs
         p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
-        p.findHousing=function(pop){return Person.findHousing(p,pop)};
+        p.findHousing=function(){return Person.findHousing(p)};
         p.toString=function(){return "PPL:"+p.type};
         p.updateStats=function(board,nextTurn){return Person.updateStats(p,board,nextTurn)};
         p.updateFreeUn=function(board){return Person.updateFreeUn(p,board)};
@@ -66,7 +66,7 @@ var Person={
     },
 
     
-    findHousing: function(p,pop){
+    findHousing: function(p){
         /*global MainGame*/
         var board = MainGame.board;
         var housingIndices=board.findBuilding(null,"housing",null);
@@ -87,8 +87,13 @@ var Person={
         for (var i=0;i<housingIndices.length;i++) {
             if(board.at(housingIndices[i]).getBuilding().startingTurn>MainGame.global.turn)
                 continue;
-            if (pop.hirePersonAt(p, housingIndices[i]))
+            if (MainGame.population.hirePersonAt(p, housingIndices[i])){
+                var house = board.at(housingIndices[i]);
+                p.health = house.health;
+                p.shelter = house.shelter;
+                p.education = house.education;
                 return true;
+            }
         }
         return false;
     },
@@ -109,9 +114,16 @@ var Person={
                 p.education = clampedSum(p.education, Person.learningSpeed, house.education);
             }
         }
-        else{
-            p.health = 0;
-            p.shelter = 0;
+        else if(nextTurn){
+            if(!p.findHousing()){
+                /*global MainGame*/
+                var shanty = MainGame.board.buildShanty();
+                if(shanty!==null){  MainGame.population.hirePersonAt(p, shanty);  }
+                else{
+                    p.health = 0;
+                    p.shelter = 0;
+                }
+            }
         }
         // Update social class
         if (p.health < 50 || p.shelter < 50 || p.education < 50) {
@@ -250,7 +262,7 @@ var Population={
         for(var i = 0; i < amount; i++) {
             var per=Person.createNew({"type":0,"workplace":null,"home":null});
             pop.people.push(per);
-            if(!per.findHousing(pop)){
+            if(!per.findHousing()){
                 /*global MainGame*/
                 var shanty = MainGame.board.buildShanty();
                 if(shanty!==null){  pop.hirePersonAt(per, shanty);  }
