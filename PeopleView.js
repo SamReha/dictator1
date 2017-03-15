@@ -41,7 +41,8 @@ var PeopleRightView={
 	onPersonSelected: function(view,index){
 		var globalIndex=view.pageIndicator.getCurPage()*lowPeoplePerPage+index;
 		console.log("PeopleRightView: person selected:",globalIndex);
-		// TODO: center the person's housing unit		
+		console.log("  and the person's data is:",view.data[globalIndex]);
+		// TODO: center the person's housing unit	
 	},
 	onPageChanged: function(view,index){
 		console.log("PeoplePageChanged: ",index);
@@ -245,39 +246,15 @@ var PeopleView={
 
 		// create low people view (right)
 		//	for debug: if there's no data input
-		if(!lowData){
-			lowData=[];
-			var lowIndice=MainGame.population.lowIndice();
-			console.log("LowIndice",lowIndice);
-			for(var i=0;i<lowIndice.length;i++){
-				var one=MainGame.population.at(lowIndice[i]);
-				one.index=lowIndice[i];
-				lowData.push(one);
-			}
-		}
-		if(!buData){
-			buData=[
-				{name:"Yi",portIndex:0,payLevel:0,hired:true,index:0},
-				{name:"Yi2",portIndex:0,payLevel:0,hired:false,index:1},
-				{name:"Yi3",portIndex:0,payLevel:3,hired:true,index:2},
-				{name:"Yi4",portIndex:0,payLevel:0,hired:true,index:3},
-				{name:"Yi5",portIndex:0,payLevel:0,hired:false,index:4},
-				{name:"Yi6",portIndex:0,payLevel:0,hired:true,index:5},
-				{name:"Yi7",portIndex:0,payLevel:5,hired:true,index:6},
-				{name:"Yi8",portIndex:0,payLevel:0,hired:false,index:7},
-			];
-		}
-		if(!merData){
-			merData=[
-				{name:"MJ",portIndex:1,payLevel:0,hired:true,index:8},
-			];
-		}
-		if(!milData){
-			milData=[
-				{name:"Erin",portIndex:2,payLevel:0,hired:false,index:9},
-				{name:"Erin2",portIndex:2,payLevel:0,hired:false,index:10},
-			];
-		}
+		if(!lowData)
+			lowData=MainGame.population.lowList();
+		if(!buData)
+			buData=MainGame.population.roleList("?");
+		if(!merData)
+			merData=MainGame.population.roleList("$");
+		if(!milData)
+			milData=MainGame.population.roleList("!");
+		console.log("Now bu,mer and mil is:", buData, merData, milData);
 
 		// People Right View
 		pv.right=PeopleRightView.createNew(lowData);

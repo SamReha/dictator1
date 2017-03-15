@@ -22,7 +22,7 @@ function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
 		peopleTextView.text=" - ";
 	}
 	// now add color!
-	var colorTable={"?":"yellow", "!":"orangered", "$":"lawngreen", "-":"white"};
+	var colorTable={"?":"yellow", "!":"orangered", "$":"green", "-":"white"};
 	console.assert(colorTable[building.type], "Unknown building type! Must be ?(bureau), !(mil), $(commercial) or -(no type).");
 	buildingTextView.addColor(colorTable[building.type], 0);
 	peopleTextView.addColor(colorTable[building.type], 0);
