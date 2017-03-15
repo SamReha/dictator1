@@ -51,15 +51,13 @@ var MainGame={
         console.log('[MainGame] start...');
         
         // create board
-        var stage1=MainGame.game.cache.getJSON('stage1');
-        var stage2 = MainGame.game.cache.getJSON('stage2');
-        var stageMain = MainGame.game.cache.getJSON('stageMain');
+        var stage=MainGame.game.cache.getJSON('stageTest');
 
         /*global Board*/
-        MainGame.board=Board.fromJSON(JSON.stringify(stageMain));
+        MainGame.board=Board.fromJSON(JSON.stringify(stage));
 
         /*global Population*/
-        MainGame.population=Population.createNew(stageMain.population);
+        MainGame.population=Population.createNew(stage.population);
 
         // MainGame.mapSelector = MapSelector.createNew();
 

@@ -3,14 +3,20 @@
 // Basic class for all people
 var Person={
     // Static vars
+    //  for type
     Low: 0,
     Mid: 1,
     Hi: 2,
-    learningSpeed: 10,
+    //  for role
+    Bureaucrat: '?',
+    Merchant: '$',
+    Military: '!',
+
+    learningSpeed: 10,    
     
     // the create function
     createNew: function(data){  // data is a Table
-        console.log("[People] created.");
+        console.log("[People] created.",data);
         var p={};
         
         // Class vars
@@ -26,14 +32,14 @@ var Person={
         p.unrest=0;         // int
         // Class vars (nullable)
         p.influence=(p.type>=Person.Mid?0:null);
-        p.role=(p.type>=Person.Mid?0:null);
+        p.role=(data.role?data.role:null);
         p.loyalty=(p.type>=Person.Hi?0:null);
 
         // Class funcs
         p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
         p.findHousing=function(pop){return Person.findHousing(p,pop)};
-        p.toString=function(){return "PPL:"+p.type};
+        p.toString=function(){return "<Person:"+p.name+",type:"+p.type+",role:"+p.role};
         p.updateStats=function(board,nextTurn){return Person.updateStats(p,board,nextTurn)};
         p.updateFreeUn=function(board){return Person.updateFreeUn(p,board)};
 
@@ -141,13 +147,28 @@ var Person={
         p.type = Person.Low;
     },
 
-    setMidClass: function(p) {
+    setMidClass: function(p, role) {
         p.type = Person.Mid;
-
-        if (p.role === undefined) {
-            // Give them a random coalition type. In the future, we might look at their current or most recent place of employment
-            var typeArray = ['bureaucrat', 'merchant', 'military'];
-            p.role = typeArray[Math.floor(Math.random() * typeArray.length)];
+        // if p has a role
+        if(p.role!==null && p.role!==undefined)
+            return;
+        // if role is specified
+        if(role){
+            console.assert(role===Person.Bureaucrat || role===Person.Merchant || role===Person.Military);
+            p.role=role;
+            return;
+        }
+        // find his workplace
+        if(p.workplace!==null){
+            var workplaceTile=MainGame.board.at(p.workplace);
+            console.assert(workplaceTile.hasBuilding());
+            var bld=workplaceTile.getBuilding();
+            console.assert(bld.type===Person.Bureaucrat||bld.type===Person.Merchant||bld.type===Person.Military);
+            p.role=bld.type;
+        }else{
+            var typeArray=[Person.Bureaucrat, Person.Merchant, Person.Military];
+            role=(role?role:Math.floor(Math.random()*typeArray.length));
+            p.role = role;            
         }
     },
 
@@ -178,10 +199,17 @@ var Population={
         pop.fire=function(tileIndex){return Population.fire(pop,tileIndex)};
         pop.firePersonAt=function(person,tileIndex){return Population.firePersonAt()};
 
-        // filter people
+        // returns people by the filter of type
         pop.lowList=function() { return pop.people.filter(function(p) { return p.type === 0; })};
         pop.midList=function() { return pop.people.filter(function(p) { return p.type === 1; })};
         pop.highList=function() { return pop.people.filter(function(p) { return p.type === 2; })};
+        // returns people by the filter of role
+        pop.roleList=function(role){
+            return pop.people.filter(function(p){return p.role===role})};
+        pop.typeRoleList=function(type,role){
+            return pop.people.filter(function(p){return p.type===type})
+                            .filter(function(p){return p.role===role});
+        }
 
         // returns the indice of housed/not housed people in lowList
         pop.findHoused=function(){return Population.findHousingStatus(pop,true)};
@@ -189,6 +217,8 @@ var Population={
         // returns the indice of employed/not employed people in lowList
         pop.findEmployed=function(){return Population.findEmployStatus(pop,true)};
         pop.findNotEmployed=function(){return Population.findEmployStatus(pop,false)};
+        // returns the indice of [type] people
+        
         // returns the workplace table
         pop.getWorkMap=function(){
             var N=MainGame.board.tileCount();
