@@ -215,8 +215,8 @@ var Hud = {
         // buyRoadText.y = -buyRoad.height / 2;
         // buyRoad.addChild(buyRoadText);
 
-        // // Need to adjust beginBuilding() to handle arable vs weak farms
-        // var buyFarm = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buyFarm, 'arableFarm');}, buildMenu, 0, 1, 2, 3);
+        // // Need to adjust beginBuilding() to handle fertile vs weak farms
+        // var buyFarm = MainGame.game.make.button(400, 0, 'small_generic_button', function() {Hud.beginBuilding(buildMenu, buyFarm, 'fertileFarm');}, buildMenu, 0, 1, 2, 3);
         // buyFarm.input.priorityID = hudInputPriority;
         // buyFarm.anchor.y = 1;  // Anchor on bottom left corner
         // var farmText = MainGame.game.make.text(0, -40, "Buy Farm\n$10K", Hud.styleNormal);
@@ -348,7 +348,7 @@ var BuildingPlacer = {
             }
             
             // Create a building object
-            if (self.buildingType === 'arableFarm' && tile.getResType() !== 'wheat') {
+            if (self.buildingType === 'fertileFarm' && tile.getResType() !== 'wheat') {
                 self.buildingType = 'weakFarm';
             }
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});

@@ -9,12 +9,13 @@ var Preloader={
         // g.load.image('shanty1',     buildingDir + 'shanties.png');
         // Vertical Slice assets
         g.load.image('apartment1',  buildingDir + 'apartment.png');
-        g.load.image('arableFarm1', buildingDir + 'arableFarm.png');
+        g.load.image('fertileFarm1',buildingDir + 'fertileFarm.png');
         g.load.image('armyBase1',   buildingDir + "armyBase.png");
         g.load.image('factory1',    buildingDir + 'factory.png');
         g.load.image('lumberYard1', buildingDir + 'factory.png');
         g.load.image('mansion1',    buildingDir + 'mansion.png');                
         g.load.image('palace1',     buildingDir + 'palace.png');
+        g.load.image('police1',     buildingDir + 'police.png');
         g.load.image('road1',       buildingDir + 'road.png');
         g.load.image('school1',     buildingDir + 'school.png');
         g.load.image('shantyTown1', buildingDir + 'shantyTown.png');
@@ -64,6 +65,8 @@ var Preloader={
         g.load.image('tile_hover_backpanel',    uiDir + 'tile_hover_backpanel.png');
         g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png');
         g.load.image('buildMenuBg',             uiDir + 'buildMenuBg.png');
+        g.load.image('buildMenuCover1',         uiDir + 'buildMenuCover1.png');
+        g.load.image('buildMenuCover2',         uiDir + 'buildMenuCover2.png');
         g.load.image('flag_background',         uiDir + 'flag_background.png');
         g.load.image('peopleViewBg',            uiDir + 'peopleViewBg.jpg');
         g.load.image('peopleViewLeftBg',        uiDir + 'peopleViewLeftBg.png');

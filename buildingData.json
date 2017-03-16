@@ -78,7 +78,7 @@
       }
     ]
   },
-  "arableFarm": {
+  "fertileFarm": {
     "type": "?",
     "subtype": "health",
     "cost": 10,

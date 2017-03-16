@@ -76,7 +76,7 @@ var Tile={
                     tile.removeRes();
                 }
             } else if (tile.getResType() === 'wheat') {
-                if (building.name !== 'arableFarm') {
+                if (building.name !== 'fertileFarm') {
                     tile.removeRes();
                 }
             }
