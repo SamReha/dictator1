@@ -34,6 +34,8 @@ var Person={
         p.influence=(p.type>=Person.Mid?0:null);
         p.role=(data.role?data.role:null);
         p.loyalty=(p.type>=Person.Hi?0:null);
+        p.payLevel=data.payLevel;
+        console.log("P's payLevel is:"+p.payLevel);
 
         // Class funcs
         p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
