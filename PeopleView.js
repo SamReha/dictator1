@@ -5,14 +5,14 @@ var lowPeoplePerPage=10;
 // shows FirstName, LastName, Health, Edu, Shelter
 var PeopleRightView={
 	style: {font:"25px myKaiti", fill:"black"},
-	createNew: function(data){
+	createNew: function(dataRef){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewRightBg");
 		// let right view block click events
 		v.inputEnabled=true;
 		v.input.priorityID=101;
 
 		// name, health, edu, shelter
-		v.data=JSON.parse(JSON.stringify(data));
+		v.dataRef=dataRef;
 		// ListView: [lowPeoplePerPage] items (slots)
 			// createNew(textures, margin, itemSize, itemCallback, isHorizontal)
 		v.listView=DListView.createNew(
@@ -25,7 +25,7 @@ var PeopleRightView={
 		);
 		v.addChild(v.listView);
 		// PageIndicator: N pages
-		var pageCount=Math.ceil(data.length/lowPeoplePerPage);
+		var pageCount=Math.ceil(dataRef.length/lowPeoplePerPage);
 		v.pageIndicator=DPageIndicator.createNew(
 			pageCount,
 			{width:400,textPos:{x:180,y:5}},	// width of the pi & pos of "4/7"
@@ -41,7 +41,9 @@ var PeopleRightView={
 	onPersonSelected: function(view,index){
 		var globalIndex=view.pageIndicator.getCurPage()*lowPeoplePerPage+index;
 		console.log("PeopleRightView: person selected:",globalIndex);
-		console.log("  and the person's data is:",view.data[globalIndex]);
+		console.log("  and the person's dataRef is:",view.dataRef[globalIndex]);
+		// TODO: you can change this low person's dataRef if necessary like this:
+		view.dataRef[globalIndex].name+="-Changed by Yi";
 		// TODO: center the person's housing unit	
 	},
 	onPageChanged: function(view,index){
@@ -61,9 +63,9 @@ var PeopleRightView={
 	_setupPage_: function(view,pageIndex){
 		view.listView.removeAll();
 		var startIndex=pageIndex*lowPeoplePerPage;
-		var endIndex=Math.min(startIndex+lowPeoplePerPage,view.data.length);
+		var endIndex=Math.min(startIndex+lowPeoplePerPage,view.dataRef.length);
 		for(var i=startIndex;i<endIndex;i++)
-			view.listView.add(PeopleRightView._makeEntry_(view.data[i]));
+			view.listView.add(PeopleRightView._makeEntry_(view.dataRef[i]));
 	},
 };
 
@@ -77,7 +79,7 @@ var PeopleLeftView={
 	BuType: 0,	// for us to remember, not actually in use, may be removed ITF.
 	MerType: 1,	// ditto.
 	MilType: 2,	// ditto.
-	createNew: function(buData,merData,milData){
+	createNew: function(buDataRef,merDataRef,milDataRef){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewLeftBg");
 		// let left view block click events
 		v.inputEnabled=true;
@@ -85,12 +87,8 @@ var PeopleLeftView={
 		// setup last selected
 		v.lastSelected=null;
 
-		// copies the data
-		v.data3=[
-			JSON.parse(JSON.stringify(buData)),
-			JSON.parse(JSON.stringify(merData)),
-			JSON.parse(JSON.stringify(milData))
-		];
+		// copies the dataRef
+		v.data3=[buDataRef, merDataRef, milDataRef];
 		v.listViews=[null,null,null];
 		v.pageIndicators=[null,null,null];
 		// create the 3 list views
@@ -135,8 +133,8 @@ var PeopleLeftView={
 			view.parent.hideContractView();
 			view.lastSelected=null;
 		}else{
-			var personData=view.data3[type][index];
-			view.parent.showContractView(personData);
+			var personDataRef=view.data3[type][index];
+			view.parent.showContractView(personDataRef);
 			view.lastSelected=globalIndex;
 		}
 	},
@@ -162,26 +160,18 @@ var PeopleLeftView={
 
 var PeopleContractView={
 	pays: [1,2,3,5,7,10,15,20,30,40,50,75,100,150,200,300,500],
-	createNew: function(personData){
+	createNew: function(personDataRef){
 		var v=MainGame.game.make.sprite(0,0,'peopleViewContractBg');
-		if(!personData){
-			personData={
-				name: "Tobe Hired",
-				port: "smallPort0",
-				payLevel: 0,
-				hired: false
-			};
-		}
-		v.data=JSON.parse(JSON.stringify(personData));
+		v.dataRef=personDataRef;
 		v.inputEnabled=true;
 		v.input.priorityID=120;
 
 		// TODO: adjust layout!!
 		// setup its elements
 			// port & name
-		v.port=MainGame.game.make.sprite(10,10,"smallPort"+personData.portIndex);
+		v.port=MainGame.game.make.sprite(10,10,"smallPort"+personDataRef.portIndex);
 		v.addChild(v.port);
-		v.nameLabel=MainGame.game.make.text(100,10,personData.name);
+		v.nameLabel=MainGame.game.make.text(100,10,personDataRef.name);
 		v.addChild(v.nameLabel);
 			// "-" payment "+"
 		v.decButton=MainGame.game.make.sprite(10,150,"decButton");
@@ -192,16 +182,16 @@ var PeopleContractView={
 		v.incButton.inputEnabled=true;
 		v.incButton.input.priorityID=121;
 		v.addChild(v.incButton);
-		v.payLabel=MainGame.game.make.text(50,150,""+PeopleContractView.pays[personData.payLevel]);
+		v.payLabel=MainGame.game.make.text(50,150,""+PeopleContractView.pays[personDataRef.payLevel]);
 		v.addChild(v.payLabel);
 		v.decButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,false)});
 		v.incButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,true)});
-		if(personData.payLevel===0)
+		if(personDataRef.payLevel===0)
 			v.decButton.visible=false;
-		if(personData.payLevel===PeopleContractView.pays.length-1)
+		if(personDataRef.payLevel===PeopleContractView.pays.length-1)
 			v.incButton.visible=false;
 			// "fire" workStatus "hire"
-		v.workLabel=MainGame.game.make.text(150,300,personData.hired?"Hired":"Not Hired");
+		v.workLabel=MainGame.game.make.text(150,300,personDataRef.type===1?"Inflnce":"Coalition");
 		v.addChild(v.workLabel);
 		v.fireButton=MainGame.game.make.sprite(50,300,"btnFire");
 		v.fireButton.inputEnabled=true;
@@ -217,20 +207,21 @@ var PeopleContractView={
 		return v;
 	},
 	onPaymentChanged: function(view, isInc){
-		view.data.payLevel+=(isInc?1:-1);
-		view["decButton"].visible=(view.data.payLevel>0);
-		view["incButton"].visible=(view.data.payLevel<PeopleContractView.pays.length-1);
-		view["payLabel"].text=""+PeopleContractView.pays[view.data.payLevel];
+		view.dataRef.payLevel+=(isInc?1:-1);
+		view["decButton"].visible=(view.dataRef.payLevel>0);
+		view["incButton"].visible=(view.dataRef.payLevel<PeopleContractView.pays.length-1);
+		view["payLabel"].text=""+PeopleContractView.pays[view.dataRef.payLevel];
+		console.log("After Payment change:",MainGame.population);
 	},
 	onWorkChanged: function(view, isFire){
-		view.data.hired=(!isFire);
-		view.workLabel.text=(view.data.hired?"Hired":"Not Hired");
+		view.dataRef.type=(isFire?Person.Mid:Person.Hi);
+		view.workLabel.text=(view.dataRef.type===Person.Mid?"Inflnce":"Coalition");
 	},
 };
 
 var PeopleView={
-	// TODO: please see the required format of lowData, buData, etc.
-	createNew: function(lowData, buData, merData, milData){
+	// TODO: please see the required format of lowData, buDataRef, etc.
+	createNew: function(lowData, buDataRef, merDataRef, milDataRef){
 		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
 
 		// TODO: setup the actual position
@@ -245,38 +236,38 @@ var PeopleView={
 		pv.uiMask.fillScreen(pv);
 
 		// create low people view (right)
-		//	for debug: if there's no data input
+		//	for debug: if there's no dataRef input
 		if(!lowData)
 			lowData=MainGame.population.lowList();
-		if(!buData)
-			buData=MainGame.population.roleList("?");
-		if(!merData)
-			merData=MainGame.population.roleList("$");
-		if(!milData)
-			milData=MainGame.population.roleList("!");
-		console.log("Now bu,mer and mil is:", buData, merData, milData);
+		if(!buDataRef)
+			buDataRef=MainGame.population.roleList("?");
+		if(!merDataRef)
+			merDataRef=MainGame.population.roleList("$");
+		if(!milDataRef)
+			milDataRef=MainGame.population.roleList("!");
+		console.log("Now bu,mer and mil is:", buDataRef, merDataRef, milDataRef);
 
 		// People Right View
 		pv.right=PeopleRightView.createNew(lowData);
 		pv.right.x=450;
 		pv.addChild(pv.right);
 		// People Left View
-		pv.left=PeopleLeftView.createNew(buData,merData,milData);
+		pv.left=PeopleLeftView.createNew(buDataRef,merDataRef,milDataRef);
 		pv.addChild(pv.left);
 
 		// // Class funcs
 		pv.setVisible=function(value){pv.visible=value};
-		pv.showContractView=function(personData){PeopleView.showContractView(pv,personData)};
+		pv.showContractView=function(personDataRef){PeopleView.showContractView(pv,personDataRef)};
 		pv.hideContractView=function(){PeopleView.hideContractView(pv)};
 
 		return pv;
 	},
-	showContractView: function(view,personData){
+	showContractView: function(view,personDataRef){
 		if(view.contract){
 			view.contract.destroy();
 			view.contract=null;
 		}
-		view.contract=PeopleContractView.createNew(personData);
+		view.contract=PeopleContractView.createNew(personDataRef);
 		view.contract.x=view.right.x;
 		view.addChild(view.contract);
 	},
