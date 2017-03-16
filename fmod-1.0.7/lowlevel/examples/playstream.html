@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="stylesheet" type="text/css" href="examples.css" media="all" />
+    <title>FMOD Examples - PlayStream</title>
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <img class="logo" alt="FMOD Logo" src="images/logo.jpg">
+        </div>
+
+        <br/>
+        <br/>
+        <strong>Play Stream Example</strong><br/>
+        Copyright (c) Firelight Technologies 2016.  For help using FMOD please visit <a href="http://www.fmod.org">http://www.fmod.org/</a><br/>
+        <br/>
+        <br/>
+
+        <button type="button" onclick="playSound()">Play Stream - Music</button>
+        <br/>
+        <br/>
+        <button type="button" onclick="stopChannel()">Stop Stream - Music</button><br/>
+        <br/>
+
+        <form>
+            <label for="volume">Volume of stream</label>
+            <input id="volume" type="range" min="0" max="2" step=".01" oninput="volumeChanged(this.value)" >
+            <output for="volume" id="volume_out">1.0</output>
+        </form>
+
+        <strong>
+            <br>
+            <output id="stream_display_out"></output> <br/>
+            <output id="stream_display_out2"></output> <br/>
+        </strong>
+
+        <div class = "bottominfo">
+            <output id="display_out">Please wait... Loading...</output><br/>
+            <br/>
+            <output id="display_out2"></output><br/>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="fmod.js"></script>
+    <script type="text/javascript" src="playstream.js"></script>
+
+</body>
+</html>
