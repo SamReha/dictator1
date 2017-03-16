@@ -51,7 +51,7 @@ var MainGame={
         console.log('[MainGame] start...');
         
         // create board
-        var stage=MainGame.game.cache.getJSON('stageTest');
+        var stage=MainGame.game.cache.getJSON('stageMain');
 
         /*global Board*/
         MainGame.board=Board.fromJSON(JSON.stringify(stage));
