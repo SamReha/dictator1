@@ -199,8 +199,8 @@
     ],
 
     "population": [
-        {"type": 1, "name":"Scott Loony",   "portIndex":0, "payLevel":0, "workplace": null,"home": 80,"education": 60},
-        {"type": 1, "name":"Steve Horowitz","portIndex":1, "payLevel":0, "workplace": null,"home": 94,"education": 60},
+        {"type": 1, "role":"$", "name":"Scott Loony", "portIndex":0, "payLevel":0, "workplace": 158,"home": 80,"education": 60},
+        {"type": 1, "role":"?", "name":"Steve Horowitz","portIndex":1, "payLevel":0, "workplace": 95,"home": 94,"education": 60},
         {"type": 0, "workplace": 95,"home": 142,"education": 20},
         {"type": 0, "workplace": 95,"home": 142,"education": 20},
         {"type": 0, "workplace": 95,"home": 142,"education": 20},

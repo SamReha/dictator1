@@ -30,22 +30,45 @@ var BuildMenu={
 		// buildMenu: UI groups
 		var bureauGroup = MainGame.game.make.group();
 		bm.addChild(bureauGroup);
+		var bureauGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
+		bureauGroupCover.inputEnabled = true;
+		bureauGroupCover.input.priorityID = hudInputPriority + 10;
+		bureauGroupCover.visible = false;
+		bm.addChild(bureauGroupCover);
 
 		var merchantGroup = MainGame.game.make.group();
 		merchantGroup.position.x = bm.width/3;
 		bm.addChild(merchantGroup);
+		var merchantGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
+		merchantGroupCover.inputEnabled = true;
+		merchantGroupCover.input.priorityID = hudInputPriority + 10;
+		merchantGroupCover.position.x = bm.width/3;
+		merchantGroupCover.visible = false;
+		bm.addChild(merchantGroupCover);
 
 		var militaryGroup = MainGame.game.make.group();
 		militaryGroup.position.x = bm.width*2/3;
 		bm.addChild(militaryGroup);
+		var militaryGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
+		militaryGroupCover.inputEnabled = true;
+		militaryGroupCover.input.priorityID = hudInputPriority + 10;
+		militaryGroupCover.position.x = bm.width*2/3;
+		militaryGroupCover.visible = false;
+		bm.addChild(militaryGroupCover);
 
 		var defaultGroup = MainGame.game.make.group();
-		defaultGroup.position.y = bm.height*3/4;
+		defaultGroup.position.y = bm.height*2/3;
 		bm.addChild(defaultGroup);
+		var defaultGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover2');
+		defaultGroupCover.inputEnabled = true;
+		defaultGroupCover.input.priorityID = hudInputPriority + 10;
+		defaultGroupCover.position.y = bm.height*2/3;
+		defaultGroupCover.visible = false;
+		bm.addChild(defaultGroupCover);
 
 		/*global Hud*/
 		// buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
-		var buyMansionBtn = MainGame.game.make.button((bm.width/8), 100, 'small_generic_button', function(){
+		var buyMansionBtn = MainGame.game.make.button((bm.width/8), (bm.height/4), 'small_generic_button', function(){
 			Hud.beginBuilding(buildMenu, buyMansionBtn, 'mansion');},
 			buildMenu, 0, 1, 2, 3);
 		buyMansionBtn.input.priorityID = hudInputPriority;
@@ -64,7 +87,7 @@ var BuildMenu={
 		buyMansionBtnText.y = -buyMansionBtn.height / 2;
 		buyMansionBtn.addChild(buyMansionBtnText);
 
-		var buySuburbBtn = MainGame.game.make.button((bm.width*3/8), 100, 'small_generic_button', function(){
+		var buySuburbBtn = MainGame.game.make.button((bm.width*3/8), (bm.height/4), 'small_generic_button', function(){
 			Hud.beginBuilding(buildMenu, buySuburbBtn, 'suburb');},
 			buildMenu, 0, 1, 2, 3);
 		buySuburbBtn.input.priorityID = hudInputPriority;
@@ -83,7 +106,7 @@ var BuildMenu={
 		buySuburbBtnText.y = -buySuburbBtn.height / 2;
 		buySuburbBtn.addChild(buySuburbBtnText);
 
-		var buyApartmentBtn = MainGame.game.make.button((bm.width*5/8), 100, 'small_generic_button', function(){
+		var buyApartmentBtn = MainGame.game.make.button((bm.width*5/8), (bm.height/4), 'small_generic_button', function(){
 			Hud.beginBuilding(buildMenu, buyApartmentBtn, 'apartment');},
 			buildMenu, 0, 1, 2, 3);
 		buyApartmentBtn.input.priorityID = hudInputPriority;
@@ -102,7 +125,7 @@ var BuildMenu={
 		buyApartmentBtnText.y = -buyApartmentBtn.height / 2;
 		buyApartmentBtn.addChild(buyApartmentBtnText);
 
-		var buyRoadBtn = MainGame.game.make.button((bm.width*7/8), 100, 'small_generic_button', function(){
+		var buyRoadBtn = MainGame.game.make.button((bm.width*7/8), (bm.height/4), 'small_generic_button', function(){
 			Hud.beginBuilding(buildMenu, buyRoadBtn, 'road');},
 			buildMenu, 0, 1, 2, 3);
 		buyRoadBtn.input.priorityID = hudInputPriority;
@@ -197,7 +220,7 @@ var BuildMenu={
 		buyArmyBaseBtnText.y = -buyArmyBaseBtn.height / 2;
 		buyArmyBaseBtn.addChild(buyArmyBaseBtnText);
 
-		var buyPoliceStationBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'small_generic_button', function(){
+		var buyPoliceStationBtn = MainGame.game.make.button((bm.width/4), (bm.height/4), 'small_generic_button', function(){
 			Hud.beginBuilding(buildMenu, buyPoliceStationBtn, 'police');},
 			buildMenu, 0, 1, 2, 3);
 		buyPoliceStationBtn.input.priorityID = hudInputPriority;
@@ -213,8 +236,8 @@ var BuildMenu={
 		var buyPoliceStationText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
 		buyPoliceStationText.anchor.x = 0.5;
 		buyPoliceStationText.anchor.y = 0.5;
-		buyPoliceStationText.y = -buyPoliceStation.height / 2;
-		buyPoliceStation.addChild(buyPoliceStationText);
+		buyPoliceStationText.y = -buyPoliceStationBtn.height / 2;
+		buyPoliceStationBtn.addChild(buyPoliceStationText);
 
 		// Need to adjust beginBuilding() to handle fertile vs weak farms
 		var buyFarmBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'small_generic_button', function(){
@@ -235,6 +258,41 @@ var BuildMenu={
 		buyFarmBtnText.anchor.y = 0.5;
 		buyFarmBtnText.y = -buyFarmBtn.height / 2;
 		buyFarmBtn.addChild(buyFarmBtnText);
+
+		/*global Person*/
+		var bureaucrats = MainGame.population.typeRoleList(Person.Hi, Person.Bureaucrat).length;
+		var merchants = MainGame.population.typeRoleList(Person.Hi, Person.Merchant).length;
+		var military = MainGame.population.typeRoleList(Person.Hi, Person.Military).length;
+
+		if(bureaucrats === 0){
+			bureauGroupCover.visible = true;
+
+			var bureauCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
+				'No Coalition members hired.', BuildMenu.styleNormal);
+			bureauCount.anchor.x = 0.5;
+			bureauCount.anchor.y = 0.5;
+			bureauGroup.addChild(bureauCount);
+		}
+		if(merchants === 0){
+			merchantGroupCover.visible = true;
+
+			var merchantCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
+				'No Coalition members hired.', BuildMenu.styleNormal);
+			merchantCount.anchor.x = 0.5;
+			merchantCount.anchor.y = 0.5;
+			merchantGroup.addChild(merchantCount);
+		}
+		if(military === 0){
+			militaryGroupCover.visible = true;
+
+			var militaryCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
+				'No Coalition members hired.', BuildMenu.styleNormal);
+			militaryCount.anchor.x = 0.5;
+			militaryCount.anchor.y = 0.5;
+			militaryGroup.addChild(militaryCount);
+		}
+		if(bureaucrats === 0 && merchants === 0 && military === 0)
+			defaultGroupCover.visible = true;
 
 		return buildMenu;
 	},

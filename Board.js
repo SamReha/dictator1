@@ -437,9 +437,9 @@ var Board = {
     },
 
     // let camera center on i
-    cameraCenterOn: function(b,i){
+    cameraCenterOn: function(b,i){        
         console.assert(typeof(i)==="number" && i>=0 && i<b.tileCount(), "i must be an index.");
-
+        console.log("Center on:",i);
         /*global MainGame*/
 
         // calc the current center pos of i (with consideration of board.scale)
@@ -459,8 +459,6 @@ var Board = {
         b.y=(screenCenter.y-center_i.y);
         b._offset.x+=oldX-b.x;
         b._offset.y+=oldY-b.y;
-        console.log(b._offset);
-        // console.log("Now, board's x and y:",b.x,b.y);
 
         // MainGame.mapSelector.positionBuildingDetail(b);
     },
