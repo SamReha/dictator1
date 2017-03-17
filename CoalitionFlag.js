@@ -49,7 +49,7 @@ var CoalitionFlag = {
 		coalitionFlag.removeChild(coalitionFlag.military);
 
 		// Get new buttons
-		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(bureaucrats, CoalitionFlag.showBureaucratContract);
+		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(bureaucrats);
 		coalitionFlag.bureaucrat.x = -CoalitionFlag.verticalPad;
 		coalitionFlag.bureaucrat.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 0;
 		coalitionFlag.addChild(coalitionFlag.bureaucrat);
@@ -67,9 +67,9 @@ var CoalitionFlag = {
 
 	getCoalitionPortrait: function(coalitionList, callBack) {
 		if (coalitionList.length != 0) {
-			var member = coalitionList[0];
-			var spriteTexture = 'smallPort' + member.portIndex;
-			var button = MainGame.game.make.button(0, 0, spriteTexture, callBack);
+			var minister = coalitionList[0];
+			var spriteTexture = 'smallPort' + minister.portIndex;
+			var button = MainGame.game.make.button(0, 0, spriteTexture, function() {CoalitionFlag.showMinisterContract(minister);});
 			button.anchor.x = 1;
 
 			return button;
@@ -80,15 +80,8 @@ var CoalitionFlag = {
 		}
 	},
 
-	showMilitaryContract: function() {
-		console.log("Show Military Contract!");
-	},
-
-	showBureaucratContract: function() {
-		console.log("Show Bureaucrat Contract!");
-	},
-
-	showMerchantContract: function() {
-		console.log("Show Merchant Contract!");
+	showMinisterContract: function(minister) {
+		var pView = PeopleView.createNew();
+		pView.showContractView(minister);
 	},
 };
