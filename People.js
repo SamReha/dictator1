@@ -33,8 +33,8 @@ var Person={
         // Class vars (nullable)
         p.influence=(p.type>=Person.Mid?0:null);
         p.role=(data.role?data.role:null);
-        p.loyalty=(p.type>=Person.Hi?0:null);
-        p.payLevel=data.payLevel;
+        p.loyalty=(p.type<=Person.Hi?0:null);
+        p.payLevel=(data.payLevel?data.payLevel:null);
         console.log("P's payLevel is:"+p.payLevel);
 
         // Class funcs
@@ -192,12 +192,12 @@ var Person={
     },
 
     setHighClass: function(p) {
-        // More stuff
         p.type = Person.Hi;
+
+        
     },
 
     unSetHighClass: function(p) {
-        // More stuff
         p.type = Person.Mid;
     },
 };

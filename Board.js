@@ -75,7 +75,7 @@ var Tile={
                 if (building.name !== 'lumberYard') {
                     tile.removeRes();
                 }
-            } else if (tile.getResType() === 'wheat') {
+            } else if (tile.getResType() === 'soy') {
                 if (building.name !== 'fertileFarm') {
                     tile.removeRes();
                 }

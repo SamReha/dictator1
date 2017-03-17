@@ -75,7 +75,7 @@ var PeopleRightView={
 var midHiPeoplePerPage=5;
 // shows the 3 lists(bu,mer,mil) with portraits
 var PeopleLeftView={
-	style: {font:"20px myKaiti", fill:"black"},
+	style: {font:"20px myKaiti", fill:"white"},
 	BuType: 0,	// for us to remember, not actually in use, may be removed ITF.
 	MerType: 1,	// ditto.
 	MilType: 2,	// ditto.
@@ -145,7 +145,8 @@ var PeopleLeftView={
 	// makes the portrait + name. TODO: re-arrange the visual elements
 	_makeEntry_: function(oneEntryData){
 		var entrySprite=MainGame.game.make.sprite(0,0,"smallPort"+oneEntryData.portIndex);
-		var entryText=MainGame.game.make.text(0,50,oneEntryData.name,PeopleLeftView.style);
+		var name = oneEntryData.name.split(" ");
+		var entryText=MainGame.game.make.text(0,50,name[0]+"\n"+name[1],PeopleLeftView.style);
 		entrySprite.addChild(entryText);
 		return entrySprite;
 	},
@@ -160,6 +161,7 @@ var PeopleLeftView={
 
 var PeopleContractView={
 	pays: [1,2,3,5,7,10,15,20,30,40,50,75,100,150,200,300,500],
+	contractStyle: {font:"20px myKaiti", fill:"black"},
 	createNew: function(personDataRef){
 		var v=MainGame.game.make.sprite(0,0,'peopleViewContractBg');
 		v.dataRef=personDataRef;
@@ -171,18 +173,32 @@ var PeopleContractView={
 			// port & name
 		v.port=MainGame.game.make.sprite(10,10,"smallPort"+personDataRef.portIndex);
 		v.addChild(v.port);
-		v.nameLabel=MainGame.game.make.text(100,10,personDataRef.name);
+		v.nameLabel=MainGame.game.make.text(100,10,personDataRef.name,PeopleContractView.contractStyle);
 		v.addChild(v.nameLabel);
-			// "-" payment "+"
-		v.decButton=MainGame.game.make.sprite(10,150,"decButton");
+		// "-" payment "+"
+		v.currentPayLabel=MainGame.game.make.text(25, 75, "",PeopleContractView.contractStyle);
+		v.currentPay=MainGame.game.make.text(100, 73, "",PeopleContractView.contractStyle);
+		if(v.dataRef.type===Person.Hi){
+			v.currentPayLabel.text="This person's current annual salary is _____";
+			v.currentPay=PeopleContractView.pays[personDataRef.payLevel];
+		}else{
+			console.log("Infulential");
+			v.currentPayLabel.text="This person has not been hired."
+			v.currentPay.text="";
+		}
+		v.addChild(v.currentPayLabel);
+		v.addChild(v.currentPay);
+		v.decButton=MainGame.game.make.button(10,150,'bracketArrowButton',function(){
+			eopleContractView.onPaymentChanged(v,false)},0,1,0,2);
 		v.decButton.inputEnabled=true;
 		v.decButton.input.priorityID=121;
 		v.addChild(v.decButton);
-		v.incButton=MainGame.game.make.sprite(100,150,"incButton");
+		v.incButton=MainGame.game.make.button(100,150,'bracketArrowButton',function(){
+			PeopleContractView.onPaymentChanged(v,true)},0,1,0,2);
 		v.incButton.inputEnabled=true;
 		v.incButton.input.priorityID=121;
 		v.addChild(v.incButton);
-		v.payLabel=MainGame.game.make.text(50,150,""+PeopleContractView.pays[personDataRef.payLevel]);
+		v.payLabel=MainGame.game.make.text(50,150,""+PeopleContractView.pays[personDataRef.payLevel],PeopleContractView.contractStyle);
 		v.addChild(v.payLabel);
 		v.decButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,false)});
 		v.incButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,true)});
@@ -191,7 +207,7 @@ var PeopleContractView={
 		if(personDataRef.payLevel===PeopleContractView.pays.length-1)
 			v.incButton.visible=false;
 			// "fire" workStatus "hire"
-		v.workLabel=MainGame.game.make.text(150,300,personDataRef.type===1?"Inflnce":"Coalition");
+		v.workLabel=MainGame.game.make.text(150,300,personDataRef.type===1?"Elite":"Minister",PeopleContractView.contractStyle);
 		v.addChild(v.workLabel);
 		v.fireButton=MainGame.game.make.sprite(50,300,"btnFire");
 		v.fireButton.inputEnabled=true;
@@ -214,8 +230,14 @@ var PeopleContractView={
 		console.log("After Payment change:",MainGame.population);
 	},
 	onWorkChanged: function(view, isFire){
-		view.dataRef.type=(isFire?Person.Mid:Person.Hi);
-		view.workLabel.text=(view.dataRef.type===Person.Mid?"Inflnce":"Coalition");
+		// unSetHiClass removes their salary from their home and sets them to mid
+		if(isFire)
+			view.dataRef.unSetHiClass();
+		else{
+			view.dataRef.payLevel
+			view.dataRef.setHiClass();
+		}
+		view.workLabel.text=(view.dataRef.type===Person.Mid?"Infulence":"Coalition");
 	},
 };
 

@@ -29,7 +29,7 @@ var Preloader={
         // Vertical Slice assets
         g.load.image('forest1',   resourceDir + 'forest1.png');
         g.load.image('forest2',   resourceDir + 'forest2.png');
-        g.load.image('wheat',      resourceDir + 'wheat.png');
+        g.load.image('soy',      resourceDir + 'soy.png');
 
         // Terrain
         var resourceDir = imageDir + 'terrains/';
@@ -84,6 +84,7 @@ var Preloader={
         g.load.spritesheet('btnFire',              buttonDir + 'btnFire.png', 64, 20, 4);
         g.load.spritesheet('btnNextTurn',          buttonDir + 'btnNextTurn.png', 64, 20, 4);
         g.load.spritesheet('buttonSprite',         buttonDir + 'button_spritesheet.png', 128, 48, 4);
+        g.load.spritesheet('closeButton',          buttonDir + 'close_button.png', 48, 48, 3);
         g.load.spritesheet('small_generic_button', buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',   buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button', buttonDir + 'large_generic_button.png', 240, 96, 3);
@@ -93,6 +94,13 @@ var Preloader={
         g.load.spritesheet('add_merchant_button',  buttonDir + 'add_merchant_button.png', 120, 48, 3);
         g.load.spritesheet('add_military_button',  buttonDir + 'add_military_button.png', 120, 48, 3);
         g.load.spritesheet('add_beauro_button',    buttonDir + 'add_beauro_button.png', 120, 48, 3);
+        g.load.spritesheet('bracketArrowButton',   buttonDir + 'bracket_arrow.png', 48, 48, 3);
+        g.load.spritesheet('triangleArrowButton',  buttonDir + 'triangle_button.png', 48, 48, 3);
+        g.load.spritesheet('redMinusButton',       buttonDir + 'red_minus_button.png', 48, 48, 3);
+        g.load.spritesheet('redPlusButton',        buttonDir + 'red_plus_button.png', 48, 48, 3);
+        g.load.spritesheet('yellowMinusButton',    buttonDir + 'yellow_minus_button.png', 48, 48, 3);
+        g.load.spritesheet('yellowPlusButton',     buttonDir + 'yellow_plus_button.png', 48, 48, 3);
+
 
         //// load icons
         var iconDir = uiDir + 'icons/';

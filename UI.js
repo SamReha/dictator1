@@ -348,7 +348,7 @@ var BuildingPlacer = {
             }
             
             // Create a building object
-            if (self.buildingType === 'fertileFarm' && tile.getResType() !== 'wheat') {
+            if (self.buildingType === 'fertileFarm' && tile.getResType() !== 'soy') {
                 self.buildingType = 'weakFarm';
             }
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
