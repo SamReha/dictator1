@@ -162,6 +162,7 @@ var PeopleLeftView={
 var PeopleContractView={
 	pays: [1,2,3,5,7,10,15,20,30,40,50,75,100,150,200,300,500],
 	contractStyle: {font:"20px myKaiti", fill:"black"},
+	styleButton: {font:"32px myKaiti", fill:"#ffffff"},
 	createNew: function(personDataRef){
 		var v=MainGame.game.make.sprite(0,0,'peopleViewContractBg');
 		v.dataRef=personDataRef;
@@ -189,19 +190,17 @@ var PeopleContractView={
 		v.addChild(v.currentPayLabel);
 		v.addChild(v.currentPay);
 		v.decButton=MainGame.game.make.button(10,150,'bracketArrowButton',function(){
-			eopleContractView.onPaymentChanged(v,false)},0,1,0,2);
-		v.decButton.inputEnabled=true;
+			PeopleContractView.onPaymentChanged(v,false)},v,1,0,2,1);
+		v.decButton.anchor.x=1;
+		v.decButton.scale.x*=-1;
 		v.decButton.input.priorityID=121;
 		v.addChild(v.decButton);
 		v.incButton=MainGame.game.make.button(100,150,'bracketArrowButton',function(){
-			PeopleContractView.onPaymentChanged(v,true)},0,1,0,2);
-		v.incButton.inputEnabled=true;
+			PeopleContractView.onPaymentChanged(v,true)},v,1,0,2,1);
 		v.incButton.input.priorityID=121;
 		v.addChild(v.incButton);
 		v.payLabel=MainGame.game.make.text(50,150,""+PeopleContractView.pays[personDataRef.payLevel],PeopleContractView.contractStyle);
 		v.addChild(v.payLabel);
-		v.decButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,false)});
-		v.incButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,true)});
 		if(personDataRef.payLevel===0)
 			v.decButton.visible=false;
 		if(personDataRef.payLevel===PeopleContractView.pays.length-1)
@@ -209,16 +208,26 @@ var PeopleContractView={
 			// "fire" workStatus "hire"
 		v.workLabel=MainGame.game.make.text(150,300,personDataRef.type===1?"Elite":"Minister",PeopleContractView.contractStyle);
 		v.addChild(v.workLabel);
-		v.fireButton=MainGame.game.make.sprite(50,300,"btnFire");
-		v.fireButton.inputEnabled=true;
+		v.fireButton=MainGame.game.make.button(50,300,'small_generic_button',function(){
+			PeopleContractView.onWorkChanged(v,true)},0,1,0,2);
+		v.fireButton.anchor.setTo(0.5,1);
 		v.fireButton.input.priorityID=121;
-		v.fireButton.events.onInputUp.add(function(){PeopleContractView.onWorkChanged(v,true)});
 		v.addChild(v.fireButton);
-		v.hireButton=MainGame.game.make.sprite(300,300,"btnHire");
-		v.hireButton.inputEnabled=true;
+		v.fireText=MainGame.game.make.text(0,0,"Fire",PeopleContractView.styleButton);
+		v.fireText.anchor.x=0.5;
+		v.fireText.anchor.y=0.5;
+		v.fireText.y=-v.fireButton.height/2;
+		v.fireButton.addChild(v.fireText);
+		v.hireButton=MainGame.game.make.button(300,300,'small_generic_button',function(){
+			PeopleContractView.onWorkChanged(v,false)},0,1,0,2);
+		v.hireButton.anchor.setTo(0.5,1);
 		v.hireButton.input.priorityID=121;
-		v.hireButton.events.onInputUp.add(function(){PeopleContractView.onWorkChanged(v,false)});
 		v.addChild(v.hireButton);
+		v.hireText=MainGame.game.make.text(0,0,"Hire",PeopleContractView.styleButton);
+		v.hireText.anchor.x=0.5;
+		v.hireText.anchor.y=0.5;
+		v.hireText.y=-v.hireButton.height/2;
+		v.hireButton.addChild(v.hireText);
 
 		return v;
 	},

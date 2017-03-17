@@ -95,7 +95,7 @@ var Preloader={
         g.load.spritesheet('add_military_button',  buttonDir + 'add_military_button.png', 120, 48, 3);
         g.load.spritesheet('add_beauro_button',    buttonDir + 'add_beauro_button.png', 120, 48, 3);
         g.load.spritesheet('bracketArrowButton',   buttonDir + 'bracket_arrow.png', 48, 48, 3);
-        g.load.spritesheet('triangleArrowButton',  buttonDir + 'triangle_button.png', 48, 48, 3);
+        g.load.spritesheet('triangleArrowButton',  buttonDir + 'triangle_arrow.png', 48, 48, 3);
         g.load.spritesheet('redMinusButton',       buttonDir + 'red_minus_button.png', 48, 48, 3);
         g.load.spritesheet('redPlusButton',        buttonDir + 'red_plus_button.png', 48, 48, 3);
         g.load.spritesheet('yellowMinusButton',    buttonDir + 'yellow_minus_button.png', 48, 48, 3);
