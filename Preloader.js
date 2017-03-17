@@ -105,7 +105,6 @@ var Preloader={
         g.load.json('stage1','stage1.json');
         g.load.json('stage2','stage2.json');
         g.load.json('stageMain','stageMain.json');
-        g.load.json('stageTest','stageTest.json');
         g.load.json('buildingData','buildingData.json');
         g.load.json('names','Names.json')
     }
