@@ -40,14 +40,14 @@ var PeopleRightView={
 	},
 	onPersonSelected: function(view,index){
 		var globalIndex=view.pageIndicator.getCurPage()*lowPeoplePerPage+index;
-		console.log("PeopleRightView: person selected:",globalIndex);
-		console.log("  and the person's dataRef is:",view.dataRef[globalIndex]);
+		//console.log("PeopleRightView: person selected:",globalIndex);
+		//console.log("  and the person's dataRef is:",view.dataRef[globalIndex]);
 		// TODO: you can change this low person's dataRef if necessary like this:
 		view.dataRef[globalIndex].name+="-Changed by Yi";
 		// TODO: center the person's housing unit	
 	},
 	onPageChanged: function(view,index){
-		console.log("PeoplePageChanged: ",index);
+		//console.log("PeoplePageChanged: ",index);
 		PeopleRightView._setupPage_(view,index);
 	},
 	// each entry is like "Sam Reha | Hth:50 | Edu:50 | Sht:50"
@@ -127,7 +127,7 @@ var PeopleLeftView={
 	},
 	onPersonSelected: function(view,type,index){
 		var globalIndex=view.pageIndicators[type].getCurPage()*midHiPeoplePerPage+index;
-		console.log("Person selected! type,index=",type,globalIndex);
+		//console.log("Person selected! type,index=",type,globalIndex);
 		// show the detail info of that mid-hi person
 		if(view.lastSelected===globalIndex){
 			view.parent.hideContractView();
@@ -143,8 +143,23 @@ var PeopleLeftView={
 		PeopleLeftView._setupPage_(view,type,index);
 	},
 	// makes the portrait + name. TODO: re-arrange the visual elements
-	_makeEntry_: function(oneEntryData){
-		var entrySprite=MainGame.game.make.sprite(0,0,"smallPort"+oneEntryData.portIndex);
+	_makeEntry_: function(oneEntryData) {
+		var textureString;
+		switch (oneEntryData.role) {
+			case Person.Bureaucrat:
+				textureString = 'bureaucrat_port_' + oneEntryData.portIndex;
+				break;
+			case Person.Merchant:
+				textureString = 'merchant_port_' + oneEntryData.portIndex;
+				break;
+			case Person.Military:
+				textureString = 'military_port_' + oneEntryData.portIndex;
+				break;
+			default:
+				break;
+		}
+
+		var entrySprite=MainGame.game.make.sprite(0, 0, textureString);
 		var entryText=MainGame.game.make.text(0,50,oneEntryData.name,PeopleLeftView.style);
 		entrySprite.addChild(entryText);
 		return entrySprite;
@@ -169,7 +184,22 @@ var PeopleContractView={
 		// TODO: adjust layout!!
 		// setup its elements
 			// port & name
-		v.port=MainGame.game.make.sprite(10,10,"smallPort"+personDataRef.portIndex);
+		var textureString;
+		switch (personDataRef.role) {
+			case Person.Bureaucrat:
+				textureString = 'bureaucrat_port_' + personDataRef.portIndex;
+				break;
+			case Person.Merchant:
+				textureString = 'merchant_port_' + personDataRef.portIndex;
+				break;
+			case Person.Military:
+				textureString = 'military_port_' + personDataRef.portIndex;
+				break;
+			default:
+				break;
+		}
+
+		v.port = MainGame.game.make.sprite(10, 10, textureString);
 		v.addChild(v.port);
 		v.nameLabel=MainGame.game.make.text(100,10,personDataRef.name);
 		v.addChild(v.nameLabel);

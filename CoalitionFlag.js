@@ -68,8 +68,23 @@ var CoalitionFlag = {
 	getCoalitionPortrait: function(coalitionList, callBack) {
 		if (coalitionList.length != 0) {
 			var minister = coalitionList[0];
-			var spriteTexture = 'smallPort' + minister.portIndex;
-			var button = MainGame.game.make.button(0, 0, spriteTexture, function() {CoalitionFlag.showMinisterContract(minister);});
+
+			var textureString;
+			switch (minister.role) {
+				case Person.Bureaucrat:
+					textureString = 'bureaucrat_port_' + minister.portIndex;
+					break;
+				case Person.Merchant:
+					textureString = 'merchant_port_' + minister.portIndex;
+					break;
+				case Person.Military:
+					textureString = 'military_port_' + minister.portIndex;
+					break;
+				default:
+					break;
+			}
+
+			var button = MainGame.game.make.button(0, 0, textureString, function() {CoalitionFlag.showMinisterContract(minister);});
 			button.anchor.x = 1;
 
 			return button;

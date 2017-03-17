@@ -50,9 +50,11 @@ var Preloader={
         g.load.image('water3',    resourceDir + 'water3.png');
 
         // load port assets
-        var portDir=imageDir+'ports/';
-        for (var port = 0; port < 4; port++) {
-            g.load.image('smallPort' + port, portDir + 'smallPort' + port + '.png');
+        var portDir = imageDir + 'ports/';
+        for (var port = 0; port < 10; port++) {
+            g.load.image('bureaucrat_port_' + port, portDir + 'bureaucrat_port_' + port + '.png');
+            g.load.image('military_port_' + port,   portDir + 'military_port_' + port + '.png');
+            g.load.image('merchant_port_' + port,   portDir + 'merchant_port_' + port + '.jpg');
         }
         g.load.image('defaultPort', portDir + 'defaultPort.png');
 
