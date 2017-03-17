@@ -51,9 +51,10 @@ var Preloader={
 
         // load port assets
         var portDir=imageDir+'ports/';
-        for(var port=0;port<4;port++){
-            g.load.image("smallPort"+port, portDir+"smallPort"+port+".png");
+        for (var port = 0; port < 4; port++) {
+            g.load.image('smallPort' + port, portDir + 'smallPort' + port + '.png');
         }
+        g.load.image('defaultPort', portDir + 'defaultPort.png');
 
         // load ui assets
         var uiDir = imageDir + 'ui/';

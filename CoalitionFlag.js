@@ -1,6 +1,8 @@
 var CoalitionFlag = {
-	origin: {x:500,y:120},
+	origin: { x:1280, y:100 },
 	unitWidth: 48,
+	unitHeight: 48,
+	verticalPad: 4,
 
 	createNew: function() {
 		/* global MainGame */
@@ -14,9 +16,19 @@ var CoalitionFlag = {
 
 		// For each faction, decide whether we need a face or a placeholder
 		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(bureaucrats, CoalitionFlag.showBureaucratContract);
-		//coalitionFlag.addChild(coalitionFlag.bureaucrat);
-		//coalitionFlag.addChild(CoalitionFlag.getCoalitionPortrait(merchants));
-		//coalitionFlag.addChild(CoalitionFlag.getCoalitionPortrait(militaries));
+		coalitionFlag.bureaucrat.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.bureaucrat.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 0;
+		coalitionFlag.addChild(coalitionFlag.bureaucrat);
+
+		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(merchants);
+		coalitionFlag.merchant.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.merchant.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 1;
+		coalitionFlag.addChild(coalitionFlag.merchant);
+
+		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(militaries);
+		coalitionFlag.military.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.military.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 2;
+		coalitionFlag.addChild(coalitionFlag.military);
 		
 		// Functions
 		// Update - should be called externally whenever a coalition member is hired, fired or killed.
@@ -32,18 +44,39 @@ var CoalitionFlag = {
 		var militaries = MainGame.population.typeRoleList(Person.Hi, Person.Military);
 
 		// Remove old buttons
+		coalitionFlag.removeChild(coalitionFlag.bureaucrat);
+		coalitionFlag.removeChild(coalitionFlag.merchant);
+		coalitionFlag.removeChild(coalitionFlag.military);
 
 		// Get new buttons
+		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(bureaucrats, CoalitionFlag.showBureaucratContract);
+		coalitionFlag.bureaucrat.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.bureaucrat.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 0;
+		coalitionFlag.addChild(coalitionFlag.bureaucrat);
+
+		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(merchants);
+		coalitionFlag.merchant.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.merchant.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 1;
+		coalitionFlag.addChild(coalitionFlag.merchant);
+
+		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(militaries);
+		coalitionFlag.military.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.military.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 2;
+		coalitionFlag.addChild(coalitionFlag.military);
 	},
 
 	getCoalitionPortrait: function(coalitionList, callBack) {
 		if (coalitionList.length != 0) {
 			var member = coalitionList[0];
 			var spriteTexture = 'smallPort' + member.portIndex;
+			var button = MainGame.game.make.button(0, 0, spriteTexture, callBack);
+			button.anchor.x = 1;
 
-			return MainGame.game.make.button(0, 0, spriteTexture, callBack);
+			return button;
 		} else {
-			return MainGame.game.make.sprite(0, 0, 'defaultSmallPort');
+			var sprite = MainGame.game.make.sprite(0, 0, 'defaultPort');
+			sprite.anchor.x = 1;
+			return sprite;
 		}
 	},
 

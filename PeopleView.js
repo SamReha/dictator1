@@ -216,6 +216,9 @@ var PeopleContractView={
 	onWorkChanged: function(view, isFire){
 		view.dataRef.type=(isFire?Person.Mid:Person.Hi);
 		view.workLabel.text=(view.dataRef.type===Person.Mid?"Inflnce":"Coalition");
+
+		// Update the UI
+		MainGame.hud.coalitionFlag.updateSelf();
 	},
 };
 

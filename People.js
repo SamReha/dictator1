@@ -174,6 +174,7 @@ var Person={
     },
 
     setHighClass: function(p) {
+        console.log("ASDFHJALSKJDFLKASJDFLKAJHSFKLAJHSFLKAJHSFLKASJHFLKASJDFALKSDJFALKSDJLASDF");
         p.type = Person.Hi;
     },
 };

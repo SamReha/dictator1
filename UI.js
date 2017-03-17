@@ -14,11 +14,6 @@ var Hud = {
 
         hud.name = "HUD"; // Useful for debugging
 
-        // Group1: Top Stats
-        var topGroup=MainGame.game.add.group();
-        topGroup.name="topGroup";
-        hud.addChild(topGroup);
-
         //      global vars
         var statsPanel = StatsPanel.createNew();
         hud.addChild(statsPanel);
@@ -27,8 +22,8 @@ var Hud = {
         hud.addChild(funPanel);
 
         //      Coalition Flag
-        topGroup.coalitionFlag = CoalitionFlag.createNew();
-        topGroup.addChild(topGroup.coalitionFlag);
+        hud.coalitionFlag = CoalitionFlag.createNew();
+        hud.addChild(hud.coalitionFlag);
 
         // Exit / Pause button
         var btnExit = MainGame.game.make.button(0, 0, 'small_generic_button', null, MainGame, 0, 1, 2, 2);
