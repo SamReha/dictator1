@@ -407,18 +407,15 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.yearGroup);
 
         // Population
-        statsPanel.popGroup = MainGame.game.make.sprite(0,0);
+        statsPanel.popGroup = MainGame.game.make.group(0,0);
         statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 1;
-        statsPanel.popGroup.sprite = MainGame.game.make.sprite(0, 0, 'population_icon');
+        statsPanel.popGroup.sprite = MainGame.game.make.button(0, 0, 'population_icon', function(){
+            PeopleView.createNew();
+        }, 0, 1, 0, 2);
         statsPanel.popGroup.addChild(statsPanel.popGroup.sprite);
         statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
         statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
         statsPanel.addChild(statsPanel.popGroup);
-        statsPanel.popGroup.inputEnabled=true;
-        statsPanel.popGroup.input.priorityID=50;
-        statsPanel.popGroup.events.onInputUp.add(function(){
-            PeopleView.createNew();
-        });
 
         // Homelessness
         statsPanel.homelessGroup = MainGame.game.make.sprite(0,0);
@@ -428,11 +425,6 @@ var StatsPanel = {
         statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
         statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.textLabel);
         statsPanel.addChild(statsPanel.homelessGroup);
-        statsPanel.homelessGroup.inputEnabled=true;
-        statsPanel.homelessGroup.input.priorityID=50;
-        statsPanel.homelessGroup.events.onInputUp.add(function(){
-            PeopleView.createNew();
-        });
 
         // Unemployment
         statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0);
@@ -442,11 +434,6 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
         statsPanel.addChild(statsPanel.unemploymentGroup);
-        statsPanel.unemploymentGroup.inputEnabled=true;
-        statsPanel.unemploymentGroup.input.priorityID=50;
-        statsPanel.unemploymentGroup.events.onInputUp.add(function(){
-            PeopleView.createNew();
-        });
 
         // State Money (warchest)
         statsPanel.warchestGroup = MainGame.game.make.group();
