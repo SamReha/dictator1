@@ -387,30 +387,31 @@ var BuildingPlacer = {
 var StatsPanel = {
     unitWidth: 140,
     unitHeight: 48,
-    verticalPad: 2,
-    horizontalPad: 6,
-    textStyle: { font: '30px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle' },
+    verticalPad: 6,
+    horizontalPad: 2,
+    verticalTextOffset: 10,
+    textStyle: { font: '24px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
     createNew: function() {
         var statsPanel = MainGame.game.make.group();
-        statsPanel.x = MainGame.game.width - StatsPanel.unitWidth + StatsPanel.verticalPad;
-        statsPanel.y = MainGame.game.height / 2;
+        statsPanel.x = MainGame.game.width - StatsPanel.unitWidth + StatsPanel.horizontalPad;
+        statsPanel.y = MainGame.game.height / 2 - StatsPanel.unitHeight + StatsPanel.verticalPad;
 
         // Year
         statsPanel.yearGroup = MainGame.game.make.group();
-        statsPanel.yearGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 0;
+        statsPanel.yearGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 0;
         statsPanel.yearGroup.sprite = MainGame.game.make.sprite(0, 0, 'year_icon');
         statsPanel.yearGroup.addChild(statsPanel.yearGroup.sprite);
-        statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '1950', StatsPanel.textStyle);
+        statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '1950 ', StatsPanel.textStyle);
         statsPanel.yearGroup.addChild(statsPanel.yearGroup.textLabel);
         statsPanel.addChild(statsPanel.yearGroup);
 
         // Population
         statsPanel.popGroup = MainGame.game.make.sprite(0,0);
-        statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 1;
+        statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 1;
         statsPanel.popGroup.sprite = MainGame.game.make.sprite(0, 0, 'population_icon');
         statsPanel.popGroup.addChild(statsPanel.popGroup.sprite);
-        statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '0', StatsPanel.textStyle);
+        statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
         statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
         statsPanel.addChild(statsPanel.popGroup);
         statsPanel.popGroup.inputEnabled=true;
@@ -419,30 +420,56 @@ var StatsPanel = {
             PeopleView.createNew();
         });
 
-        // Money per Turn
-        statsPanel.moneyPerTurnGroup = MainGame.game.make.group();
-        statsPanel.moneyPerTurnGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 2;
-        statsPanel.moneyPerTurnGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
-        statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.sprite);
-        statsPanel.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '+0', StatsPanel.textStyle);
-        statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.textLabel);
-        statsPanel.addChild(statsPanel.moneyPerTurnGroup);
+        // Homelessness
+        statsPanel.homelessGroup = MainGame.game.make.sprite(0,0);
+        statsPanel.homelessGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 2;
+        statsPanel.homelessGroup.sprite = MainGame.game.make.sprite(0, 0, 'homeless_icon');
+        statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.sprite);
+        statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
+        statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.textLabel);
+        statsPanel.addChild(statsPanel.homelessGroup);
+        statsPanel.homelessGroup.inputEnabled=true;
+        statsPanel.homelessGroup.input.priorityID=50;
+        statsPanel.homelessGroup.events.onInputUp.add(function(){
+            PeopleView.createNew();
+        });
+
+        // Unemployment
+        statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0);
+        statsPanel.unemploymentGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 3;
+        statsPanel.unemploymentGroup.sprite = MainGame.game.make.sprite(0, 0, 'unemployed_icon');
+        statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.sprite);
+        statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
+        statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
+        statsPanel.addChild(statsPanel.unemploymentGroup);
+        statsPanel.unemploymentGroup.inputEnabled=true;
+        statsPanel.unemploymentGroup.input.priorityID=50;
+        statsPanel.unemploymentGroup.events.onInputUp.add(function(){
+            PeopleView.createNew();
+        });
 
         // State Money (warchest)
         statsPanel.warchestGroup = MainGame.game.make.group();
-        statsPanel.warchestGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 3;
+        statsPanel.warchestGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 4;
         statsPanel.warchestGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.sprite);
-        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '$0', StatsPanel.textStyle);
+        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, 0, '$0 ', StatsPanel.textStyle);
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
         statsPanel.addChild(statsPanel.warchestGroup);
 
+        // Money Per Turn
+        statsPanel.moneyPerTurnGroup = MainGame.game.make.group();
+        statsPanel.moneyPerTurnGroup.y = statsPanel.warchestGroup.y + StatsPanel.verticalTextOffset;
+        statsPanel.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '(+0) ', StatsPanel.textStyle);
+        statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.textLabel);
+        statsPanel.addChild(statsPanel.moneyPerTurnGroup);
+
         // Swiss Bank (personal money)
         statsPanel.swissGroup = MainGame.game.make.group();
-        statsPanel.swissGroup.y = (StatsPanel.unitHeight + StatsPanel.horizontalPad) * 4;
+        statsPanel.swissGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 5;
         statsPanel.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'swiss_icon');
         statsPanel.swissGroup.addChild(statsPanel.swissGroup.sprite);
-        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.verticalPad, 6, '$0', StatsPanel.textStyle);
+        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '$0 ', StatsPanel.textStyle);
         statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
         statsPanel.addChild(statsPanel.swissGroup);
 
@@ -450,16 +477,20 @@ var StatsPanel = {
         MainGame.game.time.events.loop(500, function() {
             var globalStats = MainGame.global;
 
-            var newPop = MainGame.population.count();
-            var newYear = 1949 + globalStats.turn;
-            var newMoneyPerTurn = '+' + globalStats.moneyPerTurn;
-            var newWarchest = '$' + globalStats.money;
-            var newSwissAccount = '$' + 0;
+            var newPop = MainGame.population.count() + ' ';
+            var newHomeless = MainGame.population.findNotHoused().length;
+            var newUnemployment = MainGame.population.findNotEmployed().length;
+            var newYear = 1949 + globalStats.turn + ' ';
+            var newWarchest = '$' + globalStats.money + ' ';
+            var newMoneyPerTurn = '(+' + globalStats.moneyPerTurn + ') ';
+            var newSwissAccount = '$' + 0 + ' ';
 
-            statsPanel.popGroup.textLabel.text = newPop;
             statsPanel.yearGroup.textLabel.text = newYear;
-            statsPanel.moneyPerTurnGroup.textLabel.text = newMoneyPerTurn;
+            statsPanel.popGroup.textLabel.text = newPop;
+            statsPanel.homelessGroup.textLabel.text = newHomeless;
+            statsPanel.unemploymentGroup.textLabel.text = newUnemployment;
             statsPanel.warchestGroup.textLabel.text = newWarchest;
+            statsPanel.moneyPerTurnGroup.textLabel.text = newMoneyPerTurn;
             statsPanel.swissGroup.textLabel.text = newSwissAccount;
         }, statsPanel);
 
@@ -471,6 +502,7 @@ var StatsPanel = {
 var FunPanel = {
     unitWidth: 120,
     horizontalPad: 5,
+    textStyle: { font: '30px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
     createNew: function() {
         var funPanel = MainGame.game.make.group();
@@ -481,7 +513,7 @@ var FunPanel = {
         funPanel.freeGroup.x = -(FunPanel.unitWidth + FunPanel.horizontalPad/2);
         funPanel.freeGroup.sprite = MainGame.game.make.sprite(0, 0, 'freedom_icon');
         funPanel.freeGroup.addChild(funPanel.freeGroup.sprite);
-        funPanel.freeGroup.textLabel = MainGame.game.make.text(48, 6, '0%', StatsPanel.textStyle);
+        funPanel.freeGroup.textLabel = MainGame.game.make.text(48, 6, '0%', FunPanel.textStyle);
         funPanel.freeGroup.addChild(funPanel.freeGroup.textLabel);
         funPanel.addChild(funPanel.freeGroup);
 
@@ -490,7 +522,7 @@ var FunPanel = {
         funPanel.unrestGroup.x = FunPanel.horizontalPad/2;
         funPanel.unrestGroup.sprite = MainGame.game.make.sprite(0, 0, 'unrest_icon');
         funPanel.unrestGroup.addChild(funPanel.unrestGroup.sprite);
-        funPanel.unrestGroup.textLabel = MainGame.game.make.text(48, 6, '0%', StatsPanel.textStyle);
+        funPanel.unrestGroup.textLabel = MainGame.game.make.text(48, 6, '0%', FunPanel.textStyle);
         funPanel.unrestGroup.addChild(funPanel.unrestGroup.textLabel);
         funPanel.addChild(funPanel.unrestGroup);
 

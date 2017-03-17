@@ -95,6 +95,8 @@ var Preloader={
         g.load.spritesheet('freedom_icon',    iconDir + 'freedom_icon.png');
         g.load.spritesheet('money_icon',      iconDir + 'money_icon.png');
         g.load.spritesheet('population_icon', iconDir + 'population_icon.png');
+        g.load.spritesheet('homeless_icon',   iconDir + 'homeless_icon.png');
+        g.load.spritesheet('unemployed_icon', iconDir + 'unemployed_icon.png');
         g.load.spritesheet('unrest_icon',     iconDir + 'unrest_icon.png');
         g.load.spritesheet('year_icon',       iconDir + 'year_icon.png');
         g.load.spritesheet('swiss_icon',      iconDir + 'swiss_account_icon.png');
