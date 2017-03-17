@@ -51,10 +51,13 @@ var Preloader={
         g.load.image('water3',    resourceDir + 'water3.png');
 
         // load port assets
-        var portDir=imageDir+'ports/';
-        for(var port=0;port<4;port++){
-            g.load.image("smallPort"+port, portDir+"smallPort"+port+".png");
+        var portDir = imageDir + 'ports/';
+        for (var port = 0; port < 10; port++) {
+            g.load.image('bureaucrat_port_' + port, portDir + 'bureaucrat_port_' + port + '.png');
+            g.load.image('military_port_' + port,   portDir + 'military_port_' + port + '.png');
+            g.load.image('merchant_port_' + port,   portDir + 'merchant_port_' + port + '.jpg');
         }
+        g.load.image('defaultPort', portDir + 'defaultPort.png');
 
         // load ui assets
         var uiDir = imageDir + 'ui/';
@@ -106,7 +109,9 @@ var Preloader={
         var iconDir = uiDir + 'icons/';
         g.load.spritesheet('freedom_icon',    iconDir + 'freedom_icon.png');
         g.load.spritesheet('money_icon',      iconDir + 'money_icon.png');
-        g.load.spritesheet('population_icon', iconDir + 'population_icon.png');
+        g.load.spritesheet('population_icon', iconDir + 'population_icon.png', 46, 46, 3);
+        g.load.spritesheet('homeless_icon',   iconDir + 'homeless_icon.png');
+        g.load.spritesheet('unemployed_icon', iconDir + 'unemployed_icon.png');
         g.load.spritesheet('unrest_icon',     iconDir + 'unrest_icon.png');
         g.load.spritesheet('year_icon',       iconDir + 'year_icon.png');
         g.load.spritesheet('swiss_icon',      iconDir + 'swiss_account_icon.png');
@@ -115,7 +120,6 @@ var Preloader={
         g.load.json('stage1','stage1.json');
         g.load.json('stage2','stage2.json');
         g.load.json('stageMain','stageMain.json');
-        g.load.json('stageTest','stageTest.json');
         g.load.json('buildingData','buildingData.json');
         g.load.json('names','Names.json')
     }

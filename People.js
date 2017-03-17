@@ -22,7 +22,7 @@ var Person={
         // Class vars
         p.type=data.type;               // must be one of Person.types
         p.name=(data.name?data.name:Person.randomName());   // either given or randomized
-        p.portIndex=data.portIndex;     // nullable
+        p.portIndex=(data.portIndex!==undefined?data.portIndex:null);     // nullable
         p.workplace=data.workplace;     // nullable, index of the tile
         p.home=data.home;               // nullable, index of the tile
         p.health=(data.health?data.health:0);           // int
@@ -137,7 +137,7 @@ var Person={
         }
         // Update social class
         if(p.type === Person.Low){
-            if(p.health >= 50 || p.shelter >= 50 || p.education >= 50) {
+            if(p.health >= 50 && p.shelter >= 50 && p.education >= 50) {
                 console.log("promotion!");
                 p.setMidClass();
             }
@@ -192,6 +192,7 @@ var Person={
     },
 
     setHighClass: function(p) {
+        console.log("ASDFHJALSKJDFLKASJDFLKAJHSFKLAJHSFLKAJHSFLKASJHFLKASJDFALKSDJFALKSDJLASDF");
         p.type = Person.Hi;
 
         

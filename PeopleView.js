@@ -4,7 +4,7 @@
 var lowPeoplePerPage=10;
 // shows FirstName, LastName, Health, Edu, Shelter
 var PeopleRightView={
-	style: {font:"25px myKaiti", fill:"black"},
+	style: {font:"25px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 	createNew: function(dataRef){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewRightBg");
 		// let right view block click events
@@ -16,12 +16,12 @@ var PeopleRightView={
 		// ListView: [lowPeoplePerPage] items (slots)
 			// createNew(textures, margin, itemSize, itemCallback, isHorizontal)
 		v.listView=DListView.createNew(
-			{},				// don't need textures
-			{l:15,t:40},	// margin inside the list view
-			{w:400, h:40},	// size of an item
+			{},						// don't need textures
+			{l:15,t:40},			// margin inside the list view
+			{w:400, h:40},			// size of an item
 			function(index){PeopleRightView.onPersonSelected(v,index)},	// forwards the callback
-			false,			// not horizontal
-			110				// priority ID
+			false,					// not horizontal
+			110						// priority ID
 		);
 		v.addChild(v.listView);
 		// PageIndicator: N pages
@@ -40,14 +40,14 @@ var PeopleRightView={
 	},
 	onPersonSelected: function(view,index){
 		var globalIndex=view.pageIndicator.getCurPage()*lowPeoplePerPage+index;
-		console.log("PeopleRightView: person selected:",globalIndex);
-		console.log("  and the person's dataRef is:",view.dataRef[globalIndex]);
+		//console.log("PeopleRightView: person selected:",globalIndex);
+		//console.log("  and the person's dataRef is:",view.dataRef[globalIndex]);
 		// TODO: you can change this low person's dataRef if necessary like this:
 		view.dataRef[globalIndex].name+="-Changed by Yi";
 		// TODO: center the person's housing unit	
 	},
 	onPageChanged: function(view,index){
-		console.log("PeoplePageChanged: ",index);
+		//console.log("PeoplePageChanged: ",index);
 		PeopleRightView._setupPage_(view,index);
 	},
 	// each entry is like "Sam Reha | Hth:50 | Edu:50 | Sht:50"
@@ -75,7 +75,7 @@ var PeopleRightView={
 var midHiPeoplePerPage=5;
 // shows the 3 lists(bu,mer,mil) with portraits
 var PeopleLeftView={
-	style: {font:"20px myKaiti", fill:"white"},
+	style: {font:"20px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 	BuType: 0,	// for us to remember, not actually in use, may be removed ITF.
 	MerType: 1,	// ditto.
 	MilType: 2,	// ditto.
@@ -101,7 +101,7 @@ var PeopleLeftView={
 		for(var i=0;i<3;i++){
 			v.listViews[i]=DListView.createNew(
 				{},
-				{l:5,t:5},				// margin - TODO: adjust it!
+				{l:10,t:10},			// margin inside the list view
 				{w:80,h:64},			// each item's size
 				createCallback(i,true),	// callback func
 				true, 					// is horizontal
@@ -127,7 +127,7 @@ var PeopleLeftView={
 	},
 	onPersonSelected: function(view,type,index){
 		var globalIndex=view.pageIndicators[type].getCurPage()*midHiPeoplePerPage+index;
-		console.log("Person selected! type,index=",type,globalIndex);
+		//console.log("Person selected! type,index=",type,globalIndex);
 		// show the detail info of that mid-hi person
 		if(view.lastSelected===globalIndex){
 			view.parent.hideContractView();
@@ -143,11 +143,26 @@ var PeopleLeftView={
 		PeopleLeftView._setupPage_(view,type,index);
 	},
 	// makes the portrait + name. TODO: re-arrange the visual elements
-	_makeEntry_: function(oneEntryData){
-		var entrySprite=MainGame.game.make.sprite(0,0,"smallPort"+oneEntryData.portIndex);
-		var name = oneEntryData.name.split(" ");
-		var entryText=MainGame.game.make.text(0,50,name[0]+"\n"+name[1],PeopleLeftView.style);
-		entrySprite.addChild(entryText);
+	_makeEntry_: function(oneEntryData) {
+		var textureString;
+		switch (oneEntryData.role) {
+			case Person.Bureaucrat:
+				textureString = 'bureaucrat_port_' + oneEntryData.portIndex;
+				break;
+			case Person.Merchant:
+				textureString = 'merchant_port_' + oneEntryData.portIndex;
+				break;
+			case Person.Military:
+				textureString = 'military_port_' + oneEntryData.portIndex;
+				break;
+			default:
+				break;
+		}
+
+		var entrySprite=MainGame.game.make.sprite(0, 0, textureString);
+		// var name = oneEntryData.name.split(" ");
+		// var entryText=MainGame.game.make.text(0,50,name[0]+"\n"+name[1],PeopleLeftView.style);
+		// entrySprite.addChild(entryText);
 		return entrySprite;
 	},
 	_setupPage_: function(view,type,pageIndex){
@@ -172,7 +187,22 @@ var PeopleContractView={
 		// TODO: adjust layout!!
 		// setup its elements
 			// port & name
-		v.port=MainGame.game.make.sprite(10,10,"smallPort"+personDataRef.portIndex);
+		var textureString;
+		switch (personDataRef.role) {
+			case Person.Bureaucrat:
+				textureString = 'bureaucrat_port_' + personDataRef.portIndex;
+				break;
+			case Person.Merchant:
+				textureString = 'merchant_port_' + personDataRef.portIndex;
+				break;
+			case Person.Military:
+				textureString = 'military_port_' + personDataRef.portIndex;
+				break;
+			default:
+				break;
+		}
+
+		v.port = MainGame.game.make.sprite(10, 10, textureString);
 		v.addChild(v.port);
 		v.nameLabel=MainGame.game.make.text(100,10,personDataRef.name,PeopleContractView.contractStyle);
 		v.addChild(v.nameLabel);
@@ -247,6 +277,9 @@ var PeopleContractView={
 			view.dataRef.setHiClass();
 		}
 		view.workLabel.text=(view.dataRef.type===Person.Mid?"Infulence":"Coalition");
+
+		// Update the UI
+		MainGame.hud.coalitionFlag.updateSelf();
 	},
 };
 
@@ -256,7 +289,7 @@ var PeopleView={
 		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
 
 		// TODO: setup the actual position
-		pv.x=100, pv.y=100;
+		pv.x=190, pv.y=100;
 
 		// setup the mask
 		/* global DUiMask */
