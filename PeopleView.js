@@ -228,7 +228,7 @@ var PeopleView={
 		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
 
 		// TODO: setup the actual position
-		pv.x=100, pv.y=100;
+		pv.x=190, pv.y=100;
 
 		// setup the mask
 		/* global DUiMask */
