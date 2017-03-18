@@ -1,6 +1,0 @@
-var EventView={	
-};
-
-var EventController={
-	
-};
