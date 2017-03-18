@@ -1,5 +1,7 @@
 /*global MainGame*/
-//Texture Requirement: small_generic_button
+
+// Design Pattern: M|V|C by functions
+// Texture Requirement: 'small_generic_button' (use Find-Replace to change)
 
 var DDecisionView={
 	// the buttons' positions for 0~3 buttons
@@ -24,7 +26,9 @@ var DDecisionView={
 		v.buttons=[];
 
 		// Class func
-		v.setModel=function(_portrait,_description,buttonTexts){return DDecisionView.setModel(v,_portrait,_description,buttonTexts)};
+		// sets the Model(data). Every arg is nullable(==[will be unchanged])
+		v.setModel=function(_portrait,_description,_buttonTexts){return DDecisionView.setModel(v,_portrait,_description,_buttonTexts)};
+		// sets the Controller(callbacks). #callbacks must === #buttonTexts defined in .setModel()
 		v.setController=function(callbacks,_priorityID){return DDecisionView.setController(v,callbacks,_priorityID)};
 
 		// return the view
@@ -61,6 +65,9 @@ var DDecisionView={
 		console.assert(v.buttons.length===callbacks.length);
 		for(var i=0;i<v.buttons.length;i++){
 			console.assert(typeof callbacks[i]==="function");
+			// remove old controller
+			v.buttons[i].events.onInputUp.removeAll();
+			// add new controller			
 			v.buttons[i].index=i;			
 			v.buttons[i].inputEnabled=true;
 			v.buttons[i].input.priorityID=(_priorityID?_priorityID:20);

@@ -34,7 +34,7 @@ var DPageIndicator={
 
 		// Class funcs
 		// sets the callback: function pageChange(curPage){}
-		v.setCallback=function(callback,_priorityID){return DPageIndicator.setCallbacks(v,callback,_priorityID)};
+		v.setController=function(callback,_priorityID){return DPageIndicator.setController(v,callback,_priorityID)};
 		// returns the current page index (starting 0)
 		v.getCurPage=function(){return v.curPage};
 		// sets the callback func of PageChanged
@@ -42,7 +42,7 @@ var DPageIndicator={
 
 		return v;
 	},
-	setCallbacks: function(v, callback, _priorityID){
+	setController: function(v, callback, _priorityID){
 		var pageNames=["prevPage","nextPage"];
 		for(var i=0;i<pageNames.length;i++){
 			v[pageNames[i]].inputEnabled=true;
