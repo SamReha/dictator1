@@ -89,7 +89,7 @@ var CoalitionFlag = {
 
 			var toolTip = ToolTip.createNew(minister.name);
 			toolTip.x = -46 - toolTip.width;
-			toolTip.y = 28;
+			toolTip.y = 18;
         	button.addChild(toolTip);
         	button.events.onInputOver.add(function() {toolTip.show();}, null);
         	button.events.onInputOut.add(function() {toolTip.hide();}, null);

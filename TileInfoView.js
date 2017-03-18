@@ -196,8 +196,8 @@ var TileDetailView={
             if(bld.effects[outIndex].type===null)
                 break;
 
-            if(outIndex===0){
-                view.health.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+            if (outIndex === 0) {
+                view.health.text = outType + " Output: " + bld.effects[outIndex].outputTable[bld.people];
             }else if(outIndex===1){
                 view.education.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
             }else if(outIndex===2){
@@ -302,25 +302,27 @@ var TileDetailView={
                 shelterDescription = "are very comfortable";
             } else shelterDescription = "are extremely comfortable";
 
-            str3 = sentenceStart + healthDescription;//"Health: " + bld.health;
-            str4 = sentenceStart + eduDescription;// + bld.education;
-            str5 = sentenceStart + shelterDescription;// + bld.shelter;
+            str3 = sentenceStart + healthDescription;
+            str4 = sentenceStart + eduDescription;
+            str5 = sentenceStart + shelterDescription;
         }
 
-        if(bld.effects[0].type!==null){
+        if (bld.effects[0].type !== null) {
             for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
                 var outType = bld.effects[outIndex].type;
                 var outValue = bld.effects[outIndex].outputTable[bld.people];
-                if(outType==="health"){ outType="Health";   }
-                else if(outType==="education"){ outType="Edu";  }
-                else if(outType==="freedom"){   outType="Freedom";    }
-                else if(outType==="unrest"){    outType="Unrest"; }
-                else if(outType==="money"){
+
+                if (outType === "health") {
+                    outType = "Health";
+                } else if (outType === "education") { outType="Education"; }
+                else if (outType === "freedom") { outType="Freedom"; }
+                else if (outType === "unrest") { outType="Unrest"; }
+                else if (outType === "money") {
                     outType="Money";
                     outValue="$"+outValue+"K";
                 }
         
-                if(outIndex===0){
+                if (outIndex===0) {
                     str3 = outType + " Output: " + outValue;
                 }else if(outIndex===1){
                     str4=outType+" Output: "+outValue;

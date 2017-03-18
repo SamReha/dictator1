@@ -467,7 +467,7 @@ var StatsPanel = {
         statsPanel.warchestGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
         statsPanel.warchestGroup.sprite.inputEnabled = true;
 
-        var moneyToolTip = ToolTip.createNew("Cash");
+        var moneyToolTip = ToolTip.createNew("Funds");
         moneyToolTip.y = 32;
         statsPanel.warchestGroup.sprite.addChild(moneyToolTip);
         statsPanel.warchestGroup.sprite.events.onInputOver.add(function() {moneyToolTip.show();}, null);
@@ -547,8 +547,8 @@ var FunPanel = {
         freeSprite.toolTip = ToolTip.createNew('Total Freedom');
         freeSprite.toolTip.y = 48;
         freeSprite.addChild(freeSprite.toolTip);
-        freeSprite.events.onInputOver.add(function() {freeSprite.toolTip.show();}, freeSprite);
-        freeSprite.events.onInputOut.add(function() {freeSprite.toolTip.hide();}, freeSprite);
+        freeSprite.events.onInputOver.add(function() {freeSprite.toolTip.show();}, null);
+        freeSprite.events.onInputOut.add(function() {freeSprite.toolTip.hide();}, null);
         funPanel.freeGroup.sprite = freeSprite;
         funPanel.freeGroup.addChild(funPanel.freeGroup.sprite);
 
@@ -565,8 +565,8 @@ var FunPanel = {
         unrestSprite.toolTip = ToolTip.createNew('Total Unrest');
         unrestSprite.toolTip.y = 48;
         unrestSprite.addChild(unrestSprite.toolTip);
-        unrestSprite.events.onInputOver.add(function() {unrestSprite.toolTip.show();}, unrestSprite);
-        unrestSprite.events.onInputOut.add(function() {unrestSprite.toolTip.hide();}, unrestSprite);
+        unrestSprite.events.onInputOver.add(function() {unrestSprite.toolTip.show();}, null);
+        unrestSprite.events.onInputOut.add(function() {unrestSprite.toolTip.hide();}, null);
         funPanel.unrestGroup.sprite = unrestSprite;
         funPanel.unrestGroup.addChild(funPanel.unrestGroup.sprite);
 
@@ -592,16 +592,17 @@ var FunPanel = {
 var ToolTip = {
     textSize: 16,
     horizontalPad: 5,
+    verticalPad: 0,
 
     createNew: function(tipText) {
         var style = { font: ToolTip.textSize + 'px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle' };
-        var toolTipText = MainGame.game.make.text(ToolTip.horizontalPad, -1, tipText, style);
+        var toolTipText = MainGame.game.make.text(ToolTip.horizontalPad, 2, tipText, style);
         toolTipText.text = tipText;
 
         var toolTip = MainGame.game.make.graphics();
         toolTip.lineStyle(0);
         toolTip.beginFill(0x000000, 0.66);
-        toolTip.drawRect(0, 0, toolTipText.width + (ToolTip.horizontalPad * 2), ToolTip.textSize + 3);
+        toolTip.drawRect(0, 0, toolTipText.width + (ToolTip.horizontalPad * 2), toolTipText.height + (ToolTip.verticalPad * 2));
         toolTip.endFill();
 
         toolTip.addChild(toolTipText);
@@ -614,6 +615,7 @@ var ToolTip = {
     },
 
     show: function(toolTip) {
+        MainGame.game.world.bringToTop(toolTip);
         toolTip.visible = true;
     },
     hide: function(toolTip) {
