@@ -508,8 +508,8 @@ var StatsPanel = {
             var globalStats = MainGame.global;
 
             var newPop = MainGame.population.count() + ' ';
-            var newHomeless = MainGame.population.findNotHoused().length;
-            var newUnemployment = MainGame.population.findNotEmployed().length;
+            var newHomeless = MainGame.population.findNotHoused().length + ' ';
+            var newUnemployment = MainGame.population.findNotEmployed().length + ' ';
             var newYear = 1949 + globalStats.turn + ' ';
             var newWarchest = '$' + globalStats.money + ' ';
             var newMoneyPerTurn = '(+' + globalStats.moneyPerTurn + ') ';
