@@ -308,26 +308,46 @@ var TileDetailView={
         }
 
         if (bld.effects[0].type !== null) {
-            for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
+            for (var outIndex=0; outIndex < bld.effects.length; ++outIndex) {
                 var outType = bld.effects[outIndex].type;
                 var outValue = bld.effects[outIndex].outputTable[bld.people];
+                var sentenceStart = 'This building ';
+                var outDescription = '';
 
                 if (outType === "health") {
-                    outType = "Health";
-                } else if (outType === "education") { outType="Education"; }
-                else if (outType === "freedom") { outType="Freedom"; }
-                else if (outType === "unrest") { outType="Unrest"; }
-                else if (outType === "money") {
-                    outType="Money";
-                    outValue="$"+outValue+"K";
+                    if (outValue === 0) {
+                        outDescription = 'provides no food';
+                    } else if (outValue > 0 && outValue < 25) {
+                        outDescription = "provides little food";
+                    } else if (outValue >= 25 && outValue < 50) {
+                        outDescription = "provides some food";
+                    } else if (outValue >= 50 && outValue < 75) {
+                        outDescription = "provides plenty food";
+                    } else outDescription = "provides abundant food";
+                } else if (outType === "education") {
+                    if (outValue === 0) {
+                        outDescription = 'provides no education';
+                    } else if (outValue > 0 && outValue < 25) {
+                        outDescription = "provides little education";
+                    } else if (outValue >= 25 && outValue < 50) {
+                        outDescription = "provides some education";
+                    } else if (outValue >= 50 && outValue < 75) {
+                        outDescription = "provides very good education";
+                    } else outDescription = "provides extremely good education";
+                } else if (outType === "freedom") {
+                    outDescription = 'generates '  + outValue + ' Freedom';
+                } else if (outType === "unrest") {
+                    outDescription = 'generates '  + outValue + ' Unrest';
+                } else if (outType === "money") {
+                    outDescription = 'generates $'  + outValue + 'k each turn';
                 }
         
-                if (outIndex===0) {
-                    str3 = outType + " Output: " + outValue;
-                }else if(outIndex===1){
-                    str4=outType+" Output: "+outValue;
-                }else if(outIndex===2){
-                    str5.text=outType+" Output: "+outValue;
+                if (outIndex === 0) {
+                    str3 = sentenceStart + outDescription;
+                } else if(outIndex === 1) {
+                    str4 = sentenceStart + outDescription;
+                } else if(outIndex === 2) {
+                    str5 = sentenceStart + outDescription;
                 }
             }
         }

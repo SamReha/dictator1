@@ -1,7 +1,7 @@
 var CoalitionFlag = {
 	origin: { x:1280, y:100 },
-	unitWidth: 48,
-	unitHeight: 48,
+	unitWidth: 46,
+	unitHeight: 46,
 	verticalPad: 4,
 
 	createNew: function() {
