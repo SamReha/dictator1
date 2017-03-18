@@ -1,9 +1,6 @@
 /*global MainGame*/
-/*global DPageIndicator*/
+//Texture Requirement: med_generic_button
 
-//Texture requirement - event_bg, 
-
-// the M (model) & V (view) of event system
 var DDecisionView={
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
@@ -43,7 +40,9 @@ var DDecisionView={
 		}
 		// add new buttons
 		for(var i=0;i<buttonTexts.length;i++){
-			v.buttons[i]=MainGame.game.add.sprite(0,0,"generic_button");	//TODO
+			v.buttons[i]=MainGame.game.add.sprite(0,0,"med_generic_button");	//TODO
+			v.buttons[i].x=DDecisionView.buttonPos[i].x;
+			v.buttons[i].y=DDecisionView.buttonPos[i].y;
 			v.buttons[i].label=MainGame.game.add.text(0,0,buttonTexts[i]);
 			v.buttons[i].addChild(v.buttons[i].label);
 			v.addChild(v.buttons[i]);
@@ -59,32 +58,4 @@ var DDecisionView={
 			v.buttons[i].events.onInputUp.add(callbacks, v.buttons[i]);
 		}
 	},
-};
-
-var Event={
-	createNew: function(events){
-		var v=MainGame.game.add.sprite(0,0,"event_bg");
-		v.decisionView=DDecisionView:createNew();
-		v.addChild(v.decisionPage);
-		v.pageIndicator=DPageIndicator:createNew(events.count, {width:,textPos:});
-		v.addChild(v.pageIndicator);
-		return v;
-	}
-};
-//pageCount, layout, pageChangedCallback, priorityID
-var EventController={
-	createNew: function(event){
-		var ec={};
-		ec.modelView=event;
-		// setup event listener
-
-		return ec;
-	},
-	onButton1Pressed: function(){
-
-	},
-	onButton2Pressed: function(){
-
-	},
-	
 };
