@@ -7,13 +7,14 @@ var DDecisionView={
 		[],											// 0 button
 		[{x:200,y:100}],							// 1 button
 		[{x:100,y:100},{x:300,y:100}],				// 2 buttons
-		[{x:0,y:100},{x:200,y:100},{x:400,y:100}]	// 3 buttons
+		[{x:0,y:100},{x:200,y:100},{x:400,y:100}],	// 3 buttons
+		[{x:0,y:100},{x:150,y:100},{x:300,y:100},{x:450,y:100}]	// 4 buttons
 	],
 
 	createNew: function(){
 		// create the view
 		var v=MainGame.game.add.sprite(0,0);
-		// add portrait.portrait
+		// add portrait
 		v.portrait=MainGame.game.add.sprite(50,20);
 		v.addChild(v.portrait);
 		// add description text
@@ -23,34 +24,40 @@ var DDecisionView={
 		v.buttons=[];
 
 		// Class func
-		v.setModel=function(portrait,description,buttonTexts){return DDecisionView.setModel(v,portrait,description,buttonTexts)};
-		v.setCallbacks=function(callbacks,_priorityID){return DDecisionView.setCallbacks(v,callbacks,_priorityID)};
+		v.setModel=function(_portrait,_description,buttonTexts){return DDecisionView.setModel(v,_portrait,_description,buttonTexts)};
+		v.setController=function(callbacks,_priorityID){return DDecisionView.setController(v,callbacks,_priorityID)};
 
 		// return the view
 		return v;
 	},
 
-	setModel: function(v, portrait, description, buttonTexts){
-		v.portrait.loadTexture(portrait);
-		v.description.text=description;
+	// set the Model (data) of this view
+	setModel: function(v, _portrait, _description, _buttonText){
+		if(_portrait!==null && _portrait!==undefined)
+			v.portrait.loadTexture(_portrait===""?null:_portrait);
+		if(_description!==null && _description!==undefined)
+			v.description.text=_description;
+		if(_buttonText===null || _buttonText===undefined)
+			return;
 		// remove current buttons
 		for(var j=v.buttons.length-1;j>=0;j--){
 			v.buttons[j].destroy();	// destory the sprite
 			v.buttons.splice(j,1);	// remove it from array v.buttons
 		}
 		// add new buttons
-		for(var i=0;i<buttonTexts.length;i++){
-			var pos=DDecisionView.buttonPos[buttonTexts.length][i];
+		for(var i=0;i<_buttonText.length;i++){
+			var pos=DDecisionView.buttonPos[_buttonText.length][i];
 			// console.log("Here is the pos:",pos.x,pos.y);
 			v.buttons[i]=MainGame.game.make.button(pos.x, pos.y,
 				"small_generic_button", null, v.buttons[i], 0, 1, 2);
-			v.buttons[i].label=MainGame.game.add.text(0,0,buttonTexts[i]);
+			v.buttons[i].label=MainGame.game.add.text(0,0,_buttonText[i]);
 			v.buttons[i].addChild(v.buttons[i].label);
 			v.addChild(v.buttons[i]);
 		}
 	},
 
-	setCallbacks: function(v, callbacks, _priorityID){
+	// set the Controller (callbacks) of this view
+	setController: function(v, callbacks, _priorityID){
 		console.assert(v.buttons.length===callbacks.length);
 		for(var i=0;i<v.buttons.length;i++){
 			console.assert(typeof callbacks[i]==="function");
@@ -73,24 +80,21 @@ function test_DDecisionView(){
     deciView.setModel(
         'smallPort0', 
         "Hey, please buy me a TOYOTA pickup!", 
-        ["YES","No Way", "Change Model"]
+        ["Chg Text", "Chg Port", "Rm Port", "Chg Button"]
     );
 
     // set the callback (controller)
-    deciView.setCallbacks([
-        function(){console.log("You chose:",this.index)},
-        function(){console.log("You chose:",this.index)},
+    deciView.setController([
+        function(){deciView.setModel(null, "Text Changed."+this.index)},
+        function(){deciView.setModel('smallPort1')},
+    	function(){deciView.setModel('')},
         function(){
-        	deciView.setModel(
-        		'smallPort1', 
-        		"Model changed!",
-        		["Good","Bad"]
-        	);
-        	deciView.setCallbacks([
-        		function(){console.log("You selected:",this.index)},
-        		function(){console.log("You selected:",this.index)}
+        	deciView.setModel(null,null,["Good","Bad"]);
+        	deciView.setController([
+        		function(){deciView.setModel(null,"You selected:"+this.index)},
+        		function(){deciView.setModel(null,"You selected:"+this.index)}
         	]);
-    	} // end of function
-    ]); // end of setCallbacks
+    	}// end of function
+    ]); // end of setController
 
 }
