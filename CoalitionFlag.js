@@ -87,6 +87,13 @@ var CoalitionFlag = {
 			var button = MainGame.game.make.button(0, 0, textureString, function() {CoalitionFlag.showMinisterContract(minister);});
 			button.anchor.x = 1;
 
+			var toolTip = ToolTip.createNew(minister.name);
+			toolTip.x = -46 - toolTip.width;
+			toolTip.y = 28;
+        	button.addChild(toolTip);
+        	button.events.onInputOver.add(function() {toolTip.show();}, null);
+        	button.events.onInputOut.add(function() {toolTip.hide();}, null);
+
 			return button;
 		} else {
 			var sprite = MainGame.game.make.sprite(0, 0, 'defaultPort');

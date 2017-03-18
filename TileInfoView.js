@@ -12,7 +12,7 @@ var fontDetail=[
 function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
 	console.assert(building, "Building can NOT be null!");
 	// now set text!
-	buildingTextView.text=building.name.toUpperCase();	
+	buildingTextView.text = building.playerLabel;//building.name.toUpperCase();	
 	if(building.maxPeople){
 		if(building.subtype==="housing")
 			peopleTextView.text="Residents:"+building.people+"/"+building.maxPeople;
@@ -63,7 +63,7 @@ var TileBriefView={
 	updateInfo: function(t, tile){
 		console.assert(tile);
         // show terrain+res info
-        t.terrain.text=tile.terrain.key+ (tile.getResType()?" ("+tile.getResType()+")":"" );
+        t.terrain.text=tile.terrainLabel + (tile.getResType()?" ("+tile.resLabel+")":"" );
 
         // show building+people info
         if(tile.hasBuilding())
@@ -272,11 +272,41 @@ var TileDetailView={
         var str4="";
         var str5="";
         
-        if(bld.subtype==="housing"){
-            str3="Health: "+bld.health;
-            str4="Education: "+bld.education;
-            str5="Shelter: "+bld.shelter;
+        if (bld.subtype === "housing") {
+            var sentenceStart = "Residents of this building ";
+            var healthDescription = "are starving";
+            var eduDescription = "are illiterate";
+            var shelterDescription = "are unsheltered";
+
+            if (bld.health > 0 && bld.health < 25) {
+                healthDescription = "have little food";
+            } else if (bld.health >= 25 && bld.health < 50) {
+                healthDescription = "have some food";
+            } else if (bld.health >= 50 && bld.health < 75) {
+                healthDescription = "have plenty food";
+            } else healthDescription = "have abundant food";
+
+            if (bld.education > 0 && bld.education < 25) {
+                eduDescription = "have little education";
+            } else if (bld.education >= 25 && bld.education < 50) {
+                eduDescription = "have some education";
+            } else if (bld.education >= 50 && bld.education < 75) {
+                eduDescription = "are very well educated";
+            } else eduDescription = "are extremely well educated";
+
+            if (bld.shelter > 0 && bld.shelter < 25) {
+                shelterDescription = "have poor shelter";
+            } else if (bld.shelter >= 25 && bld.shelter < 50) {
+                shelterDescription = "have decent shelter";
+            } else if (bld.shelter >= 50 && bld.shelter < 75) {
+                shelterDescription = "are very comfortable";
+            } else shelterDescription = "are extremely comfortable";
+
+            str3 = sentenceStart + healthDescription;//"Health: " + bld.health;
+            str4 = sentenceStart + eduDescription;// + bld.education;
+            str5 = sentenceStart + shelterDescription;// + bld.shelter;
         }
+
         if(bld.effects[0].type!==null){
             for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
                 var outType = bld.effects[outIndex].type;
@@ -291,7 +321,7 @@ var TileDetailView={
                 }
         
                 if(outIndex===0){
-                    str3=outType+" Output: "+outValue;
+                    str3 = outType + " Output: " + outValue;
                 }else if(outIndex===1){
                     str4=outType+" Output: "+outValue;
                 }else if(outIndex===2){

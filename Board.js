@@ -27,6 +27,34 @@ var Tile={
             tile.addChild(tile.res);
         }
 
+        // Set resLabel and terrainLabel
+        switch (tile.resType) {
+            case 'forest':
+                tile.resLabel = 'Forest';
+                break;
+            case 'coal':
+                tile.resLabel = 'Coal';
+                break;
+            case 'wheat':
+                tile.resLabel = 'Pasture';
+                break;
+            default:
+                break;
+        }
+
+        switch (tile.terrain.key) {
+            case 'grass':
+                tile.terrainLabel = 'Grass';
+                break;
+            case 'mountain':
+                tile.terrainLabel = 'Mountains';
+                break;
+            case 'water':
+                tile.terrainLabel = 'Water';
+                break;
+            default:
+                break;
+        }
 
         /* global Building*/
         tile.building=Building.createNew(data.building);
@@ -110,7 +138,7 @@ var Board = {
         // maybe removed in the future
         board._offset={x:0,y:0};
 
-        console.log(board.currentScale, board.currentZoomIndex);
+        //console.log(board.currentScale, board.currentZoomIndex);
 
         // Class funcs
         // returns the JSON string representation
