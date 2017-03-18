@@ -13,6 +13,7 @@
     <script type="text/javascript" src="Board.js"></script>
     <script type="text/javascript" src="BoardController.js"></script>
     <script type="text/javascript" src="Building.js"></script>
+    <script type="text/javascript" src="DDecisionView.js"></script>
     <script type="text/javascript" src="DListView.js"></script>
     <script type="text/javascript" src="DPageIndicator.js"></script>
     <script type="text/javascript" src="DUiMask.js"></script>
@@ -112,6 +113,21 @@ function create() {
 
     // play bgm
     // Sound.playSound(0);
+
+    // test decision view
+    var deciView=DDecisionView.createNew();
+    deciView.x=200;
+    deciView.y=200;
+    deciView.setModel(
+        'smallPort0', 
+        "Hey, please by me a TOYOTA pickup!", 
+        ["YES","No Way","Fuck you"]
+    );
+    deciView.setCallbacks([
+        function(){console.log("You chose:",this.index)},
+        function(){console.log("You chose:",this.index)},
+        function(){console.log("You chose:",this.index)},
+    ]);
 }
 
 function update() {

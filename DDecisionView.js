@@ -5,9 +5,9 @@ var DDecisionView={
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
 		[],											// 0 button
-		[{x:150,y:100}],							// 1 button
-		[{x:100,y:100},{x:200,y:100}],				// 2 buttons
-		[{x:50,y:100},{x:125,y:100},{x:200,y:100}]	// 3 buttons
+		[{x:200,y:100}],							// 1 button
+		[{x:100,y:100},{x:300,y:100}],				// 2 buttons
+		[{x:0,y:100},{x:200,y:100},{x:400,y:100}]	// 3 buttons
 	],
 
 	createNew: function(){
@@ -23,8 +23,8 @@ var DDecisionView={
 		v.buttons=[];
 
 		// Class func
-		v.setModel=function(portrait,description,buttonTexts){return DecisionPage.setModel(v,portrait,description,buttonTexts)};
-		v.setCallbacks=function(callbacks,_priorityID){return DecisionPage.setCallbacks(v,callbacks,_priorityID)};
+		v.setModel=function(portrait,description,buttonTexts){return DDecisionView.setModel(v,portrait,description,buttonTexts)};
+		v.setCallbacks=function(callbacks,_priorityID){return DDecisionView.setCallbacks(v,callbacks,_priorityID)};
 
 		// return the view
 		return v;
@@ -40,9 +40,10 @@ var DDecisionView={
 		}
 		// add new buttons
 		for(var i=0;i<buttonTexts.length;i++){
-			v.buttons[i]=MainGame.game.add.sprite(0,0,"med_generic_button");	//TODO
-			v.buttons[i].x=DDecisionView.buttonPos[i].x;
-			v.buttons[i].y=DDecisionView.buttonPos[i].y;
+			var pos=DDecisionView.buttonPos[buttonTexts.length][i];
+			console.log("Here is the pos:",pos.x,pos.y);
+			v.buttons[i]=MainGame.game.make.button(pos.x, pos.y,
+				"med_generic_button", null, v.buttons[i], 0, 1, 2);
 			v.buttons[i].label=MainGame.game.add.text(0,0,buttonTexts[i]);
 			v.buttons[i].addChild(v.buttons[i].label);
 			v.addChild(v.buttons[i]);
@@ -50,12 +51,13 @@ var DDecisionView={
 	},
 
 	setCallbacks: function(v, callbacks, _priorityID){
-		console.assert(v.buttons.length===callbacks.length);
-		for(var i=0;i<v.buttons.length;i++){
-			v.buttons[i].index=i;			
-			v.buttons[i].inputEnabled=true;
-			v.buttons[i].input.priorityID=(_priorityID?_priorityID:20);
-			v.buttons[i].events.onInputUp.add(callbacks, v.buttons[i]);
-		}
+		// console.assert(v.buttons.length===callbacks.length);
+		// for(var i=0;i<v.buttons.length;i++){
+		// 	console.assert(typeof callbacks[i]==="function");
+		// 	v.buttons[i].index=i;			
+		// 	v.buttons[i].inputEnabled=true;
+		// 	v.buttons[i].input.priorityID=(_priorityID?_priorityID:20);
+		// 	v.buttons[i].events.onInputUp.add(callbacks[i], v.buttons[i]);
+		// }
 	},
 };
