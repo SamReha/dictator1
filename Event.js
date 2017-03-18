@@ -62,7 +62,7 @@ var Event={
 
 function test_Event(){
 	var e=Event.createNew();
-	e.position.set(300,300);
+	e.position.set(300,100);
 	e.setModel([
 		{portrait:'smallPort0',description:'This is event 1.',buttonTexts:["Ok"]},
 		{portrait:'smallPort1',description:'Are you a dumbass?',buttonTexts:["Yes"]},
