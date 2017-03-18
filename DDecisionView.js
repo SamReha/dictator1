@@ -1,5 +1,5 @@
 /*global MainGame*/
-//Texture Requirement: med_generic_button
+//Texture Requirement: small_generic_button
 
 var DDecisionView={
 	// the buttons' positions for 0~3 buttons
@@ -41,9 +41,9 @@ var DDecisionView={
 		// add new buttons
 		for(var i=0;i<buttonTexts.length;i++){
 			var pos=DDecisionView.buttonPos[buttonTexts.length][i];
-			console.log("Here is the pos:",pos.x,pos.y);
+			// console.log("Here is the pos:",pos.x,pos.y);
 			v.buttons[i]=MainGame.game.make.button(pos.x, pos.y,
-				"med_generic_button", null, v.buttons[i], 0, 1, 2);
+				"small_generic_button", null, v.buttons[i], 0, 1, 2);
 			v.buttons[i].label=MainGame.game.add.text(0,0,buttonTexts[i]);
 			v.buttons[i].addChild(v.buttons[i].label);
 			v.addChild(v.buttons[i]);
@@ -51,13 +51,46 @@ var DDecisionView={
 	},
 
 	setCallbacks: function(v, callbacks, _priorityID){
-		// console.assert(v.buttons.length===callbacks.length);
-		// for(var i=0;i<v.buttons.length;i++){
-		// 	console.assert(typeof callbacks[i]==="function");
-		// 	v.buttons[i].index=i;			
-		// 	v.buttons[i].inputEnabled=true;
-		// 	v.buttons[i].input.priorityID=(_priorityID?_priorityID:20);
-		// 	v.buttons[i].events.onInputUp.add(callbacks[i], v.buttons[i]);
-		// }
+		console.assert(v.buttons.length===callbacks.length);
+		for(var i=0;i<v.buttons.length;i++){
+			console.assert(typeof callbacks[i]==="function");
+			v.buttons[i].index=i;			
+			v.buttons[i].inputEnabled=true;
+			v.buttons[i].input.priorityID=(_priorityID?_priorityID:20);
+			v.buttons[i].events.onInputUp.add(callbacks[i], v.buttons[i]);
+		}
 	},
 };
+
+
+// The test case function
+function test_DDecisionView(){
+	var deciView=DDecisionView.createNew();
+    deciView.x=200;
+    deciView.y=200;
+    
+    // set the model (data)
+    deciView.setModel(
+        'smallPort0', 
+        "Hey, please buy me a TOYOTA pickup!", 
+        ["YES","No Way", "Change Model"]
+    );
+
+    // set the callback (controller)
+    deciView.setCallbacks([
+        function(){console.log("You chose:",this.index)},
+        function(){console.log("You chose:",this.index)},
+        function(){
+        	deciView.setModel(
+        		'smallPort1', 
+        		"Model changed!",
+        		["Good","Bad"]
+        	);
+        	deciView.setCallbacks([
+        		function(){console.log("You selected:",this.index)},
+        		function(){console.log("You selected:",this.index)}
+        	]);
+    	} // end of function
+    ]); // end of setCallbacks
+
+}

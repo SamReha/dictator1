@@ -115,19 +115,7 @@ function create() {
     // Sound.playSound(0);
 
     // test decision view
-    var deciView=DDecisionView.createNew();
-    deciView.x=200;
-    deciView.y=200;
-    deciView.setModel(
-        'smallPort0', 
-        "Hey, please by me a TOYOTA pickup!", 
-        ["YES","No Way","Fuck you"]
-    );
-    deciView.setCallbacks([
-        function(){console.log("You chose:",this.index)},
-        function(){console.log("You chose:",this.index)},
-        function(){console.log("You chose:",this.index)},
-    ]);
+    test_DDecisionView();
 }
 
 function update() {
