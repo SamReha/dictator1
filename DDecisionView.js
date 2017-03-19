@@ -85,7 +85,7 @@ function test_DDecisionView(){
     
     // set the model (data)
     deciView.setModel(
-        'smallPort0', 
+        'bureaucrat_port_0', 
         "Hey, please buy me a TOYOTA pickup!", 
         ["Chg Text", "Chg Port", "Rm Port", "Chg Button"]
     );
@@ -93,7 +93,7 @@ function test_DDecisionView(){
     // set the callback (controller)
     deciView.setController([
         function(){deciView.setModel(null, "Text Changed."+this.index)},
-        function(){deciView.setModel('smallPort1')},
+        function(){deciView.setModel('bureaucrat_port_2')},
     	function(){deciView.setModel('')},
         function(){
         	deciView.setModel(null,null,["Good","Bad"]);

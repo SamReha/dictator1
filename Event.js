@@ -85,7 +85,7 @@ function test_Event(){
 	var e=Event.createNew();
 	e.position.set(50,50);
 	e.setModel([
-		{portrait:'smallPort0',description:"Yi: please select a test.",buttonTexts:["Choice","Info"]}
+		{portrait:'bureaucrat_port_0',description:"Yi: please select a test.",buttonTexts:["Choice","Info"]}
 	]);
 	e.setController([
 		[function(){
@@ -103,10 +103,10 @@ function test_Event_choice(){
 	var eChoice=Event.createNew();
 	eChoice.position.set(300,100);
 	eChoice.setModel([
-		{portrait:'smallPort0',description:'Yi: Hey, MJ has a \nquestion.',buttonTexts:["Go ahead"]},
-		{portrait:'smallPort1',description:'MJ: Are you a dumbass?',buttonTexts:["Yes","NO"]},
-		{portrait:'smallPort1',description:'MJ: Of course you are!',buttonTexts:["Close"]},
-		{portrait:'smallPort1',description:'MJ: What? You are not?',buttonTexts:["Close"]}
+		{portrait:'bureaucrat_port_0',description:'Yi: Hey, MJ has a \nquestion.',buttonTexts:["Go ahead"]},
+		{portrait:'bureaucrat_port_2',description:'MJ: Are you a dumbass?',buttonTexts:["Yes","NO"]},
+		{portrait:'bureaucrat_port_2',description:'MJ: Of course you are!',buttonTexts:["Close"]},
+		{portrait:'bureaucrat_port_2',description:'MJ: What? You are not?',buttonTexts:["Close"]}
 	]);
 	eChoice.setController([
 		[function(){eChoice.gotoPage(1)}],
@@ -120,8 +120,8 @@ function test_Event_info(){
 	var eInfo=Event.createNew(true);
 	eInfo.position.set(250,150);
 	eInfo.setModel([
-		{portrait:'smallPort0',description:"Yi: Your people are \nangrier.",buttonTexts:[]},
-		{portrait:'smallPort1',description:"MJ: Your people are \nfreer.",buttonTexts:[]},
-		{portrait:'smallPort0',description:"Yi: ...and you are \nbroke",buttonTexts:[]}
+		{portrait:'bureaucrat_port_0',description:"Yi: Your people are \nangrier.",buttonTexts:[]},
+		{portrait:'bureaucrat_port_2',description:"MJ: Your people are \nfreer.",buttonTexts:[]},
+		{portrait:'bureaucrat_port_0',description:"Yi: ...and you are \nbroke",buttonTexts:[]}
 	]);
 }
