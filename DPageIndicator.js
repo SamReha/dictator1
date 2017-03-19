@@ -33,12 +33,31 @@ var DPageIndicator={
 		v.pageText.x=layout.textPos.x, v.pageText.y=layout.textPos.y;
 
 		// Class funcs
+		v.setModel=function(cur,max){DPageIndicator.setModel(v,cur,max)};
+		// sets the callback: function pageChange(curPage){}
+		v.setController=function(callback,_priorityID){return DPageIndicator.setController(v,callback,_priorityID)};
 		// returns the current page index (starting 0)
 		v.getCurPage=function(){return v.curPage};
 		// sets the callback func of PageChanged
 		v.setPageChangedCallback=function(callback){v.pageChangedCallback=callback};
 
 		return v;
+	},
+	setModel: function(v, curPage, pageCount){
+		console.assert(curPage>=0 && curPage<pageCount);
+		v.curPage=curPage;
+		v.pageCount=pageCount;
+		DPageIndicator._setPageText_(v);
+		v.prevPage.visible=(v.curPage>0);
+		v.nextPage.visible=(v.curPage<v.pageCount-1);
+	},
+	setController: function(v, callback, _priorityID){
+		var pageNames=["prevPage","nextPage"];
+		for(var i=0;i<pageNames.length;i++){
+			v[pageNames[i]].inputEnabled=true;
+			v[pageNames[i]].input.priorityID=(_priorityID?_priorityID:20);
+		}
+		v.pageChangedCallback=callback;
 	},
 	onPrevPage: function(){
 		// console.log("PageIndicator: onPrevPage");

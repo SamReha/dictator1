@@ -16,7 +16,8 @@ var Person={
     
     // the create function
     createNew: function(data){  // data is a Table
-        //console.log("[People] created.",data);
+        // console.log("[People] created.",data);
+
         var p={};
         
         // Class vars

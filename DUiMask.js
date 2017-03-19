@@ -20,4 +20,16 @@ var DUiMask={
 
 		return m;
 	},
+	addClickMask: function(priorityID, callback){
+		var m=MainGame.game.add.sprite(0,0,"uiMask");
+		MainGame.game.world.moveDown(m);
+		m.scale.set(MainGame.game.width/16, MainGame.game.height/16);
+		m.alpha=0.75;
+		m.inputEnabled=true;
+		m.input.priorityID=priorityID;
+		m.events.onInputDown.add(function(){
+			callback();
+		});
+		return m;
+	}
 };
