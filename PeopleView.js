@@ -24,14 +24,11 @@ var PeopleRightView={
 			110						// priority ID
 		);
 		v.addChild(v.listView);
-		// PageIndicator: N pages
+		// DPageIndicator: N pages
 		var pageCount=Math.ceil(dataRef.length/lowPeoplePerPage);
-		v.pageIndicator=DPageIndicator.createNew(
-			pageCount,
-			{width:400,textPos:{x:180,y:5}},	// width of the pi & pos of "4/7"
-			function(index){PeopleRightView.onPageChanged(v,index)},
-			111				// priority ID
-		);
+		v.pageIndicator=DPageIndicator.createNew(400, {x:180, y:5});//width, textPos
+		v.pageIndicator.setModel(0, pageCount);	// current, max
+		v.pageIndicator.setController(function(index){PeopleRightView.onPageChanged(v,index)}, 111);
 		v.pageIndicator.y=440;
 		v.addChild(v.pageIndicator);
 		// setup the init page
@@ -110,12 +107,9 @@ var PeopleLeftView={
 			v.listViews[i].x=10;		// TODO: adjust it!
 			v.listViews[i].y=50+150*i;	// TODO: adjust it!
 			v.addChild(v.listViews[i]);
-			v.pageIndicators[i]=DPageIndicator.createNew(
-				Math.ceil(v.data3[i].length/midHiPeoplePerPage),// items per page
-				{width:400,textPos:{x:180,y:5}},	// width & pos of "4/6"
-				createCallback(i,false),			// callback func
-				111									// priorityID
-			);
+			v.pageIndicators[i]=DPageIndicator.createNew(400,{x:180,y:5});
+			v.pageIndicators[i].setModel(0, Math.ceil(v.data3[i].length/midHiPeoplePerPage));
+			v.pageIndicators[i].setController(createCallback(i,false), 111);
 			v.pageIndicators[i].x=10;			// TODO: adjust it!
 			v.pageIndicators[i].y=140+150*i;	// TODO: adjust it!
 			v.addChild(v.pageIndicators[i]);
@@ -388,11 +382,8 @@ var PeopleView={
 
 		// setup the mask
 		/* global DUiMask */
-		pv.uiMask=DUiMask.createNew(100,function(){
-			pv.destroy();
-		});
-		pv.addChild(pv.uiMask);
-		pv.uiMask.fillScreen(pv);
+		pv.uiMask=DUiMask.createNew();
+		pv.uiMask.setController(100, function(){pv.uiMask.destroy();pv.destroy()});
 
 		// create low people view (right)
 		//	for debug: if there's no dataRef input

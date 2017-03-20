@@ -2,6 +2,7 @@
   "shantyTown": {
     "type": "?",
     "subtype": "housing",
+    "playerLabel": "Shanty Town",
     "cost": 0,
     "health": 0,
     "education": 0,
@@ -15,6 +16,7 @@
   "apartment": {
     "type": "?",
     "subtype": "housing",
+    "playerLabel": "Apartment",
     "cost": 10,
     "health": 0,
     "education": 0,
@@ -28,6 +30,7 @@
   "suburb": {
     "type": "?",
     "subtype": "housing",
+    "playerLabel": "Suburbs",
     "cost": 10,
     "health": 0,
     "education": 0,
@@ -41,6 +44,7 @@
   "mansion": {
     "type": "?",
     "subtype": "housing",
+    "playerLabel": "Mansion",
     "cost": 10,
     "health": 0,
     "education": 0,
@@ -54,6 +58,7 @@
   "palace":{
     "type": "?",
     "subtype": "housing",
+    "playerLabel": "Your Palace",
     "cost": 0,
     "health": 100,
     "education": 100,
@@ -68,6 +73,7 @@
   "weakFarm": {
     "type": "?",
     "subtype": "health",
+    "playerLabel": "Farm",
     "cost": 10,
     "maxPeople": 5,
     "effects": [
@@ -81,6 +87,7 @@
   "fertileFarm": {
     "type": "?",
     "subtype": "health",
+    "playerLabel": "Farm",
     "cost": 10,
     "maxPeople": 5,
     "effects": [
@@ -94,6 +101,7 @@
   "school": {
     "type": "?",
     "subtype": "education",
+    "playerLabel": "School",
     "cost": 15,
     "maxPeople": 3,
     "effects": [
@@ -125,6 +133,7 @@
   "policeStation":{
     "type": "!",
     "subtype": "millitary",
+    "playerLabel": "Police Station",
     "cost": 15,
     "maxPeople": 3,
     "effects": [
@@ -138,6 +147,7 @@
   "armyBase": {
     "type": "!",
     "subtype": "millitary",
+    "playerLabel": "Army Base",
     "cost": 30,
     "maxPeople": 5,
     "effects": [{"type": null}]
@@ -145,6 +155,7 @@
   "lumberYard": {
     "type": "$",
     "subtype": "production",
+    "playerLabel": "Lumber Yard",
     "cost": 30,
     "maxPeople": 7,
     "effects": [
@@ -157,6 +168,7 @@
   "road": {
     "type": "-",
     "subtype": "road",
+    "playerLabel": "Road",
     "cost": 2,
     "maxPeople": 0,
     "effects": [{"type": null}]
