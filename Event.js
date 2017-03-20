@@ -19,20 +19,21 @@ var Event={
 		v.pageIndicator=DPageIndicator.createNew(400, {x:200,y:0});
 		v.addChild(v.pageIndicator);
 		v.pageIndicator.position.set(0,200);
-		v.pageIndicator.setController(function(curPage){Event._onPageChanged_(v,curPage)}, 20);
+		v.pageIndicator.setController(function(curPage){Event._onPageChanged_(v,curPage)}, 110);
 		if(!isInformation)
 			v.pageIndicator.visible=false;
 		v.isInformation=isInformation;
 		// setup priority
 		v.inputEnabled=true;
-		v.input.priorityID=16;
+		v.input.priorityID=101;
 
 		// setup a mask (not child)
-		v.uiMask=DUiMask.addClickMask(15, function(){
+		v.uiMask=DUiMask.createNew();
+		v.uiMask.setController(100, function(){
 			if(isInformation){
 				v.uiMask.destroy();
 				v.destroy();
-			}
+			}			
 		});
 
 		// Class funcs
@@ -70,7 +71,7 @@ var Event={
 		v.myController=callbacks;
 		// set the callback for current page
 		var curPage=v.pageIndicator.curPage;
-		v.decisionView.setController(v.myController[curPage]);
+		v.decisionView.setController(120, v.myController[curPage]);
 	},
 
 	gotoPage: function(v, index){
@@ -80,7 +81,7 @@ var Event={
 		v.decisionView.setModel(mod.portrait,mod.description,mod.buttonTexts);
 		if(!v.isInformation){
 			var cb=v.myController[index];
-			v.decisionView.setController(cb);			
+			v.decisionView.setController(120, cb);			
 		}
 		// reset page indicator
 		v.pageIndicator.curPage=index;

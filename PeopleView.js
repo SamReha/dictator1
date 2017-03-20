@@ -256,11 +256,8 @@ var PeopleView={
 
 		// setup the mask
 		/* global DUiMask */
-		pv.uiMask=DUiMask.createNew(100,function(){
-			pv.destroy();
-		});
-		pv.addChild(pv.uiMask);
-		pv.uiMask.fillScreen(pv);
+		pv.uiMask=DUiMask.createNew();
+		pv.uiMask.setController(100, function(){pv.uiMask.destroy();pv.destroy()});
 
 		// create low people view (right)
 		//	for debug: if there's no dataRef input
