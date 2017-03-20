@@ -13,13 +13,13 @@ var DPageIndicator={
 		var v=MainGame.game.add.group();
 		// add two buttons as sprites
 		v.prevPage=MainGame.game.make.button(0,0,"triangleArrowButton",function(){
-			DPageIndicator.onPrevPage,v},1,0,2,1);
+			DPageIndicator.onPrevPage,v},v.prevPage,1,0,2,1);
 		v.prevPage.anchor.x=1;
 		v.prevPage.scale.x*=-1;
 		v.prevPage.visible=false;
 		v.addChild(v.prevPage);
 		v.nextPage=MainGame.game.make.button(0,0,"triangleArrowButton",function(){
-			DPageIndicator.onNextPage,v},1,0,2,1);
+			DPageIndicator.onNextPage,v},v.nextPage,1,0,2,1);
 		v.nextPage.x=width-v.nextPage.width;
 		v.nextPage.visible=false;
 		v.addChild(v.nextPage);
