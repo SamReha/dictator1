@@ -313,7 +313,9 @@ var PeopleContractView={
 		// ----Hire/Renew, Fire, and Cancel Buttons
 		if(personDataRef.type===2){
 			v.fireButton=MainGame.game.make.button((v.width*1/5),(v.height*8/9),'small_generic_button',function(){
-				PeopleContractView.onWorkChanged(v,true)},v.fireButton,0,1,0,0);
+				v.fireButton.freezeFrames=true;
+				PeopleContractView.onWorkChanged(v,true);
+			},v.fireButton,0,1,0,0);
 			v.fireButton.anchor.setTo(0.5,0.5);
 			v.fireButton.input.priorityID=121;
 			v.addChild(v.fireButton);
@@ -324,7 +326,9 @@ var PeopleContractView={
 		}
 
 		v.cancelButton=MainGame.game.add.button((v.width*1/2),(v.height*8/9),'small_generic_button',function(){
-			v.destroy()},v.cancelButton,0,1,0,0);
+			v.cancelButton.freezeFrames=true;
+			v.destroy();
+		},v,0,1,0,2);
 		v.cancelButton.anchor.setTo(0.5,0.5);
 		v.cancelButton.input.priorityID=121;
 		v.cancelButton.name="This is a cancle butto";
@@ -336,7 +340,9 @@ var PeopleContractView={
 		v.cancelButton.addChild(v.cancelText);
 
 		v.hireButton=MainGame.game.make.button((v.width*4/5),(v.height*8/9),'small_generic_button',function(){
-			PeopleContractView.onWorkChanged(v,false)},v.hireButton,0,1,0,0);
+			v.hireButton.freezeFrames=true;
+			PeopleContractView.onWorkChanged(v,false);
+		},v.hireButton,0,1,0,0);
 		v.hireButton.anchor.setTo(0.5,0.5);
 		v.hireButton.input.priorityID=121;
 		v.addChild(v.hireButton);
