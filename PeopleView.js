@@ -123,6 +123,7 @@ var PeopleLeftView={
 		var globalIndex=view.pageIndicators[type].getCurPage()*midHiPeoplePerPage+index;
 		//console.log("Person selected! type,index=",type,globalIndex);
 		// show the detail info of that mid-hi person
+		console.log(view.lastSelected+" "+globalIndex);
 		if(view.lastSelected===globalIndex){
 			view.parent.hideContractView();
 			view.lastSelected=null;
@@ -131,6 +132,7 @@ var PeopleLeftView={
 			view.parent.showContractView(personDataRef);
 			view.lastSelected=globalIndex;
 		}
+		console.log(view.lastSelected);
 	},
 	onPageChanged: function(view,type,index){
 		console.log("Page changed! type,index=",type,index);
@@ -327,7 +329,7 @@ var PeopleContractView={
 
 		v.cancelButton=MainGame.game.add.button((v.width*1/2),(v.height*8/9),'small_generic_button',function(){
 			v.cancelButton.freezeFrames=true;
-			v.destroy();
+			v.parent.hideContractView();
 		},v,0,1,0,2);
 		v.cancelButton.anchor.setTo(0.5,0.5);
 		v.cancelButton.input.priorityID=121;
@@ -422,7 +424,10 @@ var PeopleView={
 			view.contract.destroy();
 			view.contract=null;
 		}
+		console.assert(view);
+		console.assert(personDataRef);
 		view.contract=PeopleContractView.createNew(personDataRef);
+		console.log(view.contract);
 		view.contract.x=view.right.x;
 		view.addChild(view.contract);
 	},
@@ -430,6 +435,7 @@ var PeopleView={
 		if(view.contract){
 			view.contract.destroy();
 			view.contract=null;
+			view.left.lastSelected=null;
 		}
 	}
 };
