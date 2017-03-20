@@ -1,15 +1,15 @@
 /*global MainGame*/
 
 var BuildMenu={
-    styleNormal: {font:"24px myKaiti", fill:"#ffffff"},
-    styleButton: {font:"32px myKaiti", fill:"#ffffff"},
+	styleNormal: {font:"24px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+    styleButton: {font:"32px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
 	createNew: function(highData){
 		var hudInputPriority = 110;
 
 		var buildMenu = MainGame.game.add.sprite(0,0,'peopleViewBg');
 
-		buildMenu.x = 100, buildMenu.y = 100;
+		buildMenu.x = 190, buildMenu.y = 100;
 
 		// setup the mask
 		/* global DUiMask */
@@ -59,12 +59,12 @@ var BuildMenu={
 		var defaultGroup = MainGame.game.make.group();
 		defaultGroup.position.y = bm.height*2/3;
 		bm.addChild(defaultGroup);
-		var defaultGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover2');
-		defaultGroupCover.inputEnabled = true;
-		defaultGroupCover.input.priorityID = hudInputPriority + 10;
-		defaultGroupCover.position.y = bm.height*2/3;
-		defaultGroupCover.visible = false;
-		bm.addChild(defaultGroupCover);
+		// var defaultGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover2');
+		// defaultGroupCover.inputEnabled = true;
+		// defaultGroupCover.input.priorityID = hudInputPriority + 10;
+		// defaultGroupCover.position.y = bm.height*2/3;
+		// defaultGroupCover.visible = false;
+		// bm.addChild(defaultGroupCover);
 
 		/*global Hud*/
 		// buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
@@ -268,7 +268,7 @@ var BuildMenu={
 			bureauGroupCover.visible = true;
 
 			var bureauCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Coalition members hired.', BuildMenu.styleNormal);
+				'No Minister of Bureaucracy.', BuildMenu.styleNormal);
 			bureauCount.anchor.x = 0.5;
 			bureauCount.anchor.y = 0.5;
 			bureauGroup.addChild(bureauCount);
@@ -277,7 +277,7 @@ var BuildMenu={
 			merchantGroupCover.visible = true;
 
 			var merchantCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Coalition members hired.', BuildMenu.styleNormal);
+				'No Minister of Finance.', BuildMenu.styleNormal);
 			merchantCount.anchor.x = 0.5;
 			merchantCount.anchor.y = 0.5;
 			merchantGroup.addChild(merchantCount);
@@ -286,13 +286,13 @@ var BuildMenu={
 			militaryGroupCover.visible = true;
 
 			var militaryCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Coalition members hired.', BuildMenu.styleNormal);
+				'No Minister of the Military.', BuildMenu.styleNormal);
 			militaryCount.anchor.x = 0.5;
 			militaryCount.anchor.y = 0.5;
 			militaryGroup.addChild(militaryCount);
 		}
-		if(bureaucrats === 0 && merchants === 0 && military === 0)
-			defaultGroupCover.visible = true;
+		// if(bureaucrats === 0 && merchants === 0 && military === 0)
+		// 	defaultGroupCover.visible = true;
 
 		return buildMenu;
 	},

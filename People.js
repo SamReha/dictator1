@@ -47,7 +47,7 @@ var Person={
 
         p.setLowClass = function() { return Person.setLowClass(p); };
         p.setMidClass = function() { return Person.setMidClass(p); };
-        p.setHighClass = function() { return Person.setHighClass(p); };
+        p.setHighClass = function(payAmount) { return Person.setHighClass(p,payAmount); };
         p.unSetHighClass = function() { return Person.unSetHighClass(p); };
 
         return p;
@@ -177,7 +177,7 @@ var Person={
             p.role=role;
             return;
         }
-        // find his workplace
+        // find their workplace
         if(p.workplace!==null){
             var workplaceTile=MainGame.board.at(p.workplace);
             console.assert(workplaceTile.hasBuilding());
@@ -191,15 +191,33 @@ var Person={
         }
     },
 
-    setHighClass: function(p) {
-        console.log("ASDFHJALSKJDFLKASJDFLKAJHSFKLAJHSFLKAJHSFLKASJHFLKASJDFALKSDJFALKSDJLASDF");
-        p.type = Person.Hi;
-
-        
+    setHighClass: function(p,payAmount) {
+        if(p.type === Person.Hi){
+            var effects = MainGame.board.at(p.home).getBuilding().effects;
+            for(var count=0; count<effects.length; ++count){
+                if(effects[count].type==="money"){
+                    effects[count].outputTable[1]=-payAmount;
+                    return;
+                }
+            }
+        }else{
+            var minister = MainGame.population.typeRoleList(Person.Hi,p.role);
+            if(minister.length > 0)
+                minister[0].unSetHighClass();
+            p.type = Person.Hi;
+            MainGame.board.at(p.home).getBuilding().effects.push({"type":"money","outputTable":[0,-payAmount]});
+        }
     },
 
     unSetHighClass: function(p) {
         p.type = Person.Mid;
+        var effects = MainGame.board.at(p.home).getBuilding().effects;
+        for(var count=0; count<effects.length; ++count){
+            if(effects[count].type==="money"){
+                effects.splice(count,1);
+                return;
+            }
+        }
     },
 };
 

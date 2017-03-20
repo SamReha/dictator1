@@ -1,7 +1,7 @@
 /* global MainGame */
 var DPageIndicator={
 	// TODO: set font style here
-	style: {font:"20px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+	style: {font:"20px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 	// ****************** Attention ****************** //	
 	// pageCount
 	// layOut: {width,textPos}
