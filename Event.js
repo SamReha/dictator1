@@ -6,7 +6,6 @@
 // Design Pattern: 
 // Texture requirement: 'event_bg'
 
-// TODO: split DPageIndicator as M|V|C
 var Event={
 	createNew: function(isInformation){
 		var v=MainGame.game.add.sprite(0,0,"event_bg");
@@ -33,13 +32,19 @@ var Event={
 		});
 
 		// Class funcs
+		/* set the model (data) of this event view. The model is an array of:
+		 {portrait:"myTextureKey", 
+		 description:"Yi: How are you?", 
+		 buttonTexts:["Good!","Not well."]} */
 		v.setModel=function(events,_curPage){Event.setModel(v,events,_curPage)};
+		/* sets the controller of this event view. The controller is an array of:
+		[function(){ev.gotoPage(1)}, function(){ev.gotoPage(2)}]
+		The count in each element should equal to the count of the relative buttonTexts*/
 		v.setController=function(callbacks){Event.setController(v,callbacks)};
+		// goes to page [index]
 		v.gotoPage=function(index){Event.gotoPage(v,index)};
-		v.suicide=function(){
-			v.uiMask.destroy()
-			v.destroy()
-		};
+		// removes this event view
+		v.suicide=function(){v.uiMask.destroy();v.destroy()};
 
 		return v;
 	},
@@ -90,16 +95,17 @@ function test_Event(){
 	e.setController([
 		[function(){
 			e.suicide();
-			test_Event_choice();
+			_test_Event_choice();
 		}, function(){
 			e.suicide();
-			test_Event_info();
+			_test_Event_info();
 		}]
 	]);
 
 }
 
-function test_Event_choice(){
+// Private test functions //
+function _test_Event_choice(){
 	var eChoice=Event.createNew();
 	eChoice.position.set(300,100);
 	eChoice.setModel([
@@ -116,7 +122,7 @@ function test_Event_choice(){
 	]);			
 }
 
-function test_Event_info(){
+function _test_Event_info(){
 	var eInfo=Event.createNew(true);
 	eInfo.position.set(250,150);
 	eInfo.setModel([
