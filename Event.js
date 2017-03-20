@@ -16,15 +16,19 @@ var Event={
 		v.decisionView=DDecisionView.createNew();
 		v.addChild(v.decisionView);
 		// add page inidcator if necessary
-		v.pageIndicator=DPageIndicator.createNew(1, {width: 400,textPos:{x:200,y:0}});
+		v.pageIndicator=DPageIndicator.createNew(400, {x:200,y:0});
 		v.addChild(v.pageIndicator);
 		v.pageIndicator.position.set(0,200);
-		v.pageIndicator.setController(function(curPage){Event._onPageChanged_(v,curPage)});
+		v.pageIndicator.setController(function(curPage){Event._onPageChanged_(v,curPage)}, 20);
 		if(!isInformation)
 			v.pageIndicator.visible=false;
 		v.isInformation=isInformation;
+		// setup priority
+		v.inputEnabled=true;
+		v.input.priorityID=16;
+
 		// setup a mask (not child)
-		v.uiMask=DUiMask.addClickMask(15,function(){
+		v.uiMask=DUiMask.addClickMask(15, function(){
 			if(isInformation){
 				v.uiMask.destroy();
 				v.destroy();
@@ -37,12 +41,15 @@ var Event={
 		 description:"Yi: How are you?", 
 		 buttonTexts:["Good!","Not well."]} */
 		v.setModel=function(events,_curPage){Event.setModel(v,events,_curPage)};
+
 		/* sets the controller of this event view. The controller is an array of:
 		[function(){ev.gotoPage(1)}, function(){ev.gotoPage(2)}]
 		The count in each element should equal to the count of the relative buttonTexts*/
 		v.setController=function(callbacks){Event.setController(v,callbacks)};
+
 		// goes to page [index]
 		v.gotoPage=function(index){Event.gotoPage(v,index)};
+
 		// removes this event view
 		v.suicide=function(){v.uiMask.destroy();v.destroy()};
 
@@ -59,7 +66,7 @@ var Event={
 		v.decisionView.setModel(mod.portrait, mod.description, mod.buttonTexts);
 	},
 
-	setController: function(v, callbacks){
+	setController: function(v, callbacks){		
 		v.myController=callbacks;
 		// set the callback for current page
 		var curPage=v.pageIndicator.curPage;

@@ -1,4 +1,5 @@
 /* global MainGame */
+
 var DPageIndicator={
 	// TODO: set font style here
 	style: {font:"30px myKaiti", fill:"black"},
@@ -7,30 +8,22 @@ var DPageIndicator={
 	// layOut: {width,textPos}
 	// *pageChangedCallback: function(pageIndex)
 	// (* === optional)
-	createNew: function(pageCount, layout, pageChangedCallback, priorityID){
+	//createNew: function(pageCount, layout, pageChangedCallback, priorityID){
+	createNew: function(width, textPosition){
 		var v=MainGame.game.add.group();
-		v.pageCount=(pageCount?pageCount:1);
-		v.curPage=0;
-		v.pageChangedCallback=pageChangedCallback;
 		// add two buttons as sprites
 		v.prevPage=MainGame.game.make.sprite(0,0,"pi_prevPage");
-		v.prevPage.inputEnabled=true;
-		v.prevPage.input.priorityID=priorityID;
-		v.prevPage.events.onInputDown.add(DPageIndicator.onPrevPage,v);
 		v.prevPage.visible=false;
 		v.addChild(v.prevPage);
 		v.nextPage=MainGame.game.make.sprite(0,0,"pi_nextPage");
-		v.nextPage.x=layout.width-v.nextPage.width;
-		v.nextPage.inputEnabled=true;
-		v.nextPage.input.priorityID=priorityID;
-		v.nextPage.events.onInputDown.add(DPageIndicator.onNextPage,v);
-		v.nextPage.visible=(pageCount>1);
+		v.nextPage.x=width-v.nextPage.width;
+		v.nextPage.visible=false;
 		v.addChild(v.nextPage);
 		// add & update page text 4/7
 		v.pageText=MainGame.game.make.text(0,0,"", DPageIndicator.style);
 		v.addChild(v.pageText);
 		DPageIndicator._setPageText_(v);
-		v.pageText.x=layout.textPos.x, v.pageText.y=layout.textPos.y;
+		v.pageText.x=textPosition.x, v.pageText.y=textPosition.y;
 
 		// Class funcs
 		v.setModel=function(cur,max){DPageIndicator.setModel(v,cur,max)};
@@ -44,42 +37,49 @@ var DPageIndicator={
 		return v;
 	},
 	setModel: function(v, curPage, pageCount){
-		console.assert(curPage>=0 && curPage<pageCount);
+		console.assert(curPage>=0 && curPage<pageCount
+			|| curPage===0 && pageCount===0);
 		v.curPage=curPage;
 		v.pageCount=pageCount;
 		DPageIndicator._setPageText_(v);
-		v.prevPage.visible=(v.curPage>0);
-		v.nextPage.visible=(v.curPage<v.pageCount-1);
+		DPageIndicator._setButtonVisibility_(v);
 	},
 	setController: function(v, callback, _priorityID){
 		var pageNames=["prevPage","nextPage"];
+		var pageCb=[DPageIndicator.onPrevPage, DPageIndicator.onNextPage];
 		for(var i=0;i<pageNames.length;i++){
 			v[pageNames[i]].inputEnabled=true;
 			v[pageNames[i]].input.priorityID=(_priorityID?_priorityID:20);
+			v[pageNames[i]].events.onInputDown.removeAll();
+			v[pageNames[i]].events.onInputDown.add(pageCb[i],v);
 		}
 		v.pageChangedCallback=callback;
 	},
 	onPrevPage: function(){
-		// console.log("PageIndicator: onPrevPage");
+		// console.log("DPageIndicator: onPrevPage");
 		this.curPage--;
-		if(this.curPage===0)
-			this.prevPage.visible=false;
-		this.nextPage.visible=true;
 		DPageIndicator._setPageText_(this);
+		DPageIndicator._setButtonVisibility_(this);
 		if(this.pageChangedCallback)
 			this.pageChangedCallback(this.curPage);
 	},
 	onNextPage: function(){
-		// console.log("PageIndicator: onNextPage");
-		this.curPage++;
-		if(this.curPage===this.pageCount-1)
-			this.nextPage.visible=false;
-		this.prevPage.visible=true;
+		// console.log("DPageIndicator: onNextPage");
+		this.curPage++;		
 		DPageIndicator._setPageText_(this);
+		DPageIndicator._setButtonVisibility_(this);
 		if(this.pageChangedCallback)
 			this.pageChangedCallback(this.curPage);
 	},
-	_setPageText_: function(view){
-		view.pageText.text=""+(view.curPage+1)+" / "+view.pageCount;
+	_setPageText_: function(v){
+		if(v.curPage===0 && v.pageCount===0){
+			v.pageText.text="<Empty>";
+			return;
+		}
+		v.pageText.text=""+(v.curPage+1)+" / "+v.pageCount;
 	},
+	_setButtonVisibility_: function(v){
+		v.prevPage.visible=(v.curPage>0);
+		v.nextPage.visible=(v.curPage<v.pageCount-1);
+	}
 };
