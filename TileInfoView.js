@@ -107,19 +107,19 @@ var TileDetailView = {
 
         var view = game.add.sprite(0, 0, 'building_detail_backpanel');
         view.inputEnabled = true;
-        view.input.priorityID = 120;
+        view.input.priorityID = 101;
         view.anchor.set(0.5, 0.5);
         view.x = game.width / 2;
         view.y = game.height / 2;
 
         // setup the mask
         /* global DUiMask */
-        view.uiMask = DUiMask.createNew(100, function() {
+        view.uiMask = DUiMask.createNew();
+        view.uiMask.setController(100, function() {
+            view.uiMask.destroy();
             view.destroy();
             board.controller.detailView = null;
         });
-        view.addChild(view.uiMask);
-        view.uiMask.fillScreen(view);
 
         // Class variables
         view.index = buildingIndex;
@@ -148,6 +148,8 @@ var TileDetailView = {
                 function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 2, 1, 2);
 
             view.addPersonButton.anchor.x = 0.5;
+            view.addPersonButton.inputEnabled = true;
+            view.addPersonButton.input.priorityID = 102;
             view.addPersonButton.x = -view.width/4;
             view.addPersonButton.y = view.height/2 - view.addPersonButton.height - TileDetailView.verticalBorderWidth;
             view.addChild(view.addPersonButton);
@@ -166,6 +168,8 @@ var TileDetailView = {
                 function() {TileDetailView._onFireButtonPressed_(view)}, view, 0, 2, 1, 2);
 
             view.removePersonButton.anchor.x = 0.5;
+            view.removePersonButton.inputEnabled = true;
+            view.removePersonButton.input.priorityID = 102;
             view.removePersonButton.x = view.width/4;
             view.removePersonButton.y = view.height/2 - view.removePersonButton.height - TileDetailView.verticalBorderWidth;
             view.addChild(view.removePersonButton);
@@ -200,8 +204,10 @@ var TileDetailView = {
         if (bld.people >= bld.maxPeople)
             return;
         MainGame.population.hire(view.index);
-        if(bld.people>=bld.maxPeople){view.addPersonButton.visible=false;}
-        view.removePersonButton.visible=true;
+        if (bld.people >= bld.maxPeople) {
+            view.addPersonButton.visible = false;
+        }
+        view.removePersonButton.visible = true;
 
         var str3 = '';
         var str4 = '';
@@ -211,71 +217,7 @@ var TileDetailView = {
         TileDetailView._updateAvailabilityText(view, bld);
 
         if (bld.subtype !== "housing") {
-            for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
-                var outType = bld.effects[outIndex].type;
-                var outValue = bld.effects[outIndex].outputTable[bld.people];
-
-                var sentenceStart = 'This building ';
-                var outDescription = '';
-
-                if(outType==="health"){ 
-                    if (outValue === 0) {
-                        outDescription = 'provides no food.';
-                    } else if (outValue > 0 && outValue < 25) {
-                        outDescription = "provides little food.";
-                    } else if (outValue >= 25 && outValue < 50) {
-                        outDescription = "provides some food.";
-                    } else if (outValue >= 50 && outValue < 75) {
-                        outDescription = "provides plenty food.";
-                    } else outDescription = "provides abundant food.";
-
-                    /*global updateHomesNearOutput*/
-                    updateHomesNearOutput(view.index);
-                }else if(outType==="education"){
-                    if (outValue === 0) {
-                        outDescription = 'provides no education.';
-                    } else if (outValue > 0 && outValue < 25) {
-                        outDescription = "provides little education.";
-                    } else if (outValue >= 25 && outValue < 50) {
-                        outDescription = "provides some education.";
-                    } else if (outValue >= 50 && outValue < 75) {
-                        outDescription = "provides very good education.";
-                    } else outDescription = "provides extremely good education.";
-
-                    /*global updateHomesNearOutput*/
-                    updateHomesNearOutput(view.index);
-                }else if(outType==="freedom"){
-                    outDescription = 'generates ' + outValue + ' Freedom.';
-
-                    /*global updateHomesNearOutput*/
-                    updateHomesNearOutput(view.index);
-                }else if(outType==="unrest"){
-                    outDescription = 'generates ' + outValue + ' Unrest.';
-
-                    /*global updateHomesNearOutput*/
-                    updateHomesNearOutput(view.index);
-                } else if (outType === "money") {    
-                    outDescription = 'generates $' + outValue + 'k each turn.';
-
-                    MainGame.global.updateMoneyPerTurn();
-                }
-
-                // fix the apartment firing people bug
-                if(bld.effects[outIndex].type===null)
-                    break;
-
-                if (outIndex === 0) {
-                    str3 = sentenceStart + outDescription;
-                } else if(outIndex === 1) {
-                    str4 = sentenceStart + outDescription;
-                } else if(outIndex === 2) {
-                    str5 = sentenceStart + outDescription;
-                }
-            }
-
-            view.textDescription.text = str3;
-            view.textDescription.text = view.textDescription.text + '\n' + str4;
-            view.textDescription.text = view.textDescription.text + '\n' + str5;
+            TileDetailView._updateState(view, bld);
         }  
 
         /*global updatePopulation*/
@@ -298,94 +240,103 @@ var TileDetailView = {
         TileDetailView._updateAvailabilityText(view, bld);
 
         if (bld.subtype !== "housing") {
-            var sentenceStart = 'This building ';
-            var outDescription = '';
-
-            var str3 = '';
-            var str4 = '';
-            var str5 = '';
-
-            for(var outIndex = 0; outIndex < bld.effects.length; outIndex++) {
-                var outType = bld.effects[outIndex].type;
-                console.log(outType);
-                var outValue = bld.effects[outIndex].outputTable[bld.people];
-
-                if (outType === "health") { 
-                    if (outValue === 0) {
-                        outDescription = 'provides no food.';
-                    } else if (outValue > 0 && outValue < 25) {
-                        outDescription = "provides little food.";
-                    } else if (outValue >= 25 && outValue < 50) {
-                        outDescription = "provides some food.";
-                    } else if (outValue >= 50 && outValue < 75) {
-                        outDescription = "provides plenty food.";
-                    } else outDescription = "provides abundant food.";
-
-                    /*global updateHomesNearOutput*/
-                    updateHomesNearOutput(view.index);
-                }else if(outType==="education"){
-                    if (outValue === 0) {
-                        outDescription = 'provides no education.';
-                    } else if (outValue > 0 && outValue < 25) {
-                        outDescription = "provides little education.";
-                    } else if (outValue >= 25 && outValue < 50) {
-                        outDescription = "provides some education.";
-                    } else if (outValue >= 50 && outValue < 75) {
-                        outDescription = "provides very good education.";
-                    } else outDescription = "provides extremely good education.";
-
-                    /*global updateHomesNearOutput*/
-                    updateHomesNearOutput(view.index);
-                }else if(outType==="freedom"){
-                    outDescription = 'generates ' + outValue + ' Freedom.';
-
-                    /*global updateHomesNearOutput*/
-                    updateHomesNearOutput(view.index);
-                }else if(outType==="unrest"){
-                    outDescription = 'generates ' + outValue + ' Unrest.';
-
-                    /*global updateHomesNearOutput*/
-                    updateHomesNearOutput(view.index);
-                }else if(outType==="money"){
-                    outDescription = 'generates $' + outValue + 'k each turn.';
-
-                    MainGame.global.updateMoneyPerTurn();
-                }
-
-                // fix the apartment firing people bug
-                if (bld.effects[outIndex].type === null)
-                    break;
-
-                if (outIndex === 0) {
-                    str3 = sentenceStart + outDescription;
-                } else if(outIndex === 1) {
-                    str4 = sentenceStart + outDescription;
-                } else if(outIndex === 2) {
-                    str5 = sentenceStart + outDescription;
-                }
-            }
-
-            view.textDescription.text = str3;
-            view.textDescription.text = view.textDescription.text + '\n' + str4;
-            view.textDescription.text = view.textDescription.text + '\n' + str5;  
+            TileDetailView._updateState(view, bld);
         }
 
         /*global updatePopulation*/
         updatePopulation(false,false);
     },
 
-    _updateAvailabilityText(view, building) {
+    _updateAvailabilityText: function(view, building) {
         if (building.subtype === 'housing') {
             var availableNoun = 'bed';
+            var occupantNoun = 'resident';
         } else {
             var availableNoun = 'job';
+            var occupantNoun = 'worker';
         }
 
         var availability = building.maxPeople - building.people;
 
+        // Pluralize!
         if (availability !== 1) availableNoun += 's';
+        if (building.people !== 1) occupantNoun += 's';
 
-        view.availabilityText.text = availability + ' ' + availableNoun + ' available';
+        view.availabilityText.text = building.people + ' ' + occupantNoun + ' | ' + availability + ' ' + availableNoun + ' available';
+    },
+
+    // When a non-housing building gets a worker added or removed, some states need to get updated
+    _updateState: function(view, building) {
+        console.log("AAAAAHHHHHHH")
+        var sentenceStart = 'This building ';
+        var outDescription = '';
+
+        var str3 = '';
+        var str4 = '';
+        var str5 = '';
+
+        for(var outIndex = 0; outIndex < building.effects.length; outIndex++) {
+            var outType = building.effects[outIndex].type;
+            var outValue = building.effects[outIndex].outputTable[building.people];
+
+            if (outType === "health") { 
+                if (outValue === 0) {
+                    outDescription = 'provides no food.';
+                } else if (outValue > 0 && outValue < 25) {
+                    outDescription = "provides little food.";
+                } else if (outValue >= 25 && outValue < 50) {
+                    outDescription = "provides some food.";
+                } else if (outValue >= 50 && outValue < 75) {
+                    outDescription = "provides plenty food.";
+                } else outDescription = "provides abundant food.";
+
+                /*global updateHomesNearOutput*/
+                updateHomesNearOutput(view.index);
+            }else if(outType==="education"){
+                if (outValue === 0) {
+                    outDescription = 'provides no education.';
+                } else if (outValue > 0 && outValue < 25) {
+                    outDescription = "provides little education.";
+                } else if (outValue >= 25 && outValue < 50) {
+                    outDescription = "provides some education.";
+                } else if (outValue >= 50 && outValue < 75) {
+                    outDescription = "provides very good education.";
+                } else outDescription = "provides extremely good education.";
+
+                /*global updateHomesNearOutput*/
+                updateHomesNearOutput(view.index);
+            }else if(outType==="freedom"){
+                outDescription = 'generates ' + outValue + ' Freedom.';
+
+                /*global updateHomesNearOutput*/
+                updateHomesNearOutput(view.index);
+            }else if(outType==="unrest"){
+                outDescription = 'generates ' + outValue + ' Unrest.';
+
+                /*global updateHomesNearOutput*/
+                updateHomesNearOutput(view.index);
+            }else if(outType==="money"){
+                outDescription = 'generates $' + outValue + 'k each turn.';
+
+                MainGame.global.updateMoneyPerTurn();
+            }
+
+            // fix the apartment firing people bug
+            if (building.effects[outIndex].type === null)
+                break;
+
+            if (outIndex === 0) {
+                str3 = sentenceStart + outDescription;
+            } else if(outIndex === 1) {
+                str4 = sentenceStart + outDescription;
+            } else if(outIndex === 2) {
+                str5 = sentenceStart + outDescription;
+            }
+        }
+
+        view.textDescription.text = str3;
+        view.textDescription.text = view.textDescription.text + '\n' + str4;
+        view.textDescription.text = view.textDescription.text + '\n' + str5;
     },
 
     updateInfo: function(view, tile){
