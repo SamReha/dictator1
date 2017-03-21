@@ -22,10 +22,11 @@ function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
 		peopleTextView.text=" - ";
 	}
 	// now add color!
-	var colorTable={"?":"yellow", "!":"orangered", "$":"green", "-":"white"};
-	console.assert(colorTable[building.type], "Unknown building type! Must be ?(bureau), !(mil), $(commercial) or -(no type).");
-	buildingTextView.addColor(colorTable[building.type], 0);
-	peopleTextView.addColor(colorTable[building.type], 0);
+    // Nope!
+	// var colorTable={"?":"yellow", "!":"orangered", "$":"green", "-":"white"};
+	// console.assert(colorTable[building.type], "Unknown building type! Must be ?(bureau), !(mil), $(commercial) or -(no type).");
+	// buildingTextView.addColor(colorTable[building.type], 0);
+	// peopleTextView.addColor(colorTable[building.type], 0);
 }
 
 var TileBriefView={
@@ -74,7 +75,7 @@ var TileBriefView={
         var board=MainGame.board;
         var tile=board.at(t.index);
         t.x=board.x+tile.x*board.currentScale;
-        t.y=board.y+tile.y*board.currentScale;
+        t.y=board.y+(tile.y+tile.height*7)*board.currentScale;
         t.scale.set(board.currentScale);
 	}
 };
@@ -172,6 +173,7 @@ var TileDetailView={
 
         for(var outIndex=0;outIndex<bld.effects.length;++outIndex){
             var outType = bld.effects[outIndex].type;
+            var outValue = bld.effects[outIndex].outputTable[bld.people];
             if(outType==="health"){ 
                 outType="Health";
                 /*global updateHomesNearOutput*/
@@ -188,20 +190,22 @@ var TileDetailView={
                 outType="Extra Unrest";
                 /*global updateHomesNearOutput*/
                 updateHomesNearOutput(view.index);
-            }else if(outType==="money"){    
+            }else if(outType==="money"){
                 outType="Money";
+                outValue="$"+outValue+"K";
+                MainGame.global.updateMoneyPerTurn();
             }
 
             // fix the apartment firing people bug
             if(bld.effects[outIndex].type===null)
                 break;
 
-            if (outIndex === 0) {
-                view.health.text = outType + " Output: " + bld.effects[outIndex].outputTable[bld.people];
+            if(outIndex===0){
+                view.health.text=outType+" Output: "+outValue;
             }else if(outIndex===1){
-                view.education.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+                view.education.text=outType+" Output: "+outValue;
             }else if(outIndex===2){
-                view.shelter.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+                view.shelter.text=outType+" Output: "+outValue;
             }
         }
         /*global updatePopulation*/
@@ -223,6 +227,7 @@ var TileDetailView={
 
         for(var outIndex = 0; outIndex < bld.effects.length; outIndex++) {
             var outType = bld.effects[outIndex].type;
+            var outValue = bld.effects[outIndex].outputTable[bld.people];
             if(outType==="health"){ 
                 outType="Health";
                 /*global updateHomesNearOutput*/
@@ -241,6 +246,7 @@ var TileDetailView={
                 updateHomesNearOutput(view.index);
             }else if(outType==="money"){
                 outType="Money";
+                outValue="$"+outValue+"K";
                 MainGame.global.updateMoneyPerTurn();
             }
 
@@ -249,11 +255,11 @@ var TileDetailView={
                 break;
 
             if(outIndex===0){
-                view.health.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+                view.health.text=outType+" Output: "+outValue;
             }else if(outIndex===1){
-                view.education.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+                view.education.text=outType+" Output: "+outValue;
             }else if(outIndex===2){
-                view.shelter.text=outType+" Output: "+bld.effects[outIndex].outputTable[bld.people];
+                view.shelter.text=outType+" Output: "+outValue;
             }
         }
         /*global updatePopulation*/

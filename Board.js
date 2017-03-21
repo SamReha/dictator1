@@ -103,8 +103,8 @@ var Tile={
                 if (building.name !== 'lumberYard') {
                     tile.removeRes();
                 }
-            } else if (tile.getResType() === 'wheat') {
-                if (building.name !== 'arableFarm') {
+            } else if (tile.getResType() === 'soy') {
+                if (building.name !== 'fertileFarm') {
                     tile.removeRes();
                 }
             }
@@ -467,7 +467,7 @@ var Board = {
     // let camera center on i
     cameraCenterOn: function(b,i){        
         console.assert(typeof(i)==="number" && i>=0 && i<b.tileCount(), "i must be an index.");
-        console.log("Center on:",i);
+        console.log(b.at(i).getBuilding().effects);
         /*global MainGame*/
 
         // calc the current center pos of i (with consideration of board.scale)

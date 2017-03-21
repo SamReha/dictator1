@@ -9,12 +9,13 @@ var Preloader={
         // g.load.image('shanty1',     buildingDir + 'shanties.png');
         // Vertical Slice assets
         g.load.image('apartment1',  buildingDir + 'apartment.png');
-        g.load.image('arableFarm1', buildingDir + 'arableFarm.png');
+        g.load.image('fertileFarm1',buildingDir + 'fertileFarm.png');
         g.load.image('armyBase1',   buildingDir + "armyBase.png");
         g.load.image('factory1',    buildingDir + 'factory.png');
         g.load.image('lumberYard1', buildingDir + 'factory.png');
         g.load.image('mansion1',    buildingDir + 'mansion.png');                
         g.load.image('palace1',     buildingDir + 'palace.png');
+        g.load.image('police1',     buildingDir + 'police.png');
         g.load.image('road1',       buildingDir + 'road.png');
         g.load.image('school1',     buildingDir + 'school.png');
         g.load.image('shantyTown1', buildingDir + 'shantyTown.png');
@@ -28,7 +29,7 @@ var Preloader={
         // Vertical Slice assets
         g.load.image('forest1',   resourceDir + 'forest1.png');
         g.load.image('forest2',   resourceDir + 'forest2.png');
-        g.load.image('wheat',      resourceDir + 'wheat.png');
+        g.load.image('soy',      resourceDir + 'soy.png');
 
         // Terrain
         var resourceDir = imageDir + 'terrains/';
@@ -65,7 +66,10 @@ var Preloader={
         g.load.image('grpStatsMenu',            uiDir + 'grpStatsMenu.png');
         g.load.image('topBar',                  uiDir + 'topBar.png');
         g.load.image('tile_hover_backpanel',    uiDir + 'tile_hover_backpanel.png');
-        g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png')
+        g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png');
+        g.load.image('buildMenuBg',             uiDir + 'buildMenuBg.png');
+        g.load.image('buildMenuCover1',         uiDir + 'buildMenuCover1.png');
+        g.load.image('buildMenuCover2',         uiDir + 'buildMenuCover2.png');
         g.load.image('flag_background',         uiDir + 'flag_background.png');
         g.load.image('peopleViewBg',            uiDir + 'peopleViewBg.jpg');
         g.load.image('peopleViewLeftBg',        uiDir + 'peopleViewLeftBg.png');
@@ -84,6 +88,7 @@ var Preloader={
         g.load.spritesheet('btnFire',              buttonDir + 'btnFire.png', 64, 20, 4);
         g.load.spritesheet('btnNextTurn',          buttonDir + 'btnNextTurn.png', 64, 20, 4);
         g.load.spritesheet('buttonSprite',         buttonDir + 'button_spritesheet.png', 128, 48, 4);
+        g.load.spritesheet('closeButton',          buttonDir + 'close_button.png', 48, 48, 3);
         g.load.spritesheet('small_generic_button', buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',   buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button', buttonDir + 'large_generic_button.png', 240, 96, 3);
@@ -93,6 +98,13 @@ var Preloader={
         g.load.spritesheet('add_merchant_button',  buttonDir + 'add_merchant_button.png', 120, 48, 3);
         g.load.spritesheet('add_military_button',  buttonDir + 'add_military_button.png', 120, 48, 3);
         g.load.spritesheet('add_beauro_button',    buttonDir + 'add_beauro_button.png', 120, 48, 3);
+        g.load.spritesheet('bracketArrowButton',   buttonDir + 'bracket_arrow.png', 48, 48, 3);
+        g.load.spritesheet('triangleArrowButton',  buttonDir + 'triangle_arrow.png', 48, 48, 3);
+        g.load.spritesheet('redMinusButton',       buttonDir + 'red_minus_button.png', 48, 48, 3);
+        g.load.spritesheet('redPlusButton',        buttonDir + 'red_plus_button.png', 48, 48, 3);
+        g.load.spritesheet('yellowMinusButton',    buttonDir + 'yellow_minus_button.png', 48, 48, 3);
+        g.load.spritesheet('yellowPlusButton',     buttonDir + 'yellow_plus_button.png', 48, 48, 3);
+
 
         //// load icons
         var iconDir = uiDir + 'icons/';

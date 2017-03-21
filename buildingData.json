@@ -84,7 +84,7 @@
       }
     ]
   },
-  "arableFarm": {
+  "fertileFarm": {
     "type": "?",
     "subtype": "health",
     "playerLabel": "Farm",
@@ -113,6 +113,19 @@
       {
         "type": "education",
         "outputTable": [0, 20, 40, 60],
+        "range": 2
+      }
+    ]
+  },
+  "park":{
+    "type": "?",
+    "subtype": "public",
+    "cost": 15,
+    "maxPeople": 1,
+    "effects": [
+      {
+        "type": "unrest",
+        "outputTable": [0, -5],
         "range": 2
       }
     ]
