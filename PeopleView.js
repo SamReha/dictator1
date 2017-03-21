@@ -4,7 +4,7 @@
 var lowPeoplePerPage=10;
 // shows FirstName, LastName, Health, Edu, Shelter
 var PeopleRightView={
-	style: {font:"25px myKaiti", fill:"black"},
+	style: {font:"25px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 	createNew: function(dataRef){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewRightBg");
 		// let right view block click events
@@ -16,12 +16,12 @@ var PeopleRightView={
 		// ListView: [lowPeoplePerPage] items (slots)
 			// createNew(textures, margin, itemSize, itemCallback, isHorizontal)
 		v.listView=DListView.createNew(
-			{},				// don't need textures
-			{l:15,t:40},	// margin inside the list view
-			{w:400, h:40},	// size of an item
+			{},						// don't need textures
+			{l:15,t:40},			// margin inside the list view
+			{w:400, h:40},			// size of an item
 			function(index){PeopleRightView.onPersonSelected(v,index)},	// forwards the callback
-			false,			// not horizontal
-			110				// priority ID
+			false,					// not horizontal
+			110						// priority ID
 		);
 		v.addChild(v.listView);
 		// DPageIndicator: N pages
@@ -72,7 +72,7 @@ var PeopleRightView={
 var midHiPeoplePerPage=5;
 // shows the 3 lists(bu,mer,mil) with portraits
 var PeopleLeftView={
-	style: {font:"20px myKaiti", fill:"black"},
+	style: {font:"20px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 	BuType: 0,	// for us to remember, not actually in use, may be removed ITF.
 	MerType: 1,	// ditto.
 	MilType: 2,	// ditto.
@@ -98,7 +98,7 @@ var PeopleLeftView={
 		for(var i=0;i<3;i++){
 			v.listViews[i]=DListView.createNew(
 				{},
-				{l:5,t:5},				// margin - TODO: adjust it!
+				{l:10,t:10},			// margin inside the list view
 				{w:80,h:64},			// each item's size
 				createCallback(i,true),	// callback func
 				true, 					// is horizontal
@@ -123,13 +123,13 @@ var PeopleLeftView={
 		var globalIndex=view.pageIndicators[type].getCurPage()*midHiPeoplePerPage+index;
 		//console.log("Person selected! type,index=",type,globalIndex);
 		// show the detail info of that mid-hi person
-		if(view.lastSelected===globalIndex){
+		if(view.lastSelected===type*1000+globalIndex){
 			view.parent.hideContractView();
 			view.lastSelected=null;
 		}else{
 			var personDataRef=view.data3[type][index];
 			view.parent.showContractView(personDataRef);
-			view.lastSelected=globalIndex;
+			view.lastSelected=type*1000+globalIndex;
 		}
 	},
 	onPageChanged: function(view,type,index){
@@ -154,8 +154,9 @@ var PeopleLeftView={
 		}
 
 		var entrySprite=MainGame.game.make.sprite(0, 0, textureString);
-		var entryText=MainGame.game.make.text(0,50,oneEntryData.name,PeopleLeftView.style);
-		entrySprite.addChild(entryText);
+		// var name = oneEntryData.name.split(" ");
+		// var entryText=MainGame.game.make.text(0,50,name[0]+"\n"+name[1],PeopleLeftView.style);
+		// entrySprite.addChild(entryText);
 		return entrySprite;
 	},
 	_setupPage_: function(view,type,pageIndex){
@@ -167,84 +168,6 @@ var PeopleLeftView={
 	},
 };
 
-var PeopleContractView={
-	pays: [1,2,3,5,7,10,15,20,30,40,50,75,100,150,200,300,500],
-	createNew: function(personDataRef){
-		var v=MainGame.game.make.sprite(0,0,'peopleViewContractBg');
-		v.dataRef=personDataRef;
-		v.inputEnabled=true;
-		v.input.priorityID=120;
-
-		// TODO: adjust layout!!
-		// setup its elements
-			// port & name
-		var textureString;
-		switch (personDataRef.role) {
-			case Person.Bureaucrat:
-				textureString = 'bureaucrat_port_' + personDataRef.portIndex;
-				break;
-			case Person.Merchant:
-				textureString = 'merchant_port_' + personDataRef.portIndex;
-				break;
-			case Person.Military:
-				textureString = 'military_port_' + personDataRef.portIndex;
-				break;
-			default:
-				break;
-		}
-
-		v.port = MainGame.game.make.sprite(10, 10, textureString);
-		v.addChild(v.port);
-		v.nameLabel=MainGame.game.make.text(100,10,personDataRef.name);
-		v.addChild(v.nameLabel);
-			// "-" payment "+"
-		v.decButton=MainGame.game.make.sprite(10,150,"decButton");
-		v.decButton.inputEnabled=true;
-		v.decButton.input.priorityID=121;
-		v.addChild(v.decButton);
-		v.incButton=MainGame.game.make.sprite(100,150,"incButton");
-		v.incButton.inputEnabled=true;
-		v.incButton.input.priorityID=121;
-		v.addChild(v.incButton);
-		v.payLabel=MainGame.game.make.text(50,150,""+PeopleContractView.pays[personDataRef.payLevel]);
-		v.addChild(v.payLabel);
-		v.decButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,false)});
-		v.incButton.events.onInputUp.add(function(){PeopleContractView.onPaymentChanged(v,true)});
-		if(personDataRef.payLevel===0)
-			v.decButton.visible=false;
-		if(personDataRef.payLevel===PeopleContractView.pays.length-1)
-			v.incButton.visible=false;
-			// "fire" workStatus "hire"
-		v.workLabel=MainGame.game.make.text(150,300,personDataRef.type===1?"Inflnce":"Coalition");
-		v.addChild(v.workLabel);
-		v.fireButton=MainGame.game.make.sprite(50,300,"btnFire");
-		v.fireButton.inputEnabled=true;
-		v.fireButton.input.priorityID=121;
-		v.fireButton.events.onInputUp.add(function(){PeopleContractView.onWorkChanged(v,true)});
-		v.addChild(v.fireButton);
-		v.hireButton=MainGame.game.make.sprite(300,300,"btnHire");
-		v.hireButton.inputEnabled=true;
-		v.hireButton.input.priorityID=121;
-		v.hireButton.events.onInputUp.add(function(){PeopleContractView.onWorkChanged(v,false)});
-		v.addChild(v.hireButton);
-
-		return v;
-	},
-	onPaymentChanged: function(view, isInc){
-		view.dataRef.payLevel+=(isInc?1:-1);
-		view["decButton"].visible=(view.dataRef.payLevel>0);
-		view["incButton"].visible=(view.dataRef.payLevel<PeopleContractView.pays.length-1);
-		view["payLabel"].text=""+PeopleContractView.pays[view.dataRef.payLevel];
-		console.log("After Payment change:",MainGame.population);
-	},
-	onWorkChanged: function(view, isFire){
-		view.dataRef.type=(isFire?Person.Mid:Person.Hi);
-		view.workLabel.text=(view.dataRef.type===Person.Mid?"Inflnce":"Coalition");
-
-		// Update the UI
-		MainGame.hud.coalitionFlag.updateSelf();
-	},
-};
 
 var PeopleView={
 	// TODO: please see the required format of lowData, buDataRef, etc.
@@ -288,17 +211,21 @@ var PeopleView={
 	},
 	showContractView: function(view,personDataRef){
 		if(view.contract){
-			view.contract.destroy();
+			view.contract.suicide();
 			view.contract=null;
 		}
+		console.assert(view);
+		console.assert(personDataRef);
 		view.contract=PeopleContractView.createNew(personDataRef);
+		console.log(view.contract);
 		view.contract.x=view.right.x;
 		view.addChild(view.contract);
 	},
 	hideContractView: function(view){
 		if(view.contract){
-			view.contract.destroy();
+			view.contract.suicide();
 			view.contract=null;
+			view.left.lastSelected=null;
 		}
 	}
 };

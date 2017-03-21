@@ -2,7 +2,7 @@
 
 var DPageIndicator={
 	// TODO: set font style here
-	style: {font:"30px myKaiti", fill:"black"},
+	style: {font:"20px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 	// ****************** Attention ****************** //	
 	// pageCount
 	// layOut: {width,textPos}
@@ -12,10 +12,14 @@ var DPageIndicator={
 	createNew: function(width, textPosition){
 		var v=MainGame.game.add.group();
 		// add two buttons as sprites
-		v.prevPage=MainGame.game.make.sprite(0,0,"pi_prevPage");
+		v.prevPage=MainGame.game.make.button(0,0,"triangleArrowButton",function(){
+			DPageIndicator.onPrevPage,v},v.prevPage,1,0,2,1);
+		v.prevPage.anchor.x=1;
+		v.prevPage.scale.x*=-1;
 		v.prevPage.visible=false;
 		v.addChild(v.prevPage);
-		v.nextPage=MainGame.game.make.sprite(0,0,"pi_nextPage");
+		v.nextPage=MainGame.game.make.button(0,0,"triangleArrowButton",function(){
+			DPageIndicator.onNextPage,v},v.nextPage,1,0,2,1);
 		v.nextPage.x=width-v.nextPage.width;
 		v.nextPage.visible=false;
 		v.addChild(v.nextPage);

@@ -193,11 +193,11 @@ var Building = {
 //     },
 // }
 
-// var ArableFarm = {
+// var FertileFarm = {
 //     createNew: function(textureKey){
-//         var arableFarm = Health.createNew(2, 50, 0, 10, "arableFarm");
+//         var fertileFarm = Health.createNew(2, 50, 0, 10, "fertileFarm");
         
-//         return arableFarm;
+//         return fertileFarm;
 //     },
 // }
 

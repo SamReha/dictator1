@@ -22,10 +22,11 @@ function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
 		peopleTextView.text=" - ";
 	}
 	// now add color!
-	var colorTable={"?":"yellow", "!":"orangered", "$":"green", "-":"white"};
-	console.assert(colorTable[building.type], "Unknown building type! Must be ?(bureau), !(mil), $(commercial) or -(no type).");
-	buildingTextView.addColor(colorTable[building.type], 0);
-	peopleTextView.addColor(colorTable[building.type], 0);
+    // Nope!
+	// var colorTable={"?":"yellow", "!":"orangered", "$":"green", "-":"white"};
+	// console.assert(colorTable[building.type], "Unknown building type! Must be ?(bureau), !(mil), $(commercial) or -(no type).");
+	// buildingTextView.addColor(colorTable[building.type], 0);
+	// peopleTextView.addColor(colorTable[building.type], 0);
 }
 
 var TileBriefView={
@@ -75,7 +76,7 @@ var TileBriefView={
         var board=MainGame.board;
         var tile=board.at(t.index);
         t.x=board.x+tile.x*board.currentScale;
-        t.y=board.y+tile.y*board.currentScale;
+        t.y=board.y+(tile.y+tile.height*7)*board.currentScale;
         t.scale.set(board.currentScale);
 	}
 };

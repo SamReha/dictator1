@@ -23,7 +23,7 @@ var Person={
         // Class vars
         p.type=data.type;               // must be one of Person.types
         p.name=(data.name?data.name:Person.randomName());   // either given or randomized
-        p.portIndex=data.portIndex;     // nullable
+        p.portIndex=(data.portIndex!==undefined?data.portIndex:null);     // nullable
         p.workplace=data.workplace;     // nullable, index of the tile
         p.home=data.home;               // nullable, index of the tile
         p.health=(data.health?data.health:0);           // int
@@ -34,20 +34,22 @@ var Person={
         // Class vars (nullable)
         p.influence=(p.type>=Person.Mid?0:null);
         p.role=(data.role?data.role:null);
-        p.loyalty=(p.type>=Person.Hi?0:null);
-        p.payLevel=data.payLevel;
+        p.loyalty=(p.type<=Person.Hi?0:null);
+        p.payLevel=(data.payLevel?data.payLevel:null);
+        console.log("P's payLevel is:"+p.payLevel);
 
         // Class funcs
         p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
-        p.findHousing=function(pop){return Person.findHousing(p,pop)};
-        p.toString=function(){return "<Person:"+p.name+",type:"+p.type+",role:"+p.role};
+        p.findHousing=function(){return Person.findHousing(p)};
+        p.toString=function(){return "<Person:"+p.name+",type:"+p.type+",role:"+p.role+">"};
         p.updateStats=function(board,nextTurn){return Person.updateStats(p,board,nextTurn)};
         p.updateFreeUn=function(board){return Person.updateFreeUn(p,board)};
 
         p.setLowClass = function() { return Person.setLowClass(p); };
         p.setMidClass = function() { return Person.setMidClass(p); };
-        p.setHighClass = function() { return Person.setHighClass(p); };
+        p.setHighClass = function(payAmount) { return Person.setHighClass(p,payAmount); };
+        p.unSetHighClass = function() { return Person.unSetHighClass(p); };
 
         return p;
     },
@@ -56,6 +58,7 @@ var Person={
     update: function(p, board,nextTurn){
         p.updateStats(board,nextTurn);
         if (p.type === Person.Low) {
+            p.updateStats(board,nextTurn);
             p.updateFreeUn(board);
         }
     },
@@ -74,7 +77,7 @@ var Person={
     },
 
     
-    findHousing: function(p,pop){
+    findHousing: function(p){
         /*global MainGame*/
         var board = MainGame.board;
         var housingIndices=board.findBuilding(null,"housing",null);
@@ -95,8 +98,13 @@ var Person={
         for (var i=0;i<housingIndices.length;i++) {
             if(board.at(housingIndices[i]).getBuilding().startingTurn>MainGame.global.turn)
                 continue;
-            if (pop.hirePersonAt(p, housingIndices[i]))
+            if (MainGame.population.hirePersonAt(p, housingIndices[i])){
+                var house = board.at(housingIndices[i]);
+                p.health = house.health;
+                p.shelter = house.shelter;
+                p.education = house.education;
                 return true;
+            }
         }
         return false;
     },
@@ -117,19 +125,29 @@ var Person={
                 p.education = clampedSum(p.education, Person.learningSpeed, house.education);
             }
         }
-        else{
-            p.health = 0;
-            p.shelter = 0;
+        else if(nextTurn){
+            if(!p.findHousing()){
+                /*global MainGame*/
+                var shanty = MainGame.board.buildShanty();
+                if(shanty!==null){  MainGame.population.hirePersonAt(p, shanty);  }
+                else{
+                    p.health = 0;
+                    p.shelter = 0;
+                }
+            }
         }
         // Update social class
-        if (p.health < 50 || p.shelter < 50 || p.education < 50) {
-            p.setLowClass();
-        } else {
-            // Don't set mid class if they're already high class!
-            if (p.type != Person.Hi) {
+        if(p.type === Person.Low){
+            if(p.health >= 50 && p.shelter >= 50 && p.education >= 50) {
                 console.log("promotion!");
                 p.setMidClass();
             }
+        }else if(p.health < 50 || p.shelter < 50 || p.education < 50) {
+            console.log("demotion");
+            if(p.type === Person.Hi){
+                p.unSetHighClass();
+            }
+            p.setLowClass();
         }
     },
     
@@ -160,7 +178,7 @@ var Person={
             p.role=role;
             return;
         }
-        // find his workplace
+        // find their workplace
         if(p.workplace!==null){
             var workplaceTile=MainGame.board.at(p.workplace);
             console.assert(workplaceTile.hasBuilding());
@@ -174,9 +192,33 @@ var Person={
         }
     },
 
-    setHighClass: function(p) {
-        console.log("ASDFHJALSKJDFLKASJDFLKAJHSFKLAJHSFLKAJHSFLKASJHFLKASJDFALKSDJFALKSDJLASDF");
-        p.type = Person.Hi;
+    setHighClass: function(p,payAmount) {
+        if(p.type === Person.Hi){
+            var effects = MainGame.board.at(p.home).getBuilding().effects;
+            for(var count=0; count<effects.length; ++count){
+                if(effects[count].type==="money"){
+                    effects[count].outputTable[1]=-payAmount;
+                    return;
+                }
+            }
+        }else{
+            var minister = MainGame.population.typeRoleList(Person.Hi,p.role);
+            if(minister.length > 0)
+                minister[0].unSetHighClass();
+            p.type = Person.Hi;
+            MainGame.board.at(p.home).getBuilding().effects.push({"type":"money","outputTable":[0,-payAmount]});
+        }
+    },
+
+    unSetHighClass: function(p) {
+        p.type = Person.Mid;
+        var effects = MainGame.board.at(p.home).getBuilding().effects;
+        for(var count=0; count<effects.length; ++count){
+            if(effects[count].type==="money"){
+                effects.splice(count,1);
+                return;
+            }
+        }
     },
 };
 
@@ -283,7 +325,7 @@ var Population={
         for(var i = 0; i < amount; i++) {
             var per=Person.createNew({"type":0,"workplace":null,"home":null});
             pop.people.push(per);
-            if(!per.findHousing(pop)){
+            if(!per.findHousing()){
                 /*global MainGame*/
                 var shanty = MainGame.board.buildShanty();
                 if(shanty!==null){  pop.hirePersonAt(per, shanty);  }
