@@ -96,22 +96,24 @@ var TileDetailView = {
         var board = MainGame.board;
         var building = board.at(buildingIndex).getBuilding();
 
-        if (building.subtype === 'housing') {
-            var availableNoun = 'bed';
-            var addPersonString = 'Add Resident';
-            var removePersonString = 'Evict Resident';
-        } else {
-            var availableNoun = 'job';
-            var addPersonString = 'Hire Worker';
-            var removePersonString = 'Fire Worker';
-        }
-
         var view = game.add.sprite(0, 0, 'building_detail_backpanel');
         view.inputEnabled = true;
         view.input.priorityID = 101;
         view.anchor.set(0.5, 0.5);
         view.x = game.width / 2;
         view.y = game.height / 2;
+
+        if (building.subtype === 'housing') {
+            var availableNoun = 'bed';
+            var addPersonString = 'Add Resident';
+            var removePersonString = 'Evict Resident';
+            view.residential = true;
+        } else {
+            var availableNoun = 'job';
+            var addPersonString = 'Hire Worker';
+            var removePersonString = 'Fire Worker';
+            view.residential = false;
+        }
 
         // setup the mask
         /* global DUiMask */
@@ -140,7 +142,7 @@ var TileDetailView = {
         view.addChild(view.textDescription);
 
         // ListView
-        var peoplePerPage = 5;
+        view.itemsPerPage = 5;
         view.occupantListView = DListView.createNew(
             {},                  // don't need textures
             {l:15, t:40},        // margin inside the list view
@@ -149,14 +151,19 @@ var TileDetailView = {
             false,               // not horizontal
             110                  // priority ID
         );
+        TileDetailView._setupListView_(view, 0);
+        view.occupantListView.x = -view.width/2 + TileDetailView.horizontalBorderWidth;
+        view.occupantListView.y = -view.height/2 + TileDetailView.verticalBorderWidth + 96 + 12;
         view.addChild(view.occupantListView);
 
         // DPageIndicator: N pages
-        var pageCount = Math.ceil(building.people / peoplePerPage);
+        var pageCount = Math.ceil(building.people / view.itemsPerPage);
         view.pageIndicator = DPageIndicator.createNew(400, {x:180, y:5}); //width, textPos
         view.pageIndicator.setModel(0, pageCount); // current, max
-        view.pageIndicator.setController(function(index){ PeopleRightView.onPageChanged(view,index); }, 111);
-        view.pageIndicator.y=440;
+        view.pageIndicator.setController(function(index){ TileDetailView.onPageChanged(view, index); }, 111);
+        console.log(view.pageIndicator.width);
+        view.pageIndicator.x = -view.pageIndicator.width;
+        view.pageIndicator.y = 105;
         view.addChild(view.pageIndicator);
 
         var availibilityString = (building.maxPeople - building.people) + ' ' + availableNoun + 's available';
@@ -235,9 +242,11 @@ var TileDetailView = {
         // update display
         TileDetailView._updateAvailabilityText(view, bld);
 
-        if (bld.subtype !== "housing") {
+        if (!view.residential) {
             TileDetailView._updateState(view, bld);
-        }  
+        }
+
+        TileDetailView._setupListView_(view, 0);
 
         /*global updatePopulation*/
         updatePopulation(false,false);
@@ -259,16 +268,78 @@ var TileDetailView = {
         // update display
         TileDetailView._updateAvailabilityText(view, bld);
 
-        if (bld.subtype !== "housing") {
+        if (!view.residential) {
             TileDetailView._updateState(view, bld);
         }
+
+        TileDetailView._setupListView_(view, 0);
 
         /*global updatePopulation*/
         updatePopulation(false,false);
     },
 
+    onPageChanged: function(view, index) {
+        TileDetailView._setupListView_(view, index);
+    },
+
+    // Forms a sprite that represents an entry in the listview
+    _makeEntry_: function(citizen, residential) {
+        var entrySprite = MainGame.game.make.sprite(0, 0);
+
+        if (residential) {
+            var entryString = citizen.name + ' (';
+            if (citizen.workplace === null) {
+                entryString += 'Unemployed';
+            } else {
+                var workplace = MainGame.board.at(citizen.workplace).building;
+                switch (workplace.name) {
+                    case 'school':
+                        entryString += 'School Teacher';
+                        break;
+                    case 'fertileFarm':
+                    case 'weakFarm':
+                        entryString += 'Farmer';
+                        break;
+                    case 'lumberYard':
+                        entryString += 'Factory Worker';
+                        break;
+                    case 'armyBase':
+                        entryString += 'Soldier';
+                        break;
+                    default:
+                        entrySTring += 'MISSING JOBNAME';
+
+                }
+            }
+
+            entryString += ')';
+        } else var entryString = citizen.name;
+        var entryText = MainGame.game.make.text(0, 0, entryString, TileDetailView.descriptionStyle);
+        entrySprite.addChild(entryText);
+        return entrySprite;
+    },
+
+    // Populate our listview
+    _setupListView_: function(view, pageIndex) {
+        view.occupantListView.removeAll();
+
+        if (view.residential) {
+            var occupants = MainGame.population.getHouseMap()[view.index];
+        } else {
+            var occupants = MainGame.population.getWorkMap()[view.index];
+        }
+
+        var startIndex = pageIndex * view.itemsPerPage;
+        var endIndex = Math.min(startIndex+view.itemsPerPage, occupants.length);
+
+        for (var i = startIndex; i < endIndex; i++) {
+            var citizen = MainGame.population.at(occupants[i]);
+            view.occupantListView.add(TileDetailView._makeEntry_(citizen, view.residential));
+        }
+    },
+
     _updateAvailabilityText: function(view, building) {
-        if (building.subtype === 'housing') {
+        if (view.residential) {
             var availableNoun = 'bed';
             var occupantNoun = 'resident';
         } else {
@@ -371,7 +442,7 @@ var TileDetailView = {
         var str4="";
         var str5="";
         
-        if (bld.subtype === "housing") {
+        if (view.residential) {
             var sentenceStart = "Residents ";
             var healthDescription = "are starving.";
             var eduDescription = "are illiterate.";
@@ -453,6 +524,6 @@ var TileDetailView = {
 
         view.textDescription.text = str3;
         view.textDescription.text = view.textDescription.text + '\n' + str4;
-        view.textDescription.text = view.textDescription.text + '\n' + str5;        
+        view.textDescription.text = view.textDescription.text + '\n' + str5;
     },
 };

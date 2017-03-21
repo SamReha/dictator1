@@ -38,7 +38,7 @@ var Building = {
 
             // Set detail icon texture string
             b.detailIconTexture = b.name + '_detail';
-            console.log(b.name);
+            //console.log(b.name);
         }
 
         // Class funcs
