@@ -104,18 +104,20 @@ var BoardController={
 		}
 		var tile=bc.modelView.at(index);
 		console.assert(tile);
-		bc.briefView=TileBriefView.createNew(index);
+		bc.briefView = TileBriefView.createNew(index);
 		bc.briefView.updateInfo(tile);
 		bc.briefView.updatePos();
 		bc.mouseOverTimer.loop(50,bc.briefView.updatePos);
 		bc.mouseOverTimer.start();
 	},
+
 	hideTileBrief: function(bc){
 		if(bc.briefView){
 			bc.briefView.destroy();
 			bc.briefView=null;
 		}
 	},
+	
 	showTileDetail: function(bc, index){
 		/* global TileDetailView */
 		if(index===null || index===undefined)

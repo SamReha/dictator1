@@ -29,9 +29,10 @@ function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
 	// peopleTextView.addColor(colorTable[building.type], 0);
 }
 
-var TileBriefView={
-    style:{font: "30px myKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" },
-	createNew: function(index){
+var TileBriefView = {
+    style: { font: "30px myKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" },
+
+	createNew: function(index) {
 		console.assert(index || index===0);
 		/* global MainGame */
 		var game=MainGame.game;
@@ -50,7 +51,7 @@ var TileBriefView={
 		}
 
 		// Class vars
-		view.index=index;
+		view.index = index;
 		// view.terrain
 		// view.building
 		// view.people
@@ -61,6 +62,7 @@ var TileBriefView={
 		view.updatePos=function(){return TileBriefView.updatePos(view)};
 		return view;
 	},
+
 	updateInfo: function(t, tile){
 		console.assert(tile);
         // show terrain+res info
@@ -71,6 +73,7 @@ var TileBriefView={
         	_showBuildingAndPeople_(tile.getBuilding(), t.building, t.people);
         }
 	},
+
 	updatePos: function(t){
         /*global MainGame*/
         var board=MainGame.board;
@@ -141,8 +144,18 @@ var TileDetailView = {
         view.textDescription.y = -view.height/2 + TileDetailView.verticalBorderWidth;
         view.addChild(view.textDescription);
 
-        // ListView
+        // DPageIndicator: N pages
         view.itemsPerPage = 5;
+        var pageCount = Math.ceil(building.people / view.itemsPerPage);
+        view.pageIndicator = DPageIndicator.createNew(400, {x:180, y:5}); //width, textPos
+        view.pageIndicator.setModel(0, pageCount); // current, max
+        view.pageIndicator.setController(function(index){ TileDetailView.onPageChanged(view, index); }, 111);
+        view.pageIndicator.x = -view.pageIndicator.width;
+        view.pageIndicator.y = 105;
+        view.pageIndicator.visible = (pageCount > 1);
+        view.addChild(view.pageIndicator);
+
+        // ListView
         view.occupantListView = DListView.createNew(
             {},                  // don't need textures
             {l:15, t:40},        // margin inside the list view
@@ -155,16 +168,6 @@ var TileDetailView = {
         view.occupantListView.x = -view.width/2 + TileDetailView.horizontalBorderWidth;
         view.occupantListView.y = -view.height/2 + TileDetailView.verticalBorderWidth + 96 + 12;
         view.addChild(view.occupantListView);
-
-        // DPageIndicator: N pages
-        var pageCount = Math.ceil(building.people / view.itemsPerPage);
-        view.pageIndicator = DPageIndicator.createNew(400, {x:180, y:5}); //width, textPos
-        view.pageIndicator.setModel(0, pageCount); // current, max
-        view.pageIndicator.setController(function(index){ TileDetailView.onPageChanged(view, index); }, 111);
-        console.log(view.pageIndicator.width);
-        view.pageIndicator.x = -view.pageIndicator.width;
-        view.pageIndicator.y = 105;
-        view.addChild(view.pageIndicator);
 
         var availibilityString = (building.maxPeople - building.people) + ' ' + availableNoun + 's available';
 
@@ -285,35 +288,78 @@ var TileDetailView = {
     // Forms a sprite that represents an entry in the listview
     _makeEntry_: function(citizen, residential) {
         var entrySprite = MainGame.game.make.sprite(0, 0);
+        var entryString;
 
         if (residential) {
-            var entryString = citizen.name + ' (';
-            if (citizen.workplace === null) {
-                entryString += 'Unemployed';
-            } else {
-                var workplace = MainGame.board.at(citizen.workplace).building;
-                switch (workplace.name) {
-                    case 'school':
-                        entryString += 'School Teacher';
+            if (citizen.type === Person.Low) {
+                entryString = citizen.name + ' (';
+                if (citizen.workplace === null) {
+                    entryString += 'Unemployed';
+                } else {
+                    var workplace = MainGame.board.at(citizen.workplace).building;
+                    switch (workplace.name) {
+                        case 'school':
+                            entryString += 'School Teacher';
+                            break;
+                        case 'fertileFarm':
+                        case 'weakFarm':
+                            entryString += 'Farmer';
+                            break;
+                        case 'lumberYard':
+                            entryString += 'Factory Worker';
+                            break;
+                        case 'armyBase':
+                            entryString += 'Soldier';
+                            break;
+                        default:
+                            entryString += 'MISSING JOBNAME';
+
+                    }
+                }
+
+                entryString += ')';
+            } else if (citizen.type === Person.Mid) {
+                entryString = citizen.name + ' (';
+
+                switch (citizen.role) {
+                    case Person.Bureaucrat:
+                        entryString += 'Elite Bureaucrat';
                         break;
-                    case 'fertileFarm':
-                    case 'weakFarm':
-                        entryString += 'Farmer';
+                    case Person.Military:
+                        entryString += 'Elite Military Officer';
                         break;
-                    case 'lumberYard':
-                        entryString += 'Factory Worker';
-                        break;
-                    case 'armyBase':
-                        entryString += 'Soldier';
+                    case Person.Merchant:
+                        entryString += 'Elite Financier';
                         break;
                     default:
-                        entrySTring += 'MISSING JOBNAME';
-
+                        entryString += 'MISSING ROLE NAME';
                 }
-            }
 
-            entryString += ')';
-        } else var entryString = citizen.name;
+                entryString += ')';
+            } else if (citizen.type === Person.Hi) {
+                entryString = citizen.name + ' (';
+
+                switch (citizen.role) {
+                    case Person.Bureaucrat:
+                        entryString += 'Minster of Bureaucracy';
+                        break;
+                    case Person.Military:
+                        entryString += 'Minister of the Military';
+                        break;
+                    case Person.Merchant:
+                        entryString += 'Minister of Finance';
+                        break;
+                    default:
+                        entryString += 'MISSING ROLE NAME';
+                }
+
+                entryString += ')';
+            }
+        } else {
+            // Else, it's a workplace
+            entryString = citizen.name;
+        }
+
         var entryText = MainGame.game.make.text(0, 0, entryString, TileDetailView.descriptionStyle);
         entrySprite.addChild(entryText);
         return entrySprite;
@@ -336,6 +382,10 @@ var TileDetailView = {
             var citizen = MainGame.population.at(occupants[i]);
             view.occupantListView.add(TileDetailView._makeEntry_(citizen, view.residential));
         }
+
+        // See if we should show a page indicator
+        var pageCount = Math.ceil(occupants.length / view.itemsPerPage);
+        view.pageIndicator.visible = (pageCount > 1);
     },
 
     _updateAvailabilityText: function(view, building) {
@@ -429,8 +479,8 @@ var TileDetailView = {
         view.textDescription.text = view.textDescription.text + '\n' + str5;
     },
 
-    updateInfo: function(view, tile){
-        if(!tile.hasBuilding())
+    updateInfo: function(view, tile) {
+        if (!tile.hasBuilding())
             return;
 
         TileDetailView._updateAvailabilityText(view, tile.getBuilding());
@@ -525,5 +575,5 @@ var TileDetailView = {
         view.textDescription.text = str3;
         view.textDescription.text = view.textDescription.text + '\n' + str4;
         view.textDescription.text = view.textDescription.text + '\n' + str5;
-    },
+    }
 };
