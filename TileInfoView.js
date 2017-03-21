@@ -138,7 +138,25 @@ var TileDetailView = {
         view.textDescription.y = -view.height/2 + TileDetailView.verticalBorderWidth;
         view.addChild(view.textDescription);
 
-        view.occupantList = {}; // TODO: Make this a DListView of the occupants... Should also have a DMask
+        // ListView
+        var peoplePerPage = 5;
+        view.occupantListView = DListView.createNew(
+            {},                  // don't need textures
+            {l:15, t:40},        // margin inside the list view
+            {w:400, h:40},       // size of an item
+            function(index){  }, // forwards the callback
+            false,               // not horizontal
+            110                  // priority ID
+        );
+        view.addChild(view.occupantListView);
+
+        // DPageIndicator: N pages
+        var pageCount = Math.ceil(building.people / peoplePerPage);
+        view.pageIndicator = DPageIndicator.createNew(400, {x:180, y:5}); //width, textPos
+        view.pageIndicator.setModel(0, pageCount); // current, max
+        view.pageIndicator.setController(function(index){ PeopleRightView.onPageChanged(view,index); }, 111);
+        view.pageIndicator.y=440;
+        view.addChild(view.pageIndicator);
 
         var availibilityString = (building.maxPeople - building.people) + ' ' + availableNoun + 's available';
 
@@ -223,6 +241,7 @@ var TileDetailView = {
         /*global updatePopulation*/
         updatePopulation(false,false);
     },
+
     _onFireButtonPressed_: function(view) {
         /*global MainGame*/
         var bld = MainGame.board.at(view.index).building;
@@ -267,7 +286,6 @@ var TileDetailView = {
 
     // When a non-housing building gets a worker added or removed, some states need to get updated
     _updateState: function(view, building) {
-        console.log("AAAAAHHHHHHH")
         var sentenceStart = 'This building ';
         var outDescription = '';
 
