@@ -29,7 +29,7 @@ var DDecisionView={
 		// sets the Model(data). Every arg is nullable(==[will be unchanged])
 		v.setModel=function(_portrait,_description,_buttonTexts){return DDecisionView.setModel(v,_portrait,_description,_buttonTexts)};
 		// sets the Controller(callbacks). #callbacks must === #buttonTexts defined in .setModel()
-		v.setController=function(callbacks,_priorityID){return DDecisionView.setController(v,callbacks,_priorityID)};
+		v.setController=function(callbacks,priorityID){return DDecisionView.setController(v,callbacks,priorityID)};
 
 		// return the view
 		return v;
@@ -61,7 +61,7 @@ var DDecisionView={
 	},
 
 	// set the Controller (callbacks) of this view
-	setController: function(v, callbacks, _priorityID){
+	setController: function(v, priorityID, callbacks){
 		console.assert(v.buttons.length===callbacks.length);
 		for(var i=0;i<v.buttons.length;i++){
 			console.assert(typeof callbacks[i]==="function");
@@ -70,7 +70,7 @@ var DDecisionView={
 			// add new controller			
 			v.buttons[i].index=i;			
 			v.buttons[i].inputEnabled=true;
-			v.buttons[i].input.priorityID=(_priorityID?_priorityID:20);
+			v.buttons[i].input.priorityID=(priorityID?priorityID:20);
 			v.buttons[i].events.onInputUp.add(callbacks[i], v.buttons[i]);
 		}
 	},

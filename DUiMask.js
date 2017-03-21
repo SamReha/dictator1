@@ -2,34 +2,24 @@
 
 // The input.priorityID of UiMask is set to 100 by default
 var DUiMask={
-	createNew: function(priority, callback){
-		var m=MainGame.game.make.sprite(0,0,"uiMask");
+	createNew: function(_isAbove){
+		var m=MainGame.game.add.sprite(0,0,"uiMask");
+		if(!_isAbove)
+			MainGame.game.world.moveDown(m);
 		m.scale.set(MainGame.game.width/16, MainGame.game.height/16);
 		m.alpha=0.75;
-		m.inputEnabled=true;
-		m.input.priorityID=priority;
-		m.events.onInputDown.add(function(){
-			callback();
-		});
 
-		// Class funcs
-		m.fillScreen=function(parent){
-			m.x=-parent.world.x-parent.x;
-			m.y=-parent.world.y-parent.y;
-		};
+		// Class func
+		m.setController=function(priorityID,callback){DUiMask.setController(m,priorityID,callback)};
 
 		return m;
 	},
-	addClickMask: function(priorityID, callback){
-		var m=MainGame.game.add.sprite(0,0,"uiMask");
-		MainGame.game.world.moveDown(m);
-		m.scale.set(MainGame.game.width/16, MainGame.game.height/16);
-		m.alpha=0.75;
+	setController: function(m, priorityID, callback){
 		m.inputEnabled=true;
 		m.input.priorityID=priorityID;
+		m.events.onInputDown.removeAll();
 		m.events.onInputDown.add(function(){
 			callback();
 		});
-		return m;
 	}
 };
