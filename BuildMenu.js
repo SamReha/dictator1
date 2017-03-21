@@ -14,8 +14,7 @@ var BuildMenu={
 		// setup the mask
 		/* global DUiMask */
 		buildMenu.uiMask=DUiMask.createNew();
-		buildMenu.uiMask.setController(100, function(){buildMenu.destroy()});
-		buildMenu.addChild(buildMenu.uiMask);
+		buildMenu.uiMask.setController(100, function(){buildMenu.uiMask.destroy();buildMenu.destroy();});
 
 		var bm=MainGame.game.make.sprite(0,0,"buildMenuBg");
 		buildMenu.addChild(bm);
