@@ -1,0 +1,37 @@
+[
+	{
+		"cond":"(Global.turn>=1)",
+		"people":["!","?"],
+		"event":[
+			{	
+				"person":0, 
+				"description":"Bur Minister: Hello, this is the Mil Minister.", 
+				"buttonTexts":["Ok?"]
+			},
+			{
+				"person":1, 
+				"description":"Mil Minister: Can you build a mil building at this place in 3 turns?", 
+				"buttonTexts":["Yes","No"]
+			},
+			{
+				"person":1,
+				"description":"Mil Minister: Thanks!",
+				"buttonTexts":["You're welcome"]
+			},
+			{
+				"person":1,
+				"description":"Mil Minister: What???",
+				"buttonTexts":["See you"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["e.gotoPage(2)", "e.gotoPage(3)"],
+			["e.suicide();r.loyalty+=2;e.willCheck=true"],
+			["e.suicide();r.loyalty-=1"]
+		],
+		"starting":-1,
+		"timeLimit":3,
+		"check":"(MainGame.board.at(0).getBuilding().type==='!')"
+	}
+]

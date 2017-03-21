@@ -41,6 +41,11 @@ var Person={
         p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
         p.findHousing=function(pop){return Person.findHousing(p,pop)};
+        p.portTexture=function(){
+            assert(p.type>=Person.Mid);
+            var tb={"?":"bureaucrat_port_", "$":"merchant_port_", "!":"military_port_"}; 
+            return tb[p.role]+p.portIndex;
+        };
         p.toString=function(){return "<Person:"+p.name+",type:"+p.type+",role:"+p.role};
         p.updateStats=function(board,nextTurn){return Person.updateStats(p,board,nextTurn)};
         p.updateFreeUn=function(board){return Person.updateFreeUn(p,board)};

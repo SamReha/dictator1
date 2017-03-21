@@ -110,6 +110,7 @@ var Preloader={
         g.load.json('stage2','stage2.json');
         g.load.json('stageMain','stageMain.json');
         g.load.json('buildingData','buildingData.json');
-        g.load.json('names','Names.json')
+        g.load.json('names','Names.json');
+        g.load.json('CoalitionQuest', 'CoalitionQuest.json');
     }
 };

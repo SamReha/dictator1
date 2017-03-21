@@ -59,8 +59,6 @@ var MainGame={
         /*global Population*/
         MainGame.population=Population.createNew(stage.population);
 
-        // MainGame.mapSelector = MapSelector.createNew();
-
         /*global Hud*/
         MainGame.hud = Hud.createNew();
 
@@ -73,6 +71,9 @@ var MainGame={
         // MainGame.board.nextTurn();
 
         // MainGame.population.nextTurn();
+
+        /*global CoalitionQuest*/
+        CoalitionQuest.generate();
         
         // Everything is currently being handled in Global.nextTurn()
         MainGame.global.nextTurn();
