@@ -69,6 +69,7 @@ var Tile={
         tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
         tile.getBuilding=function(){return tile.building};
         tile.setBuilding=function(building){Tile.setBuilding(tile,building)};
+        tile.removeBuilding = function() { Tile.removeBuilding(tile); };
 
         return tile;
     },
@@ -113,6 +114,14 @@ var Tile={
         // Apply the new building to the tile
         tile.building = building;
         tile.addChild(building);
+    },
+
+    removeBuilding: function(tile) {
+        // Don't try and remove a building if we just don't have one
+        if (tile.hasBuilding()) {
+            tile.removeChild(tile.building);
+            tile.building = Building.createNew(null);
+        }
     },
 };
 
