@@ -5,10 +5,6 @@ var PeopleContractView={
 	contractStyle: {font:"20px myKaiti", fill:"black", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.85)", shadowOffsetX: 1, shadowOffsetY: 1 },
 	styleButton: {font:"32px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.85)", shadowOffsetX: 1, shadowOffsetY: 1 },
 
-	setModel: function(v, model){
-		
-	},
-
 	createNew: function(personDataRef){
 		var v=MainGame.game.make.sprite(0,0,'peopleViewContractBg');
 		v.dataRef=personDataRef;
@@ -168,7 +164,7 @@ var PeopleContractView={
 		v.cancelButton.name="This is a cancle butto";
 		v.addChild(v.cancelButton);
 
-		v.cancelText=MainGame.game.make.text(0,0,"Cancel",PeopleContractView.styleButton);
+		v.cancelText=MainGame.game.make.text(0,0,"Return",PeopleContractView.styleButton);
 		v.cancelText.anchor.x=0.5;
 		v.cancelText.anchor.y=0.5;
 		v.cancelButton.addChild(v.cancelText);
@@ -187,6 +183,7 @@ var PeopleContractView={
 
 		// Class func
 		v.suicide=function(){PeopleContractView.suicide(v)};
+		v.updateSelf=function(){PeopleContractView.updateSelf(v)};
 
 		return v;
 	},
@@ -218,7 +215,13 @@ var PeopleContractView={
 
 		// Remake the contract view
 		var parentView=view.parent;
-		parentView.hideContractView();
-		parentView.showContractView(view.dataRef);
+
+		// update view
+		view.updateSelf();
 	},
+	updateSelf: function(v){
+		// TODO: hide Hire, update Bure -> Ministor of Bure, etc.
+		console.log("Update itself.");
+		v.hireButton.visible=false;
+	}
 };
