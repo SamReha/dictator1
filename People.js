@@ -36,7 +36,7 @@ var Person={
         p.role=(data.role?data.role:null);
         p.loyalty=(p.type<=Person.Hi?0:null);
         p.payLevel=(data.payLevel?data.payLevel:null);
-        console.log("P's payLevel is:"+p.payLevel);
+        p.salary=(data.salary?data.salary:null);
 
         // Class funcs
         p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
@@ -48,8 +48,10 @@ var Person={
 
         p.setLowClass = function() { return Person.setLowClass(p); };
         p.setMidClass = function() { return Person.setMidClass(p); };
-        p.setHighClass = function(payAmount) { return Person.setHighClass(p,payAmount); };
+        p.setHighClass = function() { return Person.setHighClass(p); };
         p.unSetHighClass = function() { return Person.unSetHighClass(p); };
+        p.addSalary = function() { return Person.addSalary(p);  };
+        p.removeSalary = function() { return Person.removeSalary(p);    };
 
         return p;
     },
@@ -192,12 +194,12 @@ var Person={
         }
     },
 
-    setHighClass: function(p,payAmount) {
+    setHighClass: function(p) {
         if(p.type === Person.Hi){
             var effects = MainGame.board.at(p.home).getBuilding().effects;
             for(var count=0; count<effects.length; ++count){
                 if(effects[count].type==="money"){
-                    effects[count].outputTable[1]=-payAmount;
+                    effects[count].outputTable[1]=-p.salary;
                     return;
                 }
             }
@@ -206,17 +208,33 @@ var Person={
             if(minister.length > 0)
                 minister[0].unSetHighClass();
             p.type = Person.Hi;
-            MainGame.board.at(p.home).getBuilding().effects.push({"type":"money","outputTable":[0,-payAmount]});
+            p.addSalary();
         }
     },
 
     unSetHighClass: function(p) {
         p.type = Person.Mid;
+        p.removeSalary();
+    },
+
+    addSalary: function(p){
+        var newEffect = {"type":"money","outputTable":[0,-p.salary]};
         var effects = MainGame.board.at(p.home).getBuilding().effects;
-        for(var count=0; count<effects.length; ++count){
-            if(effects[count].type==="money"){
-                effects.splice(count,1);
-                return;
+        if(effects.length===1 && effects[0].type===null){
+            MainGame.board.at(p.home).getBuilding().effects = [newEffect];
+        }else
+            MainGame.board.at(p.home).getBuilding().effects.push(newEffect);
+    },
+
+    removeSalary: function(p){
+        var effects = MainGame.board.at(p.home).getBuilding().effects;
+        if(effects.length===1)
+            MainGame.board.at(p.home).getBuilding().effects = [{"type":null}];
+        else{
+            for(var count=0; count<effects.length; ++count){
+                if(effects[count].type==="money"){
+                    MainGame.board.at(p.home).getBuilding().effects.splice(count,1);
+                }
             }
         }
     },
@@ -344,6 +362,8 @@ var Population={
             if(hl.length>0){
                 if(bld.addPerson()){
                     pop.people[hl[0]].home=tileIndex;
+                    if(pop.people[hl[0]].type===Person.Hi)
+                        pop.people[hl[0]].addSalary();
                     return true;
                 }
             }
@@ -353,6 +373,8 @@ var Population={
             if(hl.length>0){
                 if(bld.addPerson()) {
                     pop.people[hl[0]].workplace=tileIndex;
+                        if(pop.people[hl[0]].type===Person.Hi)
+                            pop.people[hl[0]].removeSalary();
                     return true;
                 }
             }

@@ -170,12 +170,14 @@ var PeopleContractView={
 		// unSetHiClass removes their salary from their home and sets them to mid
 		if(isFire){
 			view.dataRef.payLevel=0;
+			view.dataRef.salary=0;
 			view.dataRef.unSetHighClass();
 			view.dataRef.renewCount=null;
 		}
 		else{
 			view.dataRef.payLevel=view.newPayLevel;
-			view.dataRef.setHighClass(PeopleContractView.pays[view.dataRef.payLevel]);
+			view.dataRef.salary=PeopleContractView.pays[view.dataRef.payLevel];
+			view.dataRef.setHighClass();
 			view.dataRef.renewCount=4;
 		}
 		// Update the UI
