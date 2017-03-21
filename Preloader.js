@@ -26,19 +26,19 @@ var Preloader={
 
         // Building Detail Icons
         var detailIconDir = buildingDir + 'detail_icons/';
-        g.load.image('apartment_detail',  detailIconDir + 'apartment.png');
-        g.load.image('fertileFarm',       detailIconDir + 'farm.jpg');
-        g.load.image('weakFarm_detail',   detailIconDir + 'farm.jpg');
-        g.load.image('armyBase_detail',   detailIconDir + 'armyBase.jpg');
-        g.load.image('factory_detail',    detailIconDir + 'factory.jpg');
-        g.load.image('lumberYard_detail', detailIconDir + 'factory.jpg');
-        g.load.image('mansion_detail',    detailIconDir + 'mansion.png');
-        g.load.image('palace_detail',     detailIconDir + 'palace.png');
-        g.load.image('road_detail',       detailIconDir + 'road.jpg');
-        g.load.image('school_detail',     detailIconDir + 'school.png');
-        g.load.image('shantyTown_detail', detailIconDir + 'shantyTown.png');
-        g.load.image('suburb_detail',     detailIconDir + 'suburb.png');
-        g.load.image('park_detail',     detailIconDir + 'park.png');
+        g.load.image('apartment_detail',   detailIconDir + 'apartment.png');
+        g.load.image('fertileFarm_detail', detailIconDir + 'farm.jpg');
+        g.load.image('weakFarm_detail',    detailIconDir + 'farm.jpg');
+        g.load.image('armyBase_detail',    detailIconDir + 'armyBase.jpg');
+        g.load.image('factory_detail',     detailIconDir + 'factory.jpg');
+        g.load.image('lumberYard_detail',  detailIconDir + 'factory.jpg');
+        g.load.image('mansion_detail',     detailIconDir + 'mansion.png');
+        g.load.image('palace_detail',      detailIconDir + 'palace.png');
+        g.load.image('road_detail',        detailIconDir + 'road.jpg');
+        g.load.image('school_detail',      detailIconDir + 'school.png');
+        g.load.image('shantyTown_detail',  detailIconDir + 'shantyTown.png');
+        g.load.image('suburb_detail',      detailIconDir + 'suburb.png');
+        g.load.image('park_detail',        detailIconDir + 'park.png');
 
         // Resources
         var resourceDir = imageDir + 'resources/';
