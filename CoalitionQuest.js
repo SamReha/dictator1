@@ -33,7 +33,7 @@ var CoalitionQuest={
 		}
 	},
 	_checkCond_: function(condString){
-		var fn=Function("return "+condString);
+		var fn=Function("return ("+condString+")");
 		return fn();
 	},
 	_getPeople_: function(popRef, roles){
@@ -50,30 +50,33 @@ var CoalitionQuest={
 
 	runEvent: function(peopleRef, event, handler){
 		console.assert(event.length===handler.length);
-		console.log("Now run quest:",peopleRef,event,handler);
+		// console.log("Now run quest:",peopleRef,event,handler);
 		var e=Event.createNew();
 		// TODO: adjust the geo
 		e.position.set(300,100);
 		// generate model & controller
 		var model=[];		// an array of tables
-		var controller=[];	// an array of functions
-		var fn=[];			// a temp array to store functions
+		var controller=[];	// an array of arrays of functions
+		var fn=[];			// a temp array to store arrays of functions
 		for(var i=0;i<event.length;i++){
-			var currentPerson=peopleRef[event[i]].person;
+			var currentPerson=peopleRef[event[i].person];
 			model.push({
 				portrait:currentPerson.portTexture(),
 				description:event[i].description,
 				buttonTexts:event[i].buttonTexts
 			});
-			controller.push(function(){
-				fn[i]=Function("e","p",handler[i]);
-				fn[i](e, currentPerson);
-			});
+			// test function
+			controller[i]=[];
+			for(var j=0;j<handler[i].length;j++){
+				let f=Function("e","p",handler[i][j]);
+				controller[i][j]=function(){f(e,currentPerson)};
+			}
 		}
 		// now set model & controller
 		e.setModel(model);
 		e.setController(controller);
 	},
+
 	// check if the on-going quests are completed/expired
 	check: function(){
 		//TODO
@@ -92,7 +95,36 @@ function test_coalition_quest(){
 	console.assert(cq._getPeople_(_testPop_,['?'])[0].name==="Yi");
 	console.assert(null===cq._getPeople_(_testPop_,['?','$']));
 	// test runEvent()
-	
+	var peopleRef=cq._getPeople_(_testPop_,['?','!']);
+	var event=[
+		{	
+			"person":0, 
+			"description":"Bu. Minister: \nHello, this is the Mil Minister.", 
+			"buttonTexts":["Ok?"]
+		},
+		{
+			"person":1, 
+			"description":"Mi. Minister: \nCan you build a \nmil building at this place in 3 turns?", 
+			"buttonTexts":["Yes","No"]
+		},
+		{
+			"person":1,
+			"description":"Mi. Minister: \nThanks!",
+			"buttonTexts":["You're welcome"]
+		},
+		{
+			"person":1,
+			"description":"Mi. Minister: \nWhat???",
+			"buttonTexts":["See you"]
+		}
+	];
+	var handler=[
+		["console.log('han1');e.gotoPage(1)"],
+		["console.log('han2');e.gotoPage(2)", "e.gotoPage(3)"],
+		["console.log('han3');e.suicide();p.loyalty+=2;e.willCheck=true"],
+		["console.log('han4');e.suicide();p.loyalty-=1"]
+	];
+	cq.runEvent(peopleRef,event,handler);
 };
 
 // private
@@ -100,9 +132,9 @@ var _testTable_={name:"Yi", major:"G+PM"};
 var _testPop_={
 	typeRoleList: function(type,role){
 		if(type===2 && role==='?')
-			return [{name:"Yi",loyalty:50}];
+			return [{name:"Yi",loyalty:50,portTexture:function(){return "bureaucrat_port_0"}}];
 		else if(type===2 && role==='!')
-			return [{name:"MJ",loyalty:99}];
+			return [{name:"MJ",loyalty:99,portTexture:function(){return "military_port_0"}}];
 		else
 			return [];
 	}
@@ -156,8 +188,8 @@ var _testPop_={
 	// 	"handler":[
 	// 		["e.gotoPage(1)"],
 	// 		["e.gotoPage(2)", "e.gotoPage(3)"],
-	// 		["e.suicide();r.loyalty+=2;e.willCheck=true"],
-	// 		["e.suicide();r.loyalty-=1"]
+	// 		["e.suicide();p.loyalty+=2;e.willCheck=true"],
+	// 		["e.suicide();p.loyalty-=1"]
 	// 	],
 	// 	"starting":-1,
 	// 	"timeLimit":3,
