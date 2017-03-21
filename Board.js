@@ -35,8 +35,8 @@ var Tile={
             case 'coal':
                 tile.resLabel = 'Coal';
                 break;
-            case 'wheat':
-                tile.resLabel = 'Pasture';
+            case 'soy':
+                tile.resLabel = 'Soy Pasture';
                 break;
             default:
                 break;
