@@ -130,16 +130,14 @@ var BoardController={
 				BoardController.hideTileDetail(bc);
 			}
 		}
-		if(!bc.modelView.at(index).hasBuilding())
+		var tile = bc.modelView.at(index);
+		if(!tile.hasBuilding() || tile.getBuilding().name === 'road')
 			return;
 		//console.log("Now show tile detail:"+index);
 		var tile=bc.modelView.at(index);
 		//console.assert(tile);
 		bc.detailView=TileDetailView.createNew(index);
 		bc.detailView.updateInfo(tile);
-		bc.detailView.updatePos();
-		bc.mouseTimer.loop(50,bc.detailView.updatePos);
-		bc.mouseTimer.start();
 	},
 
 	hideTileDetail: function(bc){
