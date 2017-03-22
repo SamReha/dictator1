@@ -91,8 +91,6 @@ var CoalitionQuest={
 		// create reminder button
 		var button=DReminderButton.createNew();
 		button.setReminderView(view);
-		// record reminder button
-		this.reminderButtons.push(button);
 		// now update the start turn for view
 		view.setModel({startAt:Global.turn})
 	},
@@ -102,13 +100,13 @@ var CoalitionQuest={
 		for(var i=this.runningQuests.length-1;i>=0;i--){
 			var q=this.runningQuests[i];
 			if(this._checkSuc_(q)){
-				// TODO
+				// TODO: generate a suc event
 			}else if(this._checkFail_(q)){
-				// TODO
+				// TODO: generate a fail event
 			}else{
 				q.reminder.remaining--;
-				// TODO: update relative reminder view
-				
+				// TODO: update relative reminder by .setModel({remaining=q.reminder.remaining})
+
 			}
 		}
 	},
@@ -166,7 +164,10 @@ function test_coalition_quest(){
 		["console.log('han4');e.suicide();p.loyalty-=1"]
 	];
 	cq.runEvent(peopleRef,event,handler);
-	// test _createReminder_()
+
+	// by Yi: to adjust the geo of reminder, please un-comment the lines below:
+
+	// // test _createReminder_()
 	// var reminder={
 	// 	model:{
 	// 		description:"From Mil Minister:\n Build any mil building!",
