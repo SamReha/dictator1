@@ -162,7 +162,7 @@ var Person={
             p.accruedInfluence=Math.min(p.accruedInfluence,50);
             if(p.type===Person.Hi){
                 var payGrade = Math.floor(Math.max(p.baseInfluence+p.accruedInfluence-5,0)/5);
-                p.loyalty += payLevel-payGrade;
+                p.loyalty += p.payLevel-payGrade;
             }
         }
     },

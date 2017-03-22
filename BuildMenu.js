@@ -65,7 +65,7 @@ var BuildMenu={
 		/*global Hud*/
 		// buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
 		var buyMansionBtn = MainGame.game.make.button((bm.width/8), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buyMansionBtn, 'mansion');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyMansionBtn, 'mansion');},
 			buildMenu, 0, 1, 0, 2);
 		buyMansionBtn.input.priorityID = hudInputPriority;
 		buyMansionBtn.anchor.x = 0.5;  // Anchor in center
@@ -84,7 +84,7 @@ var BuildMenu={
 		buyMansionBtn.addChild(buyMansionBtnText);
 
 		var buySuburbBtn = MainGame.game.make.button((bm.width*3/8), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buySuburbBtn, 'suburb');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySuburbBtn, 'suburb');},
 			buildMenu, 0, 1, 0, 2);
 		buySuburbBtn.input.priorityID = hudInputPriority;
 		buySuburbBtn.anchor.x = 0.5;  // Anchor in center
@@ -103,7 +103,7 @@ var BuildMenu={
 		buySuburbBtn.addChild(buySuburbBtnText);
 
 		var buyApartmentBtn = MainGame.game.make.button((bm.width*5/8), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buyApartmentBtn, 'apartment');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyApartmentBtn, 'apartment');},
 			buildMenu, 0, 1, 0, 2);
 		buyApartmentBtn.input.priorityID = hudInputPriority;
 		buyApartmentBtn.anchor.x = 0.5;  // Anchor in center
@@ -122,7 +122,7 @@ var BuildMenu={
 		buyApartmentBtn.addChild(buyApartmentBtnText);
 
 		var buyRoadBtn = MainGame.game.make.button((bm.width*7/8), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buyRoadBtn, 'road');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyRoadBtn, 'road');},
 			buildMenu, 0, 1, 0, 2);
 		buyRoadBtn.input.priorityID = hudInputPriority;
 		buyRoadBtn.anchor.x = 0.5;  // Anchor in center
@@ -141,7 +141,7 @@ var BuildMenu={
 		buyRoadBtn.addChild(buyRoadBtnText);
 
 		var buySchoolBtn = MainGame.game.make.button((bm.width/4), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buySchoolBtn, 'school');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'school');},
 			buildMenu, 0, 1, 0, 2);
 		buySchoolBtn.input.priorityID = hudInputPriority;
 		buySchoolBtn.anchor.x = 0.5;  // Anchor in center
@@ -160,7 +160,7 @@ var BuildMenu={
 		buySchoolBtn.addChild(buySchoolBtnText);
 
 		var buyParkBtn = MainGame.game.make.button((bm.width/12), (bm.height/2), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buySchoolBtn, 'school');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'school');},
 			buildMenu, 0, 1, 0, 2);
 		buyParkBtn.input.priorityID = hudInputPriority;
 		buyParkBtn.anchor.x = 0.5;  // Anchor in center
@@ -179,7 +179,7 @@ var BuildMenu={
 		buyParkBtn.addChild(buyParkBtnText);
 
 		var buyFactoryBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buyFactoryBtn, 'lumberYard');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFactoryBtn, 'lumberYard');},
 			buildMenu, 0, 1, 0, 2);
 		buyFactoryBtn.input.priorityID = hudInputPriority;
 		buyFactoryBtn.anchor.x = 0.5;  // Anchor in center
@@ -198,7 +198,7 @@ var BuildMenu={
 		buyFactoryBtn.addChild(buyFactoryBtnText);
 
 		var buyArmyBaseBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buyArmyBaseBtn, 'armyBase');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyArmyBaseBtn, 'armyBase');},
 			buildMenu, 0, 1, 0, 2);
 		buyArmyBaseBtn.input.priorityID = hudInputPriority;
 		buyArmyBaseBtn.anchor.x = 0.5;  // Anchor in center
@@ -217,7 +217,7 @@ var BuildMenu={
 		buyArmyBaseBtn.addChild(buyArmyBaseBtnText);
 
 		var buyPoliceStationBtn = MainGame.game.make.button((bm.width/4), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buyPoliceStationBtn, 'police');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyPoliceStationBtn, 'police');},
 			buildMenu, 0, 1, 0, 2);
 		buyPoliceStationBtn.input.priorityID = hudInputPriority;
 		buyPoliceStationBtn.anchor.x = 0.5;  // Anchor in center
@@ -237,7 +237,7 @@ var BuildMenu={
 
 		// Need to adjust beginBuilding() to handle fertile vs weak farms
 		var buyFarmBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buyFarmBtn, 'fertileFarm');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFarmBtn, 'fertileFarm');},
 			buildMenu, 0, 1, 0, 2);
 		buyFarmBtn.input.priorityID = hudInputPriority;
 		buyFarmBtn.anchor.x = 0.5;  // Anchor in center

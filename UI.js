@@ -103,7 +103,7 @@ var Hud = {
     showStatusMenu: function(){
 
     },
-    beginBuilding: function(menu, button, buildingType) {
+    beginBuilding: function(menu, mask, button, buildingType) {
         //console.log(buildingType);
         //console.log( MainGame.game.cache.getJSON('buildingData')[buildingType].cost);
         if (Global.money >= MainGame.game.cache.getJSON('buildingData')[buildingType].cost) {
@@ -111,10 +111,11 @@ var Hud = {
             button.frame = 1; // This should be whatever frame corresponds to the default state in the sprite sheet
 
             // Hide build menu
-            menu.visible = false;
+            menu.visible=false;
+            mask.visible=false;
     
             // Create a building placer
-            var buildingPlacer = BuildingPlacer.createNew(buildingType);
+            var buildingPlacer = BuildingPlacer.createNew(buildingType, menu, mask);
         }
     },
 };
@@ -122,7 +123,7 @@ var Hud = {
 // Building Placer Object
 // Dynamically extends sprite
 var BuildingPlacer = {
-    createNew: function(buildingType) {
+    createNew: function(buildingType, menu, mask) {
         var bP = MainGame.game.add.sprite(0, 0, buildingType + '1');
 
         var zoom = MainGame.board.currentScale;
@@ -136,7 +137,7 @@ var BuildingPlacer = {
         bP.mapIndex = null;
 
         bP.update = function() { BuildingPlacer.update(bP); };
-        bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer); };
+        bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer, menu, mask); };
         bP.cancelBuild = function() { BuildingPlacer.cancelBuild(bP); };
 
         bP.inputEnabled = true;
@@ -178,7 +179,7 @@ var BuildingPlacer = {
         }
     },
     
-    clickHandler: function(self, pointer) {
+    clickHandler: function(self, pointer, menu, mask) {
         console.log("Handler invoked with priority 10!");
 
         if (self.canBuild) {
@@ -210,9 +211,13 @@ var BuildingPlacer = {
             updatePopulation(false,false);
             
             // End build mode
+            menu.destroy();
+            mask.destroy();
             self.cancelBuild();
         } else {
             console.log("Can't touch this!");
+            menu.visible = true;
+            mask.visible = true;
             self.cancelBuild();
         }
     },
