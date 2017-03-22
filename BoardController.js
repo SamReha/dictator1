@@ -107,7 +107,7 @@ var BoardController={
 		bc.briefView = TileBriefView.createNew(index);
 		bc.briefView.updateInfo(tile);
 		bc.briefView.updatePos();
-		bc.mouseOverTimer.loop(50,bc.briefView.updatePos);
+		bc.mouseOverTimer.loop(10,bc.briefView.updatePos);
 		bc.mouseOverTimer.start();
 	},
 

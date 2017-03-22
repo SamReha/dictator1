@@ -123,6 +123,7 @@ var TileDetailView = {
         /* global DUiMask */
         view.uiMask = DUiMask.createNew();
         view.uiMask.setController(100, function() {
+            view.closeSfx.play();
             view.uiMask.destroy();
             view.destroy();
             board.controller.detailView = null;
@@ -243,6 +244,11 @@ var TileDetailView = {
             view.demolishButton.addChild(demolishText);
             view.addChild(view.demolishButton);
         }
+
+        // Audio
+        view.openSfx = game.make.audio('message_open');
+        view.openSfx.play();
+        view.closeSfx = game.make.audio('message_close');
 
         // Class func
         view.updateInfo = function(tile) { return TileDetailView.updateInfo(view,tile); };
@@ -452,6 +458,7 @@ var TileDetailView = {
             Global.money -= 10;
 
             // Close the Detail View
+            view.closeSfx.play();
             view.uiMask.destroy();
             //view.removeAll();
             view.destroy();

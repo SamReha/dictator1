@@ -9,7 +9,7 @@ var Preloader={
         // g.load.image('shanty1',     buildingDir + 'shanties.png');
         // Vertical Slice assets
         g.load.image('apartment1',  buildingDir + 'apartment.png');
-        g.load.image('arableFarm1', buildingDir + 'arableFarm.png');
+        //g.load.image('arableFarm1', buildingDir + 'arableFarm.png');
         g.load.image('armyBase1',   buildingDir + 'armyBase.png');
         g.load.image('fertileFarm1',buildingDir + 'fertileFarm.png');
         g.load.image('armyBase1',   buildingDir + "armyBase.png");
@@ -142,5 +142,29 @@ var Preloader={
         g.load.json('buildingData','buildingData.json');
         g.load.json('names','Names.json');
         g.load.json('CoalitionQuest', 'CoalitionQuest.json');
+
+        // Load audio assets (should probably be using FMOD for this)
+        var audioDir = 'sounds/';
+
+        //// load music
+        var musicDir = audioDir + 'music/';
+        g.load.audio('game_loop', musicDir + 'Game_Loop_Rough.wav');
+
+        //// load sfx
+        var sfxDir = audioDir + 'sfx/';
+        g.load.audio('message_open', sfxDir + 'messages/message_open_SFX.wav');
+        g.load.audio('message_close', sfxDir + 'messages/message_close_SFX.wav');
+
+        for (var i = 1; i <= 14; i++) {
+            g.load.audio('cloth_click_' + i, sfxDir + 'clicks/cloth_click/cloth_click_' + i + '_SFX.wav');
+        }
+
+        for (var i = 1; i <= 8; i++) {
+            g.load.audio('paper_click_' + i, sfxDir + 'clicks/paper_click/paper_click_0' + i + '_SFX.wav');
+        }
+
+        for (var i = 1; i <= 5; i++) {
+            g.load.audio('building_placement_' + i, sfxDir + 'buildings/building_placement_0' + i + '_SFX.wav');
+        }
     }
 };

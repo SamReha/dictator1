@@ -65,6 +65,10 @@ var MainGame={
         /*global updatePopulation*/
         updatePopulation(false,true);
         //MainGame.global.updateFreedomUnrest();
+
+        // Play Music
+        var music = game.add.audio('game_loop');
+        music.play();
     },
     
     nextTurn: function(){
