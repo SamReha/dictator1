@@ -25,26 +25,19 @@ var Hud = {
         hud.coalitionFlag = CoalitionFlag.createNew();
         hud.addChild(hud.coalitionFlag);
 
-        // Exit / Pause button
-        var btnExit = MainGame.game.make.button(0, 0, 'small_generic_button', null, MainGame, 0, 1, 2, 2);
-        btnExit.name = 'Exit Button';
-        btnExit.input.priorityID = hudInputPriority;
-        //hud.addChild(btnExit);
-
-        var btnExitText = MainGame.game.make.text(0, 0, 'Exit', Hud.styleButton);
-        btnExitText.anchor.x = 0.5;
-        btnExitText.anchor.y = 0.5;
-        btnExitText.x = btnExit.width / 2;
-        btnExitText.y = btnExit.height / 2;
-        btnExit.addChild(btnExitText);
-
         // "Next Turn" button
-        var btnNextTurn=MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
-            MainGame.nextTurn, MainGame, 0, 1, 2, 2);
+        var btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
+            function() {
+                /*global MainGame*/
+                MainGame.nextTurn();
+                btnNextTurn.sfx.play();
+                btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+            }, MainGame, 0, 1, 2, 2);
         btnNextTurn.name = 'btnNextTurn';
         btnNextTurn.input.priorityID = hudInputPriority;
         btnNextTurn.anchor.x = 1;
         btnNextTurn.anchor.y = 1;
+        btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         hud.addChild(btnNextTurn);
 
         var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
@@ -63,12 +56,15 @@ var Hud = {
             function(){
                 /*global BuildMenu*/
                 BuildMenu.createNew();
+                buildBtn.sfx.play();
+                buildBtn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
             }, null, 0, 1, 2, 3);
         buildBtn.name="buildBtn";
         buildBtn.setChecked=true;
         buildBtn.anchor.y = 1;  // Anchor on bottom left corner
         buildBtn.inputEnabled = true;
         buildBtn.input.priorityID = 1;
+        buildBtn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         buildGroup.addChild(buildBtn);
 
         var buildBtnText = MainGame.game.make.text(0, 0, 'Build', Hud.styleButton);
@@ -103,8 +99,12 @@ var Hud = {
     showStatusMenu: function(){
 
     },
+
     beginBuilding: function(menu, mask, button, buildingType) {
-        //console.log(buildingType);
+        // This is the quickest place to add a sound effect for build menu options, so I'll do it here. I'm sorry - Sam
+        var sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+        sfx.play();
+
         //console.log( MainGame.game.cache.getJSON('buildingData')[buildingType].cost);
         if (Global.money >= MainGame.game.cache.getJSON('buildingData')[buildingType].cost) {
             // Reset the button state (quick hack)
@@ -136,6 +136,10 @@ var BuildingPlacer = {
         bP.canBuild = false;
         bP.mapIndex = null;
 
+        // Assume we have 5 building sounds
+        var soundIndex = Math.ceil(Math.random()*5);
+        bP.sfx = game.make.audio('building_placement_' + soundIndex);
+
         bP.update = function() { BuildingPlacer.update(bP); };
         bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer, menu, mask); };
         bP.cancelBuild = function() { BuildingPlacer.cancelBuild(bP); };
@@ -157,11 +161,11 @@ var BuildingPlacer = {
         // Is the mouse over a build-ready tile, or is if offsides?
         self.mapIndex = MainGame.board.hitTest(self.x, self.y);
         if (self.mapIndex != null) {
-            let tile = MainGame.board.at(self.mapIndex);
+            var tile = MainGame.board.at(self.mapIndex);
             // Might be nice to move these into Tile as convenience methods...
-            let terrainType = tile.terrain.key;
-            let tileResource = tile.res.key;
-            let hasBuilding = tile.getBuilding().name != null ? true : false;
+            var terrainType = tile.terrain.key;
+            var tileResource = tile.res.key;
+            var hasBuilding = tile.getBuilding().name != null ? true : false;
             // If the terrain is impassable, or a building already exists
             self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || hasBuilding);
             
@@ -209,6 +213,9 @@ var BuildingPlacer = {
 
             /*global updatePopulation*/
             updatePopulation(false,false);
+
+            // Make some noise!
+            self.sfx.play();
             
             // End build mode
             menu.destroy();
@@ -263,8 +270,15 @@ var StatsPanel = {
         // Population
         statsPanel.popGroup = MainGame.game.make.group(0,0);
         statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 1;
+        statsPanel.popGroup.sfxArray = [
+            game.make.audio('paper_click_2'),
+            game.make.audio('paper_click_3'),
+            game.make.audio('paper_click_5'),
+            game.make.audio('paper_click_7')
+        ];
         statsPanel.popGroup.sprite = MainGame.game.make.button(0, 0, 'population_icon', function(){
             PeopleView.createNew();
+            statsPanel.popGroup.sfxArray[Math.floor(Math.random()*statsPanel.popGroup.sfxArray.length)].play();
         }, 0, 1, 0, 2);
 
         var populationToolTip = ToolTip.createNew("Total Population");

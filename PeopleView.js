@@ -177,10 +177,17 @@ var PeopleView={
 		// TODO: setup the actual position
 		pv.x=190, pv.y=100;
 
+		// audio
+		pv.sfx = game.make.audio('message_close');
+
 		// setup the mask
 		/* global DUiMask */
 		pv.uiMask=DUiMask.createNew();
-		pv.uiMask.setController(100, function(){pv.uiMask.destroy();pv.destroy()});
+		pv.uiMask.setController(100, function(){
+			pv.uiMask.destroy();
+			pv.sfx.play();
+			pv.destroy();
+		});
 
 		// create low people view (right)
 		//	for debug: if there's no dataRef input
