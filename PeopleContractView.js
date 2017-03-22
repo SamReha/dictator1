@@ -178,7 +178,7 @@ var PeopleContractView={
 			view.dataRef.payLevel=view.newPayLevel;
 			view.dataRef.salary=PeopleContractView.pays[view.dataRef.payLevel];
 			view.dataRef.setHighClass();
-			view.dataRef.renewCount=4;
+			view.dataRef.renewCount=5;
 		}
 		// Update the UI
 		MainGame.hud.coalitionFlag.updateSelf();
@@ -231,7 +231,8 @@ var PeopleContractView={
 		}
 
 		// ----Expected Payment----
-		v.expectedPay.text="$"+2+"K";
+		var payGrade = Math.floor(Math.max(v.dataRef.baseInfluence+v.dataRef.accruedInfluence-5,0)/5);
+		v.expectedPay.text="$"+PeopleContractView.pays[payGrade]+"K";
 
 		// ----Set New Payment----
 		v.newPay.text="$"+PeopleContractView.pays[v.newPayLevel]+"K";
@@ -245,7 +246,7 @@ var PeopleContractView={
 			v.playerAlertLabel.text="Renewing this contract will extend the renewal\n  deadline from ________ to ________.";
 			v.playerAlert1.text=(1950+MainGame.global.turn-1)+v.dataRef.renewCount;
 			v.playerAlert1.x=(v.playerAlertLabel.width*11/24); v.playerAlert1.y=(v.playerAlertLabel.height*5/24);
-			v.playerAlert2.text=(1950+MainGame.global.turn-1)+4;
+			v.playerAlert2.text=(1950+MainGame.global.turn-1)+5;
 			v.playerAlert2.x=(v.playerAlertLabel.width*3/4); v.playerAlert2.y=(v.playerAlertLabel.height*5/24);
 		}else{
 			// ----Current Minister of This Role----

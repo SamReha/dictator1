@@ -32,9 +32,10 @@ var Person={
         p.freedom=0;        // int
         p.unrest=0;         // int
         // Class vars (nullable)
-        p.influence=(p.type>=Person.Mid?0:null);
+        p.baseInfluence=(data.baseInfluence?data.baseInfluence:null);
+        p.accruedInfluence=(data.accruedInfluence?data.accruedInfluence:null);
         p.role=(data.role?data.role:null);
-        p.loyalty=(p.type<=Person.Hi?0:null);
+        p.loyalty=(data.loyalty?data.loyalty:null);
         p.payLevel=(data.payLevel?data.payLevel:null);
         p.salary=(data.salary?data.salary:null);
 
@@ -60,8 +61,9 @@ var Person={
     update: function(p, board,nextTurn){
         p.updateStats(board,nextTurn);
         if (p.type === Person.Low) {
-            p.updateStats(board,nextTurn);
             p.updateFreeUn(board);
+        }else if(p.type === Person.Mid){
+        }else{
         }
     },
     
@@ -150,6 +152,14 @@ var Person={
                 p.unSetHighClass();
             }
             p.setLowClass();
+        }else{
+            p.baseInfluence = Math.floor(((p.health-50)+(p.shelter-50)+(p.education-50))/3);
+            p.accruedInfluence+=(p.type===Person.Mid?1:2);
+            p.accruedInfluence=Math.min(p.accruedInfluence,50);
+            if(p.type===Person.Hi){
+                var payGrade = Math.floor(Math.max(p.baseInfluence+p.accruedInfluence-5,0)/5);
+                p.loyalty += payLevel-payGrade;
+            }
         }
     },
     
@@ -208,11 +218,13 @@ var Person={
             if(minister.length > 0)
                 minister[0].unSetHighClass();
             p.type = Person.Hi;
+            p.loyalty = 5;
             p.addSalary();
         }
     },
 
     unSetHighClass: function(p) {
+        p.loyalty = null;
         p.type = Person.Mid;
         p.removeSalary();
     },
