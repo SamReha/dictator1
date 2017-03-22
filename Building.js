@@ -35,6 +35,10 @@ var Building = {
             for(var key2 in b_data){
                 b[key2]=b_data[key2];
             }
+
+            // Set detail icon texture string
+            b.detailIconTexture = b.name + '_detail';
+            //console.log(b.name);
         }
 
         // Class funcs

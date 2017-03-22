@@ -192,7 +192,7 @@ var PeopleView={
 			merDataRef=MainGame.population.roleList("$");
 		if(!milDataRef)
 			milDataRef=MainGame.population.roleList("!");
-		console.log("Now bu,mer and mil is:", buDataRef, merDataRef, milDataRef);
+		//console.log("Now bu,mer and mil is:", buDataRef, merDataRef, milDataRef);
 
 		// People Right View
 		pv.right=PeopleRightView.createNew(lowData);
