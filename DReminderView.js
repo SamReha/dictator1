@@ -6,6 +6,9 @@ var DReminderButton={
 	createNew: function(){
 		var b=MainGame.game.add.button(0,300,'small_generic_button',
 		function(){b.reminderView.show()},b,1,0,2,1);
+		// add a text
+		b.text=MainGame.game.make.text(0,0,'Reminder');
+		b.addChild(b.text);
 
 		// Class func
 		b.setReminderView=function(view){b.reminderView=view};
@@ -23,7 +26,7 @@ var DReminderView={
 		v.x=200; v.y=200;
 		// TODO: add 1)label of description; 2)label of startTurn; 3)label of endturn
 		var labels=["descriptionLabel","startAtLabel","remainingLabel"];
-		var geos={x:[0,100,150], y:[0,150,200]};
+		var geos={x:[0,100,150], y:[0,150,150]};
 		for(var i=0;i<labels.length;i++){
 			v[labels[i]]=MainGame.game.make.text(geos.x[i],geos.y[i],'');
 			v.addChild(v[labels[i]]);

@@ -33,7 +33,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"From Mil Minister:\n Build any mil building at [0]",
+				"description":"From Mil Minister:\n Build any mil building!",
 				"startAt":-1,
 				"remaining":3
 			},
