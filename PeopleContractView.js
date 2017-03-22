@@ -144,6 +144,13 @@ var PeopleContractView={
 		v.hireText.anchor.y=0.5;
 		v.hireButton.addChild(v.hireText);
 
+		// Audio
+        v.openSfx = game.make.audio('message_open');
+        v.openSfx.play();
+        v.closeSfx = game.make.audio('message_close');
+        v.workChangeSfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+        v.paymentChangeSfx = game.make.audio('paper_click_' + Math.ceil(Math.random()*8)); // Assume we have 8 paper click sounds
+
 		// Class func
 		v.suicide=function(){PeopleContractView.suicide(v)};
 		v.updateSelf=function(){PeopleContractView.updateSelf(v)};
@@ -158,6 +165,7 @@ var PeopleContractView={
 		v.decButton.freezeFrames=true;
 		v.cancelButton.freezeFrames=true;
 		v.hireButton.freezeFrames=true;
+		v.closeSfx.play();
 		v.destroy();
 	},
 	onPaymentChanged: function(view, isInc){
@@ -165,6 +173,10 @@ var PeopleContractView={
 		view["decButton"].visible=(view.newPayLevel>0);
 		view["incButton"].visible=(view.newPayLevel<PeopleContractView.pays.length-1);
 		view["newPay"].text="$"+PeopleContractView.pays[view.newPayLevel]+"K";
+
+		// Play sfx
+		view.paymentChangeSfx.play();
+		view.paymentChangeSfx = game.make.audio('paper_click_' + Math.ceil(Math.random()*8)); // Assume we have 8 paper click sounds
 	},
 	onWorkChanged: function(view, isFire){
 		// unSetHiClass removes their salary from their home and sets them to mid
@@ -185,6 +197,10 @@ var PeopleContractView={
 
 		// Remake the contract view
 		var parentView=view.parent;
+
+		// MAKE SUM NOOOIIIEZZZ
+		view.workChangeSfx.play();
+        view.workChangeSfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
 		// update view
 		view.updateSelf();

@@ -246,9 +246,11 @@ var TileDetailView = {
         }
 
         // Audio
-        view.openSfx = game.make.audio('message_open');
+        view.openSfx = game.make.audio('paper_click_' + Math.ceil(Math.random()*8)); // Assume we have 8 paper click sounds
         view.openSfx.play();
         view.closeSfx = game.make.audio('message_close');
+        view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+        view.demolishSfx = game.make.audio('building_placement_' + Math.ceil(Math.random()*5)); // Assume we have 5 building sounds
 
         // Class func
         view.updateInfo = function(tile) { return TileDetailView.updateInfo(view,tile); };
@@ -282,6 +284,10 @@ var TileDetailView = {
         }
 
         TileDetailView._setupListView_(view, 0);
+
+        // Play some funky music white boi
+        view.add_remove_sfx.play();
+        view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
         /*global updatePopulation*/
         updatePopulation(false,false);
@@ -322,6 +328,10 @@ var TileDetailView = {
 
         // Update the list view
         TileDetailView._setupListView_(view, 0);
+
+        // Play some funky music white boi
+        view.add_remove_sfx.play();
+        view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
         /*global updatePopulation*/
         updatePopulation(false,false);
@@ -458,9 +468,9 @@ var TileDetailView = {
             Global.money -= 10;
 
             // Close the Detail View
-            view.closeSfx.play();
+            view.demolishSfx.play();
             view.uiMask.destroy();
-            //view.removeAll();
+            view.demolishButton.freezeFrames = true;
             view.destroy();
             MainGame.board.controller.detailView = null;
         }

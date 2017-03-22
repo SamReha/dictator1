@@ -11,10 +11,17 @@ var BuildMenu={
 
 		buildMenu.x = 190, buildMenu.y = 100;
 
+		// audio
+		buildMenu.sfx = game.make.audio('message_close');
+
 		// setup the mask
 		/* global DUiMask */
 		buildMenu.uiMask=DUiMask.createNew();
-		buildMenu.uiMask.setController(100, function(){buildMenu.uiMask.destroy();buildMenu.destroy();});
+		buildMenu.uiMask.setController(100, function(){
+			buildMenu.uiMask.destroy();
+			buildMenu.sfx.play();
+			buildMenu.destroy();
+		});
 
 		var bm=MainGame.game.make.sprite(0,0,"buildMenuBg");
 		buildMenu.addChild(bm);
