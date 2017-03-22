@@ -1,6 +1,7 @@
 [
 	{
-		"cond":"(Global.turn>=1)",
+		"name":"Test Quest",
+		"cond":"Global.turn>=1",
 		"people":["!","?"],
 		"event":[
 			{	
@@ -10,7 +11,7 @@
 			},
 			{
 				"person":1, 
-				"description":"Mil Minister: Can you build a mil building at this place in 3 turns?", 
+				"description":"Mil Minister: Can you build a mil building at [0] in 3 turns?", 
 				"buttonTexts":["Yes","No"]
 			},
 			{
@@ -30,8 +31,17 @@
 			["e.suicide();p.loyalty+=2;e.willCheck=true"],
 			["e.suicide();p.loyalty-=2"]
 		],
-		"starting":-1,
-		"timeLimit":3,
-		"check":"(MainGame.board.at(0).getBuilding().type==='!')"
+		"reminder":{
+			"model":{
+				"description":"From Mil Minister:\n Build any mil building at [0]",
+				"startAt":-1,
+				"remaining":3
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"MainGame.board.at(0).getBuilding().type==='!' ",
+				"fail":"console.log('You failed to do the task!')"				
+			}
+		}
 	}
 ]

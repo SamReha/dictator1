@@ -6,8 +6,10 @@
 var CoalitionQuest={
 	quests: [],	// lazy init
 	runningQuests: [],
+	reminderButtons:[],
 	// generate the quest if there is one
-	generate: function(){
+	generate: function(_curTurn){
+		console.assert(!_curTurn || typeof _curTurn==="number");
 		if(this.quests.length===0){
 			this.quests=MainGame.game.cache.getJSON('CoalitionQuest');
 			console.assert(this.quests.length);
@@ -26,14 +28,18 @@ var CoalitionQuest={
 				continue;
 			// add "peopleRef" to q
 			q.peopleRef=peopleRef;
+			// set startAt
+			q.startAt=(_curTurn?_curTurn:1);
 			// quests -> runningQuests
 			this.runningQuests.push(this.quests.pop());
-			// run quest
+			// run quest			
 			this.runEvent(q.peopleRef, q.event, q.handler);
+			// create reminder
+			this._createReminder_(q.reminder);
 		}
 	},
 	_checkCond_: function(condString){
-		var fn=Function("return ("+condString+")");
+		var fn=Function("return "+condString);
 		return fn();
 	},
 	_getPeople_: function(popRef, roles){
@@ -59,7 +65,7 @@ var CoalitionQuest={
 		var controller=[];	// an array of arrays of functions
 		var fn=[];			// a temp array to store arrays of functions
 		for(var i=0;i<event.length;i++){
-			var currentPerson=peopleRef[event[i].person];
+			let currentPerson=peopleRef[event[i].person];
 			model.push({
 				portrait:currentPerson.portTexture(),
 				description:event[i].description,
@@ -77,12 +83,23 @@ var CoalitionQuest={
 		e.setController(controller);
 	},
 
-	// check if the on-going quests are completed/expired
-	check: function(){
-		//TODO
+	_createReminder_: function(reminderJson){
+		var button=DReminderButton.createNew();
+		var view=DReminderView.createNew();
+		view.setModel(reminderJson.model);
+		view.setController(101, reminderJson.controller);
+		view.hide();
+		button.setReminderView(view);
+		this.reminderButtons.push(button);
+		// now update the start turn for view
+		view.setModel({startAt:2})
 	}
 };
 
+
+
+
+// test case code
 function test_coalition_quest(){
 	var cq=CoalitionQuest;
 	// test _checkCond_() - PASSED
@@ -125,6 +142,20 @@ function test_coalition_quest(){
 		["console.log('han4');e.suicide();p.loyalty-=1"]
 	];
 	cq.runEvent(peopleRef,event,handler);
+	// test _createReminder_()
+	// var reminder={
+	// 	model:{
+	// 		description:"From Mil Minister:\n Build any mil building at [0]",
+	// 		startAt:-1,
+	// 		remaining:3
+	// 	},
+	// 	controller:{
+	// 		onClick:"console.log('You Clicked me!!!')",
+	// 		check:"MainGame.board.at(0).getBuilding().type==='!' ",
+	// 		fail:"console.log('You failed to do the task!')"
+	// 	}
+	// };
+	// cq._createReminder_(reminder);
 };
 
 // private
@@ -139,59 +170,3 @@ var _testPop_={
 			return [];
 	}
 };
-
-// // Private test functions //
-// function _test_Event_choice(){
-// 	var eChoice=Event.createNew();
-// 	eChoice.position.set(300,100);
-// 	eChoice.setModel([
-// 		{portrait:'bureaucrat_port_0',description:'Yi: Hey, MJ has a \nquestion.',buttonTexts:["Go ahead"]},
-// 		{portrait:'bureaucrat_port_2',description:'MJ: Are you a dumbass?',buttonTexts:["Yes","NO"]},
-// 		{portrait:'bureaucrat_port_2',description:'MJ: Of course you are!',buttonTexts:["Close"]},
-// 		{portrait:'bureaucrat_port_2',description:'MJ: What? You are not?',buttonTexts:["Close"]}
-// 	]);
-// 	eChoice.setController([
-// 		[function(){eChoice.gotoPage(1)}],
-// 		[function(){eChoice.gotoPage(2)}, function(){eChoice.gotoPage(3)}],
-// 		[function(){eChoice.suicide()}],
-// 		[function(){eChoice.suicide()}]
-// 	]);			
-// }
-
-
-
-	// {
-	// 	"cond":"(Global.turn>=1)",
-	// 	"people":["!","?"],
-	// 	"event":[
-	// 		{	
-	// 			"person":0, 
-	// 			"description":"Bur Minister: Hello, this is the Mil Minister.", 
-	// 			"buttonTexts":["Ok?"]
-	// 		},
-	// 		{
-	// 			"person":1, 
-	// 			"description":"Mil Minister: Can you build a mil building at this place in 3 turns?", 
-	// 			"buttonTexts":["Yes","No"]
-	// 		},
-	// 		{
-	// 			"person":1,
-	// 			"description":"Mil Minister: Thanks!",
-	// 			"buttonTexts":["You're welcome"]
-	// 		},
-	// 		{
-	// 			"person":1,
-	// 			"description":"Mil Minister: What???",
-	// 			"buttonTexts":["See you"]
-	// 		}
-	// 	],
-	// 	"handler":[
-	// 		["e.gotoPage(1)"],
-	// 		["e.gotoPage(2)", "e.gotoPage(3)"],
-	// 		["e.suicide();p.loyalty+=2;e.willCheck=true"],
-	// 		["e.suicide();p.loyalty-=1"]
-	// 	],
-	// 	"starting":-1,
-	// 	"timeLimit":3,
-	// 	"check":"(MainGame.board.at(0).getBuilding().type==='!')"
-	// }
