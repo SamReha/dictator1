@@ -35,8 +35,8 @@ var Tile={
             case 'coal':
                 tile.resLabel = 'Coal';
                 break;
-            case 'wheat':
-                tile.resLabel = 'Pasture';
+            case 'soy':
+                tile.resLabel = 'Soy Pasture';
                 break;
             default:
                 break;
@@ -69,6 +69,7 @@ var Tile={
         tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
         tile.getBuilding=function(){return tile.building};
         tile.setBuilding=function(building){Tile.setBuilding(tile,building)};
+        tile.removeBuilding = function() { Tile.removeBuilding(tile); };
 
         return tile;
     },
@@ -113,6 +114,14 @@ var Tile={
         // Apply the new building to the tile
         tile.building = building;
         tile.addChild(building);
+    },
+
+    removeBuilding: function(tile) {
+        // Don't try and remove a building if we just don't have one
+        if (tile.hasBuilding()) {
+            tile.removeChild(tile.building);
+            tile.building = Building.createNew(null);
+        }
     },
 };
 
@@ -467,7 +476,7 @@ var Board = {
     // let camera center on i
     cameraCenterOn: function(b,i){        
         console.assert(typeof(i)==="number" && i>=0 && i<b.tileCount(), "i must be an index.");
-        console.log(b.at(i).getBuilding().effects);
+        //console.log(b.at(i).getBuilding().effects);
         /*global MainGame*/
 
         // calc the current center pos of i (with consideration of board.scale)

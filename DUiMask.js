@@ -19,7 +19,7 @@ var DUiMask={
 		m.input.priorityID=priorityID;
 		m.events.onInputDown.removeAll();
 		m.events.onInputDown.add(function(){
-			console.log("UiMask: clicked");
+			//console.log("UiMask: clicked");
 			callback();
 		});
 	}

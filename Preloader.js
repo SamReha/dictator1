@@ -9,6 +9,8 @@ var Preloader={
         // g.load.image('shanty1',     buildingDir + 'shanties.png');
         // Vertical Slice assets
         g.load.image('apartment1',  buildingDir + 'apartment.png');
+        g.load.image('arableFarm1', buildingDir + 'arableFarm.png');
+        g.load.image('armyBase1',   buildingDir + 'armyBase.png');
         g.load.image('fertileFarm1',buildingDir + 'fertileFarm.png');
         g.load.image('armyBase1',   buildingDir + "armyBase.png");
         g.load.image('factory1',    buildingDir + 'factory.png');
@@ -21,6 +23,22 @@ var Preloader={
         g.load.image('shantyTown1', buildingDir + 'shantyTown.png');
         g.load.image('suburb1',     buildingDir + 'suburb.png');
         g.load.image('weakFarm1',   buildingDir + 'weakFarm.png');
+
+        // Building Detail Icons
+        var detailIconDir = buildingDir + 'detail_icons/';
+        g.load.image('apartment_detail',   detailIconDir + 'apartment.png');
+        g.load.image('fertileFarm_detail', detailIconDir + 'farm.jpg');
+        g.load.image('weakFarm_detail',    detailIconDir + 'farm.jpg');
+        g.load.image('armyBase_detail',    detailIconDir + 'armyBase.jpg');
+        g.load.image('factory_detail',     detailIconDir + 'factory.jpg');
+        g.load.image('lumberYard_detail',  detailIconDir + 'factory.jpg');
+        g.load.image('mansion_detail',     detailIconDir + 'mansion.png');
+        g.load.image('palace_detail',      detailIconDir + 'palace.png');
+        g.load.image('road_detail',        detailIconDir + 'road.jpg');
+        g.load.image('school_detail',      detailIconDir + 'school.png');
+        g.load.image('shantyTown_detail',  detailIconDir + 'shantyTown.png');
+        g.load.image('suburb_detail',      detailIconDir + 'suburb.png');
+        g.load.image('park_detail',        detailIconDir + 'park.png');
 
         // Resources
         var resourceDir = imageDir + 'resources/';
@@ -50,7 +68,7 @@ var Preloader={
         g.load.image('water2',    resourceDir + 'water2.png');
         g.load.image('water3',    resourceDir + 'water3.png');
 
-        // load port assets
+        // load minister port assets
         var portDir = imageDir + 'ports/';
         for (var port = 0; port < 10; port++) {
             g.load.image('bureaucrat_port_' + port, portDir + 'bureaucrat_port_' + port + '.png');
