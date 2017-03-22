@@ -40,6 +40,7 @@ var DReminderView={
 		// TODO: create your own show/hide functions with animation + callbacks
 		v.show=function(){v.uiMask.visible=true;v.visible=true};
 		v.hide=function(){v.uiMask.visible=false;v.visible=false};
+		v.suicide=function(){v.uiMask.destroy();v.destroy()};
 
 		return v;
 	},

@@ -6,7 +6,6 @@
 var CoalitionQuest={
 	quests: [],	// lazy init
 	runningQuests: [],
-	reminderButtons:[],
 	// generate the quest if there is one
 	generate: function(_curTurn){
 		console.assert(!_curTurn || typeof _curTurn==="number");
@@ -84,15 +83,40 @@ var CoalitionQuest={
 	},
 
 	_createReminder_: function(reminderJson){
-		var button=DReminderButton.createNew();
+		// create reminder view		
 		var view=DReminderView.createNew();
 		view.setModel(reminderJson.model);
 		view.setController(101, reminderJson.controller);
 		view.hide();
+		// create reminder button
+		var button=DReminderButton.createNew();
 		button.setReminderView(view);
+		// record reminder button
 		this.reminderButtons.push(button);
 		// now update the start turn for view
-		view.setModel({startAt:2})
+		view.setModel({startAt:Global.turn})
+	},
+
+	// check every quest to see it 1)fails; or 2)succeeds
+	check: function(){
+		for(var i=this.runningQuests.length-1;i>=0;i--){
+			var q=this.runningQuests[i];
+			if(this._checkSuc_(q)){
+				// TODO:remove reminder
+
+				this.runningQuests.pop();
+			}else if(this._checkFail_(q)){
+				// TODO
+			}else{
+
+			}
+		}
+	},
+	_checkSuc_: function(){
+
+	},
+	_checkFail_: function(){
+
 	}
 };
 
