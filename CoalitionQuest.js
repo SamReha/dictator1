@@ -102,13 +102,13 @@ var CoalitionQuest={
 		for(var i=this.runningQuests.length-1;i>=0;i--){
 			var q=this.runningQuests[i];
 			if(this._checkSuc_(q)){
-				// TODO:remove reminder
-
-				this.runningQuests.pop();
+				// TODO
 			}else if(this._checkFail_(q)){
 				// TODO
 			}else{
-
+				q.reminder.remaining--;
+				// TODO: update relative reminder view
+				
 			}
 		}
 	},
@@ -127,59 +127,59 @@ var CoalitionQuest={
 function test_coalition_quest(){
 	var cq=CoalitionQuest;
 	// test _checkCond_() - PASSED
-	// console.assert(cq._checkCond_("1+1===2"));
-	// console.assert(!cq._checkCond_("1+1===3"));
-	// console.assert(cq._checkCond_("Global.turn===1"));
-	// console.assert(cq._checkCond_("_testTable_.name==='Yi' && _testTable_.major==='G+PM'"));
-	// // test _getPeople_() - PASSED
-	// console.assert(cq._getPeople_(_testPop_,['?','!'])[1].name==="MJ");
-	// console.assert(cq._getPeople_(_testPop_,['?'])[0].name==="Yi");
-	// console.assert(null===cq._getPeople_(_testPop_,['?','$']));
-	// // test runEvent() - PASSED
-	// var peopleRef=cq._getPeople_(_testPop_,['?','!']);
-	// var event=[
-	// 	{	
-	// 		"person":0, 
-	// 		"description":"Bu. Minister: \nHello, this is the Mil Minister.", 
-	// 		"buttonTexts":["Ok?"]
-	// 	},
-	// 	{
-	// 		"person":1, 
-	// 		"description":"Mi. Minister: \nCan you build a \nmil building at this place in 3 turns?", 
-	// 		"buttonTexts":["Yes","No"]
-	// 	},
-	// 	{
-	// 		"person":1,
-	// 		"description":"Mi. Minister: \nThanks!",
-	// 		"buttonTexts":["You're welcome"]
-	// 	},
-	// 	{
-	// 		"person":1,
-	// 		"description":"Mi. Minister: \nWhat???",
-	// 		"buttonTexts":["See you"]
-	// 	}
-	// ];
-	// var handler=[
-	// 	["console.log('han1');e.gotoPage(1)"],
-	// 	["console.log('han2');e.gotoPage(2)", "e.gotoPage(3)"],
-	// 	["console.log('han3');e.suicide();p.loyalty+=2;e.willCheck=true"],
-	// 	["console.log('han4');e.suicide();p.loyalty-=1"]
-	// ];
-	// cq.runEvent(peopleRef,event,handler);
-	// test _createReminder_()
-	var reminder={
-		model:{
-			description:"From Mil Minister:\n Build any mil building!",
-			startAt:-1,
-			remaining:3
+	console.assert(cq._checkCond_("1+1===2"));
+	console.assert(!cq._checkCond_("1+1===3"));
+	console.assert(cq._checkCond_("Global.turn===1"));
+	console.assert(cq._checkCond_("_testTable_.name==='Yi' && _testTable_.major==='G+PM'"));
+	// test _getPeople_() - PASSED
+	console.assert(cq._getPeople_(_testPop_,['?','!'])[1].name==="MJ");
+	console.assert(cq._getPeople_(_testPop_,['?'])[0].name==="Yi");
+	console.assert(null===cq._getPeople_(_testPop_,['?','$']));
+	// test runEvent() - PASSED
+	var peopleRef=cq._getPeople_(_testPop_,['?','!']);
+	var event=[
+		{	
+			"person":0, 
+			"description":"Bu. Minister: \nHello, this is the Mil Minister.", 
+			"buttonTexts":["Ok?"]
 		},
-		controller:{
-			onClick:"console.log('You Clicked me!!!')",
-			check:"MainGame.board.at(0).getBuilding().type==='!' ",
-			fail:"console.log('You failed to do the task!')"
+		{
+			"person":1, 
+			"description":"Mi. Minister: \nCan you build a \nmil building at this place in 3 turns?", 
+			"buttonTexts":["Yes","No"]
+		},
+		{
+			"person":1,
+			"description":"Mi. Minister: \nThanks!",
+			"buttonTexts":["You're welcome"]
+		},
+		{
+			"person":1,
+			"description":"Mi. Minister: \nWhat???",
+			"buttonTexts":["See you"]
 		}
-	};
-	cq._createReminder_(reminder);
+	];
+	var handler=[
+		["console.log('han1');e.gotoPage(1)"],
+		["console.log('han2');e.gotoPage(2)", "e.gotoPage(3)"],
+		["console.log('han3');e.suicide();p.loyalty+=2;e.willCheck=true"],
+		["console.log('han4');e.suicide();p.loyalty-=1"]
+	];
+	cq.runEvent(peopleRef,event,handler);
+	// test _createReminder_()
+	// var reminder={
+	// 	model:{
+	// 		description:"From Mil Minister:\n Build any mil building!",
+	// 		startAt:-1,
+	// 		remaining:3
+	// 	},
+	// 	controller:{
+	// 		onClick:"console.log('You Clicked me!!!')",
+	// 		check:"MainGame.board.at(0).getBuilding().type==='!' ",
+	// 		fail:"console.log('You failed to do the task!')"
+	// 	}
+	// };
+	// cq._createReminder_(reminder);
 };
 
 // private
