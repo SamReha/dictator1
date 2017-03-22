@@ -358,7 +358,7 @@ var StatsPanel = {
             var newUnemployment = MainGame.population.findNotEmployed().length + ' ';
             var newYear = 1949 + globalStats.turn + ' ';
             var newWarchest = '$' + globalStats.money + ' ';
-            var newMoneyPerTurn = '(+' + globalStats.moneyPerTurn + ') ';
+            var newMoneyPerTurn = (globalStats.moneyPerTurn >= 0) ? '(+' + globalStats.moneyPerTurn + ') ' : '(' + globalStats.moneyPerTurn + ') ';
             var newSwissAccount = '$' + 0 + ' ';
 
             statsPanel.yearGroup.textLabel.text = newYear;

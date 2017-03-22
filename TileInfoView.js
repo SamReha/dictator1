@@ -145,17 +145,17 @@ var TileDetailView = {
         view.textDescription.y = -view.height/2 + TileDetailView.verticalBorderWidth;
         view.addChild(view.textDescription);
 
-        view.demolishButton = game.make.button(0, 0, 'small_generic_button',
-                function() { TileDetailView.demolishBuilding(view); }, view, 0, 2, 1, 2);
-        view.demolishButton.anchor.set(0.5, 0.5);
-        view.demolishButton.y = view.height/2 - view.demolishButton.height/2 - TileDetailView.verticalBorderWidth;
-        view.demolishButton.inputEnabled = true;
-        view.demolishButton.input.priorityID = 102;
-
-        var demolishText = game.make.text(0, 0, 'Demolish ($10)', TileDetailView.buttonStyle);
-        demolishText.anchor.set(0.5, 0.5);
-        view.demolishButton.addChild(demolishText);
-        view.addChild(view.demolishButton);
+        // ListView Background
+        var background = MainGame.game.make.graphics();
+        var backgroundX = (-view.width/2) + TileDetailView.horizontalBorderWidth;
+        var backgroundY = -85;
+        var backgroundWitdh = view.width - (TileDetailView.horizontalBorderWidth * 2);
+        var backgroundHeight = 125;
+        background.lineStyle(0);
+        background.beginFill(0x000000, 0.66);
+        background.drawRect(backgroundX, backgroundY, backgroundWitdh, backgroundHeight);
+        background.endFill();
+        view.addChild(background);
 
         // DPageIndicator: N pages
         view.itemsPerPage = 5;
@@ -179,12 +179,17 @@ var TileDetailView = {
         );
         TileDetailView._setupListView_(view, 0);
         view.occupantListView.x = -view.width/2 + TileDetailView.horizontalBorderWidth;
-        view.occupantListView.y = -110;
+        view.occupantListView.y = -120;
         view.addChild(view.occupantListView);
 
+        // Availability Text
         var availibilityString = (building.maxPeople - building.people) + ' ' + availableNoun + 's available';
+        view.availabilityText = game.make.text(0, 0, availibilityString, TileDetailView.listStyle); // Example: 3 jobs available, or No beds available
+        view.availabilityText.anchor.set(0.5, 0.5);
+        view.availabilityText.y = view.pageIndicator.y + view.pageIndicator.height + 15;
+        view.addChild(view.availabilityText);
 
-        if (building.subtype !== "road" && building.type !== "palace" && building.startingTurn <= MainGame.global.turn) {
+        if (building.subtype !== "road" && building.name !== "palace" && building.startingTurn <= MainGame.global.turn) {
             // Hire button
             view.addPersonButton = game.make.button(0, 0, 'small_generic_button', 
                 function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 2, 1, 2);
@@ -225,10 +230,18 @@ var TileDetailView = {
                 view.removePersonButton.visible = false;
             }
 
-            view.availabilityText = game.make.text(0, 0, availibilityString, TileDetailView.listStyle); // Example: 3 jobs available, or No beds available
-            view.availabilityText.anchor.set(0.5, 0.5);
-            view.availabilityText.y = view.removePersonButton.y - 15;
-            view.addChild(view.availabilityText);
+            // Demolish button
+            view.demolishButton = game.make.button(0, 0, 'small_generic_button',
+                function() { TileDetailView.demolishBuilding(view); }, view, 0, 2, 1, 2);
+            view.demolishButton.anchor.set(0.5, 0.5);
+            view.demolishButton.y = view.height/2 - view.demolishButton.height/2 - TileDetailView.verticalBorderWidth;
+            view.demolishButton.inputEnabled = true;
+            view.demolishButton.input.priorityID = 102;
+
+            var demolishText = game.make.text(0, 0, 'Demolish ($10)', TileDetailView.buttonStyle);
+            demolishText.anchor.set(0.5, 0.5);
+            view.demolishButton.addChild(demolishText);
+            view.addChild(view.demolishButton);
         }
 
         // Class func
@@ -269,13 +282,25 @@ var TileDetailView = {
     },
 
     _onFireButtonPressed_: function(view) {
+        // Get the building
         /*global MainGame*/
         var bld = MainGame.board.at(view.index).building;
         console.assert(bld, "Building can NOT be null!");
         if (bld.people <= 0)
             return;
+
+        // Get a citizen from that building (assume at least one occupant)
+        if (view.residential) {
+            var occupants = MainGame.population.getHouseMap()[view.index];
+        } else {
+            var occupants = MainGame.population.getWorkMap()[view.index];
+        }
+        var citizen = MainGame.population.at(occupants[0]);
         
-        MainGame.population.fire(view.index);
+        // Fire that person
+        MainGame.population.firePersonAt(citizen, view.index);
+
+        // Update button visibilty as needed
         if (bld.people <= 0) {
             view.removePersonButton.visible = false;
         }
@@ -284,10 +309,12 @@ var TileDetailView = {
         // update display
         TileDetailView._updateAvailabilityText(view, bld);
 
+        // If we're a workplace, update relevant gamestates
         if (!view.residential) {
             TileDetailView._updateState(view, bld);
         }
 
+        // Update the list view
         TileDetailView._setupListView_(view, 0);
 
         /*global updatePopulation*/
@@ -423,6 +450,12 @@ var TileDetailView = {
 
             // Bill the player
             Global.money -= 10;
+
+            // Close the Detail View
+            view.uiMask.destroy();
+            //view.removeAll();
+            view.destroy();
+            MainGame.board.controller.detailView = null;
         }
     },
 
