@@ -5,22 +5,25 @@ var DPageIndicator={
 	style: {font:"20px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 	// ****************** Attention ****************** //	
 	// pageCount
-	// layOut: {width,textPos}
+	// layOut: {margin,textPos}
 	// *pageChangedCallback: function(pageIndex)
 	// (* === optional)
 	//createNew: function(pageCount, layout, pageChangedCallback, priorityID){
-	createNew: function(width, textPosition){
+	createNew: function(margin, textPosition){
 		var v=MainGame.game.add.group();
 		// add two buttons as sprites
 		v.prevPage=MainGame.game.make.button(0,0,"triangleArrowButton",function(){
 			DPageIndicator.onPrevPage,v},v.prevPage,1,0,2,1);
-		v.prevPage.anchor.x=1;
-		v.prevPage.scale.x*=-1;
+		v.prevPage.x = textPosition.x - margin;
+		v.prevPage.anchor.setTo(0.5,0.5);
+		v.prevPage.scale.setTo(-0.6,0.6);
 		v.prevPage.visible=false;
 		v.addChild(v.prevPage);
 		v.nextPage=MainGame.game.make.button(0,0,"triangleArrowButton",function(){
 			DPageIndicator.onNextPage,v},v.nextPage,1,0,2,1);
-		v.nextPage.x=width-v.nextPage.width;
+		v.nextPage.x=textPosition.x + margin;
+		v.nextPage.anchor.setTo(0.5,0.5);
+		v.nextPage.scale.setTo(0.6,0.6);
 		v.nextPage.visible=false;
 		v.addChild(v.nextPage);
 		// add & update page text 4/7
@@ -28,6 +31,7 @@ var DPageIndicator={
 		v.addChild(v.pageText);
 		DPageIndicator._setPageText_(v);
 		v.pageText.x=textPosition.x, v.pageText.y=textPosition.y;
+		v.pageText.anchor.setTo(0.5,0.5);
 
 		// Class funcs
 		v.setModel=function(cur,max){DPageIndicator.setModel(v,cur,max)};

@@ -5,8 +5,8 @@ var fontBrief=[
 	{font:"30px myKaiti", fill:"lightgreen", boundsAlignH:"top", boundsAlignV:"middle"}
 ];
 var fontDetail=[
-	{font:"28px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
-	{font:"24px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"}
+	{font:"28px myKaiti", fill:"black", boundsAlignH:"top", boundsAlignV:"middle"},
+	{font:"24px myKaiti", fill:"black", boundsAlignH:"top", boundsAlignV:"middle"}
 ];
 
 function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
@@ -87,9 +87,9 @@ var TileBriefView = {
 var TileDetailView = {
     verticalBorderWidth: 30,
     horizontalBorderWidth: 20,
-    nameStyle: { font:"22px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle", shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+    nameStyle: { font:"22px myKaiti", fill:"black", boundsAlignH:"top", boundsAlignV:"middle", shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 1, shadowOffsetY: 1 },
     buttonStyle: { font:"20px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle" },
-    descriptionStyle: { font:"22px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle", wordWrap: true, wordWrapWidth: 353, shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+    descriptionStyle: { font:"22px myKaiti", fill:"black", boundsAlignH:"top", boundsAlignV:"middle", wordWrap: true, wordWrapWidth: 353, shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 1, shadowOffsetY: 1 },
     listStyle: { font:"20px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle", wordWrap: true, wordWrapWidth: 353, shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
     createNew: function(buildingIndex) {
@@ -185,7 +185,7 @@ var TileDetailView = {
 
         // Availability Text
         var availibilityString = (building.maxPeople - building.people) + ' ' + availableNoun + 's available';
-        view.availabilityText = game.make.text(0, 0, availibilityString, TileDetailView.listStyle); // Example: 3 jobs available, or No beds available
+        view.availabilityText = game.make.text(0, 0, availibilityString, TileDetailView.descriptionStyle); // Example: 3 jobs available, or No beds available
         view.availabilityText.anchor.set(0.5, 0.5);
         view.availabilityText.y = view.pageIndicator.y + view.pageIndicator.height + 15;
         view.addChild(view.availabilityText);
