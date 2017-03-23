@@ -544,7 +544,7 @@ var TileDetailView = {
                 /*global updateHomesNearOutput*/
                 updateHomesNearOutput(view.index);
             }else if(outType==="money"){
-                outDescription = 'generates $' + outValue + 'k each turn.';
+                outDescription = 'generates ₸' + outValue + ' each turn.';
 
                 MainGame.global.updateMoneyPerTurn();
             }
@@ -647,7 +647,7 @@ var TileDetailView = {
                 } else if (outType === "unrest") {
                     outDescription = 'generates ' + outValue + ' Unrest.';
                 } else if (outType === "money") {
-                    outDescription = 'generates $' + outValue + 'k each turn.';
+                    outDescription = 'generates ₸' + outValue + ' each turn.';
                 }
         
                 if (outIndex === 0) {

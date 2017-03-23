@@ -77,7 +77,7 @@ var BuildMenu={
 		buyMansionBtn.input.priorityID = hudInputPriority;
 		buyMansionBtn.anchor.x = 0.5;  // Anchor in center
 		buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var mansionText = MainGame.game.make.text(0, -40, "Mansion\n$10K", BuildMenu.styleNormal);
+		var mansionText = MainGame.game.make.text(0, -40, "Mansion\n₸10", BuildMenu.styleNormal);
 		mansionText.anchor.x = 0.5;
 		mansionText.anchor.y = 1;
 		buyMansionBtn.addChild(mansionText);
@@ -96,7 +96,7 @@ var BuildMenu={
 		buySuburbBtn.input.priorityID = hudInputPriority;
 		buySuburbBtn.anchor.x = 0.5;  // Anchor in center
 		buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var suburbText = MainGame.game.make.text(0, -40, "Suburb\n$10K", BuildMenu.styleNormal);
+		var suburbText = MainGame.game.make.text(0, -40, "Suburb\n₸10", BuildMenu.styleNormal);
 		suburbText.anchor.x = 0.5;
 		suburbText.anchor.y = 1;
 		buySuburbBtn.addChild(suburbText);
@@ -115,7 +115,7 @@ var BuildMenu={
 		buyApartmentBtn.input.priorityID = hudInputPriority;
 		buyApartmentBtn.anchor.x = 0.5;  // Anchor in center
 		buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var apartmentText = MainGame.game.make.text(0, -40, "Apartment\n$10K", BuildMenu.styleNormal);
+		var apartmentText = MainGame.game.make.text(0, -40, "Apartment\n₸10", BuildMenu.styleNormal);
 		apartmentText.anchor.x = 0.5;
 		apartmentText.anchor.y = 1;
 		buyApartmentBtn.addChild(apartmentText);
@@ -134,7 +134,7 @@ var BuildMenu={
 		buyRoadBtn.input.priorityID = hudInputPriority;
 		buyRoadBtn.anchor.x = 0.5;  // Anchor in center
 		buyRoadBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var roadText = MainGame.game.make.text(0, -40, "Road\n$2K", BuildMenu.styleNormal);
+		var roadText = MainGame.game.make.text(0, -40, "Road\n₸2", BuildMenu.styleNormal);
 		roadText.anchor.x = 0.5;
 		roadText.anchor.y = 1;
 		buyRoadBtn.addChild(roadText);
@@ -153,7 +153,7 @@ var BuildMenu={
 		buySchoolBtn.input.priorityID = hudInputPriority;
 		buySchoolBtn.anchor.x = 0.5;  // Anchor in center
 		buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var schoolText = MainGame.game.make.text(0, -40, "School\n$15K", BuildMenu.styleNormal);
+		var schoolText = MainGame.game.make.text(0, -40, "School\n₸15", BuildMenu.styleNormal);
 		schoolText.anchor.x = 0.5;
 		schoolText.anchor.y = 1;
 		buySchoolBtn.addChild(schoolText);
@@ -172,7 +172,7 @@ var BuildMenu={
 		buyParkBtn.input.priorityID = hudInputPriority;
 		buyParkBtn.anchor.x = 0.5;  // Anchor in center
 		buyParkBtn.anchor.y = 1;
-		var parkText = MainGame.game.make.text(0, -40, "Park\n$15K", BuildMenu.styleNormal);
+		var parkText = MainGame.game.make.text(0, -40, "Park\n₸15", BuildMenu.styleNormal);
 		parkText.anchor.x = 0.5;
 		parkText.anchor.y = 1;
 		buyParkBtn.addChild(parkText);
@@ -191,7 +191,7 @@ var BuildMenu={
 		buyFactoryBtn.input.priorityID = hudInputPriority;
 		buyFactoryBtn.anchor.x = 0.5;  // Anchor in center
 		buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var factoryText = MainGame.game.make.text(0, -40, "LumberYard\n$30K", BuildMenu.styleNormal);
+		var factoryText = MainGame.game.make.text(0, -40, "LumberYard\n₸30", BuildMenu.styleNormal);
 		factoryText.anchor.x = 0.5;
 		factoryText.anchor.y = 1;
 		buyFactoryBtn.addChild(factoryText);
@@ -210,7 +210,7 @@ var BuildMenu={
 		buyArmyBaseBtn.input.priorityID = hudInputPriority;
 		buyArmyBaseBtn.anchor.x = 0.5;  // Anchor in center
 		buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var armyBaseText = MainGame.game.make.text(0, -40, "Army Base\n$30K", BuildMenu.styleNormal);
+		var armyBaseText = MainGame.game.make.text(0, -40, "Army Base\n₸30", BuildMenu.styleNormal);
 		armyBaseText.anchor.x = 0.5;
 		armyBaseText.anchor.y = 1;
 		buyArmyBaseBtn.addChild(armyBaseText);
@@ -229,7 +229,7 @@ var BuildMenu={
 		buyPoliceStationBtn.input.priorityID = hudInputPriority;
 		buyPoliceStationBtn.anchor.x = 0.5;  // Anchor in center
 		buyPoliceStationBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var policeStationText = MainGame.game.make.text(0, -40, "Police Station\n$30K", BuildMenu.styleNormal);
+		var policeStationText = MainGame.game.make.text(0, -40, "Police Station\n₸30", BuildMenu.styleNormal);
 		policeStationText.anchor.x = 0.5;
 		policeStationText.anchor.y = 1;
 		buyPoliceStationBtn.addChild(policeStationText);
@@ -249,7 +249,7 @@ var BuildMenu={
 		buyFarmBtn.input.priorityID = hudInputPriority;
 		buyFarmBtn.anchor.x = 0.5;  // Anchor in center
 		buyFarmBtn.anchor.y = 1;  // Anchor on bottom left corner
-		var farmText = MainGame.game.make.text(0, -40, "Farm\n$10K", BuildMenu.styleNormal);
+		var farmText = MainGame.game.make.text(0, -40, "Farm\n₸10", BuildMenu.styleNormal);
 		farmText.anchor.x = 0.5;
 		farmText.anchor.y = 1;
 		buyFarmBtn.addChild(farmText);
