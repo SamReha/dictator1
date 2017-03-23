@@ -3,6 +3,9 @@
 /*global Global*/
 
 // singleton
+
+var CQ={};	// stores the CQ on-going data
+
 var CoalitionQuest={
 	quests: [],	// lazy init
 	runningQuests: [],
@@ -25,6 +28,9 @@ var CoalitionQuest={
 			q.peopleRef=this._getPeople_(MainGame.population, q.people);
 			if(!q.peopleRef)
 				continue;
+			// now let's execute the q
+			// init
+			this._executeInit_(q.init);
 			// add "peopleRef" to q
 			q.peopleRef=peopleRef;
 			// set startAt
@@ -51,6 +57,9 @@ var CoalitionQuest={
 			peopleRef.push(list[0]);
 		}
 		return peopleRef;
+	},
+	_executeInit_: function(init){
+		Function(init)();
 	},
 
 	runEvent: function(peopleRef, event, handler){
@@ -133,8 +142,11 @@ function test_coalition_quest(){
 	console.assert(cq._getPeople_(_testPop_,['?','!'])[1].name==="MJ");
 	console.assert(cq._getPeople_(_testPop_,['?'])[0].name==="Yi");
 	console.assert(null===cq._getPeople_(_testPop_,['?','$']));
+	// test _executeInit_() - PASSED
+	cq._executeInit_("CQ.TestQ=5");
+	console.assert(CQ.TestQ===5);
 	// test runEvent() - PASSED
-	var peopleRef=cq._getPeople_(_testPop_,['?','!']);
+	var peopleRef=cq._getPeople_(_testPop_,['?','!']);	
 	var event=[
 		{	
 			"person":0, 

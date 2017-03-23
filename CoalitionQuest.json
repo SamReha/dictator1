@@ -1,8 +1,9 @@
 [
 	{
-		"name":"Test Quest",
+		"name":"TestQuest",
 		"cond":"Global.turn>=1",
 		"people":["!","?"],
+		"init":"CQ.TestQuest=5",
 		"event":[
 			{	
 				"person":0, 
@@ -11,7 +12,7 @@
 			},
 			{
 				"person":1, 
-				"description":"Mil Minister: Can you build a mil building at [0] in 3 turns?", 
+				"description":"Mil Minister: Can you build 2 mil buildings in 3 turns?", 
 				"buttonTexts":["Yes","No"]
 			},
 			{
@@ -33,13 +34,13 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"From Mil Minister:\n Build any mil building!",
+				"description":"From Mil Minister:\n Build 2 mil buildings.",
 				"startAt":-1,
-				"remaining":3
+				"remaining":3		
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":"MainGame.board.at(0).getBuilding().type==='!' ",
+				"check":" CQ.TestQuest>3 ",
 				"fail":"console.log('You failed to do the task!')"				
 			}
 		}
