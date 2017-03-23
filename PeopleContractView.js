@@ -172,7 +172,7 @@ var PeopleContractView={
 		view.newPayLevel+=(isInc?1:-1);
 		view["decButton"].visible=(view.newPayLevel>0);
 		view["incButton"].visible=(view.newPayLevel<PeopleContractView.pays.length-1);
-		view["newPay"].text="$"+PeopleContractView.pays[view.newPayLevel]+"K";
+		view["newPay"].text="₸"+PeopleContractView.pays[view.newPayLevel];
 
 		// Play sfx
 		view.paymentChangeSfx.play();
@@ -234,7 +234,7 @@ var PeopleContractView={
 		// ----Current Payment----
 		if(v.dataRef.type===Person.Hi){
 			v.currentPayLabel.text="___________________ is recieving an annual\n  salary of ________ as the "+title+".";
-			v.currentPay.text="$"+PeopleContractView.pays[v.dataRef.payLevel]+"K";
+			v.currentPay.text="₸"+PeopleContractView.pays[v.dataRef.payLevel];
 			v.currentPay.x=(v.width*13/48); v.currentPay.y=(v.currentPayLabel.height*5/24);
 			v.currentPayName.text=v.dataRef.name;
 			v.currentPayName.x=(v.width*2/9); v.currentPayName.y=(v.currentPayLabel.height*-7/24);
@@ -248,10 +248,10 @@ var PeopleContractView={
 
 		// ----Expected Payment----
 		var payGrade = Math.floor(Math.max(v.dataRef.baseInfluence+v.dataRef.accruedInfluence-5,0)/5);
-		v.expectedPay.text="$"+PeopleContractView.pays[payGrade]+"K";
+		v.expectedPay.text="₸"+PeopleContractView.pays[payGrade];
 
 		// ----Set New Payment----
-		v.newPay.text="$"+PeopleContractView.pays[v.newPayLevel]+"K";
+		v.newPay.text="₸"+PeopleContractView.pays[v.newPayLevel];
 
 		v.decButton.visible=(v.newPayLevel!==0);
 		v.incButton.visible=(v.newPayLevel!==PeopleContractView.pays.length-1);
