@@ -57,51 +57,60 @@ var CoalitionFlag = {
 		coalitionFlag.removeChild(coalitionFlag.military);
 
 		// Get new buttons
-		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(bureaucrats);
+		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(Person.Bureaucrat, bureaucrats);
 		coalitionFlag.bureaucrat.x = -CoalitionFlag.horizontalPad;
-		coalitionFlag.bureaucrat.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 0;
+		coalitionFlag.bureaucrat.y = CoalitionFlag.verticalBorderPad;
 		coalitionFlag.addChild(coalitionFlag.bureaucrat);
 
-		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(merchants);
+		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(Person.Merchant, merchants);
 		coalitionFlag.merchant.x = -CoalitionFlag.horizontalPad;
-		coalitionFlag.merchant.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 1;
+		coalitionFlag.merchant.y = coalitionFlag.bureaucrat.y + (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad);
 		coalitionFlag.addChild(coalitionFlag.merchant);
 
-		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(militaries);
+		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(Person.Military, militaries);
 		coalitionFlag.military.x = -CoalitionFlag.horizontalPad;
-		coalitionFlag.military.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 2;
+		coalitionFlag.military.y = coalitionFlag.merchant.y + (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad);
 		coalitionFlag.addChild(coalitionFlag.military);
 	},
 
 	getCoalitionPortrait: function(coalitionType, coalitionList) {
 		var textureString;
+		var portraitString;
 
 		if (coalitionList.length != 0) {
 			var minister = coalitionList[0];
 
 			switch (coalitionType) {
 				case Person.Bureaucrat:
-					textureString = 'bureaucrat_port_' + minister.portIndex;
+					textureString = 'portrait_border_bureau';
+					portraitString = 'bureaucrat_port_' + minister.portIndex;
 					break;
 				case Person.Merchant:
-					textureString = 'merchant_port_' + minister.portIndex;
+					textureString = 'portrait_border_finance';
+					portraitString = 'merchant_port_' + minister.portIndex;
 					break;
 				case Person.Military:
-					textureString = 'military_port_' + minister.portIndex;
+					textureString = 'portrait_border_military';
+					portraitString = 'military_port_' + minister.portIndex;
 					break;
 				default:
 					break;
 			}
 
-			var button = MainGame.game.make.button(0, 0, textureString, function() {CoalitionFlag.showMinisterContract(minister);});
+			var button = MainGame.game.make.button(0, 0, textureString, function() {CoalitionFlag.showMinisterContract(minister);}, 1, 0, 2, 1);
+			var portrait = MainGame.game.make.sprite(-5, 5, portraitString);
+			portrait.anchor.setTo(1,0);
+			button.addChild(portrait);
 			button.anchor.x = 1;
+			button.inputEnabled = true;
+			button.input.priorityID = 1;
 
 			var toolTip = ToolTip.createNew(minister.name);
-			toolTip.x = -46 - toolTip.width;
+			toolTip.x = -56 - toolTip.width;
 			toolTip.y = 18;
-        	button.addChild(toolTip);
-        	button.events.onInputOver.add(function() {toolTip.show();}, null);
-        	button.events.onInputOut.add(function() {toolTip.hide();}, null);
+			button.addChild(toolTip);
+			button.events.onInputOver.add(function() {toolTip.show();}, null);
+			button.events.onInputOut.add(function() {toolTip.hide();}, null);
 
 			return button;
 		} else {
@@ -123,6 +132,13 @@ var CoalitionFlag = {
 			sprite.anchor.x = 1;
 			sprite.inputEnabled = true;
 			sprite.input.priorityID = 1;
+
+			var toolTip = ToolTip.createNew('Hire a Minister');
+			toolTip.x = -56 - toolTip.width;
+			toolTip.y = 18;
+        	sprite.addChild(toolTip);
+        	sprite.events.onInputOver.add(function() {toolTip.show();}, null);
+        	sprite.events.onInputOut.add(function() {toolTip.hide();}, null);
 
 			return sprite;
 		}
