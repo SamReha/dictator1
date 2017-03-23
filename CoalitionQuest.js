@@ -123,7 +123,7 @@ var CoalitionQuest={
 
 	},
 	_checkFail_: function(){
-
+		
 	}
 };
 

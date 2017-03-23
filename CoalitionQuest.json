@@ -2,26 +2,26 @@
 	{
 		"name":"TestQuest",
 		"cond":"Global.turn>=1",
-		"people":["!","?"],
+		"people":["!"],
 		"init":"CQ.TestQuest=5",
 		"event":[
 			{	
 				"person":0, 
-				"description":"Bur Minister: Hello, this is the Mil Minister.", 
+				"description":"Mil Minister: Hello.", 
 				"buttonTexts":["Ok?"]
 			},
 			{
-				"person":1, 
+				"person":0, 
 				"description":"Mil Minister: Can you build 2 mil buildings in 3 turns?", 
 				"buttonTexts":["Yes","No"]
 			},
 			{
-				"person":1,
+				"person":0,
 				"description":"Mil Minister: Thanks!",
 				"buttonTexts":["You're welcome"]
 			},
 			{
-				"person":1,
+				"person":0,
 				"description":"Mil Minister: What???",
 				"buttonTexts":["See you"]
 			}
