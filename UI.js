@@ -204,6 +204,17 @@ var BuildingPlacer = {
             }
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
             newBuilding.tint = newTint;
+            if(newBuilding.startingTurn- MainGame.global.turn>0){
+                newBuilding.constructionIcon = MainGame.game.make.sprite(0,0,"construction_icon");
+                newBuilding.constructionIcon.anchor.setTo(1,0);
+                newBuilding.constructionIcon.x=192;
+                newBuilding.addChild(newBuilding.constructionIcon);
+                newBuilding.counterIcon = MainGame.game.make.sprite(0,0,"counter_icon"+(newBuilding.startingTurn- MainGame.global.turn));
+                newBuilding.counterIcon.anchor.setTo(1,1);
+                newBuilding.counterIcon.x=192;
+                newBuilding.counterIcon.y=newBuilding.height;
+                newBuilding.addChild(newBuilding.counterIcon);
+            }
 
             // Set the tile's building to that object
             tile.setBuilding(newBuilding);

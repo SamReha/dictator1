@@ -67,7 +67,13 @@ var Building = {
     },
 
     nextTurn: function(b,turn){
-        if(b.startingTurn===turn){  b.tint = 0xffffff;  }
+        if(b.startingTurn===turn){
+            b.tint = 0xffffff;
+            b.constructionIcon.destroy();
+            b.counterIcon.destroy();
+        }else if(b.startingTurn>turn){
+            b.counterIcon.loadTexture("counter_icon"+(b.startingTurn-MainGame.global.turn));
+        }
     },
 };
 
