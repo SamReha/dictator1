@@ -2,12 +2,20 @@ var CoalitionFlag = {
 	origin: { x:1280, y:100 },
 	unitWidth: 46,
 	unitHeight: 46,
-	verticalPad: 4,
+	verticalBorderPad: 5,
+	verticalPad: 20,
+	horizontalPad: 5,
 
 	createNew: function() {
 		/* global MainGame */
-		var coalitionFlag = MainGame.game.make.sprite(CoalitionFlag.origin.x, CoalitionFlag.origin.y, '');
+		var coalitionFlag = MainGame.game.make.sprite(CoalitionFlag.origin.x, CoalitionFlag.origin.y, 'coalition_backpanel');
 		coalitionFlag.anchor.x = 1;
+		coalitionFlag.inputEnabled = true;
+		coalitionFlag.input.priorityID = 0;
+
+		// coalitionFlag.border = MainGame.game.make.sprite(5, 0, 'coalition_border');
+		// coalitionFlag.border.anchor.x = 1;
+		// coalitionFlag.addChild(coalitionFlag.border);
 
 		// Fetch the coaltion members
 		var bureaucrats = MainGame.population.typeRoleList(Person.Hi, Person.Bureaucrat);
@@ -15,19 +23,19 @@ var CoalitionFlag = {
 		var militaries = MainGame.population.typeRoleList(Person.Hi, Person.Military);
 
 		// For each faction, decide whether we need a face or a placeholder
-		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(bureaucrats, CoalitionFlag.showBureaucratContract);
-		coalitionFlag.bureaucrat.x = -CoalitionFlag.verticalPad;
-		coalitionFlag.bureaucrat.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 0;
+		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(Person.Bureaucrat, bureaucrats, CoalitionFlag.showBureaucratContract);
+		coalitionFlag.bureaucrat.x = -CoalitionFlag.horizontalPad;
+		coalitionFlag.bureaucrat.y = CoalitionFlag.verticalBorderPad;
 		coalitionFlag.addChild(coalitionFlag.bureaucrat);
 
-		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(merchants);
-		coalitionFlag.merchant.x = -CoalitionFlag.verticalPad;
-		coalitionFlag.merchant.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 1;
+		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(Person.Merchant, merchants);
+		coalitionFlag.merchant.x = -CoalitionFlag.horizontalPad;
+		coalitionFlag.merchant.y = coalitionFlag.bureaucrat.y + (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad);
 		coalitionFlag.addChild(coalitionFlag.merchant);
 
-		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(militaries);
-		coalitionFlag.military.x = -CoalitionFlag.verticalPad;
-		coalitionFlag.military.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 2;
+		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(Person.Military, militaries);
+		coalitionFlag.military.x = -CoalitionFlag.horizontalPad;
+		coalitionFlag.military.y = coalitionFlag.merchant.y + (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad);
 		coalitionFlag.addChild(coalitionFlag.military);
 		
 		// Functions
@@ -50,27 +58,28 @@ var CoalitionFlag = {
 
 		// Get new buttons
 		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(bureaucrats);
-		coalitionFlag.bureaucrat.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.bureaucrat.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.bureaucrat.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 0;
 		coalitionFlag.addChild(coalitionFlag.bureaucrat);
 
 		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(merchants);
-		coalitionFlag.merchant.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.merchant.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.merchant.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 1;
 		coalitionFlag.addChild(coalitionFlag.merchant);
 
 		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(militaries);
-		coalitionFlag.military.x = -CoalitionFlag.verticalPad;
+		coalitionFlag.military.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.military.y = (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad) * 2;
 		coalitionFlag.addChild(coalitionFlag.military);
 	},
 
-	getCoalitionPortrait: function(coalitionList, callBack) {
+	getCoalitionPortrait: function(coalitionType, coalitionList) {
+		var textureString;
+
 		if (coalitionList.length != 0) {
 			var minister = coalitionList[0];
 
-			var textureString;
-			switch (minister.role) {
+			switch (coalitionType) {
 				case Person.Bureaucrat:
 					textureString = 'bureaucrat_port_' + minister.portIndex;
 					break;
@@ -96,8 +105,25 @@ var CoalitionFlag = {
 
 			return button;
 		} else {
-			var sprite = MainGame.game.make.sprite(0, 0, 'defaultPort');
+			switch (coalitionType) {
+				case Person.Bureaucrat:
+					textureString = 'portrait_border_bureau';
+					break;
+				case Person.Merchant:
+					textureString = 'portrait_border_finance';
+					break;
+				case Person.Military:
+					textureString = 'portrait_border_military';
+					break;
+				default:
+					break;
+			}
+
+			var sprite = MainGame.game.make.button(0, 0, textureString, function() {PeopleView.createNew();}, 2, 1, 0, 2);
 			sprite.anchor.x = 1;
+			sprite.inputEnabled = true;
+			sprite.input.priorityID = 1;
+
 			return sprite;
 		}
 	},

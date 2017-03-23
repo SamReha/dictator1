@@ -75,30 +75,30 @@ var Preloader={
             g.load.image('military_port_' + port,   portDir + 'military_port_' + port + '.png');
             g.load.image('merchant_port_' + port,   portDir + 'merchant_port_' + port + '.jpg');
         }
-        g.load.image('defaultPort', portDir + 'defaultPort.png');
 
         // load ui assets
         var uiDir = imageDir + 'ui/';
-        g.load.image('grpBldInfo',              uiDir + 'grpBldInfo.png');
-        g.load.image('grpBuildMenu',            uiDir + 'grpBuildMenu.png');
-        g.load.image('grpStatsMenu',            uiDir + 'grpStatsMenu.png');
-        g.load.image('topBar',                  uiDir + 'topBar.png');
-        g.load.image('tile_hover_backpanel',    uiDir + 'tile_hover_backpanel.png');
+        g.load.image('grpBldInfo',                uiDir + 'grpBldInfo.png');
+        g.load.image('grpBuildMenu',              uiDir + 'grpBuildMenu.png');
+        g.load.image('grpStatsMenu',              uiDir + 'grpStatsMenu.png');
+        g.load.image('topBar',                    uiDir + 'topBar.png');
+        g.load.image('tile_hover_backpanel',      uiDir + 'tile_hover_backpanel.png');
         g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png');
-        g.load.image('buildMenuBg',             uiDir + 'buildMenuBg.png');
-        g.load.image('buildMenuCover1',         uiDir + 'buildMenuCover1.png');
-        g.load.image('buildMenuCover2',         uiDir + 'buildMenuCover2.png');
-        g.load.image('flag_background',         uiDir + 'flag_background.png');
-        g.load.image('peopleViewBg',            uiDir + 'peopleViewBg.jpg');
-        g.load.image('peopleViewLeftBg',        uiDir + 'peopleViewLeftBg.png');
-        g.load.image('peopleViewRightBg',       uiDir + 'peopleViewRightBg.png');
-        g.load.image('peopleViewContractBg',    uiDir + 'peopleViewContractBg.png');
-        g.load.image('incButton',               uiDir + 'incButton.png');
-        g.load.image('decButton',               uiDir + 'decButton.png');
-        g.load.image("pi_prevPage",             uiDir + "pi_prevPage.png");
-        g.load.image("pi_nextPage",             uiDir + "pi_nextPage.png");
-        g.load.image("uiMask",                  uiDir + "uiMask.png");
-        g.load.image("event_bg",                uiDir + "event_bg.jpg");
+        g.load.image('buildMenuBg',               uiDir + 'buildMenuBg.png');
+        g.load.image('buildMenuCover1',           uiDir + 'buildMenuCover1.png');
+        g.load.image('buildMenuCover2',           uiDir + 'buildMenuCover2.png');
+        g.load.image('coalition_backpanel',       uiDir + 'coalition_backpanel.png');
+        g.load.image('coalition_border',          uiDir + 'coalition_outer_edge.png');
+        g.load.image('peopleViewBg',              uiDir + 'peopleViewBg.jpg');
+        g.load.image('peopleViewLeftBg',          uiDir + 'peopleViewLeftBg.png');
+        g.load.image('peopleViewRightBg',         uiDir + 'peopleViewRightBg.png');
+        g.load.image('peopleViewContractBg',      uiDir + 'peopleViewContractBg.png');
+        g.load.image('incButton',                 uiDir + 'incButton.png');
+        g.load.image('decButton',                 uiDir + 'decButton.png');
+        g.load.image("pi_prevPage",               uiDir + "pi_prevPage.png");
+        g.load.image("pi_nextPage",               uiDir + "pi_nextPage.png");
+        g.load.image("uiMask",                    uiDir + "uiMask.png");
+        g.load.image("event_bg",                  uiDir + "event_bg.jpg");
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
@@ -111,12 +111,6 @@ var Preloader={
         g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',        buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button',      buttonDir + 'large_generic_button.png', 240, 96, 3);
-        g.load.spritesheet('merchant_thumbnail',        buttonDir + 'merchant_thumbnail.png', 120, 48, 3);
-        g.load.spritesheet('military_thumbnail',        buttonDir + 'military_thumbnail.png', 120, 48, 3);
-        g.load.spritesheet('beauro_thumbnail',          buttonDir + 'beauro_thumbnail.png', 120, 48, 3);
-        g.load.spritesheet('add_merchant_button',       buttonDir + 'add_merchant_button.png', 120, 48, 3);
-        g.load.spritesheet('add_military_button',       buttonDir + 'add_military_button.png', 120, 48, 3);
-        g.load.spritesheet('add_beauro_button',         buttonDir + 'add_beauro_button.png', 120, 48, 3);
         g.load.spritesheet('portrait_border_bureau',    buttonDir + 'portrait_border_bureau.png', 56, 56, 3);
         g.load.spritesheet('portrait_border_finance',   buttonDir + 'portrait_border_finance.png', 56, 56, 3);
         g.load.spritesheet('portrait_border_military',  buttonDir + 'portrait_border_military.png', 56, 56, 3);
