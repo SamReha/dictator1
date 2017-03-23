@@ -3,8 +3,7 @@
 
 
 var Hud = {
-    styleNormal: {font:"32px myKaiti", fill:"#ffffff"},
-    styleButton: {font:"32px myKaiti", fill:"#ffffff"},
+    styleButton: {font:"32px denseRegular", fill:"#ffffff"},
 
     createNew: function() {
 
@@ -45,6 +44,8 @@ var Hud = {
         btnNextTurnText.anchor.y = 0.5;
         btnNextTurnText.x = -btnNextTurn.width / 2;
         btnNextTurnText.y = -btnNextTurn.height / 2;
+        console.log(btnNextTurnText);
+        btnNextTurnText.font = 'denseRegular';
         btnNextTurn.addChild(btnNextTurnText);
 
         // Group2: Build
@@ -242,8 +243,8 @@ var StatsPanel = {
     unitHeight: 48,
     verticalPad: 6,
     horizontalPad: 2,
-    verticalTextOffset: 10,
-    textStyle: { font: '24px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+    verticalTextOffset: 4,
+    textStyle: { font: '36px denseRegular', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: 'rgba(0,0,0,0.75)', shadowOffsetX: 2, shadowOffsetY: 2 },
 
     createNew: function() {
         var statsPanel = MainGame.game.make.group();
@@ -305,7 +306,7 @@ var StatsPanel = {
         statsPanel.homelessGroup.sprite.events.onInputOut.add(function() {homelessToolTip.hide();}, null);
 
         statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.sprite);
-        statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
+        statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, ' ', StatsPanel.textStyle);
         statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.textLabel);
         statsPanel.addChild(statsPanel.homelessGroup);
 
@@ -322,7 +323,7 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.sprite.events.onInputOut.add(function() {joblessToolTip.hide();}, null);
 
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.sprite);
-        statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
+        statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, ' ', StatsPanel.textStyle);
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
         statsPanel.addChild(statsPanel.unemploymentGroup);
 
@@ -337,16 +338,17 @@ var StatsPanel = {
         statsPanel.warchestGroup.sprite.addChild(moneyToolTip);
         statsPanel.warchestGroup.sprite.events.onInputOver.add(function() {moneyToolTip.show();}, null);
         statsPanel.warchestGroup.sprite.events.onInputOut.add(function() {moneyToolTip.hide();}, null);
-
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.sprite);
-        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, 0, '$0 ', StatsPanel.textStyle);
+
+        var moneyStyle = { font: '32px denseRegular', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: 'rgba(0,0,0,0.75)', shadowOffsetX: 2, shadowOffsetY: 2 };
+        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, -5, ' ', moneyStyle);
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
         statsPanel.addChild(statsPanel.warchestGroup);
 
         // Money Per Turn
         statsPanel.moneyPerTurnGroup = MainGame.game.make.group();
         statsPanel.moneyPerTurnGroup.y = statsPanel.warchestGroup.y + StatsPanel.verticalTextOffset;
-        statsPanel.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '(+0) ', StatsPanel.textStyle);
+        statsPanel.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, 17, '(+) ', moneyStyle);
         statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.textLabel);
         statsPanel.addChild(statsPanel.moneyPerTurnGroup);
 
@@ -362,9 +364,9 @@ var StatsPanel = {
         statsPanel.swissGroup.sprite.addChild(swissToolTip);
         statsPanel.swissGroup.sprite.events.onInputOver.add(function() {swissToolTip.show();}, null);
         statsPanel.swissGroup.sprite.events.onInputOut.add(function() {swissToolTip.hide();}, null);
-
         statsPanel.swissGroup.addChild(statsPanel.swissGroup.sprite);
-        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '$0 ', StatsPanel.textStyle);
+
+        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, ' ', StatsPanel.textStyle);
         statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
         statsPanel.addChild(statsPanel.swissGroup);
 
@@ -397,7 +399,7 @@ var StatsPanel = {
 var FunPanel = {
     unitWidth: 120,
     horizontalPad: 5,
-    textStyle: { font: '30px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+    textStyle: { font: '40px denseRegular', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
     createNew: function() {
         var funPanel = MainGame.game.make.group();
@@ -417,7 +419,7 @@ var FunPanel = {
         funPanel.freeGroup.sprite = freeSprite;
         funPanel.freeGroup.addChild(funPanel.freeGroup.sprite);
 
-        funPanel.freeGroup.textLabel = MainGame.game.make.text(48, 6, '0%', FunPanel.textStyle);
+        funPanel.freeGroup.textLabel = MainGame.game.make.text(48, 2, '0% ', FunPanel.textStyle);
         funPanel.freeGroup.addChild(funPanel.freeGroup.textLabel);
         funPanel.addChild(funPanel.freeGroup);
 
@@ -435,7 +437,7 @@ var FunPanel = {
         funPanel.unrestGroup.sprite = unrestSprite;
         funPanel.unrestGroup.addChild(funPanel.unrestGroup.sprite);
 
-        funPanel.unrestGroup.textLabel = MainGame.game.make.text(48, 6, '0%', FunPanel.textStyle);
+        funPanel.unrestGroup.textLabel = MainGame.game.make.text(48, 2, '0% ', FunPanel.textStyle);
         funPanel.unrestGroup.addChild(funPanel.unrestGroup.textLabel);
         funPanel.addChild(funPanel.unrestGroup);
 
@@ -443,8 +445,8 @@ var FunPanel = {
         MainGame.game.time.events.loop(500, function() {
             var globalStats = MainGame.global;
 
-            var newFreedom = globalStats.freedom + '%';
-            var newUnrest = globalStats.unrest + '%';
+            var newFreedom = globalStats.freedom + '% ';
+            var newUnrest = globalStats.unrest + '% ';
 
             funPanel.freeGroup.textLabel.text = newFreedom;
             funPanel.unrestGroup.textLabel.text = newUnrest;

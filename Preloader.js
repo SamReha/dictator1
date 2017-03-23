@@ -38,7 +38,7 @@ var Preloader={
         g.load.image('school_detail',      detailIconDir + 'school.png');
         g.load.image('shantyTown_detail',  detailIconDir + 'shantyTown.png');
         g.load.image('suburb_detail',      detailIconDir + 'suburb.png');
-        g.load.image('park_detail',        detailIconDir + 'park.png');
+        g.load.image('park_detail',        detailIconDir + 'park.jpg');
 
         // Resources
         var resourceDir = imageDir + 'resources/';
