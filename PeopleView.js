@@ -239,12 +239,15 @@ var PeopleView={
 		//	for debug: if there's no dataRef input
 		if(!lowData)
 			lowData=MainGame.population.lowList();
-		if(!buDataRef)
-			buDataRef=MainGame.population.roleList("?");
-		if(!merDataRef)
-			merDataRef=MainGame.population.roleList("$");
-		if(!milDataRef)
-			milDataRef=MainGame.population.roleList("!");
+		if(!buDataRef){
+			buDataRef=MainGame.population.typeRoleList("2","?")+MainGame.population.typeRoleList("1","?");
+		}
+		if(!merDataRef){
+			merDataRef=MainGame.population.typeRoleList("2","$")+MainGame.population.typeRoleList("1","$");
+		}
+		if(!milDataRef){
+			milDataRef=MainGame.population.typeRoleList("2","!")+MainGame.population.typeRoleList("1","!");
+		}
 		//console.log("Now bu,mer and mil is:", buDataRef, merDataRef, milDataRef);
 
 		// People Right View

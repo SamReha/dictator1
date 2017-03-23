@@ -107,10 +107,10 @@ var Person={
             if(board.at(housingIndices[i]).getBuilding().startingTurn>MainGame.global.turn)
                 continue;
             if (MainGame.population.hirePersonAt(p, housingIndices[i])){
-                var house = board.at(housingIndices[i]);
+                var house = board.at(housingIndices[i]).getBuilding();
                 p.health = house.health;
                 p.shelter = house.shelter;
-                p.education = house.education;
+                // p.education = house.education;
                 return true;
             }
         }
@@ -188,12 +188,6 @@ var Person={
         // if p has a role
         if(p.role!==null && p.role!==undefined)
             return;
-        // if role is specified
-        if(role){
-            console.assert(role===Person.Bureaucrat || role===Person.Merchant || role===Person.Military);
-            p.role=role;
-            return;
-        }
         // find their workplace
         if(p.workplace!==null){
             var workplaceTile=MainGame.board.at(p.workplace);
@@ -203,7 +197,7 @@ var Person={
             p.role=bld.type;
         }else{
             var typeArray=[Person.Bureaucrat, Person.Merchant, Person.Military];
-            role=(role?role:Math.floor(Math.random()*typeArray.length));
+            role=typeArray[Math.floor(Math.random()*typeArray.length)];
             p.role = role;            
         }
     },
@@ -364,6 +358,10 @@ var Population={
                 var shanty = MainGame.board.buildShanty();
                 if(shanty!==null){  pop.hirePersonAt(per, shanty);  }
             }
+            var house = MainGame.board.at(per.home).getBuilding();
+            per.health=house.health;
+            per.shelter=house.shelter;
+            per.education=house.education;
         }
     },
     
@@ -406,6 +404,8 @@ var Population={
         if(bld.subtype==="housing"){
             if(bld.addPerson()){
                 person.home=tileIndex;
+                // person.health=bld.health;
+                // person.shelter=bld.shelter;
                 return true;
             }
             return false;

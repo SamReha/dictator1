@@ -23,7 +23,7 @@
     "aoeFreedom": 0,
     "aoeUnrest": 0,
     "shelter": 0,
-    "maxShelter": 60,
+    "maxShelter": 45,
     "maxPeople": 10,
     "effects": [{"type": null}]
   },
@@ -37,7 +37,7 @@
     "aoeFreedom": 0,
     "aoeUnrest": 0,
     "shelter": 0,
-    "maxShelter": 70,
+    "maxShelter": 65,
     "maxPeople": 5,
     "effects": [{"type": null}]
   },
