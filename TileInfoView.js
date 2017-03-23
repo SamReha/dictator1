@@ -266,31 +266,32 @@ var TileDetailView = {
 
         if (bld.people >= bld.maxPeople)
             return;
-        MainGame.population.hire(view.index);
-        if (bld.people >= bld.maxPeople) {
-            view.addPersonButton.visible = false;
+        if(MainGame.population.hire(view.index)){
+            if (bld.people >= bld.maxPeople) {
+                view.addPersonButton.visible = false;
+            }
+            view.removePersonButton.visible = true;
+
+            // update display
+            TileDetailView._updateAvailabilityText(view, bld);
+
+            if (!view.residential) {
+                TileDetailView._updateState(view, bld);
+            }
+
+            TileDetailView._setupListView_(view, 0);
+
+            // Play some funky music white boi
+            view.add_remove_sfx.play();
+            view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+
+            /*global updatePopulation*/
+            updatePopulation(false,false);
+        }else{
+            // Play an error sound
+            view.add_remove_sfx.play();
+            view.add_remove_sfx = game.make.audio('empty_click_' + Math.ceil(Math.random()*5)); // Assume we have 14 cloth click sounds
         }
-        view.removePersonButton.visible = true;
-
-        var str3 = '';
-        var str4 = '';
-        var str5 = '';
-
-        // update display
-        TileDetailView._updateAvailabilityText(view, bld);
-
-        if (!view.residential) {
-            TileDetailView._updateState(view, bld);
-        }
-
-        TileDetailView._setupListView_(view, 0);
-
-        // Play some funky music white boi
-        view.add_remove_sfx.play();
-        view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
-
-        /*global updatePopulation*/
-        updatePopulation(false,false);
     },
 
     _onFireButtonPressed_: function(view) {
@@ -310,31 +311,35 @@ var TileDetailView = {
         var citizen = MainGame.population.at(occupants[0]);
         
         // Fire that person
-        MainGame.population.firePersonAt(citizen, view.index);
+        if(MainGame.population.firePersonAt(citizen, view.index)){
+            // Update button visibilty as needed
+            if (bld.people <= 0) {
+                view.removePersonButton.visible = false;
+            }
+            view.addPersonButton.visible = true;
 
-        // Update button visibilty as needed
-        if (bld.people <= 0) {
-            view.removePersonButton.visible = false;
+            // update display
+            TileDetailView._updateAvailabilityText(view, bld);
+
+            // If we're a workplace, update relevant gamestates
+            if (!view.residential) {
+                TileDetailView._updateState(view, bld);
+            }
+
+            // Update the list view
+            TileDetailView._setupListView_(view, 0);
+
+            // Play some funky music white boi
+            view.add_remove_sfx.play();
+            view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+
+            /*global updatePopulation*/
+            updatePopulation(false,false);
+        }else{
+            // Play an error sound
+            view.add_remove_sfx.play();
+            view.add_remove_sfx = game.make.audio('empty_click_' + Math.ceil(Math.random()*5)); // Assume we have 14 cloth click sounds
         }
-        view.addPersonButton.visible = true;
-
-        // update display
-        TileDetailView._updateAvailabilityText(view, bld);
-
-        // If we're a workplace, update relevant gamestates
-        if (!view.residential) {
-            TileDetailView._updateState(view, bld);
-        }
-
-        // Update the list view
-        TileDetailView._setupListView_(view, 0);
-
-        // Play some funky music white boi
-        view.add_remove_sfx.play();
-        view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
-
-        /*global updatePopulation*/
-        updatePopulation(false,false);
     },
 
     onPageChanged: function(view, index) {
@@ -413,7 +418,12 @@ var TileDetailView = {
             }
         } else {
             // Else, it's a workplace
-            entryString = citizen.name;
+            entryString = citizen.name + '(';
+            if(citizen.home !== null){
+                entryString += MainGame.board.at(citizen.home).getBuilding().playerLabel + ')'
+            }else{
+                entryString += 'Homeless)'
+            }
         }
 
         var entryText = MainGame.game.make.text(0, 0, entryString, TileDetailView.listStyle);

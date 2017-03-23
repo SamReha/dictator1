@@ -9,10 +9,9 @@ var updatePopulation = function(nextTurn,updatingHomes) {
 	if(nextTurn){	pop.increase(Math.floor(Math.random()*3)+1);	}
 	if(updatingHomes){
 		for(var houseIndex=0;houseIndex<houseList.length;++houseIndex){
-			var h=MainGame.board.at(houseList[houseIndex]).building;
+			var h=MainGame.board.at(houseList[houseIndex]).getBuilding();
 			if(h.name==="palace"){continue;}
 			updateHome(houseList[houseIndex]);
-			h.shelter = h.maxShelter * Phaser.Math.clamp((20 - Global.turn + h.startingTurn) / 20,0,1);
 		}
 	}
 
@@ -72,6 +71,7 @@ var updateHome = function(houseIndex){
 	home.education = getEffectOutputInRangeByType(houseIndex, "education");
 	home.aoeFreedom = getEffectOutputInRangeByType(houseIndex, "freedom");
 	home.aoeUnrest = getEffectOutputInRangeByType(houseIndex, "unrest");
+	home.shelter = home.maxShelter;
 
 	MainGame.board.at(houseIndex).building=home;
 };
