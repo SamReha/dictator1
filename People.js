@@ -32,9 +32,10 @@ var Person={
         p.freedom=0;        // int
         p.unrest=0;         // int
         // Class vars (nullable)
-        p.influence=(p.type>=Person.Mid?0:null);
+        p.baseInfluence=(data.baseInfluence?data.baseInfluence:null);
+        p.accruedInfluence=(data.accruedInfluence?data.accruedInfluence:null);
         p.role=(data.role?data.role:null);
-        p.loyalty=(p.type<=Person.Hi?0:null);
+        p.loyalty=(data.loyalty?data.loyalty:null);
         p.payLevel=(data.payLevel?data.payLevel:null);
         p.salary=(data.salary?data.salary:null);
 
@@ -64,8 +65,9 @@ var Person={
     update: function(p, board,nextTurn){
         p.updateStats(board,nextTurn);
         if (p.type === Person.Low) {
-            p.updateStats(board,nextTurn);
             p.updateFreeUn(board);
+        }else if(p.type === Person.Mid){
+        }else{
         }
     },
     
@@ -154,6 +156,14 @@ var Person={
                 p.unSetHighClass();
             }
             p.setLowClass();
+        }else{
+            p.baseInfluence = Math.floor(((p.health-50)+(p.shelter-50)+(p.education-50))/3);
+            p.accruedInfluence+=(p.type===Person.Mid?1:2);
+            p.accruedInfluence=Math.min(p.accruedInfluence,50);
+            if(p.type===Person.Hi){
+                var payGrade = Math.floor(Math.max(p.baseInfluence+p.accruedInfluence-5,0)/5);
+                p.loyalty += p.payLevel-payGrade;
+            }
         }
     },
     
@@ -212,11 +222,13 @@ var Person={
             if(minister.length > 0)
                 minister[0].unSetHighClass();
             p.type = Person.Hi;
+            p.loyalty = 5;
             p.addSalary();
         }
     },
 
     unSetHighClass: function(p) {
+        p.loyalty = null;
         p.type = Person.Mid;
         p.removeSalary();
     },
@@ -264,7 +276,7 @@ var Population={
         pop.hire=function(tileIndex){return Population.hire(pop,tileIndex)};
         pop.hirePersonAt=function(person,tileIndex){return Population.hirePersonAt(pop,person,tileIndex)};
         pop.fire=function(tileIndex){return Population.fire(pop,tileIndex)};
-        pop.firePersonAt=function(person,tileIndex){return Population.firePersonAt()};
+        pop.firePersonAt=function(person, tileIndex){return Population.firePersonAt(pop, person, tileIndex)};
 
         // returns people by the filter of type
         pop.lowList=function() { return pop.people.filter(function(p) { return p.type === 0; })};
@@ -407,30 +419,30 @@ var Population={
         }
     },
     
-    fire: function(pop,tileIndex){
+    fire: function(pop, tileIndex){
         /*global MainGame*/
         var bld=MainGame.board.at(tileIndex).getBuilding();
         // console.assert(bld);
         // unset home
         console.log("firing");
-        if(bld.subtype==="housing"){
-            console.log(tileIndex);
-            var h=pop.findHoused();
-            for(var i=0;i<h.length;i++){
-                if(pop.people[h[i]].home===tileIndex){
+        if (bld.subtype === "housing") {
+            //console.log(tileIndex);
+            var housed = pop.findHoused();
+            for (var i = 0; i < housed.length; i++) {
+                if (pop.people[housed[i]].home === tileIndex) {
                     console.log("found");
                     bld.removePerson();
-                    pop.people[h[i]].home=null;
+                    pop.people[housed[i]].home = null;
                     return true;
                 }
             }
             return false;
-        }else{
-            var h=pop.findEmployed();
-            for(var j=0;j<h.length;j++){
-                if(pop.people[h[j]].workplace===tileIndex){
+        } else {
+            var employed = pop.findEmployed();
+            for(var j=0;j<employed.length;j++){
+                if(pop.people[employed[j]].workplace===tileIndex){
                     bld.removePerson();
-                    pop.people[h[j]].workplace=null;
+                    pop.people[employed[j]].workplace=null;
                     return true;
                 }
             }
@@ -438,19 +450,18 @@ var Population={
         }
     },
     
-    firePersonAt: function(pop,person,tileIndex){
+    firePersonAt: function(pop, person, tileIndex) {
         /*global MainGame*/
-        var bld=MainGame.board.at()
+        var bld = MainGame.board.at(tileIndex).getBuilding();
         //set location for player
-        if(bld.subtype==="housing"){
-            if(person.home===tileIndex){
+        if (bld.subtype === "housing") {
+            if (person.home === tileIndex) {
                 bld.removePerson();
-                person.home=null;
+                person.home = null;
                 return true;
             }
             return false;
-        }
-        else{
+        } else {
             if(person.workplace===tileIndex){
                 bld.removePerson();
                 person.workplace=null;
@@ -460,17 +471,17 @@ var Population={
         }
     },
 
-    findHousingStatus: function(pop, hasHouse){
-        var res=[];
-        pop.people.forEach(function(p,i){
-            console.assert(p.home!==undefined);
-            if(p.type===Person.Low){
-                if(p.home!==null){
+    findHousingStatus: function(pop, hasHouse) {
+        var res = [];
+        pop.people.forEach(function(p, i) {
+            console.assert(p.home !== undefined);
+            if (p.type === Person.Low) {
+                if (p.home !== null) {
                     /*global MainGame*/
-                    var name=MainGame.board.at(p.home).getBuilding().name;
-                    if((name==="shantyTown" ? true : hasHouse))
+                    var name = MainGame.board.at(p.home).getBuilding().name;
+                    if ((name === "shantyTown" ? true : hasHouse))
                         res.push(i);
-                }else if(p.home===null && !hasHouse)
+                } else if (p.home === null && !hasHouse)
                     res.push(i);
             }
         })

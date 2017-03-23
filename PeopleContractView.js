@@ -29,7 +29,7 @@ var PeopleContractView={
 				break;
 		}
 
-		// ----Portrait, Name, and Title----
+		// ----Portrait, Name, Title, and Stats----
 		v.port = MainGame.game.make.sprite((v.width/8), (v.height/9), textureString);
 		v.port.anchor.setTo(0.5,0.5);
 		v.port.scale.setTo(1.5,1.5);
@@ -45,7 +45,7 @@ var PeopleContractView={
 		v.addChild(v.roleLabel);
 
 		// ----Current Payment----
-		v.currentPayLabel=MainGame.game.make.text((v.width*3/64), (v.height*13/48), "",PeopleContractView.contractStyle);
+		v.currentPayLabel=MainGame.game.make.text((v.width*1/16), (v.height*13/48), "",PeopleContractView.contractStyle);
 		v.currentPayLabel.anchor.setTo(0,0.5);
 		v.currentPay=MainGame.game.make.text(0, 0, "",PeopleContractView.contractStyle);
 		v.currentPay.anchor.setTo(0.5,0.5);
@@ -57,7 +57,7 @@ var PeopleContractView={
 		v.currentPayLabel.addChild(v.currentPayName);
 
 		// ----Expected Payment----
-		v.expectedPayLabel=MainGame.game.make.text((v.width*3/64), (v.height*13/30), "Ministers with a similar amount of Influence\n  are expected to be paid ________ annually.",PeopleContractView.contractStyle);
+		v.expectedPayLabel=MainGame.game.make.text((v.width*1/16), (v.height*13/30), "Ministers with a similar amount of Influence\n  are expected to be paid ________ annually.",PeopleContractView.contractStyle);
 		v.expectedPayLabel.anchor.setTo(0,0.5);
 		v.addChild(v.expectedPayLabel);
 		v.expectedPay=MainGame.game.make.text((v.expectedPayLabel.width*2/3), (v.expectedPayLabel.height*5/24), "",PeopleContractView.contractStyle);
@@ -66,7 +66,7 @@ var PeopleContractView={
 		v.expectedPayLabel.addChild(v.expectedPay);
 
 		// ----Set New Payment----
-		v.newPayLabel=MainGame.game.make.text((v.width*3/64),(v.height*27/48),"Set their new salary:       ________",PeopleContractView.contractStyle);
+		v.newPayLabel=MainGame.game.make.text((v.width*1/16),(v.height*27/48),"Set their new salary:       ________",PeopleContractView.contractStyle);
 		v.addChild(v.newPayLabel);
 
 		v.decButton=MainGame.game.make.button((v.newPayLabel.width*13/20),(v.newPayLabel.height*3/8),'redMinusButton',function(){
@@ -94,7 +94,7 @@ var PeopleContractView={
 			v.incButton.visible=false;
 
 		// ----Text Alerting Player to Important Information----
-		v.playerAlertLabel=MainGame.game.make.text((v.width*3/64),(v.height*3/4),"",PeopleContractView.contractStyle);
+		v.playerAlertLabel=MainGame.game.make.text((v.width*1/16),(v.height*3/4),"",PeopleContractView.contractStyle);
 		v.playerAlertLabel.anchor.setTo(0,0.5);
 		v.playerAlert1=MainGame.game.make.text(0,0,"",PeopleContractView.contractStyle);
 		v.playerAlert1.anchor.setTo(0.5,0.5);
@@ -144,6 +144,13 @@ var PeopleContractView={
 		v.hireText.anchor.y=0.5;
 		v.hireButton.addChild(v.hireText);
 
+		// Audio
+        v.openSfx = game.make.audio('message_open');
+        v.openSfx.play();
+        v.closeSfx = game.make.audio('message_close');
+        v.workChangeSfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+        v.paymentChangeSfx = game.make.audio('paper_click_' + Math.ceil(Math.random()*8)); // Assume we have 8 paper click sounds
+
 		// Class func
 		v.suicide=function(){PeopleContractView.suicide(v)};
 		v.updateSelf=function(){PeopleContractView.updateSelf(v)};
@@ -158,13 +165,18 @@ var PeopleContractView={
 		v.decButton.freezeFrames=true;
 		v.cancelButton.freezeFrames=true;
 		v.hireButton.freezeFrames=true;
+		v.closeSfx.play();
 		v.destroy();
 	},
 	onPaymentChanged: function(view, isInc){
 		view.newPayLevel+=(isInc?1:-1);
 		view["decButton"].visible=(view.newPayLevel>0);
 		view["incButton"].visible=(view.newPayLevel<PeopleContractView.pays.length-1);
-		view["newPay"].text="$"+PeopleContractView.pays[view.newPayLevel]+"K";
+		view["newPay"].text="₸"+PeopleContractView.pays[view.newPayLevel];
+
+		// Play sfx
+		view.paymentChangeSfx.play();
+		view.paymentChangeSfx = game.make.audio('paper_click_' + Math.ceil(Math.random()*8)); // Assume we have 8 paper click sounds
 	},
 	onWorkChanged: function(view, isFire){
 		// unSetHiClass removes their salary from their home and sets them to mid
@@ -178,13 +190,17 @@ var PeopleContractView={
 			view.dataRef.payLevel=view.newPayLevel;
 			view.dataRef.salary=PeopleContractView.pays[view.dataRef.payLevel];
 			view.dataRef.setHighClass();
-			view.dataRef.renewCount=4;
+			view.dataRef.renewCount=5;
 		}
 		// Update the UI
 		MainGame.hud.coalitionFlag.updateSelf();
 
 		// Remake the contract view
 		var parentView=view.parent;
+
+		// MAKE SUM NOOOIIIEZZZ
+		view.workChangeSfx.play();
+        view.workChangeSfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
 		// update view
 		view.updateSelf();
@@ -217,24 +233,25 @@ var PeopleContractView={
 
 		// ----Current Payment----
 		if(v.dataRef.type===Person.Hi){
-			v.currentPayLabel.text="___________________ is recieving an annual salary\n  of ________ as the "+title+".";
-			v.currentPay.text="$"+PeopleContractView.pays[v.dataRef.payLevel]+"K";
-			v.currentPay.x=(v.currentPayLabel.width*9/48); v.currentPay.y=(v.currentPayLabel.height*5/24);
+			v.currentPayLabel.text="___________________ is recieving an annual\n  salary of ________ as the "+title+".";
+			v.currentPay.text="₸"+PeopleContractView.pays[v.dataRef.payLevel];
+			v.currentPay.x=(v.width*13/48); v.currentPay.y=(v.currentPayLabel.height*5/24);
 			v.currentPayName.text=v.dataRef.name;
-			v.currentPayName.x=(v.currentPayLabel.width*2/9); v.currentPayName.y=(v.currentPayLabel.height*-7/24);
+			v.currentPayName.x=(v.width*2/9); v.currentPayName.y=(v.currentPayLabel.height*-7/24);
 		}else{
 			console.log("Infulential");
 			v.currentPayLabel.text="___________________ is available to be hired\n  as a new "+job+"."
 			v.currentPay.text="";
 			v.currentPayName.text=v.dataRef.name;
-			v.currentPayName.x=(v.currentPayLabel.width*1/4); v.currentPayName.y=(v.currentPayLabel.height*-7/24);
+			v.currentPayName.x=(v.width*2/9); v.currentPayName.y=(v.currentPayLabel.height*-7/24);
 		}
 
 		// ----Expected Payment----
-		v.expectedPay.text="$"+2+"K";
+		var payGrade = Math.floor(Math.max(v.dataRef.baseInfluence+v.dataRef.accruedInfluence-5,0)/5);
+		v.expectedPay.text="₸"+PeopleContractView.pays[payGrade];
 
 		// ----Set New Payment----
-		v.newPay.text="$"+PeopleContractView.pays[v.newPayLevel]+"K";
+		v.newPay.text="₸"+PeopleContractView.pays[v.newPayLevel];
 
 		v.decButton.visible=(v.newPayLevel!==0);
 		v.incButton.visible=(v.newPayLevel!==PeopleContractView.pays.length-1);
@@ -245,7 +262,7 @@ var PeopleContractView={
 			v.playerAlertLabel.text="Renewing this contract will extend the renewal\n  deadline from ________ to ________.";
 			v.playerAlert1.text=(1950+MainGame.global.turn-1)+v.dataRef.renewCount;
 			v.playerAlert1.x=(v.playerAlertLabel.width*11/24); v.playerAlert1.y=(v.playerAlertLabel.height*5/24);
-			v.playerAlert2.text=(1950+MainGame.global.turn-1)+4;
+			v.playerAlert2.text=(1950+MainGame.global.turn-1)+5;
 			v.playerAlert2.x=(v.playerAlertLabel.width*3/4); v.playerAlert2.y=(v.playerAlertLabel.height*5/24);
 		}else{
 			// ----Current Minister of This Role----

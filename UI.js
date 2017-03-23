@@ -25,58 +25,54 @@ var Hud = {
         hud.coalitionFlag = CoalitionFlag.createNew();
         hud.addChild(hud.coalitionFlag);
 
-        // Exit / Pause button
-        var btnExit = MainGame.game.make.button(0, 0, 'small_generic_button', null, MainGame, 0, 1, 2, 2);
-        btnExit.name = 'Exit Button';
-        btnExit.input.priorityID = hudInputPriority;
-        //hud.addChild(btnExit);
-
-        var btnExitText = MainGame.game.make.text(0, 0, 'Exit', Hud.styleButton);
-        btnExitText.anchor.x = 0.5;
-        btnExitText.anchor.y = 0.5;
-        btnExitText.x = btnExit.width / 2;
-        btnExitText.y = btnExit.height / 2;
-        btnExit.addChild(btnExitText);
-
         // "Next Turn" button
-        var btnNextTurn=MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
-            MainGame.nextTurn, MainGame, 0, 1, 2, 2);
-        btnNextTurn.name = 'btnNextTurn';
+        var btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'endturn_button',
+            function() {
+                /*global MainGame*/
+                MainGame.nextTurn();
+                btnNextTurn.sfx.play();
+                btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+            }, MainGame, 1, 0, 2, 2);
+        btnNextTurn.name = 'endturn_button';
         btnNextTurn.input.priorityID = hudInputPriority;
         btnNextTurn.anchor.x = 1;
         btnNextTurn.anchor.y = 1;
+        btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         hud.addChild(btnNextTurn);
 
-        var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
-        btnNextTurnText.anchor.x = 0.5;
-        btnNextTurnText.anchor.y = 0.5;
-        btnNextTurnText.x = -btnNextTurn.width / 2;
-        btnNextTurnText.y = -btnNextTurn.height / 2;
-        btnNextTurn.addChild(btnNextTurnText);
+        // var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
+        // btnNextTurnText.anchor.x = 0.5;
+        // btnNextTurnText.anchor.y = 0.5;
+        // btnNextTurnText.x = -btnNextTurn.width / 2;
+        // btnNextTurnText.y = -btnNextTurn.height / 2;
+        // btnNextTurn.addChild(btnNextTurnText);
 
         // Group2: Build
         var buildGroup=MainGame.game.make.group();
         buildGroup.name="buildGroup";
         hud.addChild(buildGroup);
         //      "Build" button
-        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'med_generic_button', 
+        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'build_button', 
             function(){
                 /*global BuildMenu*/
                 BuildMenu.createNew();
-            }, null, 0, 1, 2, 3);
+                buildBtn.sfx.play();
+                buildBtn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+            }, null, 1, 0, 2, 2);
         buildBtn.name="buildBtn";
         buildBtn.setChecked=true;
         buildBtn.anchor.y = 1;  // Anchor on bottom left corner
         buildBtn.inputEnabled = true;
         buildBtn.input.priorityID = 1;
+        buildBtn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         buildGroup.addChild(buildBtn);
 
-        var buildBtnText = MainGame.game.make.text(0, 0, 'Build', Hud.styleButton);
-        buildBtnText.anchor.x = 0.5;
-        buildBtnText.anchor.y = 0.5;
-        buildBtnText.x = buildBtn.width / 2;
-        buildBtnText.y = -buildBtn.height / 2;
-        buildBtn.addChild(buildBtnText);
+        // var buildBtnText = MainGame.game.make.text(0, 0, 'Build', Hud.styleButton);
+        // buildBtnText.anchor.x = 0.5;
+        // buildBtnText.anchor.y = 0.5;
+        // buildBtnText.x = buildBtn.width / 2;
+        // buildBtnText.y = -buildBtn.height / 2;
+        // buildBtn.addChild(buildBtnText);
         
         return hud;
     },
@@ -103,18 +99,23 @@ var Hud = {
     showStatusMenu: function(){
 
     },
-    beginBuilding: function(menu, button, buildingType) {
-        //console.log(buildingType);
+
+    beginBuilding: function(menu, mask, button, buildingType) {
+        // This is the quickest place to add a sound effect for build menu options, so I'll do it here. I'm sorry - Sam
+        var sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+        sfx.play();
+
         //console.log( MainGame.game.cache.getJSON('buildingData')[buildingType].cost);
         if (Global.money >= MainGame.game.cache.getJSON('buildingData')[buildingType].cost) {
             // Reset the button state (quick hack)
             button.frame = 1; // This should be whatever frame corresponds to the default state in the sprite sheet
 
             // Hide build menu
-            menu.visible = false;
+            menu.visible=false;
+            mask.visible=false;
     
             // Create a building placer
-            var buildingPlacer = BuildingPlacer.createNew(buildingType);
+            var buildingPlacer = BuildingPlacer.createNew(buildingType, menu, mask);
         }
     },
 };
@@ -122,7 +123,7 @@ var Hud = {
 // Building Placer Object
 // Dynamically extends sprite
 var BuildingPlacer = {
-    createNew: function(buildingType) {
+    createNew: function(buildingType, menu, mask) {
         var bP = MainGame.game.add.sprite(0, 0, buildingType + '1');
 
         var zoom = MainGame.board.currentScale;
@@ -135,8 +136,12 @@ var BuildingPlacer = {
         bP.canBuild = false;
         bP.mapIndex = null;
 
+        // Assume we have 5 building sounds
+        var soundIndex = Math.ceil(Math.random()*5);
+        bP.sfx = game.make.audio('building_placement_' + soundIndex);
+
         bP.update = function() { BuildingPlacer.update(bP); };
-        bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer); };
+        bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer, menu, mask); };
         bP.cancelBuild = function() { BuildingPlacer.cancelBuild(bP); };
 
         bP.inputEnabled = true;
@@ -156,11 +161,11 @@ var BuildingPlacer = {
         // Is the mouse over a build-ready tile, or is if offsides?
         self.mapIndex = MainGame.board.hitTest(self.x, self.y);
         if (self.mapIndex != null) {
-            let tile = MainGame.board.at(self.mapIndex);
+            var tile = MainGame.board.at(self.mapIndex);
             // Might be nice to move these into Tile as convenience methods...
-            let terrainType = tile.terrain.key;
-            let tileResource = tile.res.key;
-            let hasBuilding = tile.getBuilding().name != null ? true : false;
+            var terrainType = tile.terrain.key;
+            var tileResource = tile.res.key;
+            var hasBuilding = tile.getBuilding().name != null ? true : false;
             // If the terrain is impassable, or a building already exists
             self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || hasBuilding);
             
@@ -178,7 +183,7 @@ var BuildingPlacer = {
         }
     },
     
-    clickHandler: function(self, pointer) {
+    clickHandler: function(self, pointer, menu, mask) {
         console.log("Handler invoked with priority 10!");
 
         if (self.canBuild) {
@@ -199,6 +204,17 @@ var BuildingPlacer = {
             }
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
             newBuilding.tint = newTint;
+            if(newBuilding.startingTurn- MainGame.global.turn>0){
+                newBuilding.constructionIcon = MainGame.game.make.sprite(0,0,"construction_icon");
+                newBuilding.constructionIcon.anchor.setTo(1,0);
+                newBuilding.constructionIcon.x=192;
+                newBuilding.addChild(newBuilding.constructionIcon);
+                newBuilding.counterIcon = MainGame.game.make.sprite(0,0,"counter_icon"+(newBuilding.startingTurn- MainGame.global.turn));
+                newBuilding.counterIcon.anchor.setTo(1,1);
+                newBuilding.counterIcon.x=192;
+                newBuilding.counterIcon.y=newBuilding.height;
+                newBuilding.addChild(newBuilding.counterIcon);
+            }
 
             // Set the tile's building to that object
             tile.setBuilding(newBuilding);
@@ -208,11 +224,18 @@ var BuildingPlacer = {
 
             /*global updatePopulation*/
             updatePopulation(false,false);
+
+            // Make some noise!
+            self.sfx.play();
             
             // End build mode
+            menu.destroy();
+            mask.destroy();
             self.cancelBuild();
         } else {
             console.log("Can't touch this!");
+            menu.visible = true;
+            mask.visible = true;
             self.cancelBuild();
         }
     },
@@ -258,8 +281,15 @@ var StatsPanel = {
         // Population
         statsPanel.popGroup = MainGame.game.make.group(0,0);
         statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 1;
+        statsPanel.popGroup.sfxArray = [
+            game.make.audio('paper_click_2'),
+            game.make.audio('paper_click_3'),
+            game.make.audio('paper_click_5'),
+            game.make.audio('paper_click_7')
+        ];
         statsPanel.popGroup.sprite = MainGame.game.make.button(0, 0, 'population_icon', function(){
             PeopleView.createNew();
+            statsPanel.popGroup.sfxArray[Math.floor(Math.random()*statsPanel.popGroup.sfxArray.length)].play();
         }, 0, 1, 0, 2);
 
         var populationToolTip = ToolTip.createNew("Total Population");
@@ -357,9 +387,9 @@ var StatsPanel = {
             var newHomeless = MainGame.population.findNotHoused().length + ' ';
             var newUnemployment = MainGame.population.findNotEmployed().length + ' ';
             var newYear = 1949 + globalStats.turn + ' ';
-            var newWarchest = '$' + globalStats.money + ' ';
-            var newMoneyPerTurn = '(+' + globalStats.moneyPerTurn + ') ';
-            var newSwissAccount = '$' + 0 + ' ';
+            var newWarchest = '₸' + globalStats.money + ' ';
+            var newMoneyPerTurn = (globalStats.moneyPerTurn >= 0) ? '(+' + globalStats.moneyPerTurn + ' ) ' : '(' + globalStats.moneyPerTurn + ' ) ';
+            var newSwissAccount = '₸' + 0 + ' ';
 
             statsPanel.yearGroup.textLabel.text = newYear;
             statsPanel.popGroup.textLabel.text = newPop;

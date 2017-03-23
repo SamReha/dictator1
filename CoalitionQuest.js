@@ -82,7 +82,7 @@ var CoalitionQuest={
 			// test function
 			controller[i]=[];
 			for(var j=0;j<handler[i].length;j++){
-				let f=Function("e","p",handler[i][j]);
+				var f=Function("e","p",handler[i][j]);
 				controller[i][j]=function(){f(e,currentPerson)};
 			}
 		}
