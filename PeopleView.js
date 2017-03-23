@@ -240,13 +240,17 @@ var PeopleView={
 		if(!lowData)
 			lowData=MainGame.population.lowList();
 		if(!buDataRef){
-			buDataRef=MainGame.population.typeRoleList("2","?")+MainGame.population.typeRoleList("1","?");
+			console.log("bureaucracy: "+MainGame.population.typeRoleList(Person.Mid,Person.Bureaucrat));
+			buDataRef=MainGame.population.typeRoleList(Person.Hi,Person.Bureaucrat);
+			buDataRef=buDataRef.concat(MainGame.population.typeRoleList(Person.Mid,Person.Bureaucrat));
 		}
 		if(!merDataRef){
-			merDataRef=MainGame.population.typeRoleList("2","$")+MainGame.population.typeRoleList("1","$");
+			merDataRef=MainGame.population.typeRoleList(Person.Hi,Person.Merchant);
+			merDataRef=merDataRef.concat(MainGame.population.typeRoleList(Person.Mid,Person.Merchant));
 		}
 		if(!milDataRef){
-			milDataRef=MainGame.population.typeRoleList("2","!")+MainGame.population.typeRoleList("1","!");
+			milDataRef=MainGame.population.typeRoleList(Person.Hi,Person.Military);
+			milDataRef=milDataRef.concat(MainGame.population.typeRoleList(Person.Mid,Person.Military));
 		}
 		//console.log("Now bu,mer and mil is:", buDataRef, merDataRef, milDataRef);
 
