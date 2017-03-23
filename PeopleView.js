@@ -26,7 +26,7 @@ var PeopleRightView={
 		v.addChild(v.listView);
 		// DPageIndicator: N pages
 		var pageCount=Math.ceil(dataRef.length/lowPeoplePerPage);
-		v.pageIndicator=DPageIndicator.createNew(400, {x:180, y:5});//width, textPos
+		v.pageIndicator=DPageIndicator.createNew((v.width*1/8),{x:(v.width*1/2),y:0});//width, textPos
 		v.pageIndicator.setModel(0, pageCount);	// current, max
 		v.pageIndicator.setController(function(index){PeopleRightView.onPageChanged(v,index)}, 111);
 		v.pageIndicator.y=440;

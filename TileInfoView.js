@@ -161,11 +161,11 @@ var TileDetailView = {
         // DPageIndicator: N pages
         view.itemsPerPage = 5;
         var pageCount = Math.ceil(building.people / view.itemsPerPage);
-        view.pageIndicator = DPageIndicator.createNew(400, {x:180, y:5}); //width, textPos
+        view.pageIndicator = DPageIndicator.createNew((view.width*1/8),{x:(view.width*1/2),y:0}); //width, textPos
         view.pageIndicator.setModel(0, pageCount); // current, max
         view.pageIndicator.setController(function(index){ TileDetailView.onPageChanged(view, index); }, 111);
-        view.pageIndicator.x = -view.pageIndicator.width + 20;
-        view.pageIndicator.y = 45;
+        view.pageIndicator.x = -(view.width*1/2);
+        view.pageIndicator.y = (view.height*1/8);
         view.pageIndicator.visible = (pageCount > 1);
         view.addChild(view.pageIndicator);
 
@@ -187,7 +187,7 @@ var TileDetailView = {
         var availibilityString = (building.maxPeople - building.people) + ' ' + availableNoun + 's available';
         view.availabilityText = game.make.text(0, 0, availibilityString, TileDetailView.descriptionStyle); // Example: 3 jobs available, or No beds available
         view.availabilityText.anchor.set(0.5, 0.5);
-        view.availabilityText.y = view.pageIndicator.y + view.pageIndicator.height + 15;
+        view.availabilityText.y = (view.height*9/48);
         view.addChild(view.availabilityText);
 
         if (building.subtype !== "road" && building.name !== "palace" && building.startingTurn <= MainGame.global.turn) {
