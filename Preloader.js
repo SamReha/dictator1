@@ -102,26 +102,30 @@ var Preloader={
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
-        g.load.spritesheet('btnHire',              buttonDir + 'btnHire.png', 64, 20, 4);
-        g.load.spritesheet('btnFire',              buttonDir + 'btnFire.png', 64, 20, 4);
-        g.load.spritesheet('btnNextTurn',          buttonDir + 'btnNextTurn.png', 64, 20, 4);
-        g.load.spritesheet('buttonSprite',         buttonDir + 'button_spritesheet.png', 128, 48, 4);
-        g.load.spritesheet('closeButton',          buttonDir + 'close_button.png', 48, 48, 3);
-        g.load.spritesheet('small_generic_button', buttonDir + 'small_generic_button.png', 120, 48, 3);
-        g.load.spritesheet('med_generic_button',   buttonDir + 'med_generic_button.png', 144, 80, 3);
-        g.load.spritesheet('large_generic_button', buttonDir + 'large_generic_button.png', 240, 96, 3);
-        g.load.spritesheet('merchant_thumbnail',   buttonDir + 'merchant_thumbnail.png', 120, 48, 3);
-        g.load.spritesheet('military_thumbnail',   buttonDir + 'military_thumbnail.png', 120, 48, 3);
-        g.load.spritesheet('beauro_thumbnail',     buttonDir + 'beauro_thumbnail.png', 120, 48, 3);
-        g.load.spritesheet('add_merchant_button',  buttonDir + 'add_merchant_button.png', 120, 48, 3);
-        g.load.spritesheet('add_military_button',  buttonDir + 'add_military_button.png', 120, 48, 3);
-        g.load.spritesheet('add_beauro_button',    buttonDir + 'add_beauro_button.png', 120, 48, 3);
-        g.load.spritesheet('bracketArrowButton',   buttonDir + 'bracket_arrow.png', 48, 48, 3);
-        g.load.spritesheet('triangleArrowButton',  buttonDir + 'triangle_arrow.png', 48, 48, 3);
-        g.load.spritesheet('redMinusButton',       buttonDir + 'red_minus_button.png', 48, 48, 3);
-        g.load.spritesheet('redPlusButton',        buttonDir + 'red_plus_button.png', 48, 48, 3);
-        g.load.spritesheet('yellowMinusButton',    buttonDir + 'yellow_minus_button.png', 48, 48, 3);
-        g.load.spritesheet('yellowPlusButton',     buttonDir + 'yellow_plus_button.png', 48, 48, 3);
+        g.load.spritesheet('btnHire',                   buttonDir + 'btnHire.png', 64, 20, 4);
+        g.load.spritesheet('btnFire',                   buttonDir + 'btnFire.png', 64, 20, 4);
+        g.load.spritesheet('build_button',              buttonDir + 'build_button.png', 144, 80, 3);
+        g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
+        g.load.spritesheet('buttonSprite',              buttonDir + 'button_spritesheet.png', 128, 48, 4);
+        g.load.spritesheet('closeButton',               buttonDir + 'close_button.png', 48, 48, 3);
+        g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);
+        g.load.spritesheet('med_generic_button',        buttonDir + 'med_generic_button.png', 144, 80, 3);
+        g.load.spritesheet('large_generic_button',      buttonDir + 'large_generic_button.png', 240, 96, 3);
+        g.load.spritesheet('merchant_thumbnail',        buttonDir + 'merchant_thumbnail.png', 120, 48, 3);
+        g.load.spritesheet('military_thumbnail',        buttonDir + 'military_thumbnail.png', 120, 48, 3);
+        g.load.spritesheet('beauro_thumbnail',          buttonDir + 'beauro_thumbnail.png', 120, 48, 3);
+        g.load.spritesheet('add_merchant_button',       buttonDir + 'add_merchant_button.png', 120, 48, 3);
+        g.load.spritesheet('add_military_button',       buttonDir + 'add_military_button.png', 120, 48, 3);
+        g.load.spritesheet('add_beauro_button',         buttonDir + 'add_beauro_button.png', 120, 48, 3);
+        g.load.spritesheet('portrait_border_bureau',    buttonDir + 'portrait_border_bureau.png', 56, 56, 3);
+        g.load.spritesheet('portrait_border_finance',   buttonDir + 'portrait_border_finance.png', 56, 56, 3);
+        g.load.spritesheet('portrait_border_military',  buttonDir + 'portrait_border_military.png', 56, 56, 3);
+        g.load.spritesheet('bracketArrowButton',        buttonDir + 'bracket_arrow.png', 48, 48, 3);
+        g.load.spritesheet('triangleArrowButton',       buttonDir + 'triangle_arrow.png', 48, 48, 3);
+        g.load.spritesheet('redMinusButton',            buttonDir + 'red_minus_button.png', 48, 48, 3);
+        g.load.spritesheet('redPlusButton',             buttonDir + 'red_plus_button.png', 48, 48, 3);
+        g.load.spritesheet('yellowMinusButton',         buttonDir + 'yellow_minus_button.png', 48, 48, 3);
+        g.load.spritesheet('yellowPlusButton',          buttonDir + 'yellow_plus_button.png', 48, 48, 3);
 
 
         //// load icons
@@ -134,7 +138,7 @@ var Preloader={
         g.load.spritesheet('unrest_icon',     iconDir + 'unrest_icon.png');
         g.load.spritesheet('year_icon',       iconDir + 'year_icon.png');
         g.load.spritesheet('swiss_icon',      iconDir + 'swiss_account_icon.png');
-        
+
         // load json files
         g.load.json('stage1','stage1.json');
         g.load.json('stage2','stage2.json');

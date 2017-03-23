@@ -26,39 +26,39 @@ var Hud = {
         hud.addChild(hud.coalitionFlag);
 
         // "Next Turn" button
-        var btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'med_generic_button',
+        var btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'endturn_button',
             function() {
                 /*global MainGame*/
                 MainGame.nextTurn();
                 btnNextTurn.sfx.play();
                 btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
-            }, MainGame, 0, 1, 2, 2);
-        btnNextTurn.name = 'btnNextTurn';
+            }, MainGame, 1, 0, 2, 2);
+        btnNextTurn.name = 'endturn_button';
         btnNextTurn.input.priorityID = hudInputPriority;
         btnNextTurn.anchor.x = 1;
         btnNextTurn.anchor.y = 1;
         btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         hud.addChild(btnNextTurn);
 
-        var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
-        btnNextTurnText.anchor.x = 0.5;
-        btnNextTurnText.anchor.y = 0.5;
-        btnNextTurnText.x = -btnNextTurn.width / 2;
-        btnNextTurnText.y = -btnNextTurn.height / 2;
-        btnNextTurn.addChild(btnNextTurnText);
+        // var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
+        // btnNextTurnText.anchor.x = 0.5;
+        // btnNextTurnText.anchor.y = 0.5;
+        // btnNextTurnText.x = -btnNextTurn.width / 2;
+        // btnNextTurnText.y = -btnNextTurn.height / 2;
+        // btnNextTurn.addChild(btnNextTurnText);
 
         // Group2: Build
         var buildGroup=MainGame.game.make.group();
         buildGroup.name="buildGroup";
         hud.addChild(buildGroup);
         //      "Build" button
-        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'med_generic_button', 
+        var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'build_button', 
             function(){
                 /*global BuildMenu*/
                 BuildMenu.createNew();
                 buildBtn.sfx.play();
                 buildBtn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
-            }, null, 0, 1, 2, 3);
+            }, null, 1, 0, 2, 2);
         buildBtn.name="buildBtn";
         buildBtn.setChecked=true;
         buildBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -67,12 +67,12 @@ var Hud = {
         buildBtn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         buildGroup.addChild(buildBtn);
 
-        var buildBtnText = MainGame.game.make.text(0, 0, 'Build', Hud.styleButton);
-        buildBtnText.anchor.x = 0.5;
-        buildBtnText.anchor.y = 0.5;
-        buildBtnText.x = buildBtn.width / 2;
-        buildBtnText.y = -buildBtn.height / 2;
-        buildBtn.addChild(buildBtnText);
+        // var buildBtnText = MainGame.game.make.text(0, 0, 'Build', Hud.styleButton);
+        // buildBtnText.anchor.x = 0.5;
+        // buildBtnText.anchor.y = 0.5;
+        // buildBtnText.x = buildBtn.width / 2;
+        // buildBtnText.y = -buildBtn.height / 2;
+        // buildBtn.addChild(buildBtnText);
         
         return hud;
     },

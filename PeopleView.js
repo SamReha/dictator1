@@ -72,7 +72,9 @@ var PeopleRightView={
 var midHiPeoplePerPage=5;
 // shows the 3 lists(bu,mer,mil) with portraits
 var PeopleLeftView={
-	style: {font:"20px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+	style: {font:"24px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+    verticalBorderWidth: 30,
+    horizontalBorderWidth: 20,
 	BuType: 0,	// for us to remember, not actually in use, may be removed ITF.
 	MerType: 1,	// ditto.
 	MilType: 2,	// ditto.
@@ -86,6 +88,8 @@ var PeopleLeftView={
 
 		// copies the dataRef
 		v.data3=[buDataRef, merDataRef, milDataRef];
+		v.backgrounds=[null,null,null];
+		v.labels=[null,null,null];
 		v.listViews=[null,null,null];
 		v.pageIndicators=[null,null,null];
 		// create the 3 list views
@@ -96,22 +100,51 @@ var PeopleLeftView={
 				return function(index){PeopleLeftView.onPageChanged(v,type,index)};
 		}
 		for(var i=0;i<3;i++){
+			v.backgrounds[i]= MainGame.game.make.graphics();
+	        var backgroundX = (v.width*3/48);
+	        var backgroundY = (v.height*i/3) + (v.height*1/27);
+	        var backgroundWitdh = v.width - ((v.width*3/48) * 2);
+	        var backgroundHeight = (v.height*7/27);
+	        v.backgrounds[i].lineStyle(0);
+	        v.backgrounds[i].beginFill(0x000000, 0.33);
+	        v.backgrounds[i].drawRect(backgroundX, backgroundY, backgroundWitdh, backgroundHeight);
+	        v.backgrounds[i].endFill();
+	        v.addChild(v.backgrounds[i]);
+
+	        v.labels[i] = MainGame.game.make.text((v.width*1/2),(v.height*i/3)+(v.height*2/27),"",PeopleLeftView.style);
+	        v.labels[i].anchor.setTo(0.5,0.5);
+	        switch (i){
+	        	case 0:
+	        		v.labels[i].text = "Bureaucrats";
+	        		break;
+	        	case 1:
+	        		v.labels[i].text = "Financiers";
+	        		break;
+	        	case 2:
+	        		v.labels[i].text = "Military Officers";
+	        		break;
+	        }
+	        v.addChild(v.labels[i]);
+
+
 			v.listViews[i]=DListView.createNew(
 				{},
-				{l:10,t:10},			// margin inside the list view
-				{w:80,h:64},			// each item's size
+				{l:0,t:0},			// margin inside the list view
+				{w:(v.width*1/(midHiPeoplePerPage+1)),h:(v.height*1/3)},	// divided width of view and view height
 				createCallback(i,true),	// callback func
 				true, 					// is horizontal
 				110						// priorityID
 			);
-			v.listViews[i].x=10;		// TODO: adjust it!
-			v.listViews[i].y=50+150*i;	// TODO: adjust it!
+			v.listViews[i].x=(v.width/((midHiPeoplePerPage+1)*2));		// TODO: adjust it!
+			v.listViews[i].y=(v.height*1/3)*i;	// TODO: adjust it!
+			// v.listViews[i].anchor.setTo(0.5,0.5);
 			v.addChild(v.listViews[i]);
-			v.pageIndicators[i]=DPageIndicator.createNew(400,{x:180,y:5});
+
+			v.pageIndicators[i]=DPageIndicator.createNew((v.width*1/8),{x:(v.width*1/2),y:0});
 			v.pageIndicators[i].setModel(0, Math.ceil(v.data3[i].length/midHiPeoplePerPage));
 			v.pageIndicators[i].setController(createCallback(i,false), 111);
-			v.pageIndicators[i].x=10;			// TODO: adjust it!
-			v.pageIndicators[i].y=140+150*i;	// TODO: adjust it!
+			v.pageIndicators[i].x=0;			// TODO: adjust it!
+			v.pageIndicators[i].y=(v.height*i/3) + (v.height*22/81);	// TODO: adjust it!
 			v.addChild(v.pageIndicators[i]);
 		}
 		// now setup the 3 pages!
@@ -137,23 +170,36 @@ var PeopleLeftView={
 		PeopleLeftView._setupPage_(view,type,index);
 	},
 	// makes the portrait + name. TODO: re-arrange the visual elements
-	_makeEntry_: function(oneEntryData) {
-		var textureString;
+	_makeEntry_: function(oneEntryData,view,index) {
+		var buttonString;
+		var portraitString;
+		var roleNumber;
 		switch (oneEntryData.role) {
 			case Person.Bureaucrat:
-				textureString = 'bureaucrat_port_' + oneEntryData.portIndex;
+				roleNumber = 0;
+				buttonString = 'portrait_border_bureau';
+				portraitString = 'bureaucrat_port_' + oneEntryData.portIndex;
 				break;
 			case Person.Merchant:
-				textureString = 'merchant_port_' + oneEntryData.portIndex;
+				roleNumber = 1;
+				buttonString = 'portrait_border_finance';
+				portraitString = 'merchant_port_' + oneEntryData.portIndex;
 				break;
 			case Person.Military:
-				textureString = 'military_port_' + oneEntryData.portIndex;
+				roleNumber = 2;
+				buttonString = 'portrait_border_military';
+				portraitString = 'military_port_' + oneEntryData.portIndex;
 				break;
 			default:
 				break;
 		}
 
-		var entrySprite=MainGame.game.make.sprite(0, 0, textureString);
+		var entrySprite = MainGame.game.make.button(0, 0, buttonString, function(){
+			PeopleLeftView.onPersonSelected(view,roleNumber,index);},entrySprite,1,0,2,1);
+		entrySprite.input.priorityID=120;
+		var portrait = MainGame.game.make.sprite(0, 0, portraitString);
+		portrait.anchor.setTo(0.5,0.5);
+		entrySprite.addChild(portrait);
 		// var name = oneEntryData.name.split(" ");
 		// var entryText=MainGame.game.make.text(0,50,name[0]+"\n"+name[1],PeopleLeftView.style);
 		// entrySprite.addChild(entryText);
@@ -164,7 +210,7 @@ var PeopleLeftView={
 		var startIndex=pageIndex*midHiPeoplePerPage;
 		var endIndex=Math.min(startIndex+midHiPeoplePerPage,view.data3[type].length);
 		for(var i=startIndex;i<endIndex;i++)
-			view.listViews[type].add(PeopleLeftView._makeEntry_(view.data3[type][i]));
+			view.listViews[type].add(PeopleLeftView._makeEntry_(view.data3[type][i],view,i));
 	},
 };
 

@@ -167,7 +167,7 @@ var BuildMenu={
 		buySchoolBtn.addChild(buySchoolBtnText);
 
 		var buyParkBtn = MainGame.game.make.button((bm.width/12), (bm.height/2), 'small_generic_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'school');},
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyParkBtn, 'park');},
 			buildMenu, 0, 1, 0, 2);
 		buyParkBtn.input.priorityID = hudInputPriority;
 		buyParkBtn.anchor.x = 0.5;  // Anchor in center
