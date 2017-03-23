@@ -525,7 +525,7 @@ var TileDetailView = {
                 } else if (outValue >= 25 && outValue < 50) {
                     outDescription = "provides some food.";
                 } else if (outValue >= 50 && outValue < 75) {
-                    outDescription = "provides plenty food.";
+                    outDescription = "provides plenty of food.";
                 } else outDescription = "provides abundant food.";
 
                 /*global updateHomesNearOutput*/
@@ -601,7 +601,7 @@ var TileDetailView = {
             } else if (bld.health >= 25 && bld.health < 50) {
                 healthDescription = "have some food.";
             } else if (bld.health >= 50 && bld.health < 75) {
-                healthDescription = "have plenty food.";
+                healthDescription = "have plenty of food.";
             } else healthDescription = "have abundant food.";
 
             if (bld.education > 0 && bld.education < 25) {
@@ -640,7 +640,7 @@ var TileDetailView = {
                     } else if (outValue >= 25 && outValue < 50) {
                         outDescription = "provides some food.";
                     } else if (outValue >= 50 && outValue < 75) {
-                        outDescription = "provides plenty food.";
+                        outDescription = "provides plenty of food.";
                     } else outDescription = "provides abundant food.";
                 } else if (outType === "education") {
                     if (outValue === 0) {
