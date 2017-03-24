@@ -101,7 +101,7 @@ var Preloader={
         g.load.image("pi_prevPage",               uiDir + "pi_prevPage.png");
         g.load.image("pi_nextPage",               uiDir + "pi_nextPage.png");
         g.load.image("uiMask",                    uiDir + "uiMask.png");
-        g.load.image("event_bg",                  uiDir + "event_bg.jpg");
+        g.load.image("event_bg",                  uiDir + "event_bg.png");
         g.load.image('freedomUnrestMeter',        uiDir + "freedomUnrestMeter.png");
         g.load.image('fun_panel_backpanel',       uiDir + 'fun_panel_backpanel.png');
 
