@@ -249,100 +249,106 @@ var BuildingPlacer = {
 var StatsPanel = {
     unitWidth: 140,
     unitHeight: 48,
-    verticalPad: 6,
-    horizontalPad: 2,
+    verticalPad: 5,
+    horizontalPad: 5,
     verticalTextOffset: 10,
     textStyle: { font: '24px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
     createNew: function() {
-        var statsPanel = MainGame.game.make.group();
-        statsPanel.x = MainGame.game.width - StatsPanel.unitWidth + StatsPanel.horizontalPad;
-        statsPanel.y = MainGame.game.height / 2 - StatsPanel.unitHeight + StatsPanel.verticalPad;
+        var statsPanel = MainGame.game.make.sprite(0, 0, 'stats_panel_backpanel');
+        statsPanel.x = MainGame.game.width - statsPanel.width;
+        statsPanel.y = MainGame.game.height / 2 - this.unitHeight + this.verticalPad;
+        statsPanel.inputEnabled = true;
+        statsPanel.input.priorityID = 1;
 
         // Year
-        statsPanel.yearGroup = MainGame.game.make.group();
-        statsPanel.yearGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 0;
-        statsPanel.yearGroup.sprite = MainGame.game.make.sprite(0, 0, 'year_icon');
-        statsPanel.yearGroup.sprite.inputEnabled = true;
+        statsPanel.yearGroup = MainGame.game.make.sprite(0, 0, 'year_icon');
+        statsPanel.yearGroup.x = this.horizontalPad;
+        statsPanel.yearGroup.y = (this.unitHeight + this.verticalPad) * 0 + this.verticalPad;
+        statsPanel.yearGroup.inputEnabled = true;
+        statsPanel.yearGroup.input.priorityID = 2;
 
         var yearToolTip = ToolTip.createNew("Current Year");
         yearToolTip.x = -yearToolTip.width;
         yearToolTip.y = 12;
-        statsPanel.yearGroup.sprite.addChild(yearToolTip);
-        statsPanel.yearGroup.sprite.events.onInputOver.add(function() {yearToolTip.show();}, null);
-        statsPanel.yearGroup.sprite.events.onInputOut.add(function() {yearToolTip.hide();}, null);
+        statsPanel.yearGroup.addChild(yearToolTip);
+        statsPanel.yearGroup.events.onInputOver.add(function() {yearToolTip.show();}, null);
+        statsPanel.yearGroup.events.onInputOut.add(function() {yearToolTip.hide();}, null);
 
-        statsPanel.yearGroup.addChild(statsPanel.yearGroup.sprite);
-        statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, 1950+MainGame.global.turn-1, StatsPanel.textStyle);
+        statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, 1949+MainGame.global.turn, this.textStyle);
         statsPanel.yearGroup.addChild(statsPanel.yearGroup.textLabel);
         statsPanel.addChild(statsPanel.yearGroup);
 
         // Population
-        statsPanel.popGroup = MainGame.game.make.group(0,0);
-        statsPanel.popGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 1;
+        statsPanel.popGroup = MainGame.game.make.button(0, 0, 'population_icon', function(){
+            PeopleView.createNew();
+            statsPanel.popGroup.sfxArray[Math.floor(Math.random()*statsPanel.popGroup.sfxArray.length)].play();
+        }, 0, 1, 0, 2);
+        statsPanel.popGroup.x = this.horizontalPad;
+        statsPanel.popGroup.y = (this.unitHeight + this.verticalPad) * 1;
+        statsPanel.popGroup.inputEnabled = true;
+        statsPanel.popGroup.input.priorityID = 2;
+
         statsPanel.popGroup.sfxArray = [
             game.make.audio('paper_click_2'),
             game.make.audio('paper_click_3'),
             game.make.audio('paper_click_5'),
             game.make.audio('paper_click_7')
         ];
-        statsPanel.popGroup.sprite = MainGame.game.make.button(0, 0, 'population_icon', function(){
-            PeopleView.createNew();
-            statsPanel.popGroup.sfxArray[Math.floor(Math.random()*statsPanel.popGroup.sfxArray.length)].play();
-        }, 0, 1, 0, 2);
 
         var populationToolTip = ToolTip.createNew("Total Population");
         populationToolTip.x = -populationToolTip.width;
         populationToolTip.y = 12;
-        statsPanel.popGroup.sprite.addChild(populationToolTip);
-        statsPanel.popGroup.sprite.events.onInputOver.add(function() {populationToolTip.show();}, null);
-        statsPanel.popGroup.sprite.events.onInputOut.add(function() {populationToolTip.hide();}, null);
+        statsPanel.popGroup.addChild(populationToolTip);
+        statsPanel.popGroup.events.onInputOver.add(function() {populationToolTip.show();}, null);
+        statsPanel.popGroup.events.onInputOut.add(function() {populationToolTip.hide();}, null);
 
-        statsPanel.popGroup.addChild(statsPanel.popGroup.sprite);
-        statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
+        statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
         statsPanel.addChild(statsPanel.popGroup);
 
         // Homelessness
-        statsPanel.homelessGroup = MainGame.game.make.sprite(0,0);
-        statsPanel.homelessGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 2;
-        statsPanel.homelessGroup.sprite = MainGame.game.make.sprite(0, 0, 'homeless_icon');
-        statsPanel.homelessGroup.sprite.inputEnabled = true;
+        statsPanel.homelessGroup = MainGame.game.make.sprite(0,0, 'homeless_icon');
+        statsPanel.homelessGroup.x = this.horizontalPad;
+        statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 2;
+        statsPanel.homelessGroup.inputEnabled = true;
+        statsPanel.homelessGroup.input.priorityID = 2;
 
         var homelessToolTip = ToolTip.createNew("Homeless Citizens");
         homelessToolTip.x = -homelessToolTip.width;
         homelessToolTip.y = 12;
-        statsPanel.homelessGroup.sprite.addChild(homelessToolTip);
-        statsPanel.homelessGroup.sprite.events.onInputOver.add(function() {homelessToolTip.show();}, null);
-        statsPanel.homelessGroup.sprite.events.onInputOut.add(function() {homelessToolTip.hide();}, null);
+        statsPanel.homelessGroup.addChild(homelessToolTip);
+        statsPanel.homelessGroup.events.onInputOver.add(function() {homelessToolTip.show();}, null);
+        statsPanel.homelessGroup.events.onInputOut.add(function() {homelessToolTip.hide();}, null);
 
-        statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.sprite);
-        statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
+        statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.textLabel);
         statsPanel.addChild(statsPanel.homelessGroup);
 
         // Unemployment
-        statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0);
-        statsPanel.unemploymentGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 3;
-        statsPanel.unemploymentGroup.sprite = MainGame.game.make.sprite(0, 0, 'unemployed_icon');
-        statsPanel.unemploymentGroup.sprite.inputEnabled = true;
+        statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0, 'unemployed_icon');
+        statsPanel.unemploymentGroup.x = this.horizontalPad;
+        statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 3;
+        statsPanel.unemploymentGroup.inputEnabled = true;
+        statsPanel.unemploymentGroup.input.priorityID = 2;
 
         var joblessToolTip = ToolTip.createNew("Jobless Citizens");
         joblessToolTip.x = -joblessToolTip.width;
         joblessToolTip.y = 12;
-        statsPanel.unemploymentGroup.sprite.addChild(joblessToolTip);
-        statsPanel.unemploymentGroup.sprite.events.onInputOver.add(function() {joblessToolTip.show();}, null);
-        statsPanel.unemploymentGroup.sprite.events.onInputOut.add(function() {joblessToolTip.hide();}, null);
+        statsPanel.unemploymentGroup.addChild(joblessToolTip);
+        statsPanel.unemploymentGroup.events.onInputOver.add(function() {joblessToolTip.show();}, null);
+        statsPanel.unemploymentGroup.events.onInputOut.add(function() {joblessToolTip.hide();}, null);
 
-        statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.sprite);
-        statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '0 ', StatsPanel.textStyle);
+        statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
         statsPanel.addChild(statsPanel.unemploymentGroup);
 
         // State Money (warchest)
         statsPanel.warchestGroup = MainGame.game.make.sprite(0, 0, 'money_icon');
+        statsPanel.warchestGroup.x = this.horizontalPad;
+        statsPanel.warchestGroup.y = (this.unitHeight + this.verticalPad) * 4;
         statsPanel.warchestGroup.inputEnabled = true;
-        statsPanel.warchestGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 4;
+        statsPanel.warchestGroup.input.priorityID = 2;
 
         var moneyToolTip = ToolTip.createNew("National Funds");
         moneyToolTip.x = -moneyToolTip.width;
@@ -351,35 +357,35 @@ var StatsPanel = {
         statsPanel.warchestGroup.events.onInputOver.add(function() {moneyToolTip.show();}, null);
         statsPanel.warchestGroup.events.onInputOut.add(function() {moneyToolTip.hide();}, null);
 
-        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, 0, '$0 ', StatsPanel.textStyle);
+        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, 0, '$0 ', this.textStyle);
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
         statsPanel.addChild(statsPanel.warchestGroup);
 
         // Money Per Turn
-        statsPanel.warchestGroup.moneyPerTurnText = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '(+0) ', StatsPanel.textStyle);
+        statsPanel.warchestGroup.moneyPerTurnText = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '(+0) ', this.textStyle);
         statsPanel.warchestGroup.moneyPerTurnText.y = 20;
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.moneyPerTurnText);
 
         // Swiss Bank (personal money)
-        statsPanel.swissGroup = MainGame.game.make.group();
-        statsPanel.swissGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 5;
-        statsPanel.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'swiss_icon');
-        statsPanel.swissGroup.sprite.inputEnabled = true;
+        statsPanel.swissGroup = MainGame.game.make.sprite(0, 0, 'swiss_icon');
+        statsPanel.swissGroup.x = this.horizontalPad;
+        statsPanel.swissGroup.y = (this.unitHeight + this.verticalPad) * 5;
+        statsPanel.swissGroup.inputEnabled = true;
+        statsPanel.swissGroup.input.priorityID = 2;
 
         var swissToolTip = ToolTip.createNew("Private Account");
         swissToolTip.x = -swissToolTip.width;
         swissToolTip.y = 12;
-        statsPanel.swissGroup.sprite.addChild(swissToolTip);
-        statsPanel.swissGroup.sprite.events.onInputOver.add(function() {swissToolTip.show();}, null);
-        statsPanel.swissGroup.sprite.events.onInputOut.add(function() {swissToolTip.hide();}, null);
+        statsPanel.swissGroup.addChild(swissToolTip);
+        statsPanel.swissGroup.events.onInputOver.add(function() {swissToolTip.show();}, null);
+        statsPanel.swissGroup.events.onInputOut.add(function() {swissToolTip.hide();}, null);
 
-        statsPanel.swissGroup.addChild(statsPanel.swissGroup.sprite);
-        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '$0 ', StatsPanel.textStyle);
+        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '$0 ', this.textStyle);
         statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
         statsPanel.addChild(statsPanel.swissGroup);
 
         // Set update loop
-        MainGame.game.time.events.loop(500, function() {
+        MainGame.game.time.events.loop(300, function() {
             var globalStats = MainGame.global;
 
             var newPop = MainGame.population.count() + ' ';
@@ -410,44 +416,58 @@ var FunPanel = {
     textStyle: { font: '30px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
     createNew: function() {
-        var funPanel = MainGame.game.make.group();
+        var funPanel = MainGame.game.make.sprite(0, 0, 'fun_panel_backpanel');
+        funPanel.anchor.set(0.5, 0.5);
         funPanel.x = MainGame.game.width / 2;
+        funPanel.inputEnabled = true;
+        funPanel.input.priorityID = 1;
+
+        // Meter
+        funPanel.meter = MainGame.game.make.sprite(0, 0, 'freedomUnrestMeter');
+        funPanel.meter.anchor.x = 0.5;
+        funPanel.meter.y = 5;
+        funPanel.addChild(funPanel.meter);
+
+        // Do the magic bars
+        funPanel.freedomBar = MainGame.game.make.graphics();
+        funPanel.freedomBar.lineStyle(0);
+        funPanel.meter.addChild(funPanel.freedomBar);
+
+        funPanel.unrestBar = MainGame.game.make.graphics();
+        funPanel.unrestBar.lineStyle(0);
+        funPanel.meter.addChild(funPanel.unrestBar);
 
         // Freedom
-        funPanel.freeGroup = MainGame.game.make.group();
-        funPanel.freeGroup.x = -(FunPanel.unitWidth + FunPanel.horizontalPad/2);
+        funPanel.freeSprite = MainGame.game.make.sprite(0, 0, 'freedom_icon');
+        funPanel.freeSprite.anchor.x = 0.5;
+        funPanel.freeSprite.x = -funPanel.meter.width/2 - funPanel.freeSprite.width/2 - 5;
+        funPanel.freeSprite.y = 5;
 
-        var freeSprite = MainGame.game.make.sprite(0, 0, 'freedom_icon');
-        freeSprite.inputEnabled = true;
-        freeSprite.toolTip = ToolTip.createNew('Total Freedom');
-        freeSprite.toolTip.y = 48;
-        freeSprite.addChild(freeSprite.toolTip);
-        freeSprite.events.onInputOver.add(function() {freeSprite.toolTip.show();}, null);
-        freeSprite.events.onInputOut.add(function() {freeSprite.toolTip.hide();}, null);
-        funPanel.freeGroup.sprite = freeSprite;
-        funPanel.freeGroup.addChild(funPanel.freeGroup.sprite);
+        funPanel.freeSprite.inputEnabled = true;
+        funPanel.freeSprite.input.priorityID = 2;
+        funPanel.freeSprite.toolTip = ToolTip.createNew('Total Freedom');
+        funPanel.freeSprite.toolTip.y = 48;
+        funPanel.freeSprite.events.onInputOver.add(function() {funPanel.freeSprite.toolTip.show();}, null);
+        funPanel.freeSprite.events.onInputOut.add(function() {funPanel.freeSprite.toolTip.hide();}, null);
+        funPanel.freeSprite.addChild(funPanel.freeSprite.toolTip);
 
-        funPanel.freeGroup.textLabel = MainGame.game.make.text(48, 6, '0%', FunPanel.textStyle);
-        funPanel.freeGroup.addChild(funPanel.freeGroup.textLabel);
-        funPanel.addChild(funPanel.freeGroup);
+        funPanel.addChild(funPanel.freeSprite);
 
         // Unrest
-        funPanel.unrestGroup = MainGame.game.make.group();
-        funPanel.unrestGroup.x = FunPanel.horizontalPad/2;
+        funPanel.unrestSprite = MainGame.game.make.sprite(0, 0, 'unrest_icon');
+        funPanel.unrestSprite.anchor.x = 0.5;
+        funPanel.unrestSprite.x = funPanel.meter.width/2 + funPanel.unrestSprite.width/2 + 5;
+        funPanel.unrestSprite.y = 5;
 
-        var unrestSprite = MainGame.game.make.sprite(0, 0, 'unrest_icon');
-        unrestSprite.inputEnabled = true;
-        unrestSprite.toolTip = ToolTip.createNew('Total Unrest');
-        unrestSprite.toolTip.y = 48;
-        unrestSprite.addChild(unrestSprite.toolTip);
-        unrestSprite.events.onInputOver.add(function() {unrestSprite.toolTip.show();}, null);
-        unrestSprite.events.onInputOut.add(function() {unrestSprite.toolTip.hide();}, null);
-        funPanel.unrestGroup.sprite = unrestSprite;
-        funPanel.unrestGroup.addChild(funPanel.unrestGroup.sprite);
+        funPanel.unrestSprite.inputEnabled = true;
+        funPanel.unrestSprite.input.priorityID = 2;
+        funPanel.unrestSprite.toolTip = ToolTip.createNew('Total Unrest');
+        funPanel.unrestSprite.toolTip.y = 48;
+        funPanel.unrestSprite.events.onInputOver.add(function() {funPanel.unrestSprite.toolTip.show();}, null);
+        funPanel.unrestSprite.events.onInputOut.add(function() {funPanel.unrestSprite.toolTip.hide();}, null);
+        funPanel.unrestSprite.addChild(funPanel.unrestSprite.toolTip);
 
-        funPanel.unrestGroup.textLabel = MainGame.game.make.text(48, 6, '0%', FunPanel.textStyle);
-        funPanel.unrestGroup.addChild(funPanel.unrestGroup.textLabel);
-        funPanel.addChild(funPanel.unrestGroup);
+        funPanel.addChild(funPanel.unrestSprite);
 
         // Set update loop
         MainGame.game.time.events.loop(500, function() {
@@ -456,8 +476,22 @@ var FunPanel = {
             var newFreedom = globalStats.freedom + '%';
             var newUnrest = globalStats.unrest + '%';
 
-            funPanel.freeGroup.textLabel.text = newFreedom;
-            funPanel.unrestGroup.textLabel.text = newUnrest;
+            // Update tooltips
+            funPanel.freeSprite.toolTip.updateData('Freedom: ' + newFreedom);
+            funPanel.unrestSprite.toolTip.updateData('Unrest: ' + newUnrest);
+
+            // Update magic bars
+            var freedomWidth = globalStats.freedom/100 * funPanel.meter.width;
+            funPanel.freedomBar.clear();
+            funPanel.freedomBar.beginFill(0x03cae1, 0.80);
+            funPanel.freedomBar.drawRect(-funPanel.meter.width/2, 31, freedomWidth, 10);
+            funPanel.freedomBar.endFill();
+
+            var unrestWidth = globalStats.unrest/100 * funPanel.meter.width;
+            funPanel.unrestBar.clear();
+            funPanel.unrestBar.beginFill(0xff0000, 0.80);
+            funPanel.unrestBar.drawRect(funPanel.meter.width/2, 7, -unrestWidth, 10);
+            funPanel.unrestBar.endFill();
         }, funPanel);
 
         return funPanel;
@@ -470,29 +504,40 @@ var ToolTip = {
     verticalPad: 0,
 
     createNew: function(tipText) {
-        var style = { font: ToolTip.textSize + 'px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle' };
-        var toolTipText = MainGame.game.make.text(ToolTip.horizontalPad, 2, tipText, style);
+        var style = { font: this.textSize + 'px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle' };
+        var toolTipText = MainGame.game.make.text(this.horizontalPad, 2, tipText, style);
         toolTipText.text = tipText;
 
         var toolTip = MainGame.game.make.graphics();
         toolTip.lineStyle(0);
         toolTip.beginFill(0x000000, 0.66);
-        toolTip.drawRect(0, 0, toolTipText.width + (ToolTip.horizontalPad * 2), toolTipText.height + (ToolTip.verticalPad * 2));
+        toolTip.drawRect(0, 0, toolTipText.width + (this.horizontalPad * 2), toolTipText.height + (this.verticalPad * 2));
         toolTip.endFill();
 
+        toolTip.textLabel = toolTipText;
         toolTip.addChild(toolTipText);
         toolTip.visible = false;
 
+        toolTip.updateData = function(newTipText) { ToolTip.updateData(toolTip, newTipText) };
         toolTip.show = function() { ToolTip.show(toolTip) };
         toolTip.hide = function() { ToolTip.hide(toolTip) };
 
         return toolTip;
     },
 
+    updateData: function(toolTip, newTipText) {
+        toolTip.textLabel.text = newTipText;
+        toolTip.clear();
+        toolTip.beginFill(0x000000, 0.66);
+        toolTip.drawRect(0, 0, toolTip.textLabel.width + (this.horizontalPad * 2), toolTip.textLabel.height + (this.verticalPad * 2));
+        toolTip.endFill();
+    },
+
     show: function(toolTip) {
         MainGame.game.world.bringToTop(toolTip);
         toolTip.visible = true;
     },
+
     hide: function(toolTip) {
         toolTip.visible = false;
     }

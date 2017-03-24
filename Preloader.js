@@ -90,6 +90,7 @@ var Preloader={
         g.load.image('buildMenuCover2',           uiDir + 'buildMenuCover2.png');
         g.load.image('coalition_backpanel',       uiDir + 'coalition_backpanel.png');
         g.load.image('coalition_border',          uiDir + 'coalition_outer_edge.png');
+        g.load.image('stats_panel_backpanel',     uiDir + 'stats_panel_backpanel.png');
         g.load.image('peopleViewBg',              uiDir + 'peopleViewBg.jpg');
         g.load.image('peopleViewLeftBg',          uiDir + 'peopleViewLeftBg.png');
         g.load.image('peopleViewRightBg',         uiDir + 'peopleViewRightBg.png');
@@ -100,6 +101,8 @@ var Preloader={
         g.load.image("pi_nextPage",               uiDir + "pi_nextPage.png");
         g.load.image("uiMask",                    uiDir + "uiMask.png");
         g.load.image("event_bg",                  uiDir + "event_bg.jpg");
+        g.load.image('freedomUnrestMeter',        uiDir + "freedomUnrestMeter.png");
+        g.load.image('fun_panel_backpanel',       uiDir + 'fun_panel_backpanel.png');
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
