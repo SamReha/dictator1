@@ -120,6 +120,7 @@
   "park":{
     "type": "?",
     "subtype": "public",
+    "playerLabel": "Park",
     "cost": 15,
     "maxPeople": 1,
     "effects": [
@@ -130,7 +131,7 @@
       }
     ]
   },
-  "policeStation":{
+  "police":{
     "type": "!",
     "subtype": "millitary",
     "playerLabel": "Police Station",
