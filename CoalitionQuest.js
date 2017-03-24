@@ -7,7 +7,8 @@
 var CQ={};	// stores the CQ on-going data
 
 var CoalitionQuest={
-	quests: [],	// lazy init
+	inited: false,
+	quests: [],	
 	runningQuests: [],
 	// generate the quest if there is one
 	generate: function(_curTurn, _hiPeopleRef){
@@ -19,10 +20,11 @@ var CoalitionQuest={
 		}
 
 		// lazy init
-		if(this.quests.length===0){
+		if(!this.inited){
 			this.quests=MainGame.game.cache.getJSON('CoalitionQuest');
 			console.assert(this.quests.length);
 			console.log("Parsed CoalitionQuest, [0] is:",this.quests[0]);
+			this.inited=true;
 		}
 		// now this.quests is good.
 		for(var i=this.quests.length-1;i>=0;i--){
@@ -138,7 +140,6 @@ var CoalitionQuest={
 // test case code
 function test_coalition_quest(){
 	CoalitionQuest.generate(1, hiPeople);
-	console.assert(CQ.TestQuest===5);
 };
 
 var hiPeople=[

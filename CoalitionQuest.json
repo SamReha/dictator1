@@ -1,9 +1,9 @@
 [
 	{
 		"name":"TestQuest",
-		"cond":"Global.turn>=1",
+		"cond":"Global.turn>=1 && Global.money>20",
 		"people":["!"],
-		"init":"CQ.TestQuest=0",
+		"init":"CQ.TestQuest=Global.money",
 		"event":[
 			{	
 				"person":0, 
@@ -12,17 +12,17 @@
 			},
 			{
 				"person":0, 
-				"description":"Mil Minister: Can you build 2 mil buildings in 3 turns?", 
+				"description":"Mil Minister: Spend\nT10 in 1 turns?", 
 				"buttonTexts":["Yes","No"]
 			},
 			{
 				"person":0,
 				"description":"Mil Minister: Thanks!",
-				"buttonTexts":["You're welcome"]
+				"buttonTexts":["Not a prob."]
 			},
 			{
 				"person":0,
-				"description":"Mil Minister: What???",
+				"description":"Mil Minister: Damn it!",
 				"buttonTexts":["See you"]
 			}
 		],
@@ -34,13 +34,13 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"From Mil Minister:\n Build 2 mil buildings.",
+				"description":"Mil Minister:\nSpend T10.",
 				"startAt":-1,
-				"remaining":3		
+				"remaining":1
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":" CQ.TestQuest>2 ",
+				"check":" Global.money<=CQ.TestQuest-10 ",
 				"fail":"console.log('You failed to do the task!')"				
 			}
 		}
