@@ -8,10 +8,10 @@ var DDecisionView={
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
 		[],											// 0 button
-		[{x:275,y:250}],							// 1 button
-		[{x:100,y:250},{x:300,y:250}],				// 2 buttons
-		[{x:0,y:250},{x:250,y:250},{x:400,y:250}],	// 3 buttons
-		[{x:0,y:250},{x:150,y:250},{x:300,y:250},{x:450,y:250}]	// 4 buttons
+		[{x:275,y:300}],							// 1 button
+		[{x:200,y:300},{x:400,y:300}],				// 2 buttons
+		[{x:0,y:300},{x:300,y:300},{x:400,y:300}],	// 3 buttons
+		[{x:0,y:300},{x:150,y:300},{x:300,y:300},{x:450,y:300}]	// 4 buttons
 	],
 
 	createNew: function(){
@@ -81,8 +81,8 @@ var DDecisionView={
 // The test case function
 function test_DDecisionView(){
 	var deciView=DDecisionView.createNew();
-    deciView.x=250;
-    deciView.y=250;
+    deciView.x=300;
+    deciView.y=300;
     
     // set the model (data)
     deciView.setModel(

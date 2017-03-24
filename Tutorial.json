@@ -46,19 +46,19 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"One of your most important jobs in Tian is ordering the construction of new buildings.", 
+				"description":"One of your most important jobs in Tian is \nordering the construction of new buildings.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"You can open the Build Menu by clicking on the Build button in the bottom left corner at any time.", 
+				"description":"You can open the Build Menu by clicking on \nthe Build button in the bottom left corner \nat any time.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"The most basic kind of building is a Road. A productive working class is of critical importance, but in order for citizens to go to work, there must be a road connecting their home to a workplace.",
+				"description":"The most basic kind of building is a Road. \nA productive working class is important, \nbut to get them to work, \nthere must be a road connecting their home \nto a workplace.",
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Find the Lumber Yard and the Apartment that are already on the map, and connect them using Roads.",
+				"description":"Find the Lumber Yard and the Apartment \nthat are already on the map, \nand connect them using Roads.",
 				"buttonTexts":["Okay"]
 			}
 		],
@@ -87,16 +87,22 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"Now that you’ve connected your Lumber Yard to the rest of your workforce, you can assign citizens to work there. Click on your Lumber Yard to open its menu, and click the “Hire Worker” button a couple of times. Unemployed citizens with road access will automatically be assigned to work at the Lumber Yard.", 
+				"description":"Now you have connected the Lumber Yard \nto the rest of your working people, \nclick on your Lumber Yard to open its menu, \nand the “Hire Worker” button several times. \nUnemployed people with road access will \ncome work there.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Notice that once you’ve assigned workers, the Lumber Yard will start producing money each turn. Each different kind of workplace produces a different kind of output when worked.", 
+				"description":"Notice that once you have assigned workers, \nthe Lumber Yard produces money each turn. \nDifferent kinds of workplaces produce \ndifferent kinds of outputs.", 
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Fire a worker in another place, \nand put him in your Lumber yard.", 
 				"buttonTexts":["Okay"]
 			}
+
 		],
 		"handler":[
 			["e.gotoPage(1)"],
+			["e.gotoPage(2)"],
 			["e.suicide()"]
 		],
 		"reminder":{
@@ -118,15 +124,15 @@
 		"init":"Tut.numHouses = MainGame.board.findBuilding(null, 'housing', null).length",
 		"event":[
 			{	
-				"description":"Great job staffing that factory! So far, we have only talked about roads and workplaces. The final type of building is a residence. A residence is a place for a citizen to live. Let’s try building a new residence in your country.", 
+				"description":"Great job staffing that factory! \nSo far, we have only talked about roads and workplaces. \nThe final type of building is a residence. \nA residence is a place for a citizen to live. \nLet’s try building a residence in your country.", 
 				"buttonTexts":["Continue"]
 			},
 			{	
-				"description":"Open up the Build Menu like you did when you were building Roads. Select an ‘Apartment’ and click the buy button. Drag your mouse over an available tile, and left click again to place the building.", 
+				"description":"Open the Build Menu like you did when you built Roads. \nSelect an ‘Apartment’ and click the buy button. \nDrag your mouse over an available tile, \nand left click again to place the building.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"When that building is ready, citizens will be able to move in. The population of Tian will grow each year. If there is not enough available housing, some citizens will become homeless", 
+				"description":"When that building is ready, \npeople can move in. \nThe population of Tian will grow each year. \nIf there is not enough available housing, \nsome citizens will become homeless", 
 				"buttonTexts":["Okay"]
 			}
 		],
@@ -154,7 +160,7 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"If you want to stay in power, you must maintain control of the working class. The working peoples of Tian will generate Freedom and Unrest based on their current living conditions and their opinion on your rule. Access to education, food and roads will all increase an individual’s Freedom, which is their ability to resist your control. Famine, poor living conditions and unemployment will all contribute to an individual’s Unrest, which is a measure of how unhappy they are.", 
+				"description":"If you want to stay in power, \nyou must maintain control of the working class. \nThe working peoples of Tian will generate Freedom and Unrest \nbased on their current living conditions and their opinion on you. \nAccess to education, food and roads will all increase an individual’s Freedom, which is their ability to resist your control. Famine, poor living conditions and unemployment will all contribute to an individual’s Unrest, which is a measure of how unhappy they are.", 
 				"buttonTexts":["Continue"]
 			},
 			{	
