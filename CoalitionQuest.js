@@ -18,7 +18,12 @@ var CoalitionQuest={
 		if(!_hiPeopleRef){
 			_hiPeopleRef=[];
 		}
-
+		// if there is a running one, finish it without triggering anything
+		console.assert(this.runningQuests.length<=1);
+		if(this.runningQuests.length===1){
+			this.check(this.runningQuests);
+			return;
+		}
 		// lazy init
 		if(!this.inited){
 			this.quests=MainGame.game.cache.getJSON('CoalitionQuest');
@@ -110,28 +115,47 @@ var CoalitionQuest={
 		button.setReminderView(view);
 		// now update the start turn for view
 		view.setModel({startAt:q.startAt})
+		// let q store reminderButton
+		q.reminderButton=button;
 	},
 
 	// check every quest to see it 1)fails; or 2)succeeds
-	check: function(){
-		for(var i=this.runningQuests.length-1;i>=0;i--){
-			var q=this.runningQuests[i];
-			if(this._checkSuc_(q)){
-				// TODO: generate a suc event
-			}else if(this._checkFail_(q)){
-				// TODO: generate a fail event
-			}else{
-				q.reminder.remaining--;
-				// TODO: update relative reminder by .setModel({remaining=q.reminder.remaining})
-
-			}
+	check: function(runningQuestsRef){
+		console.log("Checking running quest");
+		console.assert(runningQuestsRef.length===1);
+		var q=runningQuestsRef[0];
+		var r=q.reminder;
+		var shouldRemove=false;
+		// check suc
+		console.log("Global money and test m is:",Global.money,CQ.TestQuest);
+		var f=Function("return "+r.controller.check);
+		console.log("f is:",f.toString());
+		if(f()){
+			shouldRemove=true;
+			this.questSuc(q);
+		}
+		// check fail
+		r.model.remaining--;
+		if(r.model.remaining<0){
+			shouldRemove=true;
+			var f=Function("ppl",r.controller.fail);
+			f(q.peopleRef);
+			this.questFail(q);
+		}
+		// remove when necessary
+		if(shouldRemove){
+			q.reminderButton.reminderView.suicide();
+			q.reminderButton.suicide();
+			this.runningQuests.pop();
 		}
 	},
-	_checkSuc_: function(){
-
+	questFail: function(q){		
+		console.log("Quest failed for:",q);
+		// TODO: create a new 1-page info "quest fail"
 	},
-	_checkFail_: function(){
-		
+	questSuc: function(q){
+		console.log("Quest suc for:",q);
+		// TODO: create a 1-page info "quest suc"
 	}
 };
 

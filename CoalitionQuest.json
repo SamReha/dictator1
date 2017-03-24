@@ -40,8 +40,8 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":" Global.money<=CQ.TestQuest-10 ",
-				"fail":"console.log('You failed to do the task!')"				
+				"check":"Global.money<=CQ.TestQuest-10",
+				"fail":"console.log('You failed. People[0] is:',ppl[0])"				
 			}
 		}
 	}
