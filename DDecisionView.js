@@ -4,13 +4,14 @@
 // Texture Requirement: 'small_generic_button' (use Find-Replace to change)
 
 var DDecisionView={
+	font: {font:"32px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
 		[],											// 0 button
-		[{x:200,y:100}],							// 1 button
-		[{x:100,y:100},{x:300,y:100}],				// 2 buttons
-		[{x:0,y:100},{x:200,y:100},{x:400,y:100}],	// 3 buttons
-		[{x:0,y:100},{x:150,y:100},{x:300,y:100},{x:450,y:100}]	// 4 buttons
+		[{x:275,y:250}],							// 1 button
+		[{x:100,y:250},{x:300,y:250}],				// 2 buttons
+		[{x:0,y:250},{x:250,y:250},{x:400,y:250}],	// 3 buttons
+		[{x:0,y:250},{x:150,y:250},{x:300,y:250},{x:450,y:250}]	// 4 buttons
 	],
 
 	createNew: function(){
@@ -20,7 +21,7 @@ var DDecisionView={
 		v.portrait=MainGame.game.add.sprite(50,20);
 		v.addChild(v.portrait);
 		// add description text
-		v.description=MainGame.game.add.text(150,20,"");
+		v.description=MainGame.game.add.text(75,40,"",DDecisionView.font);
 		v.addChild(v.description);
 		// add buttons array
 		v.buttons=[];
@@ -80,8 +81,8 @@ var DDecisionView={
 // The test case function
 function test_DDecisionView(){
 	var deciView=DDecisionView.createNew();
-    deciView.x=200;
-    deciView.y=200;
+    deciView.x=250;
+    deciView.y=250;
     
     // set the model (data)
     deciView.setModel(

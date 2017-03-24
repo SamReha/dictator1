@@ -5,19 +5,19 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"Congratulations! Either by hook or by crook, you have found yourself appointed as the supreme leader of the Republic of Tian.", 
+				"description":"Congratulations! \nEither by hook or by crook, \nyou have found yourself appointed as the \nSupreme Leader of the Republic of Tian.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"The year is 1950. Though you are currently in control of your fledgling nation, that power may be just as easily stripped away.", 
+				"description":"The year is 1950. \nThough you are currently in control of your \nfledgling nation, \nthat power may be just as easily stripped away.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"You must establish your government, build your nation and bring about an era of greatness for the people of Tian!",
+				"description":"Establish your government, \nbuild your nation and \nbring about an era of greatness for the \npeople of Tian!",
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Would you like to know more about running your country?",
+				"description":"Would you like to know more about \nrunning your country?",
 				"buttonTexts":["Yes", "No"]
 			}
 		],
