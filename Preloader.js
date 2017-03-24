@@ -112,6 +112,7 @@ var Preloader={
         g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
         g.load.spritesheet('buttonSprite',              buttonDir + 'button_spritesheet.png', 128, 48, 4);
         g.load.spritesheet('closeButton',               buttonDir + 'close_button.png', 48, 48, 3);
+        g.load.spritesheet('buy_button',                buttonDir + 'buy_button.png', 120, 48, 3);
         g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',        buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button',      buttonDir + 'large_generic_button.png', 240, 96, 3);

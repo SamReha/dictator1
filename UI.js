@@ -174,6 +174,11 @@ var BuildingPlacer = {
                 self.canBuild = tileResource === 'forest' ? true : false;
             }
         } else self.canBuild = false;
+
+        // Check for build cancel
+        if (MainGame.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+            self.cancelBuild();
+        }
         
         // Update tint
         if (self.canBuild) {
