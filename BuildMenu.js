@@ -33,6 +33,11 @@ var BuildMenu={
 		// buildMenu: UI groups
 		var bureauGroup = MainGame.game.make.group();
 		bm.addChild(bureauGroup);
+
+		var bureauText = MainGame.game.make.text(bm.width/6, 20, "Bureaucratic", this.styleNormal);
+		bureauText.anchor.x = 0.5;
+		bureauGroup.addChild(bureauText);
+
 		var bureauGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
 		bureauGroupCover.inputEnabled = true;
 		bureauGroupCover.input.priorityID = hudInputPriority + 10;
@@ -42,6 +47,11 @@ var BuildMenu={
 		var merchantGroup = MainGame.game.make.group();
 		merchantGroup.position.x = bm.width/3;
 		bm.addChild(merchantGroup);
+
+		var merchantText = MainGame.game.make.text(bm.width/6, 20, "Financial", this.styleNormal);
+		merchantText.anchor.x = 0.5;
+		merchantGroup.addChild(merchantText);
+
 		var merchantGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
 		merchantGroupCover.inputEnabled = true;
 		merchantGroupCover.input.priorityID = hudInputPriority + 10;
@@ -52,6 +62,11 @@ var BuildMenu={
 		var militaryGroup = MainGame.game.make.group();
 		militaryGroup.position.x = bm.width*2/3;
 		bm.addChild(militaryGroup);
+
+		var militaryText = MainGame.game.make.text(bm.width/6, 20, "Military", this.styleNormal);
+		militaryText.anchor.x = 0.5;
+		militaryGroup.addChild(militaryText);
+
 		var militaryGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
 		militaryGroupCover.inputEnabled = true;
 		militaryGroupCover.input.priorityID = hudInputPriority + 10;
@@ -151,7 +166,7 @@ var BuildMenu={
         buyRoadBtn.events.onInputOut.add(function() {roadToolTip.hide();}, null);
 
 		// SCHOOL
-		var buySchoolBtn = MainGame.game.make.button((bm.width/4), (bm.height/4), 'buy_button', function(){
+		var buySchoolBtn = MainGame.game.make.button((bm.width/4), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'school');},
 			buildMenu, 0, 1, 2, 2);
 		buySchoolBtn.input.priorityID = hudInputPriority;
@@ -171,7 +186,7 @@ var BuildMenu={
         buySchoolBtn.events.onInputOut.add(function() {schoolToolTip.hide();}, null);
 
 		// PARK
-		var buyParkBtn = MainGame.game.make.button((bm.width/12), (bm.height/2), 'buy_button', function(){
+		var buyParkBtn = MainGame.game.make.button((bm.width/11), (2*(bm.height/3)-10), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyParkBtn, 'park');},
 			buildMenu, 0, 1, 2, 2);
 		buyParkBtn.input.priorityID = hudInputPriority;
@@ -192,7 +207,7 @@ var BuildMenu={
 
 
 		// FACTORY / LUMBERYARD
-		var buyFactoryBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'buy_button', function(){
+		var buyFactoryBtn = MainGame.game.make.button((bm.width/12), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFactoryBtn, 'lumberYard');},
 			buildMenu, 0, 1, 2, 2);
 		buyFactoryBtn.input.priorityID = hudInputPriority;
@@ -212,7 +227,7 @@ var BuildMenu={
         buyFactoryBtn.events.onInputOut.add(function() {lumberyardToolTip.hide();}, null);
 
 		// ARMYBASE
-		var buyArmyBaseBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'buy_button', function(){
+		var buyArmyBaseBtn = MainGame.game.make.button((bm.width/12), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyArmyBaseBtn, 'armyBase');},
 			buildMenu, 0, 1, 2, 2);
 		buyArmyBaseBtn.input.priorityID = hudInputPriority;
@@ -232,7 +247,7 @@ var BuildMenu={
         buyArmyBaseBtn.events.onInputOut.add(function() {armyBaseToolTip.hide();}, null);
 
 		// Police Station
-		var buyPoliceStationBtn = MainGame.game.make.button((bm.width/4), (bm.height/4), 'buy_button', function(){
+		var buyPoliceStationBtn = MainGame.game.make.button((bm.width/4), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyPoliceStationBtn, 'police');},
 			buildMenu, 0, 1, 2, 2);
 		buyPoliceStationBtn.input.priorityID = hudInputPriority;
@@ -252,7 +267,7 @@ var BuildMenu={
         buyPoliceStationBtn.events.onInputOut.add(function() {policeStationToolTip.hide();}, null);
 
 		// FARM
-		var buyFarmBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'buy_button', function(){
+		var buyFarmBtn = MainGame.game.make.button((bm.width/11), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFarmBtn, 'fertileFarm');},
 			buildMenu, 0, 1, 2, 2);
 		buyFarmBtn.input.priorityID = hudInputPriority;
@@ -306,8 +321,6 @@ var BuildMenu={
         	militaryGroupCover.events.onInputOut.add(function() {militaryToolTip.hide();}, null);
 			militaryGroupCover.addChild(militaryToolTip);
 		}
-		// if(bureaucrats === 0 && merchants === 0 && military === 0)
-		// 	defaultGroupCover.visible = true;
 
 		return buildMenu;
 	},
