@@ -26,19 +26,19 @@ var Hud = {
         hud.addChild(hud.coalitionFlag);
 
         // "Next Turn" button
-        var btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'endturn_button',
+        hud.btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'endturn_button',
             function() {
                 /*global MainGame*/
                 MainGame.nextTurn();
-                btnNextTurn.sfx.play();
-                btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+                hud.btnNextTurn.sfx.play();
+                hud.btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
             }, MainGame, 1, 0, 2, 2);
-        btnNextTurn.name = 'endturn_button';
-        btnNextTurn.input.priorityID = hudInputPriority;
-        btnNextTurn.anchor.x = 1;
-        btnNextTurn.anchor.y = 1;
-        btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
-        hud.addChild(btnNextTurn);
+        hud.btnNextTurn.name = 'endturn_button';
+        hud.btnNextTurn.input.priorityID = hudInputPriority;
+        hud.btnNextTurn.anchor.x = 1;
+        hud.btnNextTurn.anchor.y = 1;
+        hud.btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+        hud.addChild(hud.btnNextTurn);
 
         // var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
         // btnNextTurnText.anchor.x = 0.5;

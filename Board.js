@@ -350,7 +350,7 @@ var Board = {
                 if(adjacent && checkedStack.indexOf(adjacent)===-1){
                     var oneTile=b.children[adjacent];
                     if(oneTile.building){ 
-                        if(oneTile.building.type==="road"){
+                        if(oneTile.building.subtype==="road"){
                             conStack.push(adjacent);
                         }
                     }

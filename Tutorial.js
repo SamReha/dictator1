@@ -23,7 +23,7 @@ var Tutorial = {
 		if (!this.initialized) {
 			this.tuts = MainGame.game.cache.getJSON('Tutorial');
 			console.assert(this.tuts.length);
-			console.log("Parsed Tutorials, total: ", this.tuts.length);
+			//console.log("Parsed Tutorials, total: ", this.tuts.length);
 
 			MainGame.game.time.events.loop(50, this.loopingCheck, this);
 
@@ -34,7 +34,7 @@ var Tutorial = {
 		for (var i = 0; i < this.tuts.length; i++) {
 			// tut is the last one
 			var tut = this.tuts[i];
-			console.log(tut);
+			//console.log(tut);
 
 			// check tut.cond
 			if (!this._checkCond_(tut.cond)) {
@@ -64,8 +64,32 @@ var Tutorial = {
 	},
 
 	loopingCheck: function() {
-		if (this.activeTut) {
-			this._checkCond_(this.activeTut.cond);
+		if (this.activeTut && this._checkCond_(this.activeTut.cond)) {
+			//console.log(this._checkCond_(this.activeTut.cond));
+			this.activeTut = null;
+
+			// Find the next tut
+			for (var i = 0; i < this.tuts.length; i++) {
+				// tut is the last one
+				var tut = this.tuts[i];
+				//console.log(tut);
+
+				// check tut.cond
+				if (!this._checkCond_(tut.cond)) {
+					// now let's execute the tut
+					// init
+					this._executeInit_(tut.init);
+
+					// tuts -> runningTuts
+					this.activeTut = tut;
+
+					// run tutorial			
+					this.runEvent(tut.event, tut.handler);
+
+					// Only run the very first incomplete tutorial
+					break;
+				}
+			}
 		}
 	},
 
@@ -126,7 +150,7 @@ var Tutorial = {
 
 	// check every tutorial to see if it is complete
 	check: function(tut) {
-		console.log("Checking running tut", tut);
+		//console.log("Checking running tut", tut);
 		var r = tut.reminder;
 		var shouldRemove = false;
 
@@ -141,6 +165,8 @@ var Tutorial = {
 		}
 	},
 
+	//// Sequence checks!
+
 	// Checks to see whether the player has built a road between any home and any lumberyard
 	roadsBuilt: function() {
 		//console.log('ROADS BUILT CHECK');
@@ -150,7 +176,6 @@ var Tutorial = {
 
 		for (var i = 0; i < homes.length; i++) {
 			for (var k = 0; k < lumberyards.length; k++) {
-				console.log(homes[i], lumberyards[k]);
 				if (board.hasRoadConnect(homes[i], lumberyards[k])) {
 					return true;
 				}
@@ -158,22 +183,38 @@ var Tutorial = {
 		}
 		
 		return false;
+	},
+
+	// Checks to see whether the player has put staff into their factory
+	lumberYardHasWorkers: function() {
+		//console.log('ROADS BUILT CHECK');
+		var board = MainGame.board;
+		var lumberyards = board.findBuilding(null, 'production', null);
+
+		for (var i = 0; i < lumberyards.length; i++) {
+			var lumberyard = board.at(lumberyards[i]).building;
+
+			if (lumberyard.people > 0) return true;
+		}
+		
+		return false;
+	},
+
+	builtNewHouse: function() {
+		var numHouses = MainGame.board.findBuilding(null, 'housing', null).length;
+
+		return Tut.numHouses < numHouses;
+	},
+
+	hasMinister: function() {
+		return MainGame.population.highList().length > 0;
+	},
+
+	disableNextTurn: function() {
+		MainGame.hud.btnNextTurn.visible = false;
+	},
+
+	enableNextTurn: function() {
+		MainGame.hud.btnNextTurn.visible = true;
 	}
-
-	// tutComplete: function(q) {
-	// 	console.log("Tut complete for: ", q);
-
-	// 	// create a 1-page info "quest suc"
-	// 	var e = Event.createNew();
-	// 	e.position.set(300, 200);
-	// 	e.setModel([
-	// 		{
-	// 			description:"Thank you!",
-	// 			buttonTexts:["OK"]
-	// 		}
-	// 	]);
-	// 	e.setController([
-	// 		[function(){e.suicide()}]
-	// 	]);
-	// }
 };
