@@ -445,7 +445,7 @@ var Board = {
 
         var index = choices[Math.floor(Math.random()*choices.length)];
         /* global Building */
-        board.at(index).setBuilding(Building.createNew({name:"shantyTown",level:1,startingTurn:0,people:0}));
+        board.at(index).setBuilding(Building.createNew({name:"homelessCamp",level:1,startingTurn:0,people:0}));
         /*global updateHome*/
         updateHome(index);
         return index;

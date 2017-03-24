@@ -77,6 +77,49 @@ var Building = {
     },
 };
 
+var HomelessCamp = {
+    createNew: function(startTurn, pop) {
+        var homelessCamp = Building.createNew({name:'homelessCamp',level:1,startingTurn:startTurn,people:pop});
+
+        homelessCamp.addPerson = function() { return HomelessCamp.addPerson(homelessCamp); };
+        homelessCamp.removePerson = function() { return HomelessCamp.removePerson(homelessCamp); };
+        homelessCamp.nextTurn = function(turn) { return HomelessCamp.nextTurn(homelessCamp, turn); };
+
+        return homelessCamp;
+    },
+
+    addPerson: function(homelessCamp) {
+        if(b.people < b.maxPeople){
+            b.people += 1;
+            
+            return true;
+        } else {
+            return false;
+        }
+    },
+    
+    removePerson: function(homelessCamp) {
+        if(b.people > 0){
+            b.people -= 1;
+        
+            return true;
+        } else {
+            homelessCamp.destroy();
+            return false;
+        }
+    },
+
+    // Homeless Camps convert to Shanty Towns if they last a turn
+    nextTurn: function(homelessCamp, turn) {
+        // Figure out occupants list
+
+        // Recreate homelessCamp as a standard shanty town
+        homelessCamp = Building.createNew({name:'shantyTown',level:1,startingTurn:startTurn,people:0});
+
+        // Move all the old occupants into the new Shanty Town
+    },
+}
+
 //Second Level
 // var Road = {
 //     createNew: function(startingTurn){

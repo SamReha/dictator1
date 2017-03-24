@@ -13,6 +13,20 @@
     "maxPeople": 5,
     "effects": [{"type": null}]
   },
+  "homelessCamp": {
+    "type": "?",
+    "subtype": "housing",
+    "playerLabel": "Homeless Camp",
+    "cost": 0,
+    "health": 0,
+    "education": 0,
+    "aoeFreedom": 0,
+    "aoeUnrest": 0,
+    "shelter": 0,
+    "maxShelter": 10,
+    "maxPeople": 5,
+    "effects": [{"type": null}]
+  },
   "apartment": {
     "type": "?",
     "subtype": "housing",
