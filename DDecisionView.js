@@ -8,10 +8,10 @@ var DDecisionView={
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
 		[],											// 0 button
-		[{x:275,y:300}],							// 1 button
-		[{x:200,y:300},{x:400,y:300}],				// 2 buttons
-		[{x:0,y:300},{x:300,y:300},{x:400,y:300}],	// 3 buttons
-		[{x:0,y:300},{x:150,y:300},{x:300,y:300},{x:450,y:300}]	// 4 buttons
+		[{x:347,y:337}],							// 1 button
+		[{x:272,y:337},{x:472,y:337}],				// 2 buttons
+		[{x:0,y:337},{x:300,y:337},{x:400,y:337}],	// 3 buttons
+		[{x:0,y:337},{x:150,y:337},{x:300,y:337},{x:450,y:337}]	// 4 buttons
 	],
 
 	createNew: function(){
@@ -49,13 +49,17 @@ var DDecisionView={
 			v.buttons[j].destroy();	// destory the sprite
 			v.buttons.splice(j,1);	// remove it from array v.buttons
 		}
+
 		// add new buttons
-		for(var i=0;i<_buttonText.length;i++){
-			var pos=DDecisionView.buttonPos[_buttonText.length][i];
+		for (var i = 0; i < _buttonText.length; i++) {
+			var pos = DDecisionView.buttonPos[_buttonText.length][i];
 			// console.log("Here is the pos:",pos.x,pos.y);
-			v.buttons[i]=MainGame.game.make.button(pos.x, pos.y,
+			v.buttons[i] = MainGame.game.make.button(pos.x, pos.y,
 				"small_generic_button", null, v.buttons[i], 0, 1, 2);
-			v.buttons[i].label=MainGame.game.add.text(0,0,_buttonText[i]);
+            v.buttons[i].anchor.set(0.5, 0.5);
+
+			v.buttons[i].label = MainGame.game.add.text(0, 0, _buttonText[i], DDecisionView.font);
+            v.buttons[i].label.anchor.set(0.5, 0.5);
 			v.buttons[i].addChild(v.buttons[i].label);
 			v.addChild(v.buttons[i]);
 		}
