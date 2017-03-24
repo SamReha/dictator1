@@ -1,0 +1,114 @@
+[
+	{
+		"name":"Intro",
+		"cond":"Tut.intro",
+		"init":"",
+		"event":[
+			{	
+				"description":"Congratulations! Either by hook or by crook, you have found yourself appointed as the supreme leader of the Republic of Tian.", 
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"The year is 1950. Though you are currently in control of your fledgling nation, that power may be just as easily stripped away.", 
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"You must establish your government, build your nation and bring about an era of greatness for the people of Tian!",
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Would you like to know more about running your country?",
+				"buttonTexts":["Yes", "No"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["e.gotoPage(2)"],
+			["e.gotoPage(3)"],
+			["Tut.intro=true;e.suicide();Tutorial.generate()", "e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Complete the tutorial.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.intro"			
+			}
+		}
+	},
+
+	{
+		"name":"Roads",
+		"cond":"Tutorial.roadsBuilt()",
+		"init":"",
+		"event":[
+			{	
+				"description":"One of your most important jobs in Tian is ordering the construction of new buildings.", 
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"You can open the Build Menu by clicking on the Build button in the bottom left corner at any time.", 
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"The most basic kind of building is a Road. A productive working class is of critical importance, but in order for citizens to go to work, there must be a road connecting their home to a workplace.",
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Find the Lumber Yard and the Apartment that are already on the map, and connect them using Roads.",
+				"buttonTexts":["Okay"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["e.gotoPage(2)"],
+			["e.gotoPage(3)"],
+			["Tut.roads=true;e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Complete the tutorial.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"			
+			}
+		}
+	},
+
+	{
+		"name":"buildingOutput",
+		"cond":"false",
+		"init":"",
+		"event":[
+			{	
+				"description":"Now that you’ve connected your Lumber Yard to the rest of your workforce, you can assign citizens to work there. Click on your Lumber Yard to open its menu, and click the “Hire Worker” button a couple of times. Unemployed citizens with road access will automatically be assigned to work at the Lumber Yard.", 
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Notice that once you’ve assigned workers, the Lumber Yard will start producing money each turn. Each different kind of workplace produces a different kind of output when worked.", 
+				"buttonTexts":["Okay"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Complete the tutorial.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""			
+			}
+		}
+	}
+]

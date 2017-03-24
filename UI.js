@@ -184,8 +184,6 @@ var BuildingPlacer = {
     },
     
     clickHandler: function(self, pointer, menu, mask) {
-        console.log("Handler invoked with priority 10!");
-
         if (self.canBuild) {
             var tile = MainGame.board.at(self.mapIndex);
             

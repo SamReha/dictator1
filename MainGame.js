@@ -69,6 +69,9 @@ var MainGame={
         /*global updatePopulation*/
         updatePopulation(false,true);
         //MainGame.global.updateFreedomUnrest();
+
+        /*global Tutorial*/
+        Tutorial.generate();
     },
     
     nextTurn: function(){
