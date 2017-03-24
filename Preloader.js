@@ -24,6 +24,9 @@ var Preloader={
         g.load.image('shantyTown1', buildingDir + 'shantyTown.png');
         g.load.image('suburb1',     buildingDir + 'suburb.png');
         g.load.image('weakFarm1',   buildingDir + 'weakFarm.png');
+        for(var i=1;i<=5;++i){
+            g.load.image('homeless'+i,  buildingDir + 'homeless_tile_' + i);
+        }
 
         // Building Detail Icons
         var detailIconDir = buildingDir + 'detail_icons/';
@@ -126,6 +129,7 @@ var Preloader={
 
         //// load icons
         var iconDir = uiDir + 'icons/';
+        g.load.image('alert_icon',              iconDir + 'alert_icon.png');
         g.load.spritesheet('freedom_icon',      iconDir + 'freedom_icon.png');
         g.load.spritesheet('money_icon',        iconDir + 'money_icon.png');
         g.load.spritesheet('population_icon',   iconDir + 'population_icon.png', 46, 46, 3);
@@ -135,8 +139,9 @@ var Preloader={
         g.load.spritesheet('year_icon',         iconDir + 'year_icon.png');
         g.load.spritesheet('swiss_icon',        iconDir + 'swiss_account_icon.png');
         g.load.spritesheet('construction_icon', iconDir + 'construction_icon.png');
-        for(var i = 1; i <= 4; ++i){
-            g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');
+        g.load.spritesheet('counter_icon',      iconDir + 'counter_icon.png', 48, 48, 5);
+        for(var i = 0; i < 4; ++i){
+            g.load.spritesheet('reminder_icon_'+i,iconDir + 'reminder_icon_'+i+'.png', 96, 96, 3);
         }
 
         // load json files

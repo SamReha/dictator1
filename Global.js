@@ -35,8 +35,8 @@ var Global={
     },
 
     toString: function(){
-        var string = "Freedom: "+this.freedom+"%  Unrest: "+this.unrest+"%  $="+this.money+"K (";
-        if(this.moneyPerTurn >= 0){string += "+"+this.moneyPerTurn+"K/turn)";}
+        var string = "Freedom: "+this.freedom+"%  Unrest: "+this.unrest+"%  T="+this.money+" (";
+        if(this.moneyPerTurn >= 0){string += "+"+this.moneyPerTurn+"/turn)";}
         else{string += "-"+this.moneyPerTurn+"/turn)"};
         return string
     },

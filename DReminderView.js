@@ -3,12 +3,17 @@
 // contains the reminder button & reminder view
 
 var DReminderButton={
-	createNew: function(){
-		var b=MainGame.game.add.button(0,300,'small_generic_button',
+	Tutorial:0,
+	NextTurn: 1,
+	Favor: 2,
+	Alert: 3,
+
+	createNew: function(type){
+		var b=MainGame.game.add.button(0,300,'reminder_icon_'+type,
 		function(){b.reminderView.show()},b,1,0,2,1);
 		// add a text
-		b.text=MainGame.game.make.text(0,0,'Reminder');
-		b.addChild(b.text);
+		// b.text=MainGame.game.make.text(0,0,'Reminder');
+		// b.addChild(b.text);
 
 		// Class func
 		b.setReminderView=function(view){b.reminderView=view};

@@ -69,6 +69,22 @@ var MainGame={
         /*global updatePopulation*/
         updatePopulation(false,true);
         //MainGame.global.updateFreedomUnrest();
+
+        /*global ReminderList*/
+        /*global Reminder*/
+        ReminderList.add(Reminder.createNew({"name":"a"},Reminder.Favor,3));
+        ReminderList.add(Reminder.createNew({"name":"b"},Reminder.NextTurn,2));
+        ReminderList.add(Reminder.createNew({"name":"c"},Reminder.Tutorial,0));
+        ReminderList.add(Reminder.createNew({"name":"d"},Reminder.Tutorial,1));
+        ReminderList.add(Reminder.createNew({"name":"e"},Reminder.Favor,4));
+        ReminderList.add(Reminder.createNew({"name":"f"},Reminder.NextTurn,3));
+        ReminderList.add(Reminder.createNew({"name":"g"},Reminder.Tutorial,4));
+        ReminderList.add(Reminder.createNew({"name":"h"},Reminder.Tutorial,0));
+        ReminderList.add(Reminder.createNew({"name":"i"},Reminder.Favor));
+        ReminderList.add(Reminder.createNew({"name":"j"},Reminder.NextTurn,0));
+        ReminderList.add(Reminder.createNew({"name":"k"},Reminder.Tutorial,2));
+        ReminderList.add(Reminder.createNew({"name":"l"},Reminder.Tutorial));
+        ReminderList.update();
     },
     
     nextTurn: function(){

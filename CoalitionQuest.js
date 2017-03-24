@@ -111,7 +111,7 @@ var CoalitionQuest={
 		view.setController(101, q.reminder.controller);
 		view.hide();
 		// create reminder button
-		var button=DReminderButton.createNew();
+		var button=DReminderButton.createNew(DReminderButton.Favor);
 		button.setReminderView(view);
 		// now update the start turn for view
 		view.setModel({startAt:q.startAt})

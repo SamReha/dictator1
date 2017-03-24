@@ -72,7 +72,7 @@ var Building = {
             b.constructionIcon.destroy();
             b.counterIcon.destroy();
         }else if(b.startingTurn>turn){
-            b.counterIcon.loadTexture("counter_icon"+(b.startingTurn-MainGame.global.turn));
+            b.counterIcon.frame=(b.startingTurn-MainGame.global.turn);
         }
     },
 };
