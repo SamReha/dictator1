@@ -85,6 +85,9 @@ var MainGame={
         ReminderList.add(Reminder.createNew({"name":"k"},Reminder.Tutorial,2));
         ReminderList.add(Reminder.createNew({"name":"l"},Reminder.Tutorial));
         ReminderList.update();
+
+        /*global Tutorial*/
+        Tutorial.generate();
     },
     
     nextTurn: function(){

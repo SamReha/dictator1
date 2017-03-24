@@ -385,11 +385,15 @@ var Population={
         }else{
             var hl=pop.findNotEmployed();
             if(hl.length>0){
-                if(bld.addPerson()) {
-                    pop.people[hl[0]].workplace=tileIndex;
-                        if(pop.people[hl[0]].type===Person.Hi)
-                            pop.people[hl[0]].removeSalary();
-                    return true;
+                for(var i=0;i<hl.length;++i){
+                    if(MainGame.board.hasRoadConnect(tileIndex, pop.people[hl[i]].home)) {
+                        if(bld.addPerson()){
+                            pop.people[hl[i]].workplace=tileIndex;
+                            if(pop.people[hl[i]].type===Person.Hi)
+                                pop.people[hl[i]].removeSalary();
+                            return true;
+                        }
+                    }
                 }
             }
             return false;

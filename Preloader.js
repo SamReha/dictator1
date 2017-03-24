@@ -151,6 +151,7 @@ var Preloader={
         g.load.json('buildingData','buildingData.json');
         g.load.json('names','Names.json');
         g.load.json('CoalitionQuest', 'CoalitionQuest.json');
+        g.load.json('Tutorial', 'Tutorial.json');
 
         // Load audio assets (should probably be using FMOD for this)
         var audioDir = 'sounds/';
