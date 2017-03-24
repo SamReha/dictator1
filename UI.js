@@ -268,7 +268,8 @@ var StatsPanel = {
         statsPanel.yearGroup.sprite.inputEnabled = true;
 
         var yearToolTip = ToolTip.createNew("Current Year");
-        yearToolTip.y = 32;
+        yearToolTip.x = -yearToolTip.width;
+        yearToolTip.y = 12;
         statsPanel.yearGroup.sprite.addChild(yearToolTip);
         statsPanel.yearGroup.sprite.events.onInputOver.add(function() {yearToolTip.show();}, null);
         statsPanel.yearGroup.sprite.events.onInputOut.add(function() {yearToolTip.hide();}, null);
@@ -293,7 +294,8 @@ var StatsPanel = {
         }, 0, 1, 0, 2);
 
         var populationToolTip = ToolTip.createNew("Total Population");
-        populationToolTip.y = 32;
+        populationToolTip.x = -populationToolTip.width;
+        populationToolTip.y = 12;
         statsPanel.popGroup.sprite.addChild(populationToolTip);
         statsPanel.popGroup.sprite.events.onInputOver.add(function() {populationToolTip.show();}, null);
         statsPanel.popGroup.sprite.events.onInputOut.add(function() {populationToolTip.hide();}, null);
@@ -310,7 +312,8 @@ var StatsPanel = {
         statsPanel.homelessGroup.sprite.inputEnabled = true;
 
         var homelessToolTip = ToolTip.createNew("Homeless Citizens");
-        homelessToolTip.y = 32;
+        homelessToolTip.x = -homelessToolTip.width;
+        homelessToolTip.y = 12;
         statsPanel.homelessGroup.sprite.addChild(homelessToolTip);
         statsPanel.homelessGroup.sprite.events.onInputOver.add(function() {homelessToolTip.show();}, null);
         statsPanel.homelessGroup.sprite.events.onInputOut.add(function() {homelessToolTip.hide();}, null);
@@ -327,7 +330,8 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.sprite.inputEnabled = true;
 
         var joblessToolTip = ToolTip.createNew("Jobless Citizens");
-        joblessToolTip.y = 32;
+        joblessToolTip.x = -joblessToolTip.width;
+        joblessToolTip.y = 12;
         statsPanel.unemploymentGroup.sprite.addChild(joblessToolTip);
         statsPanel.unemploymentGroup.sprite.events.onInputOver.add(function() {joblessToolTip.show();}, null);
         statsPanel.unemploymentGroup.sprite.events.onInputOut.add(function() {joblessToolTip.hide();}, null);
@@ -338,28 +342,25 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.unemploymentGroup);
 
         // State Money (warchest)
-        statsPanel.warchestGroup = MainGame.game.make.group();
+        statsPanel.warchestGroup = MainGame.game.make.sprite(0, 0, 'money_icon');
+        statsPanel.warchestGroup.inputEnabled = true;
         statsPanel.warchestGroup.y = (StatsPanel.unitHeight + StatsPanel.verticalPad) * 4;
-        statsPanel.warchestGroup.sprite = MainGame.game.make.sprite(0, 0, 'money_icon');
-        statsPanel.warchestGroup.sprite.inputEnabled = true;
 
-        var moneyToolTip = ToolTip.createNew("Funds");
-        moneyToolTip.y = 32;
-        statsPanel.warchestGroup.sprite.addChild(moneyToolTip);
-        statsPanel.warchestGroup.sprite.events.onInputOver.add(function() {moneyToolTip.show();}, null);
-        statsPanel.warchestGroup.sprite.events.onInputOut.add(function() {moneyToolTip.hide();}, null);
+        var moneyToolTip = ToolTip.createNew("National Funds");
+        moneyToolTip.x = -moneyToolTip.width;
+        moneyToolTip.y = 12;
+        statsPanel.warchestGroup.addChild(moneyToolTip);
+        statsPanel.warchestGroup.events.onInputOver.add(function() {moneyToolTip.show();}, null);
+        statsPanel.warchestGroup.events.onInputOut.add(function() {moneyToolTip.hide();}, null);
 
-        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.sprite);
         statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, 0, '$0 ', StatsPanel.textStyle);
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
         statsPanel.addChild(statsPanel.warchestGroup);
 
         // Money Per Turn
-        statsPanel.moneyPerTurnGroup = MainGame.game.make.group();
-        statsPanel.moneyPerTurnGroup.y = statsPanel.warchestGroup.y + StatsPanel.verticalTextOffset;
-        statsPanel.moneyPerTurnGroup.textLabel = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '(+0) ', StatsPanel.textStyle);
-        statsPanel.moneyPerTurnGroup.addChild(statsPanel.moneyPerTurnGroup.textLabel);
-        statsPanel.addChild(statsPanel.moneyPerTurnGroup);
+        statsPanel.warchestGroup.moneyPerTurnText = MainGame.game.make.text(48 + StatsPanel.horizontalPad, StatsPanel.verticalTextOffset, '(+0) ', StatsPanel.textStyle);
+        statsPanel.warchestGroup.moneyPerTurnText.y = 20;
+        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.moneyPerTurnText);
 
         // Swiss Bank (personal money)
         statsPanel.swissGroup = MainGame.game.make.group();
@@ -367,9 +368,9 @@ var StatsPanel = {
         statsPanel.swissGroup.sprite = MainGame.game.make.sprite(0, 0, 'swiss_icon');
         statsPanel.swissGroup.sprite.inputEnabled = true;
 
-        var swissToolTip = ToolTip.createNew("Swiss Bank Account");
-        swissToolTip.y = 32;
-        swissToolTip.x = -12;
+        var swissToolTip = ToolTip.createNew("Private Account");
+        swissToolTip.x = -swissToolTip.width;
+        swissToolTip.y = 12;
         statsPanel.swissGroup.sprite.addChild(swissToolTip);
         statsPanel.swissGroup.sprite.events.onInputOver.add(function() {swissToolTip.show();}, null);
         statsPanel.swissGroup.sprite.events.onInputOut.add(function() {swissToolTip.hide();}, null);
@@ -396,7 +397,7 @@ var StatsPanel = {
             statsPanel.homelessGroup.textLabel.text = newHomeless;
             statsPanel.unemploymentGroup.textLabel.text = newUnemployment;
             statsPanel.warchestGroup.textLabel.text = newWarchest;
-            statsPanel.moneyPerTurnGroup.textLabel.text = newMoneyPerTurn;
+            statsPanel.warchestGroup.moneyPerTurnText.text = newMoneyPerTurn;
             statsPanel.swissGroup.textLabel.text = newSwissAccount;
         }, statsPanel);
 
