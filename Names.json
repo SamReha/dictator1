@@ -1,10 +1,13 @@
 {
 	"firstNames": [
 		"Anton",
+		"Benjamin",
 		"David",
 		"Dylan",
 		"Eleonora",
 		"Erin",
+		"Francis",
+		"Jenova",
 		"Jeremy",
 		"Jim",
 		"Jun",
@@ -12,8 +15,8 @@
 		"Roy",
 		"Kireeti",
 		"Lingyi",
-		"Maddie",
-		"Mads",
+		"Madeline",
+		"Madison",
 		"Matt",
 		"Max",
 		"Michael",
@@ -21,16 +24,23 @@
 		"Rayjo",
 		"Samuel",
 		"Shweta",
+		"Tao",
+		"Xi",
 		"Yi",
+		"Yifan",
+		"Yunqi",
 		"Yutong"
 	],
 
 	"lastNames": [
 		"Oldoak",
+		"Samuel",
 		"Cope",
 		"Faust",
 		"Hackman",
 		"Swink",
+		"Yang",
+		"Chen",
 		"Vicentina",
 		"Whitehead",
 		"Yuan",
@@ -47,7 +57,11 @@
 		"Fu",
 		"Reha",
 		"Patil",
+		"Liu",
+		"Wu",
 		"Yin",
+		"Shan",
+		"Shen",
 		"Luo"
 	]
 }
