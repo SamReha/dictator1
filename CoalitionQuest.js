@@ -151,11 +151,35 @@ var CoalitionQuest={
 	},
 	questFail: function(q){		
 		console.log("Quest failed for:",q);
-		// TODO: create a new 1-page info "quest fail"
+		// create a new 1-page info "quest fail"
+		var e=Event.createNew();
+		e.position.set(300,200);
+		e.setModel([
+			{
+				portrait:q.peopleRef[0].portTexture(), 
+				description:q.peopleRef[0].name+" You failed!",
+				buttonTexts:["OK"]
+			}
+		]);
+		e.setController([
+			[function(){e.suicide()}]
+		]);
 	},
 	questSuc: function(q){
 		console.log("Quest suc for:",q);
-		// TODO: create a 1-page info "quest suc"
+		// create a 1-page info "quest suc"
+		var e=Event.createNew();
+		e.position.set(300,200);
+		e.setModel([
+			{
+				portrait:q.peopleRef[0].portTexture(), 
+				description:q.peopleRef[0].name+" Thank you!",
+				buttonTexts:["OK"]
+			}
+		]);
+		e.setController([
+			[function(){e.suicide()}]
+		]);
 	}
 };
 
@@ -171,3 +195,23 @@ var hiPeople=[
 	{name:"Yi", role:"?", portTexture:function(){return "military_port_0"}},
 	{name:"MJ", role:"!", portTexture:function(){return "military_port_1"}}
 ];
+
+
+
+// function test_Event(){
+// 	var e=Event.createNew();
+// 	e.position.set(50,50);
+// 	e.setModel([
+// 		{portrait:'bureaucrat_port_0',description:"Yi: please select a test.",buttonTexts:["Choice","Info"]}
+// 	]);
+// 	e.setController([
+// 		[function(){
+// 			e.suicide();
+// 			_test_Event_choice();
+// 		}, function(){
+// 			e.suicide();
+// 			_test_Event_info();
+// 		}]
+// 	]);
+
+// }
