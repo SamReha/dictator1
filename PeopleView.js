@@ -1,10 +1,11 @@
 /* global MainGame */
 
 // change item per page here!
-var lowPeoplePerPage=10;
+var lowPeoplePerPage=8;
 // shows FirstName, LastName, Health, Edu, Shelter
 var PeopleRightView={
-	style: {font:"25px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+	style: {font:"20px myKaiti", fill:"black", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.5)", shadowOffsetX: 1, shadowOffsetY: 1 },
+	headerStyle: {font:"28px myKaiti", fill:"white", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.5)", shadowOffsetX: 1, shadowOffsetY: 1 },
 	createNew: function(dataRef){
 		var v=MainGame.game.make.sprite(0,0,"peopleViewRightBg");
 		// let right view block click events
@@ -15,21 +16,25 @@ var PeopleRightView={
 		v.dataRef=dataRef;
 		// ListView: [lowPeoplePerPage] items (slots)
 			// createNew(textures, margin, itemSize, itemCallback, isHorizontal)
+		v.labelText=MainGame.game.make.text((v.width*1/2),(v.height*3/38),"Working Class",PeopleRightView.headerStyle);
+		v.labelText.anchor.setTo(0.5,0.5);
+		v.addChild(v.labelText);
 		v.listView=DListView.createNew(
 			{},						// don't need textures
-			{l:15,t:40},			// margin inside the list view
-			{w:400, h:40},			// size of an item
+			{l:0,t:0},			// margin inside the list view
+			{w:(v.width*4/5), h:(v.height*1/11)},			// size of an item
 			function(index){PeopleRightView.onPersonSelected(v,index)},	// forwards the callback
 			false,					// not horizontal
 			110						// priority ID
 		);
+		v.listView.x=(v.width*1/10); v.listView.y=(v.height*1/8);
 		v.addChild(v.listView);
 		// DPageIndicator: N pages
 		var pageCount=Math.ceil(dataRef.length/lowPeoplePerPage);
 		v.pageIndicator=DPageIndicator.createNew((v.width*1/8),{x:(v.width*1/2),y:0});//width, textPos
 		v.pageIndicator.setModel(0, pageCount);	// current, max
 		v.pageIndicator.setController(function(index){PeopleRightView.onPageChanged(v,index)}, 111);
-		v.pageIndicator.y=440;
+		v.pageIndicator.y=(v.height*43/48);
 		v.addChild(v.pageIndicator);
 		// setup the init page
 		PeopleRightView._setupPage_(v,0);
@@ -40,7 +45,7 @@ var PeopleRightView={
 		//console.log("PeopleRightView: person selected:",globalIndex);
 		//console.log("  and the person's dataRef is:",view.dataRef[globalIndex]);
 		// TODO: you can change this low person's dataRef if necessary like this:
-		view.dataRef[globalIndex].name+="-Changed by Yi";
+		// view.dataRef[globalIndex].name+="-Changed by Yi";
 		// TODO: center the person's housing unit	
 	},
 	onPageChanged: function(view,index){
@@ -48,11 +53,27 @@ var PeopleRightView={
 		PeopleRightView._setupPage_(view,index);
 	},
 	// each entry is like "Sam Reha | Hth:50 | Edu:50 | Sht:50"
-	_makeEntry_: function(oneEntryData){
-		var entrySprite=MainGame.game.make.sprite(0,0);
-		var entryString=""+oneEntryData.name+" | Hth:"+oneEntryData.health+" | Edu:"
-			+oneEntryData.education+" | Sht:"+oneEntryData.shelter;
-		var entryText=MainGame.game.make.text(0,0,entryString,PeopleRightView.style);
+	_makeEntry_: function(view,oneEntryData){
+		var entrySprite=MainGame.game.make.button(0,(view.height*1/20),'nameplate_button',function(){
+			if(oneEntryData.home !== null){
+				entrySprite.freezeFrames=true;
+				MainGame.board.cameraCenterOn(oneEntryData.home);
+				/*global BoardController*/
+				BoardController.showTileDetail(MainGame.board.controller, oneEntryData.home);
+				view.parent.uiMask.destroy();
+				view.parent.destroy();
+			}},entrySprite,1,0,2,1);
+		entrySprite.input.priorityID=120;
+		var home = "Homeless"; var work = "Unemployed";
+		if(oneEntryData.home !== null){
+			home=MainGame.board.at(oneEntryData.home).getBuilding().playerLabel;
+		}
+		if(oneEntryData.workplace !== null){
+			work=MainGame.board.at(oneEntryData.workplace).getBuilding().playerLabel;
+		}
+		var entryString=oneEntryData.name+" ("+home+") ("+work+")";
+		var entryText=MainGame.game.make.text((entrySprite.width*1/36),(entrySprite.height*1/2),entryString,PeopleRightView.style);
+		entryText.anchor.setTo(0,0.5);
 		entrySprite.addChild(entryText);
 		return entrySprite;
 	},
@@ -62,7 +83,7 @@ var PeopleRightView={
 		var startIndex=pageIndex*lowPeoplePerPage;
 		var endIndex=Math.min(startIndex+lowPeoplePerPage,view.dataRef.length);
 		for(var i=startIndex;i<endIndex;i++)
-			view.listView.add(PeopleRightView._makeEntry_(view.dataRef[i]));
+			view.listView.add(PeopleRightView._makeEntry_(view,view.dataRef[i]));
 	},
 };
 

@@ -17,6 +17,7 @@ var Preloader={
         g.load.image('lumberYard1', buildingDir + 'factory.png');
         g.load.image('mansion1',    buildingDir + 'mansion.png');                
         g.load.image('palace1',     buildingDir + 'palace.png');
+        g.load.image('park1',       buildingDir + 'park.png');
         g.load.image('police1',     buildingDir + 'police.png');
         g.load.image('road1',       buildingDir + 'road.png');
         g.load.image('school1',     buildingDir + 'school.png');
@@ -111,6 +112,7 @@ var Preloader={
         g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',        buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button',      buttonDir + 'large_generic_button.png', 240, 96, 3);
+        g.load.spritesheet('nameplate_button',          buttonDir + 'nameplate_button.png', 360, 40, 3);
         g.load.spritesheet('portrait_border_bureau',    buttonDir + 'portrait_border_bureau.png', 56, 56, 3);
         g.load.spritesheet('portrait_border_finance',   buttonDir + 'portrait_border_finance.png', 56, 56, 3);
         g.load.spritesheet('portrait_border_military',  buttonDir + 'portrait_border_military.png', 56, 56, 3);
