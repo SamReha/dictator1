@@ -3,15 +3,33 @@
 /*global Global*/
 
 // singleton
+
+var CQ={};	// stores the CQ on-going data
+
 var CoalitionQuest={
-	quests: [],	// lazy init
+	inited: false,
+	quests: [],	
 	runningQuests: [],
 	// generate the quest if there is one
-	generate: function(){
-		if(this.quests.length===0){
+	generate: function(_curTurn, _hiPeopleRef){
+		// for testing
+		if(!_curTurn)
+			_curTurn=0;
+		if(!_hiPeopleRef){
+			_hiPeopleRef=[];
+		}
+		// if there is a running one, finish it without triggering anything
+		console.assert(this.runningQuests.length<=1);
+		if(this.runningQuests.length===1){
+			this.check(this.runningQuests);
+			return;
+		}
+		// lazy init
+		if(!this.inited){
 			this.quests=MainGame.game.cache.getJSON('CoalitionQuest');
 			console.assert(this.quests.length);
-			console.log("Parsed CoalitionQuest:",this.quests);
+			console.log("Parsed CoalitionQuest, total:",this.quests.length);
+			this.inited=true;
 		}
 		// now this.quests is good.
 		for(var i=this.quests.length-1;i>=0;i--){
@@ -21,31 +39,36 @@ var CoalitionQuest={
 			if(!this._checkCond_(q.cond))
 				continue;
 			// get "people"
-			q.peopleRef=this._getPeople_(MainGame.population, q.people);
+			q.peopleRef=this._getPeople_(_hiPeopleRef, q.people);
 			if(!q.peopleRef)
 				continue;
-			// add "peopleRef" to q
-			q.peopleRef=peopleRef;
+			// now let's execute the q
+			// init
+			this._executeInit_(q.init);
+			// set startAt
+			q.startAt=_curTurn;
 			// quests -> runningQuests
 			this.runningQuests.push(this.quests.pop());
-			// run quest
+			// run quest			
 			this.runEvent(q.peopleRef, q.event, q.handler);
 		}
 	},
 	_checkCond_: function(condString){
-		var fn=Function("return ("+condString+")");
+		var fn=Function("return "+condString);
 		return fn();
 	},
-	_getPeople_: function(popRef, roles){
-		var peopleRef=[];
-		for(var i=0;i<roles.length;i++){
-			var list=popRef.typeRoleList(2,roles[i]);
-			console.assert(list.length<=1);
-			if(list.length===0)
-				return null;
-			peopleRef.push(list[0]);
-		}
-		return peopleRef;
+	_getPeople_: function(hiPeopleRef, roles){
+		var peopleRef=hiPeopleRef.filter(function(p){
+			for(var i=0;i<roles.length;i++)
+				if(p.role===roles[i])
+					return true;
+		});
+		if(peopleRef.length===roles.length)
+			return peopleRef;
+		return null;
+	},
+	_executeInit_: function(init){
+		Function(init)();
 	},
 
 	runEvent: function(peopleRef, event, handler){
@@ -59,7 +82,7 @@ var CoalitionQuest={
 		var controller=[];	// an array of arrays of functions
 		var fn=[];			// a temp array to store arrays of functions
 		for(var i=0;i<event.length;i++){
-			var currentPerson=peopleRef[event[i].person];
+			let currentPerson=peopleRef[event[i].person];
 			model.push({
 				portrait:currentPerson.portTexture(),
 				description:event[i].description,
@@ -68,7 +91,7 @@ var CoalitionQuest={
 			// test function
 			controller[i]=[];
 			for(var j=0;j<handler[i].length;j++){
-				var f=Function("e","p",handler[i][j]);
+				let f=Function("e","p",handler[i][j]);
 				controller[i][j]=function(){f(e,currentPerson)};
 			}
 		}
@@ -77,121 +100,118 @@ var CoalitionQuest={
 		e.setController(controller);
 	},
 
-	// check if the on-going quests are completed/expired
-	check: function(){
-		//TODO
-	}
-};
+	reminder: function(name){
+		var quests=this.runningQuests.filter(function(qu){return qu.name==name});
+		console.assert(quests.length===1);
+		var q=quests[0];
+		console.log("So selected q is:",q);
+		// create reminder view		
+		var view=DReminderView.createNew();
+		view.setModel(q.reminder.model);
+		view.setController(101, q.reminder.controller);
+		view.hide();
+		// create reminder button
+		var button=DReminderButton.createNew();
+		button.setReminderView(view);
+		// now update the start turn for view
+		view.setModel({startAt:q.startAt})
+		// let q store reminderButton
+		q.reminderButton=button;
+	},
 
-function test_coalition_quest(){
-	var cq=CoalitionQuest;
-	// test _checkCond_() - PASSED
-	console.assert(cq._checkCond_("1+1===2"));
-	console.assert(!cq._checkCond_("1+1===3"));
-	console.assert(cq._checkCond_("Global.turn===1"));
-	console.assert(cq._checkCond_("_testTable_.name==='Yi' && _testTable_.major==='G+PM'"));
-	// test _getPeople_() - PASSED
-	console.assert(cq._getPeople_(_testPop_,['?','!'])[1].name==="MJ");
-	console.assert(cq._getPeople_(_testPop_,['?'])[0].name==="Yi");
-	console.assert(null===cq._getPeople_(_testPop_,['?','$']));
-	// test runEvent()
-	var peopleRef=cq._getPeople_(_testPop_,['?','!']);
-	var event=[
-		{	
-			"person":0, 
-			"description":"Bu. Minister: \nHello, this is the Mil Minister.", 
-			"buttonTexts":["Ok?"]
-		},
-		{
-			"person":1, 
-			"description":"Mi. Minister: \nCan you build a \nmil building at this place in 3 turns?", 
-			"buttonTexts":["Yes","No"]
-		},
-		{
-			"person":1,
-			"description":"Mi. Minister: \nThanks!",
-			"buttonTexts":["You're welcome"]
-		},
-		{
-			"person":1,
-			"description":"Mi. Minister: \nWhat???",
-			"buttonTexts":["See you"]
+	// check every quest to see it 1)fails; or 2)succeeds
+	check: function(runningQuestsRef){
+		console.log("Checking running quest");
+		console.assert(runningQuestsRef.length===1);
+		var q=runningQuestsRef[0];
+		var r=q.reminder;
+		var shouldRemove=false;
+		// check suc
+		console.log("Global money and test m is:",Global.money,CQ.TestQuest);
+		var f=Function("return "+r.controller.check);
+		console.log("f is:",f.toString());
+		if(f()){
+			shouldRemove=true;
+			this.questSuc(q);
 		}
-	];
-	var handler=[
-		["console.log('han1');e.gotoPage(1)"],
-		["console.log('han2');e.gotoPage(2)", "e.gotoPage(3)"],
-		["console.log('han3');e.suicide();p.loyalty+=2;e.willCheck=true"],
-		["console.log('han4');e.suicide();p.loyalty-=1"]
-	];
-	cq.runEvent(peopleRef,event,handler);
-};
-
-// private
-var _testTable_={name:"Yi", major:"G+PM"};
-var _testPop_={
-	typeRoleList: function(type,role){
-		if(type===2 && role==='?')
-			return [{name:"Yi",loyalty:50,portTexture:function(){return "bureaucrat_port_0"}}];
-		else if(type===2 && role==='!')
-			return [{name:"MJ",loyalty:99,portTexture:function(){return "military_port_0"}}];
-		else
-			return [];
+		// check fail
+		r.model.remaining--;
+		if(r.model.remaining<0){
+			shouldRemove=true;
+			var f=Function("ppl",r.controller.fail);
+			f(q.peopleRef);
+			this.questFail(q);
+		}
+		// remove when necessary
+		if(shouldRemove){
+			q.reminderButton.reminderView.suicide();
+			q.reminderButton.suicide();
+			this.runningQuests.pop();
+		}
+	},
+	questFail: function(q){		
+		console.log("Quest failed for:",q);
+		// create a new 1-page info "quest fail"
+		var e=Event.createNew();
+		e.position.set(300,200);
+		e.setModel([
+			{
+				portrait:q.peopleRef[0].portTexture(), 
+				description:q.peopleRef[0].name+" You failed!",
+				buttonTexts:["OK"]
+			}
+		]);
+		e.setController([
+			[function(){e.suicide()}]
+		]);
+	},
+	questSuc: function(q){
+		console.log("Quest suc for:",q);
+		// create a 1-page info "quest suc"
+		var e=Event.createNew();
+		e.position.set(300,200);
+		e.setModel([
+			{
+				portrait:q.peopleRef[0].portTexture(), 
+				description:q.peopleRef[0].name+" Thank you!",
+				buttonTexts:["OK"]
+			}
+		]);
+		e.setController([
+			[function(){e.suicide()}]
+		]);
 	}
 };
 
-// // Private test functions //
-// function _test_Event_choice(){
-// 	var eChoice=Event.createNew();
-// 	eChoice.position.set(300,100);
-// 	eChoice.setModel([
-// 		{portrait:'bureaucrat_port_0',description:'Yi: Hey, MJ has a \nquestion.',buttonTexts:["Go ahead"]},
-// 		{portrait:'bureaucrat_port_2',description:'MJ: Are you a dumbass?',buttonTexts:["Yes","NO"]},
-// 		{portrait:'bureaucrat_port_2',description:'MJ: Of course you are!',buttonTexts:["Close"]},
-// 		{portrait:'bureaucrat_port_2',description:'MJ: What? You are not?',buttonTexts:["Close"]}
+
+
+
+// test case code
+function test_coalition_quest(){
+	CoalitionQuest.generate(1, hiPeople);
+};
+
+var hiPeople=[
+	{name:"Yi", role:"?", portTexture:function(){return "military_port_0"}},
+	{name:"MJ", role:"!", portTexture:function(){return "military_port_1"}}
+];
+
+
+
+// function test_Event(){
+// 	var e=Event.createNew();
+// 	e.position.set(50,50);
+// 	e.setModel([
+// 		{portrait:'bureaucrat_port_0',description:"Yi: please select a test.",buttonTexts:["Choice","Info"]}
 // 	]);
-// 	eChoice.setController([
-// 		[function(){eChoice.gotoPage(1)}],
-// 		[function(){eChoice.gotoPage(2)}, function(){eChoice.gotoPage(3)}],
-// 		[function(){eChoice.suicide()}],
-// 		[function(){eChoice.suicide()}]
-// 	]);			
+// 	e.setController([
+// 		[function(){
+// 			e.suicide();
+// 			_test_Event_choice();
+// 		}, function(){
+// 			e.suicide();
+// 			_test_Event_info();
+// 		}]
+// 	]);
+
 // }
-
-
-
-	// {
-	// 	"cond":"(Global.turn>=1)",
-	// 	"people":["!","?"],
-	// 	"event":[
-	// 		{	
-	// 			"person":0, 
-	// 			"description":"Bur Minister: Hello, this is the Mil Minister.", 
-	// 			"buttonTexts":["Ok?"]
-	// 		},
-	// 		{
-	// 			"person":1, 
-	// 			"description":"Mil Minister: Can you build a mil building at this place in 3 turns?", 
-	// 			"buttonTexts":["Yes","No"]
-	// 		},
-	// 		{
-	// 			"person":1,
-	// 			"description":"Mil Minister: Thanks!",
-	// 			"buttonTexts":["You're welcome"]
-	// 		},
-	// 		{
-	// 			"person":1,
-	// 			"description":"Mil Minister: What???",
-	// 			"buttonTexts":["See you"]
-	// 		}
-	// 	],
-	// 	"handler":[
-	// 		["e.gotoPage(1)"],
-	// 		["e.gotoPage(2)", "e.gotoPage(3)"],
-	// 		["e.suicide();p.loyalty+=2;e.willCheck=true"],
-	// 		["e.suicide();p.loyalty-=1"]
-	// 	],
-	// 	"starting":-1,
-	// 	"timeLimit":3,
-	// 	"check":"(MainGame.board.at(0).getBuilding().type==='!')"
-	// }
