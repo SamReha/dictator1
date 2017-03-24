@@ -279,29 +279,32 @@ var BuildMenu={
 		if(bureaucrats === 0){
 			bureauGroupCover.visible = true;
 
-			var bureauCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Minister of Bureaucracy.', BuildMenu.styleNormal);
-			bureauCount.anchor.x = 0.5;
-			bureauCount.anchor.y = 0.5;
-			bureauGroup.addChild(bureauCount);
+			var bureauToolTip = ToolTip.createNew('Hire a Minister of Bureaucracy\nto unlock these options');
+			bureauToolTip.x = bureauGroupCover.width/2 - bureauToolTip.width/2;
+			bureauToolTip.y = bureauGroupCover.height/2;
+			bureauGroupCover.events.onInputOver.add(function() {bureauToolTip.show();}, null);
+        	bureauGroupCover.events.onInputOut.add(function() {bureauToolTip.hide();}, null);
+			bureauGroupCover.addChild(bureauToolTip);
 		}
 		if(merchants === 0){
 			merchantGroupCover.visible = true;
 
-			var merchantCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Minister of Finance.', BuildMenu.styleNormal);
-			merchantCount.anchor.x = 0.5;
-			merchantCount.anchor.y = 0.5;
-			merchantGroup.addChild(merchantCount);
+			var merchantToolTip = ToolTip.createNew('Hire a Minister of Finance\nto unlock these options');
+			merchantToolTip.x = merchantGroupCover.width/2 - merchantToolTip.width/2;
+			merchantToolTip.y = merchantGroupCover.height/2;
+			merchantGroupCover.events.onInputOver.add(function() {merchantToolTip.show();}, null);
+        	merchantGroupCover.events.onInputOut.add(function() {merchantToolTip.hide();}, null);
+			merchantGroupCover.addChild(merchantToolTip);
 		}
 		if(military === 0){
 			militaryGroupCover.visible = true;
 
-			var militaryCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Minister of the Military.', BuildMenu.styleNormal);
-			militaryCount.anchor.x = 0.5;
-			militaryCount.anchor.y = 0.5;
-			militaryGroup.addChild(militaryCount);
+			var militaryToolTip = ToolTip.createNew('Hire a Minister of the Military\nto unlock these options');
+			militaryToolTip.x = militaryGroupCover.width/2 - militaryToolTip.width/2;
+			militaryToolTip.y = militaryGroupCover.height/2;
+			militaryGroupCover.events.onInputOver.add(function() {militaryToolTip.show();}, null);
+        	militaryGroupCover.events.onInputOut.add(function() {militaryToolTip.hide();}, null);
+			militaryGroupCover.addChild(militaryToolTip);
 		}
 		// if(bureaucrats === 0 && merchants === 0 && military === 0)
 		// 	defaultGroupCover.visible = true;
