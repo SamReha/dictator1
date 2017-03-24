@@ -41,7 +41,7 @@
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
 				"check":"Global.money<=CQ.TestQuest-10",
-				"fail":"console.log('You failed. People[0] is:',ppl[0])"				
+				"fail":"console.log('You failed. People[0] is:',ppl[0]);ppl[0].loyalty-=4"				
 			}
 		}
 	}
