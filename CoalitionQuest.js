@@ -10,12 +10,19 @@ var CoalitionQuest={
 	quests: [],	// lazy init
 	runningQuests: [],
 	// generate the quest if there is one
-	generate: function(_curTurn){
-		console.assert(!_curTurn || typeof _curTurn==="number");
+	generate: function(_curTurn, _hiPeopleRef){
+		// for testing
+		if(!_curTurn)
+			_curTurn=0;
+		if(!_hiPeopleRef){
+			_hiPeopleRef=[];
+		}
+
+		// lazy init
 		if(this.quests.length===0){
 			this.quests=MainGame.game.cache.getJSON('CoalitionQuest');
 			console.assert(this.quests.length);
-			console.log("Parsed CoalitionQuest:",this.quests);
+			console.log("Parsed CoalitionQuest, [0] is:",this.quests[0]);
 		}
 		// now this.quests is good.
 		for(var i=this.quests.length-1;i>=0;i--){
@@ -25,38 +32,33 @@ var CoalitionQuest={
 			if(!this._checkCond_(q.cond))
 				continue;
 			// get "people"
-			q.peopleRef=this._getPeople_(MainGame.population, q.people);
+			q.peopleRef=this._getPeople_(_hiPeopleRef, q.people);
 			if(!q.peopleRef)
 				continue;
 			// now let's execute the q
 			// init
 			this._executeInit_(q.init);
-			// add "peopleRef" to q
-			q.peopleRef=peopleRef;
 			// set startAt
-			q.startAt=(_curTurn?_curTurn:1);
+			q.startAt=_curTurn;
 			// quests -> runningQuests
 			this.runningQuests.push(this.quests.pop());
 			// run quest			
 			this.runEvent(q.peopleRef, q.event, q.handler);
-			// create reminder
-			this._createReminder_(q.reminder);
 		}
 	},
 	_checkCond_: function(condString){
 		var fn=Function("return "+condString);
 		return fn();
 	},
-	_getPeople_: function(popRef, roles){
-		var peopleRef=[];
-		for(var i=0;i<roles.length;i++){
-			var list=popRef.typeRoleList(2,roles[i]);
-			console.assert(list.length<=1);
-			if(list.length===0)
-				return null;
-			peopleRef.push(list[0]);
-		}
-		return peopleRef;
+	_getPeople_: function(hiPeopleRef, roles){
+		var peopleRef=hiPeopleRef.filter(function(p){
+			for(var i=0;i<roles.length;i++)
+				if(p.role===roles[i])
+					return true;
+		});
+		if(peopleRef.length===roles.length)
+			return peopleRef;
+		return null;
 	},
 	_executeInit_: function(init){
 		Function(init)();
@@ -91,17 +93,20 @@ var CoalitionQuest={
 		e.setController(controller);
 	},
 
-	_createReminder_: function(reminderJson){
+	reminder: function(name){
+		var q=this.runningQuests.filter(function(qu){return qu.name==name})[0];
+		console.log("So selected q is:",q);
+		console.log("q's reminder is:",q.reminder);
 		// create reminder view		
 		var view=DReminderView.createNew();
-		view.setModel(reminderJson.model);
-		view.setController(101, reminderJson.controller);
+		view.setModel(q.reminder.model);
+		view.setController(101, q.reminder.controller);
 		view.hide();
 		// create reminder button
 		var button=DReminderButton.createNew();
 		button.setReminderView(view);
 		// now update the start turn for view
-		view.setModel({startAt:Global.turn})
+		view.setModel({startAt:q.startAt})
 	},
 
 	// check every quest to see it 1)fails; or 2)succeeds
@@ -132,78 +137,11 @@ var CoalitionQuest={
 
 // test case code
 function test_coalition_quest(){
-	var cq=CoalitionQuest;
-	// test _checkCond_() - PASSED
-	console.assert(cq._checkCond_("1+1===2"));
-	console.assert(!cq._checkCond_("1+1===3"));
-	console.assert(cq._checkCond_("Global.turn===1"));
-	console.assert(cq._checkCond_("_testTable_.name==='Yi' && _testTable_.major==='G+PM'"));
-	// test _getPeople_() - PASSED
-	console.assert(cq._getPeople_(_testPop_,['?','!'])[1].name==="MJ");
-	console.assert(cq._getPeople_(_testPop_,['?'])[0].name==="Yi");
-	console.assert(null===cq._getPeople_(_testPop_,['?','$']));
-	// test _executeInit_() - PASSED
-	cq._executeInit_("CQ.TestQ=5");
-	console.assert(CQ.TestQ===5);
-	// test runEvent() - PASSED
-	var peopleRef=cq._getPeople_(_testPop_,['?','!']);	
-	var event=[
-		{	
-			"person":0, 
-			"description":"Bu. Minister: \nHello, this is the Mil Minister.", 
-			"buttonTexts":["Ok?"]
-		},
-		{
-			"person":1, 
-			"description":"Mi. Minister: \nCan you build a \nmil building at this place in 3 turns?", 
-			"buttonTexts":["Yes","No"]
-		},
-		{
-			"person":1,
-			"description":"Mi. Minister: \nThanks!",
-			"buttonTexts":["You're welcome"]
-		},
-		{
-			"person":1,
-			"description":"Mi. Minister: \nWhat???",
-			"buttonTexts":["See you"]
-		}
-	];
-	var handler=[
-		["console.log('han1');e.gotoPage(1)"],
-		["console.log('han2');e.gotoPage(2)", "e.gotoPage(3)"],
-		["console.log('han3');e.suicide();p.loyalty+=2;e.willCheck=true"],
-		["console.log('han4');e.suicide();p.loyalty-=1"]
-	];
-	cq.runEvent(peopleRef,event,handler);
-
-	// by Yi: to adjust the geo of reminder, please un-comment the lines below:
-
-	// // test _createReminder_()
-	// var reminder={
-	// 	model:{
-	// 		description:"From Mil Minister:\n Build any mil building!",
-	// 		startAt:-1,
-	// 		remaining:3
-	// 	},
-	// 	controller:{
-	// 		onClick:"console.log('You Clicked me!!!')",
-	// 		check:"MainGame.board.at(0).getBuilding().type==='!' ",
-	// 		fail:"console.log('You failed to do the task!')"
-	// 	}
-	// };
-	// cq._createReminder_(reminder);
+	CoalitionQuest.generate(1, hiPeople);
+	console.assert(CQ.TestQuest===5);
 };
 
-// private
-var _testTable_={name:"Yi", major:"G+PM"};
-var _testPop_={
-	typeRoleList: function(type,role){
-		if(type===2 && role==='?')
-			return [{name:"Yi",loyalty:50,portTexture:function(){return "bureaucrat_port_0"}}];
-		else if(type===2 && role==='!')
-			return [{name:"MJ",loyalty:99,portTexture:function(){return "military_port_0"}}];
-		else
-			return [];
-	}
-};
+var hiPeople=[
+	{name:"Yi", role:"?", portTexture:function(){return "military_port_0"}},
+	{name:"MJ", role:"!", portTexture:function(){return "military_port_1"}}
+];

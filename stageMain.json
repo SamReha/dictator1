@@ -201,7 +201,7 @@
     "population": [
         {"type": 1, "role":"?", "name":"Jim Whitehead", "portIndex":6, "payLevel":0, "workplace": null,"home": 80,"education": 60,"baseInfluence": 9,"accruedInfluence": 0},
         {"type": 1, "role":"$", "name":"Michael John","portIndex":3, "payLevel":0, "workplace": null,"home": 94,"education": 60,"baseInfluence": 9,"accruedInfluence": 0},
-        {"type": 1, "role":"!", "name":"Erin Swink","portIndex":3, "payLevel":0, "workplace": null,"home": 96,"education": 60,"baseInfluence": 9,"accruedInfluence": 0},
+        {"type": 2, "role":"!", "name":"Erin Swink","portIndex":3, "payLevel":0, "workplace": null,"home": 96,"education": 60,"baseInfluence": 9,"accruedInfluence": 0},
         {"type": 0, "workplace": 95,"home": 142,"education": 20},
         {"type": 0, "workplace": 95,"home": 142,"education": 20},
         {"type": 0, "workplace": 95,"home": 142,"education": 20},
