@@ -23,7 +23,7 @@ var CoalitionQuest={
 		if(!this.inited){
 			this.quests=MainGame.game.cache.getJSON('CoalitionQuest');
 			console.assert(this.quests.length);
-			console.log("Parsed CoalitionQuest, [0] is:",this.quests[0]);
+			console.log("Parsed CoalitionQuest, total:",this.quests.length);
 			this.inited=true;
 		}
 		// now this.quests is good.
@@ -96,9 +96,10 @@ var CoalitionQuest={
 	},
 
 	reminder: function(name){
-		var q=this.runningQuests.filter(function(qu){return qu.name==name})[0];
+		var quests=this.runningQuests.filter(function(qu){return qu.name==name});
+		console.assert(quests.length===1);
+		var q=quests[0];
 		console.log("So selected q is:",q);
-		console.log("q's reminder is:",q.reminder);
 		// create reminder view		
 		var view=DReminderView.createNew();
 		view.setModel(q.reminder.model);

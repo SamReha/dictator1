@@ -43,7 +43,7 @@ var Person={
         p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
         p.report=function(){return Person.report(p)};  // Class func: Declaration
         p.portTexture=function(){
-            assert(p.type>=Person.Mid);
+            console.assert(p.type>=Person.Mid);
             var tb={"?":"bureaucrat_port_", "$":"merchant_port_", "!":"military_port_"}; 
             return tb[p.role]+p.portIndex;
         };

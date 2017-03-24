@@ -77,7 +77,7 @@ var MainGame={
         // MainGame.population.nextTurn();
 
         /*global CoalitionQuest*/
-        CoalitionQuest.generate();
+        CoalitionQuest.generate(Global.turn, MainGame.population.highList());
         
         // Everything is currently being handled in Global.nextTurn()
         MainGame.global.nextTurn();
