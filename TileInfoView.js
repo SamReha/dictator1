@@ -239,7 +239,7 @@ var TileDetailView = {
             view.demolishButton.inputEnabled = true;
             view.demolishButton.input.priorityID = 102;
 
-            var demolishText = game.make.text(0, 0, 'Demolish ($10)', TileDetailView.buttonStyle);
+            var demolishText = game.make.text(0, 0, 'Demolish -₸10', TileDetailView.buttonStyle);
             demolishText.anchor.set(0.5, 0.5);
             view.demolishButton.addChild(demolishText);
             view.addChild(view.demolishButton);
