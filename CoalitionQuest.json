@@ -18,12 +18,12 @@
 			{
 				"person":0,
 				"description":"\nMilitary Minister: You are as wise as you are generous.",
-				"buttonTexts":["Not a prob."]
+				"buttonTexts":["Good Day"]
 			},
 			{
 				"person":0,
-				"description":"\nMilitary Minister: I will not regret this betrayal!",
-				"buttonTexts":["See you"]
+				"description":"\nMilitary Minister: I will not forget this betrayal!",
+				"buttonTexts":["Be Gone!"]
 			}
 		],
 		"handler":[
