@@ -4,7 +4,7 @@
 // Texture Requirement: 'small_generic_button' (use Find-Replace to change)
 
 var DDecisionView={
-	font: {font:"32px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
+	font: {font:"30px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
 		[],											// 0 button
