@@ -1,6 +1,6 @@
 {
 	"buildingComplete":{
-		"arguments":["tileIndex"],
+		"args":["tileIndex"],
 		"model":[{
 			"portrait": "var building=MainGame.board.at(tileIndex).getBuilding();return building.name+building.level;",
 			"description": "return \"A new \"+MainGame.board.at(tileIndex).getBuilding().playerLabel+\" has been completed this year.\"",
@@ -9,7 +9,7 @@
 		]
 	},
 	"buildingCodemned":{
-		"arguments":["tileIndex"],
+		"args":["tileIndex"],
 		"model":[{
 			"portrait": "var building=MainGame.board.at(tileIndex).getBuilding();return building.name+building.level;",
 			"description": "return \"A \"+MainGame.board.at(tileIndex).getBuilding().playerLabel+\" has become too unstable, so it has ben condemned.\nTherefore its residents have all been evicted.\"",

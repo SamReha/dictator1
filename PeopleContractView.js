@@ -247,7 +247,7 @@ var PeopleContractView={
 		}
 
 		// ----Expected Payment----
-		var payGrade = Math.floor(Math.max(v.dataRef.baseInfluence+v.dataRef.accruedInfluence-5,0)/5);
+		var payGrade = Math.floor(Math.max(v.dataRef.baseInfluence+Math.floor(v.dataRef.accruedInfluence)-5,0)/5);
 		v.expectedPay.text="₸"+PeopleContractView.pays[payGrade];
 
 		// ----Set New Payment----

@@ -158,10 +158,10 @@ var Person={
             p.setLowClass();
         }else{
             p.baseInfluence = Math.floor(((p.health-50)+(p.shelter-50)+(p.education-50))/3);
-            p.accruedInfluence+=(p.type===Person.Mid?1:2);
+            p.accruedInfluence+=(p.type===Person.Mid?.5:1);
             p.accruedInfluence=Math.min(p.accruedInfluence,50);
             if(p.type===Person.Hi){
-                var payGrade = Math.floor(Math.max(p.baseInfluence+p.accruedInfluence-5,0)/5);
+                var payGrade = Math.floor(Math.max(p.baseInfluence+Math.floor(p.accruedInfluence)-5,0)/5);
                 p.loyalty += p.payLevel-payGrade;
             }
         }

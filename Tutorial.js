@@ -1,6 +1,7 @@
 /*global MainGame*/
 /*global Event*/
 /*global Global*/
+/*global ReminderList*/
 
 // singleton
 
@@ -10,6 +11,7 @@ var Tutorial = {
 	initialized: false,
 	tuts: [],	
 	activeTut: null,
+	timer: null,
 
 	// generate the tutorials
 	generate: function() {
@@ -25,7 +27,7 @@ var Tutorial = {
 			console.assert(this.tuts.length);
 			//console.log("Parsed Tutorials, total: ", this.tuts.length);
 
-			MainGame.game.time.events.loop(50, this.loopingCheck, this);
+			// this.timer = MainGame.game.time.events.loop(50, this.nextTut, this);
 
 			this.initialized = true;
 		}
@@ -40,13 +42,14 @@ var Tutorial = {
 			if (!this._checkCond_(tut.cond)) {
 				// now let's execute the tut
 				// init
-				this._executeInit_(tut.init);
+				// this._executeInit_(tut.init);
 
 				// tuts -> runningTuts
 				this.activeTut = tut;
 
 				// run tutorial			
-				this.runEvent(tut.event, tut.handler);
+				// this.runEvent(tut.event, tut.handler);
+				ReminderList.add(tut.event,Reminder.Tutorial);
 
 				// Only run the very first incomplete tutorial
 				break;
@@ -63,8 +66,8 @@ var Tutorial = {
 		Function(init)();
 	},
 
-	loopingCheck: function() {
-		if (this.activeTut && this._checkCond_(this.activeTut.cond)) {
+	nextTut: function() {
+		if (this.activeTut) {
 			//console.log(this._checkCond_(this.activeTut.cond));
 			this.activeTut = null;
 
@@ -78,13 +81,14 @@ var Tutorial = {
 				if (!this._checkCond_(tut.cond)) {
 					// now let's execute the tut
 					// init
-					this._executeInit_(tut.init);
+					// this._executeInit_(tut.init);
 
 					// tuts -> runningTuts
 					this.activeTut = tut;
 
 					// run tutorial			
-					this.runEvent(tut.event, tut.handler);
+					// this.runEvent(tut.event, tut.handler);
+					ReminderList.add(tut,Reminder.Tutorial);
 
 					// Only run the very first incomplete tutorial
 					break;
@@ -95,10 +99,10 @@ var Tutorial = {
 
 	runEvent: function(event, handler) {
 		console.assert(event.length === handler.length);
-		var e = Event.createNew();
+		// var e = Event.createNew();
 		
 		// TODO: adjust the geo
-		e.position.set(300,100);
+		// e.position.set(300,100);
 
 		// generate model & controller
 		var model = [];		 // an array of tables
@@ -121,31 +125,35 @@ var Tutorial = {
 		}
 
 		// now set model & controller
-		e.setModel(model);
-		e.setController(controller);
+		/*global ReminderList*/
+		ReminderList.add(event,model,controller,Reminder.Tutorial,0);
+		// e.setModel(model);
+		// e.setController(controller);
 	},
 
 	reminder: function(name) {
 		var quests = this.runningQuests.filter(function(qu) { return qu.name == name; });
 		console.assert(quests.length === 1);
 		var q = quests[0];
+		var reminder = ReminderList.add(q,Reminder.Tutorial);
+		reminder.seen = true;
 		//console.log("So selected tut is: ", q);
 		
 		// create reminder view		
-		var view = DReminderView.createNew();
-		view.setModel(q.reminder.model);
-		view.setController(101, q.reminder.controller);
-		view.hide();
+		// var view = DReminderView.createNew();
+		// view.setModel(q.reminder.model);
+		// view.setController(101, q.reminder.controller);
+		// view.hide();
 		
-		// create reminder button
-		var button = DReminderButton.createNew();
-		button.setReminderView(view);
+		// // create reminder button
+		// var button = DReminderButton.createNew();
+		// button.setReminderView(view);
 		
-		// now update the start turn for view
-		view.setModel({startAt:q.startAt});
+		// // now update the start turn for view
+		// view.setModel({startAt:q.startAt});
 		
-		// let q store reminderButton
-		q.reminderButton = button;
+		// // let q store reminderButton
+		// q.reminderButton = button;
 	},
 
 	// check every tutorial to see if it is complete
@@ -155,7 +163,7 @@ var Tutorial = {
 		var shouldRemove = false;
 
 		// check completeness
-		var f = Function("return " + r.controller.check);
+		var f = Function("return " + tut.event.vars[0]);
 		//console.log("f is:", f.toString());
 		if (f()) {
 			//tut.reminderButton.reminderView.suicide(); TODO: get this working

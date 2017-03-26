@@ -1,6 +1,7 @@
 /*global MainGame*/
 /*global Event*/
 /*global Global*/
+/*global ReminderList*/
 
 // singleton
 
@@ -39,26 +40,29 @@ var CoalitionQuest={
 			if(!this._checkCond_(q.cond))
 				continue;
 			// get "people"
-			q.peopleRef=this._getPeople_(_hiPeopleRef, q.people);
-			if(!q.peopleRef)
+			var peopleRef=this._getPeople_(q.people);
+			if(!peopleRef)
 				continue;
+			q.event.args.push(peopleRef);
+			q.reminder.args.push(peopleRef);
 			// now let's execute the q
 			// init
-			this._executeInit_(q.init);
+			// this._executeInit_(q.init);
 			// set startAt
-			q.startAt=_curTurn;
+			// q.startAt=_curTurn;
 			// quests -> runningQuests
 			this.runningQuests.push(this.quests.pop());
 			// run quest			
-			this.runEvent(q.peopleRef, q.event, q.handler);
+			// this.runEvent(q.peopleRef, q.event, q.handler);
+			ReminderList.add(q.event,Reminder.Favor);
 		}
 	},
 	_checkCond_: function(condString){
 		var fn=Function("return "+condString);
 		return fn();
 	},
-	_getPeople_: function(hiPeopleRef, roles){
-		var peopleRef=hiPeopleRef.filter(function(p){
+	_getPeople_: function(roles){
+		var peopleRef=MainGame.population.highList().filter(function(p){
 			for(var i=0;i<roles.length;i++)
 				if(p.role===roles[i])
 					return true;
@@ -72,11 +76,11 @@ var CoalitionQuest={
 	},
 
 	runEvent: function(peopleRef, event, handler){
-		console.assert(event.length===handler.length);
+		// console.assert(event.length===handler.length);
 		// console.log("Now run quest:",peopleRef,event,handler);
-		var e=Event.createNew();
+		// var e=Event.createNew();
 		// TODO: adjust the geo
-		e.position.set(300,100);
+		// e.position.set(300,100);
 		// generate model & controller
 		var model=[];		// an array of tables
 		var controller=[];	// an array of arrays of functions
@@ -96,27 +100,29 @@ var CoalitionQuest={
 			}
 		}
 		// now set model & controller
-		e.setModel(model);
-		e.setController(controller);
+		// e.setModel(model);
+		// e.setController(controller);
 	},
 
 	reminder: function(name){
 		var quests=this.runningQuests.filter(function(qu){return qu.name==name});
 		console.assert(quests.length===1);
 		var q=quests[0];
-		console.log("So selected q is:",q);
-		// create reminder view		
-		var view=DReminderView.createNew();
-		view.setModel(q.reminder.model);
-		view.setController(101, q.reminder.controller);
-		view.hide();
-		// create reminder button
-		var button=DReminderButton.createNew(DReminderButton.Favor);
-		button.setReminderView(view);
-		// now update the start turn for view
-		view.setModel({startAt:q.startAt})
-		// let q store reminderButton
-		q.reminderButton=button;
+		var reminder = ReminderList.add(q.reminder,Reminder.Favor);
+		reminder.seen=true;
+		// console.log("So selected q is:",q);
+		// // create reminder view		
+		// var view=DReminderView.createNew();
+		// view.setModel(q.reminder.model);
+		// view.setController(101, q.reminder.controller);
+		// view.hide();
+		// // create reminder button
+		// var button=DReminderButton.createNew(DReminderButton.Favor);
+		// button.setReminderView(view);
+		// // now update the start turn for view
+		// view.setModel({startAt:q.startAt})
+		// // let q store reminderButton
+		// q.reminderButton=button;
 	},
 
 	// check every quest to see it 1)fails; or 2)succeeds
@@ -180,6 +186,9 @@ var CoalitionQuest={
 		e.setController([
 			[function(){e.suicide()}]
 		]);
+	},
+	ministerFired: function(){
+
 	}
 };
 

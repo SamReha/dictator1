@@ -10,8 +10,9 @@ var Event={
 	createNew: function(isInformation){
 		var v=MainGame.game.add.sprite(0,0,"event_bg");
 		// add bg
-		v.bg=MainGame.game.add.sprite(0,0,"event_bg");
-		v.addChild(v.bg);
+		// v.bg=MainGame.game.add.sprite(0,0,"event_bg");
+		// v.addChild(v.bg);
+		v.position.set(300,100);
 		// add decision view
 		v.decisionView=DDecisionView.createNew();
 		v.addChild(v.decisionView);
