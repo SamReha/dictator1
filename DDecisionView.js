@@ -4,13 +4,14 @@
 // Texture Requirement: 'small_generic_button' (use Find-Replace to change)
 
 var DDecisionView={
+	font: {font:"30px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
 		[],											// 0 button
-		[{x:200,y:100}],							// 1 button
-		[{x:100,y:100},{x:300,y:100}],				// 2 buttons
-		[{x:0,y:100},{x:200,y:100},{x:400,y:100}],	// 3 buttons
-		[{x:0,y:100},{x:150,y:100},{x:300,y:100},{x:450,y:100}]	// 4 buttons
+		[{x:347,y:337}],							// 1 button
+		[{x:272,y:337},{x:472,y:337}],				// 2 buttons
+		[{x:0,y:337},{x:300,y:337},{x:400,y:337}],	// 3 buttons
+		[{x:0,y:337},{x:150,y:337},{x:300,y:337},{x:450,y:337}]	// 4 buttons
 	],
 
 	createNew: function(){
@@ -20,7 +21,7 @@ var DDecisionView={
 		v.portrait=MainGame.game.add.sprite(50,20);
 		v.addChild(v.portrait);
 		// add description text
-		v.description=MainGame.game.add.text(150,20,"");
+		v.description=MainGame.game.add.text(75,40,"",DDecisionView.font);
 		v.addChild(v.description);
 		// add buttons array
 		v.buttons=[];
@@ -48,13 +49,17 @@ var DDecisionView={
 			v.buttons[j].destroy();	// destory the sprite
 			v.buttons.splice(j,1);	// remove it from array v.buttons
 		}
+
 		// add new buttons
-		for(var i=0;i<_buttonText.length;i++){
-			var pos=DDecisionView.buttonPos[_buttonText.length][i];
+		for (var i = 0; i < _buttonText.length; i++) {
+			var pos = DDecisionView.buttonPos[_buttonText.length][i];
 			// console.log("Here is the pos:",pos.x,pos.y);
-			v.buttons[i]=MainGame.game.make.button(pos.x, pos.y,
+			v.buttons[i] = MainGame.game.make.button(pos.x, pos.y,
 				"small_generic_button", null, v.buttons[i], 0, 1, 2);
-			v.buttons[i].label=MainGame.game.add.text(0,0,_buttonText[i]);
+            v.buttons[i].anchor.set(0.5, 0.5);
+
+			v.buttons[i].label = MainGame.game.add.text(0, 0, _buttonText[i], DDecisionView.font);
+            v.buttons[i].label.anchor.set(0.5, 0.5);
 			v.buttons[i].addChild(v.buttons[i].label);
 			v.addChild(v.buttons[i]);
 		}
@@ -80,8 +85,8 @@ var DDecisionView={
 // The test case function
 function test_DDecisionView(){
 	var deciView=DDecisionView.createNew();
-    deciView.x=200;
-    deciView.y=200;
+    deciView.x=300;
+    deciView.y=300;
     
     // set the model (data)
     deciView.setModel(

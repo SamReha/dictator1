@@ -131,18 +131,20 @@ var TileDetailView = {
 
         // Class variables
         view.index = buildingIndex;
-        view.icon = game.make.sprite(0, 0, building.detailIconTexture);
+        view.iconFrame = game.make.sprite(0, 0, 'detail_icon_frame');
+        view.icon = game.make.sprite(0, 0, building.detailIconTexture);;
         view.icon.x = (-view.width / 2) + TileDetailView.horizontalBorderWidth;
         view.icon.y = (-view.height / 2) + TileDetailView.verticalBorderWidth;
+        view.iconFrame.x = -8;
+        view.iconFrame.y = -8;
+        view.icon.addChild(view.iconFrame);
         view.addChild(view.icon);
 
-        view.buildingName = game.make.text(0, 0, building.playerLabel + ' ', TileDetailView.nameStyle);
-        view.buildingName.x = view.icon.x;
-        view.buildingName.y = view.icon.y + view.icon.height;
+        view.buildingName = game.make.text(view.icon.x, view.icon.y + view.icon.height + 10, building.playerLabel + ' ', TileDetailView.nameStyle);
         view.addChild(view.buildingName);
 
         view.textDescription = game.make.text(0, 0, '', TileDetailView.descriptionStyle);
-        view.textDescription.x = view.icon.x + view.icon.width + TileDetailView.horizontalBorderWidth/2;
+        view.textDescription.x = view.icon.x + view.icon.width + TileDetailView.horizontalBorderWidth/2 + 2;
         view.textDescription.y = -view.height/2 + TileDetailView.verticalBorderWidth;
         view.addChild(view.textDescription);
 

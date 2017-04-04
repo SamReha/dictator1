@@ -43,6 +43,7 @@ var Preloader={
         g.load.image('shantyTown_detail',  detailIconDir + 'shantyTown.png');
         g.load.image('suburb_detail',      detailIconDir + 'suburb.png');
         g.load.image('park_detail',        detailIconDir + 'park.png');
+        g.load.image('detail_icon_frame',  detailIconDir + 'detail_icon_frame.png');
 
         // Resources
         var resourceDir = imageDir + 'resources/';
@@ -93,6 +94,7 @@ var Preloader={
         g.load.image('buildMenuCover2',           uiDir + 'buildMenuCover2.png');
         g.load.image('coalition_backpanel',       uiDir + 'coalition_backpanel.png');
         g.load.image('coalition_border',          uiDir + 'coalition_outer_edge.png');
+        g.load.image('stats_panel_backpanel',     uiDir + 'stats_panel_backpanel.png');
         g.load.image('peopleViewBg',              uiDir + 'peopleViewBg.jpg');
         g.load.image('peopleViewLeftBg',          uiDir + 'peopleViewLeftBg.png');
         g.load.image('peopleViewRightBg',         uiDir + 'peopleViewRightBg.png');
@@ -102,7 +104,9 @@ var Preloader={
         g.load.image("pi_prevPage",               uiDir + "pi_prevPage.png");
         g.load.image("pi_nextPage",               uiDir + "pi_nextPage.png");
         g.load.image("uiMask",                    uiDir + "uiMask.png");
-        g.load.image("event_bg",                  uiDir + "event_bg.jpg");
+        g.load.image("event_bg",                  uiDir + "event_bg.png");
+        g.load.image('freedomUnrestMeter',        uiDir + "freedomUnrestMeter.png");
+        g.load.image('fun_panel_backpanel',       uiDir + 'fun_panel_backpanel.png');
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
@@ -112,6 +116,7 @@ var Preloader={
         g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
         g.load.spritesheet('buttonSprite',              buttonDir + 'button_spritesheet.png', 128, 48, 4);
         g.load.spritesheet('closeButton',               buttonDir + 'close_button.png', 48, 48, 3);
+        g.load.spritesheet('buy_button',                buttonDir + 'buy_button.png', 120, 48, 3);
         g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',        buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button',      buttonDir + 'large_generic_button.png', 240, 96, 3);

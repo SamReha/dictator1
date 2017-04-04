@@ -33,6 +33,11 @@ var BuildMenu={
 		// buildMenu: UI groups
 		var bureauGroup = MainGame.game.make.group();
 		bm.addChild(bureauGroup);
+
+		var bureauText = MainGame.game.make.text(bm.width/6, 20, "Bureaucratic", this.styleNormal);
+		bureauText.anchor.x = 0.5;
+		bureauGroup.addChild(bureauText);
+
 		var bureauGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
 		bureauGroupCover.inputEnabled = true;
 		bureauGroupCover.input.priorityID = hudInputPriority + 10;
@@ -42,6 +47,11 @@ var BuildMenu={
 		var merchantGroup = MainGame.game.make.group();
 		merchantGroup.position.x = bm.width/3;
 		bm.addChild(merchantGroup);
+
+		var merchantText = MainGame.game.make.text(bm.width/6, 20, "Financial", this.styleNormal);
+		merchantText.anchor.x = 0.5;
+		merchantGroup.addChild(merchantText);
+
 		var merchantGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
 		merchantGroupCover.inputEnabled = true;
 		merchantGroupCover.input.priorityID = hudInputPriority + 10;
@@ -52,6 +62,11 @@ var BuildMenu={
 		var militaryGroup = MainGame.game.make.group();
 		militaryGroup.position.x = bm.width*2/3;
 		bm.addChild(militaryGroup);
+
+		var militaryText = MainGame.game.make.text(bm.width/6, 20, "Military", this.styleNormal);
+		militaryText.anchor.x = 0.5;
+		militaryGroup.addChild(militaryText);
+
 		var militaryGroupCover = MainGame.game.add.sprite(0,0,'buildMenuCover1');
 		militaryGroupCover.inputEnabled = true;
 		militaryGroupCover.input.priorityID = hudInputPriority + 10;
@@ -71,9 +86,9 @@ var BuildMenu={
 
 		/*global Hud*/
 		// buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
-		var buyMansionBtn = MainGame.game.make.button((bm.width/8), (bm.height/4), 'small_generic_button', function(){
+		var buyMansionBtn = MainGame.game.make.button((bm.width/8), (bm.height/4), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyMansionBtn, 'mansion');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buyMansionBtn.input.priorityID = hudInputPriority;
 		buyMansionBtn.anchor.x = 0.5;  // Anchor in center
 		buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -83,13 +98,6 @@ var BuildMenu={
 		buyMansionBtn.addChild(mansionText);
 		defaultGroup.addChild(buyMansionBtn);
 
-		// Setup buildMenu purchase button text
-		var buyMansionBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buyMansionBtnText.anchor.x = 0.5;
-		buyMansionBtnText.anchor.y = 0.5;
-		buyMansionBtnText.y = -buyMansionBtn.height / 2;
-		buyMansionBtn.addChild(buyMansionBtnText);
-
 		// Mansion Tooltip
 		var mansionToolTip = ToolTip.createNew('Mansions are high-class private residences.\n\nEach mansion can house one resident.\nMansions provide excellent shelter.');
 		mansionToolTip.x = -buyMansionBtn.width/2;
@@ -98,9 +106,9 @@ var BuildMenu={
         buyMansionBtn.events.onInputOut.add(function() {mansionToolTip.hide();}, null);
 
         // SUBURB
-		var buySuburbBtn = MainGame.game.make.button((bm.width*3/8), (bm.height/4), 'small_generic_button', function(){
+		var buySuburbBtn = MainGame.game.make.button((bm.width*3/8), (bm.height/4), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySuburbBtn, 'suburb');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buySuburbBtn.input.priorityID = hudInputPriority;
 		buySuburbBtn.anchor.x = 0.5;  // Anchor in center
 		buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -110,13 +118,6 @@ var BuildMenu={
 		buySuburbBtn.addChild(suburbText);
 		defaultGroup.addChild(buySuburbBtn);
 
-		// Setup buildMenu purchase button text
-		var buySuburbBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buySuburbBtnText.anchor.x = 0.5;
-		buySuburbBtnText.anchor.y = 0.5;
-		buySuburbBtnText.y = -buySuburbBtn.height / 2;
-		buySuburbBtn.addChild(buySuburbBtnText);
-
 		// Suburb Tooltip
 		var suburbToolTip = ToolTip.createNew('Suburbs are the staple residence of the middle class.\n\nEach suburb can house up to five residents.\nSuburbs provide decent shelter.');
 		suburbToolTip.x = -buySuburbBtn.width/2;
@@ -125,9 +126,9 @@ var BuildMenu={
         buySuburbBtn.events.onInputOut.add(function() {suburbToolTip.hide();}, null);
 
         // APARTMENT
-		var buyApartmentBtn = MainGame.game.make.button((bm.width*5/8), (bm.height/4), 'small_generic_button', function(){
+		var buyApartmentBtn = MainGame.game.make.button((bm.width*5/8), (bm.height/4), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyApartmentBtn, 'apartment');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buyApartmentBtn.input.priorityID = hudInputPriority;
 		buyApartmentBtn.anchor.x = 0.5;  // Anchor in center
 		buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -137,13 +138,6 @@ var BuildMenu={
 		buyApartmentBtn.addChild(apartmentText);
 		defaultGroup.addChild(buyApartmentBtn);
 
-		// Setup buildMenu purchase button text
-		var buyApartmentBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buyApartmentBtnText.anchor.x = 0.5;
-		buyApartmentBtnText.anchor.y = 0.5;
-		buyApartmentBtnText.y = -buyApartmentBtn.height / 2;
-		buyApartmentBtn.addChild(buyApartmentBtnText);
-
 		// Apartment Tooltip
 		var apartmentToolTip = ToolTip.createNew('High rise apartments provide high density housing for the working class.\n\nEach apartment can house up to ten residents.\nApartments provide poor shelter.');
 		apartmentToolTip.x = -buyApartmentBtn.width/2;
@@ -152,9 +146,9 @@ var BuildMenu={
         buyApartmentBtn.events.onInputOut.add(function() {apartmentToolTip.hide();}, null);
 
         // ROAD
-		var buyRoadBtn = MainGame.game.make.button((bm.width*7/8), (bm.height/4), 'small_generic_button', function(){
+		var buyRoadBtn = MainGame.game.make.button((bm.width*7/8), (bm.height/4), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyRoadBtn, 'road');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buyRoadBtn.input.priorityID = hudInputPriority;
 		buyRoadBtn.anchor.x = 0.5;  // Anchor in center
 		buyRoadBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -164,13 +158,6 @@ var BuildMenu={
 		buyRoadBtn.addChild(roadText);
 		defaultGroup.addChild(buyRoadBtn);
 
-		// Setup buildMenu purchase button text
-		var buyRoadBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buyRoadBtnText.anchor.x = 0.5;
-		buyRoadBtnText.anchor.y = 0.5;
-		buyRoadBtnText.y = -buyRoadBtn.height / 2;
-		buyRoadBtn.addChild(buyRoadBtnText);
-
 		// Road Tooltip
 		var roadToolTip = ToolTip.createNew('Roads allow citizens to travel between where they live\nand where they work.\n\nEach road tile generates a small amount of Freedom.');
 		roadToolTip.x = -buyRoadBtn.width/2;
@@ -179,9 +166,9 @@ var BuildMenu={
         buyRoadBtn.events.onInputOut.add(function() {roadToolTip.hide();}, null);
 
 		// SCHOOL
-		var buySchoolBtn = MainGame.game.make.button((bm.width/4), (bm.height/4), 'small_generic_button', function(){
+		var buySchoolBtn = MainGame.game.make.button((bm.width/4), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'school');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buySchoolBtn.input.priorityID = hudInputPriority;
 		buySchoolBtn.anchor.x = 0.5;  // Anchor in center
 		buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -191,13 +178,6 @@ var BuildMenu={
 		buySchoolBtn.addChild(schoolText);
 		bureauGroup.addChild(buySchoolBtn);
 
-		// Setup buildMenu purchase button text
-		var buySchoolBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buySchoolBtnText.anchor.x = 0.5;
-		buySchoolBtnText.anchor.y = 0.5;
-		buySchoolBtnText.y = -buySchoolBtn.height / 2;
-		buySchoolBtn.addChild(buySchoolBtnText);
-
 		// School Tooltip
 		var schoolToolTip = ToolTip.createNew('Schools educate your citizenry. Citizens enjoy living in neighborhoods\nwith good schools,\nand some jobs have education requirements for workers.\n\nEach teacher will generate a small amount of Education for nearby homes.\nEach teacher will generate a small amount of Freedom.');
 		schoolToolTip.x = -buySchoolBtn.width/2;
@@ -206,9 +186,9 @@ var BuildMenu={
         buySchoolBtn.events.onInputOut.add(function() {schoolToolTip.hide();}, null);
 
 		// PARK
-		var buyParkBtn = MainGame.game.make.button((bm.width/12), (bm.height/2), 'small_generic_button', function(){
+		var buyParkBtn = MainGame.game.make.button((bm.width/11), (2*(bm.height/3)-10), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyParkBtn, 'park');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buyParkBtn.input.priorityID = hudInputPriority;
 		buyParkBtn.anchor.x = 0.5;  // Anchor in center
 		buyParkBtn.anchor.y = 1;
@@ -217,13 +197,6 @@ var BuildMenu={
 		parkText.anchor.y = 1;
 		buyParkBtn.addChild(parkText);
 		bureauGroup.addChild(buyParkBtn);
-
-		// Setup buildMenu purchase button text
-		var buyParkBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buyParkBtnText.anchor.x = 0.5;
-		buyParkBtnText.anchor.y = 0.5;
-		buyParkBtnText.y = -buyParkBtn.height / 2;
-		buyParkBtn.addChild(buyParkBtnText);
 
 		// Road Tooltip
 		var parkToolTip = ToolTip.createNew('Parks beautify your country.\n\nEach park worker lowers Unrest by a\nsmall amount.');
@@ -234,9 +207,9 @@ var BuildMenu={
 
 
 		// FACTORY / LUMBERYARD
-		var buyFactoryBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'small_generic_button', function(){
+		var buyFactoryBtn = MainGame.game.make.button((bm.width/12), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFactoryBtn, 'lumberYard');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buyFactoryBtn.input.priorityID = hudInputPriority;
 		buyFactoryBtn.anchor.x = 0.5;  // Anchor in center
 		buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -246,13 +219,6 @@ var BuildMenu={
 		buyFactoryBtn.addChild(factoryText);
 		merchantGroup.addChild(buyFactoryBtn);
 
-		// Setup buildMenu purchase button text
-		var buyFactoryBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buyFactoryBtnText.anchor.x = 0.5;
-		buyFactoryBtnText.anchor.y = 0.5;
-		buyFactoryBtnText.y = -buyFactoryBtn.height / 2;
-		buyFactoryBtn.addChild(buyFactoryBtnText);
-
 		// Lumberyard Tooltip
 		var lumberyardToolTip = ToolTip.createNew('Lumber Yards are the backbone of your economy.\nLumber Yards generate Funds when worked.\n\nEach lumber jack generates a small amount of money per turn.\nLumber Yards must be built on Forest tiles.');
 		lumberyardToolTip.x = -buyFactoryBtn.width/2
@@ -261,9 +227,9 @@ var BuildMenu={
         buyFactoryBtn.events.onInputOut.add(function() {lumberyardToolTip.hide();}, null);
 
 		// ARMYBASE
-		var buyArmyBaseBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'small_generic_button', function(){
+		var buyArmyBaseBtn = MainGame.game.make.button((bm.width/12), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyArmyBaseBtn, 'armyBase');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buyArmyBaseBtn.input.priorityID = hudInputPriority;
 		buyArmyBaseBtn.anchor.x = 0.5;  // Anchor in center
 		buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -273,13 +239,6 @@ var BuildMenu={
 		buyArmyBaseBtn.addChild(armyBaseText);
 		militaryGroup.addChild(buyArmyBaseBtn);
 
-		// Setup buildMenu purchase button text
-		var buyArmyBaseBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buyArmyBaseBtnText.anchor.x = 0.5;
-		buyArmyBaseBtnText.anchor.y = 0.5;
-		buyArmyBaseBtnText.y = -buyArmyBaseBtn.height / 2;
-		buyArmyBaseBtn.addChild(buyArmyBaseBtnText);
-
 		// Army Base Tooltip
 		var armyBaseToolTip = ToolTip.createNew('The military is your last line of defense against an unruly populace.\nArmy Bases can be used to spawn Soldiers in the event of a Popular\nRevolution.\n\nEach soldier can be deployed for a small fee.\nEach solder removes a small amount of Freedom when deployed.');
 		armyBaseToolTip.x = -buyArmyBaseBtn.width/2;
@@ -288,9 +247,9 @@ var BuildMenu={
         buyArmyBaseBtn.events.onInputOut.add(function() {armyBaseToolTip.hide();}, null);
 
 		// Police Station
-		var buyPoliceStationBtn = MainGame.game.make.button((bm.width/4), (bm.height/4), 'small_generic_button', function(){
+		var buyPoliceStationBtn = MainGame.game.make.button((bm.width/4), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyPoliceStationBtn, 'police');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buyPoliceStationBtn.input.priorityID = hudInputPriority;
 		buyPoliceStationBtn.anchor.x = 0.5;  // Anchor in center
 		buyPoliceStationBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -300,13 +259,6 @@ var BuildMenu={
 		buyPoliceStationBtn.addChild(policeStationText);
 		militaryGroup.addChild(buyPoliceStationBtn);
 
-		// Setup buildMenu purchase button text
-		var buyPoliceStationText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buyPoliceStationText.anchor.x = 0.5;
-		buyPoliceStationText.anchor.y = 0.5;
-		buyPoliceStationText.y = -buyPoliceStationBtn.height / 2;
-		buyPoliceStationBtn.addChild(buyPoliceStationText);
-
 		// Police Station Tooltip
 		var policeStationToolTip = ToolTip.createNew('Police Stations are an effective means of exerting\ncontrol over your populace.\n\nEach police officer removes a small amount of\nFreedom.');
 		policeStationToolTip.x = -buyPoliceStationBtn.width/2;
@@ -315,9 +267,9 @@ var BuildMenu={
         buyPoliceStationBtn.events.onInputOut.add(function() {policeStationToolTip.hide();}, null);
 
 		// FARM
-		var buyFarmBtn = MainGame.game.make.button((bm.width/12), (bm.height/4), 'small_generic_button', function(){
+		var buyFarmBtn = MainGame.game.make.button((bm.width/11), 5*(bm.height/12), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFarmBtn, 'fertileFarm');},
-			buildMenu, 0, 1, 0, 2);
+			buildMenu, 0, 1, 2, 2);
 		buyFarmBtn.input.priorityID = hudInputPriority;
 		buyFarmBtn.anchor.x = 0.5;  // Anchor in center
 		buyFarmBtn.anchor.y = 1;  // Anchor on bottom left corner
@@ -326,13 +278,6 @@ var BuildMenu={
 		farmText.anchor.y = 1;
 		buyFarmBtn.addChild(farmText);
 		bureauGroup.addChild(buyFarmBtn);
-
-		// Setup buildMenu purchase button text
-		var buyFarmBtnText = MainGame.game.make.text(0, 0, 'Buy', BuildMenu.styleButton);
-		buyFarmBtnText.anchor.x = 0.5;
-		buyFarmBtnText.anchor.y = 0.5;
-		buyFarmBtnText.y = -buyFarmBtn.height / 2;
-		buyFarmBtn.addChild(buyFarmBtnText);
 
 		// Farm Tooltip
 		var farmToolTip = ToolTip.createNew('Everyone needs to eat, and citizens love to\nhave abundant access to food.\n\nEach farmer provides a small amount of\nfood to nearby homes.');
@@ -349,32 +294,33 @@ var BuildMenu={
 		if(bureaucrats === 0){
 			bureauGroupCover.visible = true;
 
-			var bureauCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Minister of Bureaucracy.', BuildMenu.styleNormal);
-			bureauCount.anchor.x = 0.5;
-			bureauCount.anchor.y = 0.5;
-			bureauGroup.addChild(bureauCount);
+			var bureauToolTip = ToolTip.createNew('Hire a Minister of Bureaucracy\nto unlock these options');
+			bureauToolTip.x = bureauGroupCover.width/2 - bureauToolTip.width/2;
+			bureauToolTip.y = bureauGroupCover.height/2;
+			bureauGroupCover.events.onInputOver.add(function() {bureauToolTip.show();}, null);
+        	bureauGroupCover.events.onInputOut.add(function() {bureauToolTip.hide();}, null);
+			bureauGroupCover.addChild(bureauToolTip);
 		}
 		if(merchants === 0){
 			merchantGroupCover.visible = true;
 
-			var merchantCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Minister of Finance.', BuildMenu.styleNormal);
-			merchantCount.anchor.x = 0.5;
-			merchantCount.anchor.y = 0.5;
-			merchantGroup.addChild(merchantCount);
+			var merchantToolTip = ToolTip.createNew('Hire a Minister of Finance\nto unlock these options');
+			merchantToolTip.x = merchantGroupCover.width/2 - merchantToolTip.width/2;
+			merchantToolTip.y = merchantGroupCover.height/2;
+			merchantGroupCover.events.onInputOver.add(function() {merchantToolTip.show();}, null);
+        	merchantGroupCover.events.onInputOut.add(function() {merchantToolTip.hide();}, null);
+			merchantGroupCover.addChild(merchantToolTip);
 		}
 		if(military === 0){
 			militaryGroupCover.visible = true;
 
-			var militaryCount = MainGame.game.make.text((bm.width/6), (bm.height*7/12),
-				'No Minister of the Military.', BuildMenu.styleNormal);
-			militaryCount.anchor.x = 0.5;
-			militaryCount.anchor.y = 0.5;
-			militaryGroup.addChild(militaryCount);
+			var militaryToolTip = ToolTip.createNew('Hire a Minister of the Military\nto unlock these options');
+			militaryToolTip.x = militaryGroupCover.width/2 - militaryToolTip.width/2;
+			militaryToolTip.y = militaryGroupCover.height/2;
+			militaryGroupCover.events.onInputOver.add(function() {militaryToolTip.show();}, null);
+        	militaryGroupCover.events.onInputOut.add(function() {militaryToolTip.hide();}, null);
+			militaryGroupCover.addChild(militaryToolTip);
 		}
-		// if(bureaucrats === 0 && merchants === 0 && military === 0)
-		// 	defaultGroupCover.visible = true;
 
 		return buildMenu;
 	},

@@ -102,6 +102,15 @@ var BoardController={
 			if(bc.detailView.index===index)
 				return;
 		}
+
+		// If the tile is empty, don't bother showing a panel (unless it is water or mountain)
+		var tile = MainGame.board.at(index);
+		if (!tile.hasBuilding() && tile.getResType() === null) {
+			if ((tile.getTerrainType() !== 'water') && (tile.getTerrainType() !== 'mountain')) {
+				return;
+			}
+		}
+
 		var tile=bc.modelView.at(index);
 		console.assert(tile);
 		bc.briefView = TileBriefView.createNew(index);

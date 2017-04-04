@@ -1,5 +1,5 @@
 var CoalitionFlag = {
-	origin: { x:1280, y:100 },
+	origin: { x:1280, y:50 },
 	unitWidth: 46,
 	unitHeight: 46,
 	verticalBorderPad: 5,
@@ -12,6 +12,7 @@ var CoalitionFlag = {
 		coalitionFlag.anchor.x = 1;
 		coalitionFlag.inputEnabled = true;
 		coalitionFlag.input.priorityID = 0;
+		coalitionFlag.scale.setTo(1.25, 1.25);
 
 		// coalitionFlag.border = MainGame.game.make.sprite(5, 0, 'coalition_border');
 		// coalitionFlag.border.anchor.x = 1;
