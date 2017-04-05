@@ -1,29 +1,29 @@
 // require: MainGame.game !== null
-var Tile={
+var Tile = {
     // create from JSON. json MUST be a string to prevent the ref issue.
-    fromJSON: function(json){
+    fromJSON: function(json) {
         // create the tile
         /*global MainGame*/
-        var tile=MainGame.game.make.sprite(0,0);
+        var tile = MainGame.game.make.sprite(0,0);
         // decode json
-        var data=JSON.parse(json);
+        var data = JSON.parse(json);
 
         // Class members
         var tempTerrain = data.terrain;
-        data.terrain+=MainGame.game.rnd.integerInRange(1,3);
-        tile.terrain=MainGame.game.make.sprite(0,0,data.terrain);
-        tile.terrain.key=tempTerrain;
+        data.terrain += MainGame.game.rnd.integerInRange(1, 3);
+        tile.terrain = MainGame.game.make.sprite(0,0,data.terrain);
+        tile.terrain.key = tempTerrain;
         tile.addChild(tile.terrain);
 
         //tile.res=MainGame.game.make.sprite(0,0,data.res);
-        tile.resType=data.res;
-        if(data.res==='forest'){
-            data.res+=MainGame.game.rnd.integerInRange(1,2);
-            tile.res=MainGame.game.make.sprite(0,0,data.res);
-            tile.res.key='forest';
+        tile.resType = data.res;
+        if (data.res === 'forest') {
+            data.res += MainGame.game.rnd.integerInRange(1, 2);
+            tile.res = MainGame.game.make.sprite(0, 0, data.res);
+            tile.res.key = 'forest';
             tile.addChild(tile.res);
-        }else{
-            tile.res=MainGame.game.make.sprite(0,0,data.res);
+        } else {
+            tile.res = MainGame.game.make.sprite(0, 0, data.res);
             tile.addChild(tile.res);
         }
 
@@ -56,28 +56,46 @@ var Tile={
                 break;
         }
 
+        tile.unit = null;
+
         /* global Building*/
         tile.building=Building.createNew(data.building);
         tile.addChild(tile.building);
 
         // Class funcs
-        tile.getTerrain=function(){return tile.terrain};
-        tile.getTerrainType=function(){return tile.terrain.key};
-        tile.getResType=function(){return tile.resType};
-        tile.getRes=function(){return tile.res};
+        //// Terrain Layer
+        tile.getTerrain = function() { return tile.terrain; };
+        tile.getTerrainType = function() { return tile.terrain.key; };
+
+        //// Resource Layer TODO: remove!
+        tile.getResType = function() { return tile.resType; };
+        tile.getRes = function() { return tile.res; };
         tile.removeRes = function() { Tile.removeRes(tile); };
-        tile.hasBuilding=function(){return tile.building && !tile.building.isEmpty()};
-        tile.getBuilding=function(){return tile.building};
-        tile.setBuilding=function(building){Tile.setBuilding(tile,building)};
+        
+        //// Building Layer
+        // Returns true iff this tile has a building on it
+        tile.hasBuilding = function() { return tile.building && !tile.building.isEmpty(); };
+        tile.getBuilding = function() { return tile.building; };
+        tile.setBuilding = function(building) { Tile.setBuilding(tile,building); };
         tile.removeBuilding = function() { Tile.removeBuilding(tile); };
+
+        //// Unit Layer
+        // Returns true iff this tile has a unit stationed on it
+        tile.hasUnit = function() { return tile.unit !== null; };
+        // Returns the unit stationed on this tile (or null, if no unit exists)
+        tile.getUnit = function() { return tile.unit; };
+        // Assigns a unit to this tile. Remove a unit by passing null.
+        tile.setUnit = function(newUnit) { Tile.setUnit(tile, newUnit); };
 
         return tile;
     },
+
     toJSON: function(t){
         var data={terrain:t.terrain.key, res:t.res.key, building:JSON.parse(t.building.toJSON())};
         return JSON.stringify(data);
     },
 
+    //// Resource Layer TODO: remove!
     removeRes: function(tile) {
         tile.resType = null;
         tile.removeChild(tile.res);
@@ -85,6 +103,7 @@ var Tile={
         tile.addChild(tile.res);
     },
 
+    //// Building Layer
     setBuilding: function(tile, building) {
         // If this building already exists on this tile, do nothing
         if (tile.building === building) {
@@ -121,6 +140,19 @@ var Tile={
         if (tile.hasBuilding()) {
             tile.removeChild(tile.building);
             tile.building = Building.createNew(null);
+        }
+    },
+
+    //// Unit Layer
+    setUnit: function(tile, newUnit) {
+        if (tile.unit !== null) {
+            tile.removeChild(thile.unit);
+        }
+
+        tile.unit = newUnit;
+
+        if (newUnit !== null) {
+            tile.addChild(tile.unit);
         }
     },
 };

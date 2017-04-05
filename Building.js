@@ -41,6 +41,8 @@ var Building = {
             //console.log(b.name);
         }
 
+        b.health = 10;
+
         // Class funcs
         b.isEmpty=function(){return b.name===null};
         b.addPerson=function(){return Building.addPerson(b)};

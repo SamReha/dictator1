@@ -1,0 +1,19 @@
+{
+    "homelessCamp": {
+        "name": "homelessCamp",
+        "label": "Homeless Camp",
+        "startingHealth": 1
+    },
+
+    "soldier": {
+        "name": "soldier",
+        "label": "Soldier",
+        "startingHealth": 1
+    },
+
+    "rioter": {
+        "name": "rioter",
+        "label": "Rioter",
+        "startingHealth": 1
+    }
+}
