@@ -15,7 +15,7 @@ var UnitAI={
 		}else{
 			if(riotIndecies.length > 0){
 				var palaceIndex = MainGame.board.findBuilding('palace',null,null,null)[0];
-				var riotIndecies = MainGame.board.findRiots();
+				var riotIndecies = MainGame.board.findUnits(Unit.Riot);
 				var armyDistance = MainGame.board.distanceOf(palaceIndex,unit.tileIndex);
 				var minDistance = null;
 				var minIndex = null;
@@ -29,7 +29,7 @@ var UnitAI={
 						minIndex = riotIndecies[i];
 					}
 				}
-				return MainGame.at(minIndex).getRiot();
+				return MainGame.board.at(minIndex).getUnit();
 			}
 		}
 	},
@@ -116,7 +116,7 @@ var UnitAI={
 	},
 	attackTarget: function(unit){
 		if(unit.type===Unit.Riot){
-			MainGame.board.at(unit.target).damage(unit.heath);
+			MainGame.board.at(unit.target).getBuilding().damage(unit.heath);
 		}else{
 			unit.target.subtractPeople(unit.heath,true);
 		}
