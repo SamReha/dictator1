@@ -61,14 +61,14 @@ var Global={
         freeAv = Math.round(freeAv/lowList.length,0);
         unrestAv = Math.round(unrestAv/lowList.length,0);
 
-        // console.log(MainGame.board.findBuilding(null,"road",null).length);
-        Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,"road",null).length,0,100);
+        // console.log(MainGame.board.findBuilding(null,null,"road",null).length);
+        Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,null,"road",null).length,0,100);
         Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length,0,100);
     },
     updateMoneyPerTurn: function(){
         var totalIncome = 0;
         /*global MainGame*/
-        var buildings = MainGame.board.findBuilding(null,null,"money");
+        var buildings = MainGame.board.findBuilding(null,null,null,"money");
 
         for(var bldIndex=0;bldIndex<buildings.length;++bldIndex){
             var building = MainGame.board.at(buildings[bldIndex]).building;

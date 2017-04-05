@@ -2,7 +2,7 @@
 var updatePopulation = function(nextTurn,updatingHomes) {
 	/* global MainGame */
 	var pop = MainGame.population;
-	var houseList = MainGame.board.findBuilding(null,"housing",null);
+	var houseList = MainGame.board.findBuilding(null,null,"housing",null);
 	//var workMap = pop.getWorkMap();
 	// var houseMap = pop.getHouseMap();
 
@@ -57,7 +57,7 @@ var clampedSum = function(a, b, max) {
 
 var updateHomesNearOutput = function(tileIndex,range){
 	/*global MainGame*/
-	var homes = MainGame.board.findBuilding(null,"housing",null);
+	var homes = MainGame.board.findBuilding(null,null,"housing",null);
 	for(var houseIndex=0;houseIndex<homes.length;++houseIndex){
 		if(MainGame.board.distanceOf(tileIndex,homes[houseIndex]) <= 2 && MainGame.board.at(homes[houseIndex]).building.name!=="palace"){
 			updateHome(homes[houseIndex]);
@@ -78,7 +78,7 @@ var updateHome = function(houseIndex){
 
 var getEffectOutputInRangeByType = function(homeIndex, type) {
 	var totalOutput = 0;
-	var allBuildingIndexes = MainGame.board.findBuilding(null, null, type);
+	var allBuildingIndexes = MainGame.board.findBuilding(null, null, null, type);
 
 	for (var index=0;index<allBuildingIndexes.length;++index) {
 		var buildingData = MainGame.board.at(allBuildingIndexes[index]).building;

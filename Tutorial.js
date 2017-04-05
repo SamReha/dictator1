@@ -171,8 +171,8 @@ var Tutorial = {
 	roadsBuilt: function() {
 		//console.log('ROADS BUILT CHECK');
 		var board = MainGame.board;
-		var homes = board.findBuilding(null, 'housing', null);
-		var lumberyards = board.findBuilding(null, 'production', null);
+		var homes = board.findBuilding(null, null, 'housing', null);
+		var lumberyards = board.findBuilding(null, null, 'production', null);
 
 		for (var i = 0; i < homes.length; i++) {
 			for (var k = 0; k < lumberyards.length; k++) {
@@ -189,7 +189,7 @@ var Tutorial = {
 	lumberYardHasWorkers: function() {
 		//console.log('ROADS BUILT CHECK');
 		var board = MainGame.board;
-		var lumberyards = board.findBuilding(null, 'production', null);
+		var lumberyards = board.findBuilding(null, null, 'production', null);
 
 		for (var i = 0; i < lumberyards.length; i++) {
 			var lumberyard = board.at(lumberyards[i]).building;
@@ -201,7 +201,7 @@ var Tutorial = {
 	},
 
 	builtNewHouse: function() {
-		var numHouses = MainGame.board.findBuilding(null, 'housing', null).length;
+		var numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length;
 
 		return Tut.numHouses < numHouses;
 	},

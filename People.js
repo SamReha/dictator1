@@ -88,7 +88,7 @@ var Person={
     findHousing: function(p){
         /*global MainGame*/
         var board = MainGame.board;
-        var housingIndices=board.findBuilding(null,"housing",null);
+        var housingIndices=board.findBuilding(null,null,"housing",null);
         // console.log("housingIndices "+ housingIndices);
         
         for(var i=0;i<housingIndices.length;++i){
