@@ -85,8 +85,9 @@ var UnitAI={
 			if(!tile.hasUnit())
 				distances.push(MainGame.board.distanceOf(adjacentTiles[i],targetIndex));
 			else{
-				if(unit.type === Unit.Riot && tile.getUnit().type === Unit.Riot)
-					UnitAI.mergeUnits(tile.getUnit(),unit);
+				var adjacentUnit = tile.getUnit();
+				if(unit.type === Unit.Riot && adjacentUnit.type === Unit.Riot && unit.heath <= adjacentUnit.heath)
+					UnitAI.mergeUnits(adjacentUnit,unit);
 			}
 		}
 
