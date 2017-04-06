@@ -10,13 +10,15 @@
         "name": "soldier",
         "label": "Soldier",
         "type": "soldier",
-        "startingHealth": 1
+        "startingHealth": 1,
+        "isAttacking": false
     },
 
     "rioter": {
         "name": "rioter",
         "label": "Rioter",
         "type": "rioter",
-        "startingHealth": 1
+        "startingHealth": 1,
+        "isAttacking": false
     }
 }

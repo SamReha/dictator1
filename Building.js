@@ -47,6 +47,7 @@ var Building = {
         b.isEmpty=function(){return b.name===null};
         b.addPerson=function(){return Building.addPerson(b)};
         b.removePerson=function(){return Building.removePerson(b)};
+        b.damage=function(damage){return Building.damage(b,damage)};
         b.nextTurn=function(turn){return Building.nextTurn(b,turn)};
 
         return b;
@@ -66,6 +67,20 @@ var Building = {
             return true;
         }
         else{   return false;   }
+    },
+
+    damage: function(b,damage){
+        b.health -= damage;
+
+        if(b.health <= 0){
+            if(b.name==="palace"){
+                // Game Over
+            }else{
+                // replace sprite with rubble
+                // TODO: delete the following lines
+                b.destroy();
+            }
+        }
     },
 
     nextTurn: function(b,turn){
