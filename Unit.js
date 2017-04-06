@@ -1,6 +1,11 @@
 var Unit = {
     unitData: null,
 
+    // Type things
+    Army: 'soldier',
+    Riot: 'rioter',
+    Homeless: 'homeless',
+
     loadUnitData: function() {
         if (Unit.unitData === null) {
             Unit.unitData = MainGame.game.cache.getJSON('unitData');
@@ -12,9 +17,9 @@ var Unit = {
         console.assert(data === null, "[Unit] Cannot instantiate unit with no data!");
         console.assert(startingIndex < 0 || startingIndex >= MainGame.board.tileCount, "[Unit] Cannot place unit at invalid index!");
 
-        var unit = MainGame.game.make.sprite(0, 0, data.name);
+        var unit = MainGame.game.make.sprite(0, 0, data.type);
 
-        unit.name = data.name;
+        unit.type = data.type;
         unit.health = data.startingHealth;
         unit.currentIndex = startingIndex;
 
