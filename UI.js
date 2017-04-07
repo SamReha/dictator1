@@ -40,13 +40,6 @@ var Hud = {
         hud.btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         hud.addChild(hud.btnNextTurn);
 
-        // var btnNextTurnText = MainGame.game.make.text(0, 0, 'Next Turn', Hud.styleButton);
-        // btnNextTurnText.anchor.x = 0.5;
-        // btnNextTurnText.anchor.y = 0.5;
-        // btnNextTurnText.x = -btnNextTurn.width / 2;
-        // btnNextTurnText.y = -btnNextTurn.height / 2;
-        // btnNextTurn.addChild(btnNextTurnText);
-
         // Group2: Build
         var buildGroup=MainGame.game.make.group();
         buildGroup.name="buildGroup";
@@ -66,18 +59,11 @@ var Hud = {
         buildBtn.input.priorityID = 1;
         buildBtn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         buildGroup.addChild(buildBtn);
-
-        // var buildBtnText = MainGame.game.make.text(0, 0, 'Build', Hud.styleButton);
-        // buildBtnText.anchor.x = 0.5;
-        // buildBtnText.anchor.y = 0.5;
-        // buildBtnText.x = buildBtn.width / 2;
-        // buildBtnText.y = -buildBtn.height / 2;
-        // buildBtn.addChild(buildBtnText);
         
         return hud;
     },
 
-    findChild: function(from,name){
+    findChild: function(from, name) {
         if(from.name && from.name===name)
             return from;
         if(!from.children || !from.children.length)
@@ -91,13 +77,11 @@ var Hud = {
         }
         return false;
     },
+
     showBuildMenu: function(hud) {
         var buildMenu=hud.findChild("buildMenu");
         console.assert(buildMenu);
         buildMenu.visible=!buildMenu.visible;
-    },
-    showStatusMenu: function(){
-
     },
 
     beginBuilding: function(menu, mask, button, buildingType) {
@@ -212,6 +196,7 @@ var BuildingPlacer = {
                 newBuilding.constructionIcon.anchor.setTo(1,0);
                 newBuilding.constructionIcon.x=192;
                 newBuilding.addChild(newBuilding.constructionIcon);
+
                 newBuilding.counterIcon = MainGame.game.make.sprite(0,0,"counter_icon"+(newBuilding.startingTurn- MainGame.global.turn));
                 newBuilding.counterIcon.anchor.setTo(1,1);
                 newBuilding.counterIcon.x=192;
@@ -245,7 +230,6 @@ var BuildingPlacer = {
     
     cancelBuild: function(self) {
         MainGame.game.input.onDown.remove(self.clickHandler, self, self, MainGame.game.input.activePointer);
-        
         self.kill();
     }
 };
@@ -414,11 +398,79 @@ var StatsPanel = {
     },
 }
 
+/* A subcomponent of the FunPanel that displays when there is a risk of riot. */
+var RiotThermometer = {
+    drainRate: 10,
+    red: 0xff0000,
+    barOpacity: .80,
+
+    createNew: function(x, y) {
+        var thermometer = MainGame.game.make.sprite(x, y, 'thermometer_bulb');
+        thermometer.visible = false;
+
+        thermometer.tube = MainGame.game.make.sprite(thermometer.width, 0, 'thermometer_tube');
+        thermometer.tube.fluid = MainGame.game.make.graphics();
+        thermometer.tube.fluid.lineStyle(0);
+        thermometer.tube.addChild(thermometer.tube.fluid);
+        thermometer.addChild(thermometer.tube);
+
+        // Properties
+        thermometer.quantity = 0;   // How much fluid is currently in the thermometer
+        thermometer.delta = 0;      // Percent change per turn
+        thermometer.toolTip = ToolTip.createNew('Ow my head');
+
+        // Class functions
+        thermometer.nextTurn = function() { RiotThermometer.nextTurn(thermometer); };
+        thermometer.updateData = function() { RiotThermometer.updateData(thermometer); };
+        thermometer.setDelta = function(newDelta) { RiotThermometer.setDelta(thermometer, newDelta) };
+
+        // Set update loop
+        MainGame.game.time.events.loop(500, function() {
+            thermometer.updateData();
+        }, thermometer);
+
+        return thermometer;
+    },
+
+    nextTurn: function(thermometer) {
+        // Are we building up riot fluid, or draining it back down?
+        if (thermometer.delta >= 0) {
+            thermometer.quantity += thermometer.delta;
+        } else {
+            thermometer.quantity = (thermometer.quanity - this.drainRate >= 0) ? thermometer.quanity - this.drainRate : 0;
+        }
+    },
+
+    updateData: function(thermometer) {
+        if (thermometer.delta > 0) {
+            thermometer.visible = true;
+        } else thermometer.visible = false;
+
+        // Only bother updating if I am visible.
+        if (thermometer.visible) {
+            thermometer.tube.fluid.clear();
+            thermometer.tube.fluid.beginFill(this.red, this.barOpacity);
+            thermometer.tube.fluid.drawRect(0, 7, thermometer.quantity, 10);
+            thermometer.tube.fluid.endFill();
+        }
+    },
+
+    setDelta: function(thermometer, newDelta) {
+        thermometer.delta = newDelta;
+
+        if (thermometer.delta > 0) thermometer.visible = true;
+    }
+}
+
 /* A separate UI element from the stats panel that accentuates the Freedom and Unrest Stats. Should be near the top of the screen */
 var FunPanel = {
     unitWidth: 120,
     horizontalPad: 5,
     textStyle: { font: '30px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+    blue: 0x03cae1,
+    red: 0xff0000,
+    barOpacity: .80,
+    thermometerQuantity: 0,
 
     createNew: function() {
         var funPanel = MainGame.game.make.sprite(0, 0, 'fun_panel_backpanel');
@@ -455,7 +507,6 @@ var FunPanel = {
         funPanel.freeSprite.events.onInputOver.add(function() {funPanel.freeSprite.toolTip.show();}, null);
         funPanel.freeSprite.events.onInputOut.add(function() {funPanel.freeSprite.toolTip.hide();}, null);
         funPanel.freeSprite.addChild(funPanel.freeSprite.toolTip);
-
         funPanel.addChild(funPanel.freeSprite);
 
         // Unrest
@@ -471,42 +522,58 @@ var FunPanel = {
         funPanel.unrestSprite.events.onInputOver.add(function() {funPanel.unrestSprite.toolTip.show();}, null);
         funPanel.unrestSprite.events.onInputOut.add(function() {funPanel.unrestSprite.toolTip.hide();}, null);
         funPanel.unrestSprite.addChild(funPanel.unrestSprite.toolTip);
-
         funPanel.addChild(funPanel.unrestSprite);
+
+        // Riot Thermometer
+        funPanel.thermometer = RiotThermometer.createNew(0, 65);
+        funPanel.thermometer.x = -145;
+        funPanel.addChild(funPanel.thermometer);
+
+        // Class functions
+        funPanel.updateData = function() { FunPanel.updateData(funPanel); };
 
         // Set update loop
         MainGame.game.time.events.loop(500, function() {
-            var globalStats = MainGame.global;
-
-            var newFreedom = globalStats.freedom + '%';
-            var newUnrest = globalStats.unrest + '%';
-
-            // Update tooltips
-            funPanel.freeSprite.toolTip.updateData('Freedom: ' + newFreedom);
-            funPanel.unrestSprite.toolTip.updateData('Unrest: ' + newUnrest);
-
-            // Update magic bars
-            var freedomWidth = globalStats.freedom/100 * funPanel.meter.width;
-            funPanel.freedomBar.clear();
-            funPanel.freedomBar.beginFill(0x03cae1, 0.80);
-            funPanel.freedomBar.drawRect(-funPanel.meter.width/2, 31, freedomWidth, 10);
-            funPanel.freedomBar.endFill();
-
-            var unrestWidth = globalStats.unrest/100 * funPanel.meter.width;
-            funPanel.unrestBar.clear();
-            funPanel.unrestBar.beginFill(0xff0000, 0.80);
-            funPanel.unrestBar.drawRect(funPanel.meter.width/2, 7, -unrestWidth, 10);
-            funPanel.unrestBar.endFill();
+            funPanel.updateData();
         }, funPanel);
 
         return funPanel;
-    }
+    },
+
+    updateData(funPanel) {
+        var globalStats = MainGame.global;
+
+        var newFreedom = globalStats.freedom;
+        var newUnrest = globalStats.unrest;
+
+        // Update tooltips
+        funPanel.freeSprite.toolTip.updateData('Freedom: ' + newFreedom + '%');
+        funPanel.unrestSprite.toolTip.updateData('Unrest: ' + newUnrest + '%');
+
+        // Update magic bars
+        var freedomWidth = globalStats.freedom/100 * funPanel.meter.width;
+        funPanel.freedomBar.clear();
+        funPanel.freedomBar.beginFill(this.blue, this.barOpacity);
+        funPanel.freedomBar.drawRect(-funPanel.meter.width/2, 31, freedomWidth, 10);
+        funPanel.freedomBar.endFill();
+
+        var unrestWidth = globalStats.unrest/100 * funPanel.meter.width;
+        funPanel.unrestBar.clear();
+        funPanel.unrestBar.beginFill(this.red, this.barOpacity);
+        funPanel.unrestBar.drawRect(funPanel.meter.width/2, 7, -unrestWidth, 10);
+        funPanel.unrestBar.endFill();
+
+        var overlap = (newFreedom + newUnrest > 100) ? (newFreedom + newUnrest) - 100 : 0;
+        funPanel.thermometer.setDelta(overlap);
+    },
 }
 
 var ToolTip = {
     textSize: 16,
     horizontalPad: 5,
     verticalPad: 0,
+    black: 0x000000,
+    opacity: 0.666,
 
     createNew: function(tipText) {
         var style = { font: this.textSize + 'px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle' };
@@ -515,7 +582,7 @@ var ToolTip = {
 
         var toolTip = MainGame.game.make.graphics();
         toolTip.lineStyle(0);
-        toolTip.beginFill(0x000000, 0.66);
+        toolTip.beginFill(this.black, this.opacity);
         toolTip.drawRect(0, 0, toolTipText.width + (this.horizontalPad * 2), toolTipText.height + (this.verticalPad * 2));
         toolTip.endFill();
 
@@ -533,7 +600,7 @@ var ToolTip = {
     updateData: function(toolTip, newTipText) {
         toolTip.textLabel.text = newTipText;
         toolTip.clear();
-        toolTip.beginFill(0x000000, 0.66);
+        toolTip.beginFill(this.black, this.opacity);
         toolTip.drawRect(0, 0, toolTip.textLabel.width + (this.horizontalPad * 2), toolTip.textLabel.height + (this.verticalPad * 2));
         toolTip.endFill();
     },

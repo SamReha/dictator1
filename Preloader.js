@@ -80,10 +80,6 @@ var Preloader={
 
         // load ui assets
         var uiDir = imageDir + 'ui/';
-        g.load.image('grpBldInfo',                uiDir + 'grpBldInfo.png');
-        g.load.image('grpBuildMenu',              uiDir + 'grpBuildMenu.png');
-        g.load.image('grpStatsMenu',              uiDir + 'grpStatsMenu.png');
-        g.load.image('topBar',                    uiDir + 'topBar.png');
         g.load.image('tile_hover_backpanel',      uiDir + 'tile_hover_backpanel.png');
         g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png');
         g.load.image('buildMenuBg',               uiDir + 'buildMenuBg.png');
@@ -104,6 +100,8 @@ var Preloader={
         g.load.image("event_bg",                  uiDir + "event_bg.png");
         g.load.image('freedomUnrestMeter',        uiDir + "freedomUnrestMeter.png");
         g.load.image('fun_panel_backpanel',       uiDir + 'fun_panel_backpanel.png');
+        g.load.image('thermometer_bulb',          uiDir + 'thermometer_bulb.png');
+        g.load.image('thermometer_tube',          uiDir + 'thermometer_tube.png');
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
