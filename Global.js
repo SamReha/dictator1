@@ -5,6 +5,8 @@ var Global={
     unrest: 0,
     money: 30,
     moneyPerTurn: 0,
+    thermometerFill: 0,
+    thermometerDelta: 0,
 
     // calcAvgEducation: function(){
 
@@ -30,8 +32,9 @@ var Global={
 
         /*globabl updatePopulation*/
         updatePopulation(true,true);
-        Global.money+=Global.moneyPerTurn;
+        Global.money += Global.moneyPerTurn;
         Global.updateFreedomUnrest();
+        Global.updateThermometer();
     },
 
     toString: function(){
@@ -40,6 +43,7 @@ var Global={
         else{string += "-"+this.moneyPerTurn+"/turn)"};
         return string
     },
+
     // Finds the current Freedom value by averaging the health and education of all low people
     updateFreedomUnrest: function(){
         var freeAv = 0;
@@ -65,6 +69,25 @@ var Global={
         Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,null,"road",null).length,0,100);
         Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length,0,100);
     },
+
+    // Updates thermometer data. In general, should be called AFTER updateFreedomUnrest()
+    updateThermometer: function() {
+        // Get new delta (how much the thermometer will change by this turn)
+        this.thermometerDelta = this.freedom + this.unrest - 100;
+
+        // Apply delta
+        this.thermometerFill = Phaser.Math.clamp(this.thermometerFill + this.thermometerDelta, 0, 100); ;
+
+        // Check if unit spawn
+        if (this.thermometerFill >= 100) {
+            this.thermometerFill = 50;
+
+            // Compute angriest house, convert one resident to rioter
+            var residenceIndexes = MainGame.board.findBuilding(null, null, 'housing', null, null);
+            console.log(residenceIndexes);
+        }
+    },
+
     updateMoneyPerTurn: function(){
         var totalIncome = 0;
         /*global MainGame*/

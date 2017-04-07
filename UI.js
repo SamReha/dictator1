@@ -415,14 +415,12 @@ var RiotThermometer = {
         thermometer.addChild(thermometer.tube);
 
         // Properties
-        thermometer.quantity = 0;   // How much fluid is currently in the thermometer
         thermometer.delta = 0;      // Percent change per turn
         thermometer.toolTip = ToolTip.createNew('Ow my head');
 
         // Class functions
-        thermometer.nextTurn = function() { RiotThermometer.nextTurn(thermometer); };
         thermometer.updateData = function() { RiotThermometer.updateData(thermometer); };
-        thermometer.setDelta = function(newDelta) { RiotThermometer.setDelta(thermometer, newDelta) };
+        thermometer.setVisibility = function() { RiotThermometer.setVisibility(thermometer); };
 
         // Set update loop
         MainGame.game.time.events.loop(500, function() {
@@ -432,33 +430,25 @@ var RiotThermometer = {
         return thermometer;
     },
 
-    nextTurn: function(thermometer) {
-        // Are we building up riot fluid, or draining it back down?
-        if (thermometer.delta >= 0) {
-            thermometer.quantity += thermometer.delta;
-        } else {
-            thermometer.quantity = (thermometer.quanity - this.drainRate >= 0) ? thermometer.quanity - this.drainRate : 0;
-        }
-    },
-
     updateData: function(thermometer) {
-        if (thermometer.delta > 0) {
-            thermometer.visible = true;
-        } else thermometer.visible = false;
+        thermometer.setVisibility();
 
         // Only bother updating if I am visible.
         if (thermometer.visible) {
+            var fillAmount = (MainGame.global.thermometerFill/100) * thermometer.tube.width; // thermometerFill is percent fill of thermometer
             thermometer.tube.fluid.clear();
             thermometer.tube.fluid.beginFill(this.red, this.barOpacity);
-            thermometer.tube.fluid.drawRect(0, 7, thermometer.quantity, 10);
+            thermometer.tube.fluid.drawRect(0, 19, fillAmount, 10);
             thermometer.tube.fluid.endFill();
         }
     },
 
-    setDelta: function(thermometer, newDelta) {
-        thermometer.delta = newDelta;
+    // Show the thermometer iff: Free and Unrest are overlapping OR there is fluid in the thermometer
+    setVisibility: function(thermometer) {
+        // Estimate current delta
+        thermometer.delta = MainGame.global.freedom + MainGame.global.unrest - 100;
 
-        if (thermometer.delta > 0) thermometer.visible = true;
+        thermometer.visible = thermometer.delta > 0 || MainGame.global.thermometerFill > 0;
     }
 }
 
@@ -562,9 +552,6 @@ var FunPanel = {
         funPanel.unrestBar.beginFill(this.red, this.barOpacity);
         funPanel.unrestBar.drawRect(funPanel.meter.width/2, 7, -unrestWidth, 10);
         funPanel.unrestBar.endFill();
-
-        var overlap = (newFreedom + newUnrest > 100) ? (newFreedom + newUnrest) - 100 : 0;
-        funPanel.thermometer.setDelta(overlap);
     },
 }
 
