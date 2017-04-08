@@ -14,16 +14,16 @@ var Unit = {
     },
     
     createNew: function(data, startingIndex) {
-        console.assert(data === null, "[Unit] Cannot instantiate unit with no data!");
-        console.assert(startingIndex < 0 || startingIndex >= MainGame.board.tileCount, "[Unit] Cannot place unit at invalid index!");
+        console.assert(data !== null, "[Unit] Cannot instantiate unit with no data!");
+        console.assert(startingIndex >= 0 && startingIndex < MainGame.board.tileCount(), "[Unit] Cannot place unit at invalid index!");
 
-        var unit = MainGame.game.make.sprite(0, 0, data.type);
+        var unit = MainGame.game.make.sprite(0, 0, data.sprite);
 
         unit.type = data.type;
         unit.health = data.startingHealth;
         unit.currentIndex = startingIndex;
 
-        unit.update = function() { Unit.update(unit); };
+        unit.nextTurn = function() { Unit.nextTurn(unit); };
         unit.move = function(newIndex) { Unit.move(unit, newIndex); };
         unit.attackUnit = function(targetedIndex) { Unit.attackUnit(unit, targetedIndex); };
         unit.attackBuilding = function(targetedIndex) { Unit.attackBuilding(unit, targetedIndex); };
@@ -31,12 +31,13 @@ var Unit = {
         return unit;
     },
 
-    update: function(unit) {
-        console.log("[Unit] doing an update!");
+    nextTurn: function(unit) {
+        UnitAI.takeTurn(unit);
     },
 
     move: function(unit, newIndex) {
-        console.assert(newIndex < 0 || newIndex >= MainGame.board.tileCount, "[Unit] Cannot move unit to invalid index!");
+        if (newIndex === null) return; // Handy - if you pass null, that means you don't really want to move. Silly, but whatever.
+        console.assert(newIndex >= 0 && newIndex < MainGame.board.tileCount(), "[Unit] Cannot move unit to invalid index!");
 
         var currentTile = MainGame.board.at(unit.currentIndex);
         var newTile = MainGame.board.at(newIndex);
@@ -52,7 +53,7 @@ var Unit = {
     },
 
     attackUnit: function(unit, targetedIndex) {
-        console.assert(targetedIndex < 0 || targetedIndex >= MainGame.board.tileCount, "[Unit] Cannot target an invalid index!");
+        console.assert(newIndex >= 0 && newIndex < MainGame.board.tileCount(), "[Unit] Cannot target an invalid index!");
 
         var targetedTile = MainGame.board.at(targetedIndex);
 
@@ -64,7 +65,7 @@ var Unit = {
     },
 
     attackBuilding: function(unit, targetedIndex) {
-        console.assert(newIndex < 0 || newIndex >= MainGame.board.tileCount, "[Unit] Cannot target an invalid index!");
+        console.assert(newIndex >= 0 && newIndex < MainGame.board.tileCount(), "[Unit] Cannot target an invalid index!");
 
         var targetedTile = MainGame.board.at(targetedIndex);
 
@@ -84,7 +85,7 @@ var Unit = {
         unit.health -= amount;
 
         if (unit.health <= 0) unit.kill();
-    }
+    },
 
     kill: function(unit) {
         // Play death sound

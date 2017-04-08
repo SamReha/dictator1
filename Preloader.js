@@ -142,6 +142,13 @@ var Preloader={
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');
         }
 
+        //// load unit spritesheets
+        var unitDir = imageDir + 'units/';
+        g.load.image('army_idle',   unitDir + 'army_idle.png');
+        g.load.image('army_moving', unitDir + 'army_moving.png');
+        g.load.image('riot_idle',   unitDir + 'riot_idle.png');
+        g.load.image('riot_moving', unitDir + 'riot_moving.png');
+
         // load json files
         g.load.json('stage1','stage1.json');
         g.load.json('stage2','stage2.json');
@@ -150,6 +157,7 @@ var Preloader={
         g.load.json('names','Names.json');
         g.load.json('CoalitionQuest', 'CoalitionQuest.json');
         g.load.json('Tutorial', 'Tutorial.json');
+        g.load.json('unitData', 'unitData.json');
 
         // Load audio assets (should probably be using FMOD for this)
         var audioDir = 'sounds/';

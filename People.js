@@ -66,8 +66,6 @@ var Person={
         p.updateStats(board,nextTurn);
         if (p.type === Person.Low) {
             p.updateFreeUn(board);
-        }else if(p.type === Person.Mid){
-        }else{
         }
     },
     

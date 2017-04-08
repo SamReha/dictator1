@@ -5,7 +5,7 @@ var UnitAI={
 			unit.target = UnitAI.findTarget(unit);
 		}
 
-		UnitAI.makeMove(unit,UnitAI.chooseMove());
+		unit.move(UnitAI.chooseMove(unit));
 
 		if(unit.isAttacking)
 			UnitAI.attackTarget(unit);
@@ -40,6 +40,7 @@ var UnitAI={
 		}
 	},
 
+	// Determines what index to move the unit to. Returns either a tile index adjacent to the current index, or null if no move is desire
 	chooseMove: function(unit) {
 		var targetIndex = null;
 		if (unit.type === Unit.Army) {
@@ -82,7 +83,7 @@ var UnitAI={
 
 		// simple sorting of distances
 		for(var i=0; i<distances.length; ++i){
-			for(var j=i+1; j<distances.length, ++j){
+			for (var j = i + 1; j<distances.length; ++j) {
 				if(distances[j]<distances[i]){
 					var temp = distances[i];
 					distances[i] = distances[j];

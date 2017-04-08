@@ -52,7 +52,7 @@ var Building = {
         return b;
     },
     
-    addPerson: function(b){
+    addPerson: function(b) {
         if(b.people < b.maxPeople){
             b.people += 1;
             return true;
@@ -60,7 +60,7 @@ var Building = {
         else{   return false;   }
     },
     
-    removePerson: function(b){
+    removePerson: function(b) {
         if(b.people > 0){
             b.people -= 1;
             return true;

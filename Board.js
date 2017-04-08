@@ -146,7 +146,7 @@ var Tile = {
     //// Unit Layer
     setUnit: function(tile, newUnit) {
         if (tile.unit !== null) {
-            tile.removeChild(thile.unit);
+            tile.removeChild(tile.unit);
         }
 
         tile.unit = newUnit;

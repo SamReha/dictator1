@@ -82,9 +82,29 @@ var Global={
         if (this.thermometerFill >= 100) {
             this.thermometerFill = 50;
 
-            // Compute angriest house, convert one resident to rioter
-            var residenceIndexes = MainGame.board.findBuilding(null, null, 'housing', null, null);
-            console.log(residenceIndexes);
+            // Compute angriest citizen and make them a rioter
+            var workingClass = MainGame.population.lowList();
+            workingClass.sort(function(a, b) {
+                return b.unrest - a.unrest;
+            });
+            var citizenToRiot = workingClass[0];
+        
+            // Remove them from their home, remove them from their work, and make them a rioter starting at their home index.
+            var homeIndex = citizenToRiot.home;
+            var home = MainGame.board.at(homeIndex).getBuilding();
+            home.removePerson();
+            citizenToRiot.home = null;
+
+            var workIndex = citizenToRiot.workplace;
+            if (workIndex != null) {
+                var workPlace = MainGame.board.at(workIndex).getBuilding();
+                workPlace.removePerson();
+                citizenToRiot.work = null;
+            }
+
+            Unit.loadUnitData();
+            home.unit = Unit.createNew(Unit.unitData['rioter'], homeIndex);
+            home.addChild(home.unit);
         }
     },
 
@@ -93,13 +113,13 @@ var Global={
         /*global MainGame*/
         var buildings = MainGame.board.findBuilding(null,null,null,"money");
 
-        for(var bldIndex=0;bldIndex<buildings.length;++bldIndex){
+        for (var bldIndex = 0; bldIndex < buildings.length; ++bldIndex) {
             var building = MainGame.board.at(buildings[bldIndex]).building;
             var effectList = building.effects;
-            for(var effIndex=0;effIndex<effectList.length;++effIndex){
-                if(effectList[effIndex].type==="money"){
+            for (var effIndex = 0; effIndex < effectList.length; ++effIndex) {
+                if (effectList[effIndex].type === "money") {
                     // console.log("Building: "+building.name+" people: "+building.people+" output: "+effectList[effIndex].outputTable[building.people]);
-                    totalIncome+=effectList[effIndex].outputTable[building.people];
+                    totalIncome += effectList[effIndex].outputTable[building.people];
                 }
             }
         }

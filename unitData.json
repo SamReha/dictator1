@@ -3,6 +3,7 @@
         "name": "homeless",
         "label": "Homeless Camp",
         "type": "homeless",
+        "sprite": "asdfasdf",
         "startingHealth": 1
     },
 
@@ -10,6 +11,7 @@
         "name": "soldier",
         "label": "Soldier",
         "type": "soldier",
+        "sprite": "army_idle",
         "startingHealth": 1
     },
 
@@ -17,6 +19,7 @@
         "name": "rioter",
         "label": "Rioter",
         "type": "rioter",
+        "sprite": "riot_idle",
         "startingHealth": 1
     }
 }
