@@ -45,14 +45,14 @@ var UnitAI={
 		var targetIndex = null;
 		if (unit.type === Unit.Army) {
 			if (unit.target !== null) {
-				if (MainGame.board.distanceOf(unit.currentIndex, unit.target.tileIndex) === 1) {
+				if (MainGame.board.distanceOf(unit.currentIndex, unit.target.currentIndex) === 1) {
 					unit.isAttacking = true;
 					return null;
 				}
-				targetIndex = unit.target.tileIndex;
+				targetIndex = unit.target.currentIndex;
 			} else {
-				if (MainGame.board.at(unit.tileIndex).getBuilding().name === "road") {
-					var adjacent = MainGame.board.allAdjacent(unit.tileIndex,1);
+				if (MainGame.board.at(unit.currentIndex).getBuilding().name === "road") {
+					var adjacent = MainGame.board.allAdjacent(unit.currentIndex,1);
 					var roads = [];
 					for(var i=0; i<adjacent.length; ++i){
 						if(MainGame.board.at(adjacent[i]).getBuilding().name)
@@ -76,9 +76,45 @@ var UnitAI={
 
 		var adjacentTiles = MainGame.board.allAdjacent(unit.currentIndex, 1);
 		var distances = [];
+		var buildings = [];
 		for(var i=0; i<adjacentTiles.length; ++i){
-			if(!MainGame.board.at(adjacentTiles[i]).hasUnit())
+			var tile = MainGame.board.at(adjacentTiles[i]);
+			if(tile.hasBuilding())
+				buildings.push(tile.getBuilding().name);
+			else
+				buildings.push("");
+			if(!tile.hasUnit())
 				distances.push(MainGame.board.distanceOf(adjacentTiles[i],targetIndex));
+			else{
+				var adjacentUnit = tile.getUnit();
+				if(unit.type === Unit.Riot && adjacentUnit.type === Unit.Riot && unit.heath <= adjacentUnit.heath)
+					UnitAI.mergeUnits(adjacentUnit,unit);
+			}
+		}
+
+		// targeting nearby buildings
+		if(unit.type===Unit.Riot){
+			// simple sorting of building names
+			for(var i=0; i<buildings.length; ++i){
+				for(var j=i+1; j<buildings.length; ++j){
+					if(buildings[j]==="palace" || (buildings[i]!=="palace" && buildings[j]!=="road" && buildings[j]!=="")){
+						var temp = distances[i];
+						distances[i] = distances[j];
+						distances[j] = temp;
+						temp = adjacentTiles[i];
+						adjacentTiles[i] = adjacentTiles[j];
+						adjacentTiles[j] = temp;
+						temp = buildings[i];
+						buildings[i] = buildings[j];
+						buildings[j] = temp;
+					}
+				}
+			}
+
+			if(buildings[0]!=="road" && buildings[0]!==""){
+				unit.target = adjacentTiles[0];
+				return adjacentTiles[0];
+			}
 		}
 
 		// simple sorting of distances
@@ -90,43 +126,62 @@ var UnitAI={
 					distances[j] = temp;
 					temp = adjacentTiles[i];
 					adjacentTiles[i] = adjacentTiles[j];
-					adjacentTiles[j] = temp;						}
+					adjacentTiles[j] = temp;
+					temp = buildings[i];
+					buildings[i] = buildings[j];
+					buildings[j] = temp;
+				}
 			}
 		}
 
 		if(distances[0]===distances[1]){
 			var tile0 = MainGame.board.at(adjacentTiles[0]);
 			var tile1 = MainGame.board.at(adjacentTiles[1]);
-			if(tile0.hasBuilding() && tile1.hasBuilding()){
-				if(tile0.getBuilding().name==="road" && tile1.getBuilding().name!=="road")
-					return adjacentTiles[0];
-				else if(tile0.getBuilding().name!=="road" && tile1.getBuilding().name==="road")
-					return adjacentTiles[1];
-			}else if(tile0.hasBuilding()){
-				if(tile0.getBuilding().name==="road")
-					return adjacentTiles[0];
-			}else if(tile1.hasBuilding()){
-				if(tile1.getBuilding().name==="road")
-					return adjacentTiles[1];
-			}
+			if(buildings[0]==="road" && buildings[1]!=="road")
+				return adjacentTiles[0];
+			else if(buildings[0]!=="road" && buildings[0]==="road")
+				return adjacentTiles[1];
+			if(buildings[0]==="road")
+				return adjacentTiles[0];
+			if(buildings[1]==="road")
+				return adjacentTiles[1];
 		}else{
 			return adjacentTiles[0];
 		}
 		//if none of the above conditions are met, then randomly choose a tile
 		return (Math.floor(Math.random()*2)===0?adjacentTiles[0]:adjacentTiles[1]);
 	},
+
+	makeMove: function(unit,destIndex){
+		if(destIndex===null)
+			return;
+
+		MainGame.board.at(unit.currentIndex).setUnit(null);
+		MainGame.board.at(destIndex).setUnit(unit);
+		unit.currentIndex = destIndex;
+	},
 	
 	attackTarget: function(unit){
 		if (unit.type === Unit.Riot) {
-			MainGame.board.at(unit.target).getBuilding() -= unit.health;
+			var targetTile = MainGame.board.at(unit.target);
+			if(unit.heath >= targetTile.getBuilding().heath){
+				unit.target = null;
+				unit.isAttacking = false;
+			}
+			targetTile.getBuilding().damage(unit.heath);
 		} else {
-			unit.target.subtractPeople(unit.heath,true);
+			var targetUnit = unit.target;
+			if(unit.health >= targetUnit.health){
+				unit.target = null;
+				unit.isAttacking = false;
+			}
+			targetUnit.takeDamage(unit.heath);
 		}
 	},
 
 	mergeUnits: function(unit1, unit2) {
 		var transfer = Math.min(unit2.health, 5 - unit1.heath);
 		unit1.addPeople(transfer);
-		unit2.subtractPeople(transfer,false);
+		unit2.subtractPeople(transfer);
 	}
 };

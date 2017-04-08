@@ -12,7 +12,8 @@
         "label": "Soldier",
         "type": "soldier",
         "sprite": "army_idle",
-        "startingHealth": 1
+        "startingHealth": 1,
+        "isAttacking": false
     },
 
     "rioter": {
@@ -20,6 +21,7 @@
         "label": "Rioter",
         "type": "rioter",
         "sprite": "riot_idle",
-        "startingHealth": 1
+        "startingHealth": 1,
+        "isAttacking": false
     }
 }

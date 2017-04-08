@@ -22,11 +22,15 @@ var Unit = {
         unit.type = data.type;
         unit.health = data.startingHealth;
         unit.currentIndex = startingIndex;
+        unit.origin = startingIndex;
+        unit.target = null;
 
         unit.nextTurn = function() { Unit.nextTurn(unit); };
         unit.move = function(newIndex) { Unit.move(unit, newIndex); };
-        unit.attackUnit = function(targetedIndex) { Unit.attackUnit(unit, targetedIndex); };
-        unit.attackBuilding = function(targetedIndex) { Unit.attackBuilding(unit, targetedIndex); };
+        unit.update = function() { Unit.update(unit); };
+        unit.addPeople = function(people) {Unit.addPeople(unit, people); };
+        unit.subtractPeople = function(people) {Unit.subtractPeople(unit, people); };
+        unit.kill = function() {Unit.kill(unit); };
 
         return unit;
     },
@@ -52,40 +56,24 @@ var Unit = {
         }
     },
 
-    attackUnit: function(unit, targetedIndex) {
-        console.assert(newIndex >= 0 && newIndex < MainGame.board.tileCount(), "[Unit] Cannot target an invalid index!");
+    addPeople: function(unit, people) {
+        unit.health += people;
 
-        var targetedTile = MainGame.board.at(targetedIndex);
+        // update health marker
 
-        if (targetedTile.hasUnit()) {
-            // Play attack sound
-            // Damage the target
-            targetedTile.getUnit().takeDamage(1);
+        // maybe update sprite
+    },
+
+    subtractPeople: function(unit, people) {
+        unit.health -= people;
+
+        if (unit.health <= 0){
+            MainGame.board.at(unit.currentIndex).setUnit(null);
+            unit.destroy();
         }
-    },
 
-    attackBuilding: function(unit, targetedIndex) {
-        console.assert(newIndex >= 0 && newIndex < MainGame.board.tileCount(), "[Unit] Cannot target an invalid index!");
-
-        var targetedTile = MainGame.board.at(targetedIndex);
-
-        if (targetedTile.hasBuilding()) {
-            var building = targetedTile.getBuilding();
-
-            building.health -= 1;
-            
-            if (building.health <= 0) {
-                targetedTile.removeBuilding();
-            }
-        }
-    },
-
-    takeDamage: function(unit, amount) {
-        // Play damage sound
-        unit.health -= amount;
-
-        if (unit.health <= 0) unit.kill();
-    },
+        // maybe update sprite
+    }
 
     kill: function(unit) {
         // Play death sound
@@ -94,5 +82,6 @@ var Unit = {
 
         // Remove from game
         MainGame.board.at(unit.currentIndex).setUnit(null);
+        unit.destroy();
     }
 };
