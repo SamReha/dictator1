@@ -82,29 +82,44 @@ var Global={
         if (this.thermometerFill >= 100) {
             this.thermometerFill = 50;
 
-            // Compute angriest citizen and make them a rioter
+            // Compute angriest citizen
             var workingClass = MainGame.population.lowList();
             workingClass.sort(function(a, b) {
                 return b.unrest - a.unrest;
             });
             var citizenToRiot = workingClass[0];
         
-            // Remove them from their home, remove them from their work, and make them a rioter starting at their home index.
+            // Figure out where they live and work, so that we'll be ready to make them a rioter
             var homeIndex = citizenToRiot.home;
-            var home = MainGame.board.at(homeIndex).getBuilding();
-            home.removePerson();
-            citizenToRiot.home = null;
+            var homeTile = MainGame.board.at(homeIndex);
+            var homeBuilding = homeTile.getBuilding();
 
-            var workIndex = citizenToRiot.workplace;
-            if (workIndex != null) {
-                var workPlace = MainGame.board.at(workIndex).getBuilding();
-                workPlace.removePerson();
-                citizenToRiot.work = null;
+            // Figure out what (if any) tile to spawn this rioter on.
+            var spawnIndex = -1;
+            if (!homeTile.hasUnit()) {
+                spawnIndex = homeIndex;
             }
 
-            Unit.loadUnitData();
-            home.unit = Unit.createNew(Unit.unitData['rioter'], homeIndex);
-            home.addChild(home.unit);
+            // If we got an index, then spawn a rioter (otherwise, board is completely full and we can assume the player is in enough trouble as is)
+            if (spawnIndex !== -1) {
+                // Remove them from their home
+                homeBuilding.removePerson();
+                citizenToRiot.home = null;
+
+                // Remove them from their workplace
+                var workIndex = citizenToRiot.workplace;
+                if (workIndex !== null) {
+                    var workPlace = MainGame.board.at(workIndex).getBuilding();
+                    workPlace.removePerson();
+                    citizenToRiot.work = null;
+                }
+
+                // Place them on the board
+                var spawnTile = MainGame.board.at(spawnIndex);
+                Unit.loadUnitData();
+                spawnTile.unit = Unit.createNew(Unit.unitData['rioter'], spawnIndex, citizenToRiot.name);
+                spawnTile.addChild(spawnTile.unit);
+            } else console.log('[Global] Failed to spawn unit');
         }
     },
 

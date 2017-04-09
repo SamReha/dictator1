@@ -1,6 +1,7 @@
 /*global MainGame*/
-var UnitAI={
-	takeTurn: function(unit){
+var UnitAI = {
+	takeTurn: function(unit) {
+		console.log(MainGame.global.turn, unit.name, unit.currentIndex);
 		if (unit.target === null) {
 			unit.target = UnitAI.findTarget(unit);
 		}
@@ -13,10 +14,11 @@ var UnitAI={
 
 	findTarget: function(unit) {
 		if (unit.type === Unit.Riot) {
-			if(unit.currentIndex === unit.origin && MainGame.board.at(unit.currentIndex).getBuilding().name !== 'rubble')
+			if(unit.currentIndex === unit.origin && MainGame.board.at(unit.currentIndex).getBuilding().name !== 'rubble') {
 				return unit.origin;
-			else
+			} else {
 				return MainGame.board.findBuilding('palace',null,null,null)[0];
+			}
 		} else if (unit.type === Unit.Army) { // Should never call findTarget with a homeless group, but just to be sure
 			var riotIndecies = MainGame.board.findUnits(Unit.Riot);
 			if (riotIndecies.length > 0) {
@@ -40,7 +42,7 @@ var UnitAI={
 		}
 	},
 
-	// Determines what index to move the unit to. Returns either a tile index adjacent to the current index, or null if no move is desire
+	// Determines what index to move the unit to. Returns either a tile index adjacent to the current index, or null if no move is desired
 	chooseMove: function(unit) {
 		var targetIndex = null;
 		if (unit.type === Unit.Army) {
@@ -66,7 +68,7 @@ var UnitAI={
 					targetIndex = unit.origin;
 				}
 			}
-		} else {
+		} else if (unit.type === Unit.Riot) {
 			if (unit.currentIndex === unit.target) {
 				unit.isAttacking = true;
 				return null;
@@ -87,13 +89,13 @@ var UnitAI={
 				distances.push(MainGame.board.distanceOf(adjacentTiles[i],targetIndex));
 			else{
 				var adjacentUnit = tile.getUnit();
-				if(unit.type === Unit.Riot && adjacentUnit.type === Unit.Riot && unit.heath <= adjacentUnit.heath)
+				if(unit.type === Unit.Riot && adjacentUnit.type === Unit.Riot && unit.health <= adjacentUnit.health)
 					UnitAI.mergeUnits(adjacentUnit,unit);
 			}
 		}
 
 		// targeting nearby buildings
-		if(unit.type===Unit.Riot){
+		if (unit.type === Unit.Riot) {
 			// simple sorting of building names
 			for(var i=0; i<buildings.length; ++i){
 				for(var j=i+1; j<buildings.length; ++j){
@@ -101,9 +103,11 @@ var UnitAI={
 						var temp = distances[i];
 						distances[i] = distances[j];
 						distances[j] = temp;
+						
 						temp = adjacentTiles[i];
 						adjacentTiles[i] = adjacentTiles[j];
 						adjacentTiles[j] = temp;
+
 						temp = buildings[i];
 						buildings[i] = buildings[j];
 						buildings[j] = temp;
@@ -117,16 +121,23 @@ var UnitAI={
 			}
 		}
 
-		// simple sorting of distances
+		// This is typically a better way to sort (clean + guarantees a good alg is used)
+		// distances.sort(function(a, b) {
+		//     return a - b;
+		// });
+		//console.log(distances);
+
 		for(var i=0; i<distances.length; ++i){
 			for (var j = i + 1; j<distances.length; ++j) {
 				if(distances[j]<distances[i]){
 					var temp = distances[i];
 					distances[i] = distances[j];
 					distances[j] = temp;
+
 					temp = adjacentTiles[i];
 					adjacentTiles[i] = adjacentTiles[j];
 					adjacentTiles[j] = temp;
+
 					temp = buildings[i];
 					buildings[i] = buildings[j];
 					buildings[j] = temp;
@@ -134,7 +145,7 @@ var UnitAI={
 			}
 		}
 
-		if(distances[0]===distances[1]){
+		if (distances[0] === distances[1]) {
 			var tile0 = MainGame.board.at(adjacentTiles[0]);
 			var tile1 = MainGame.board.at(adjacentTiles[1]);
 			if(buildings[0]==="road" && buildings[1]!=="road")
@@ -145,42 +156,36 @@ var UnitAI={
 				return adjacentTiles[0];
 			if(buildings[1]==="road")
 				return adjacentTiles[1];
-		}else{
+		} else {
 			return adjacentTiles[0];
 		}
+
 		//if none of the above conditions are met, then randomly choose a tile
 		return (Math.floor(Math.random()*2)===0?adjacentTiles[0]:adjacentTiles[1]);
 	},
-
-	makeMove: function(unit,destIndex){
-		if(destIndex===null)
-			return;
-
-		MainGame.board.at(unit.currentIndex).setUnit(null);
-		MainGame.board.at(destIndex).setUnit(unit);
-		unit.currentIndex = destIndex;
-	},
 	
-	attackTarget: function(unit){
+	attackTarget: function(unit) {
 		if (unit.type === Unit.Riot) {
 			var targetTile = MainGame.board.at(unit.target);
-			if(unit.heath >= targetTile.getBuilding().heath){
+			targetTile.damageBuilding(unit.health);
+
+			// If the rioter has killed the building
+			if (!targetTile.hasBuilding()) {
 				unit.target = null;
 				unit.isAttacking = false;
 			}
-			targetTile.getBuilding().damage(unit.heath);
-		} else {
+		} else if (unit.type === Unit.Army) {
 			var targetUnit = unit.target;
 			if(unit.health >= targetUnit.health){
 				unit.target = null;
 				unit.isAttacking = false;
 			}
-			targetUnit.takeDamage(unit.heath);
+			targetUnit.takeDamage(unit.health);
 		}
 	},
 
 	mergeUnits: function(unit1, unit2) {
-		var transfer = Math.min(unit2.health, 5 - unit1.heath);
+		var transfer = Math.min(unit2.health, 5 - unit1.health);
 		unit1.addPeople(transfer);
 		unit2.subtractPeople(transfer);
 	}

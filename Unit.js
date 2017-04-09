@@ -13,7 +13,7 @@ var Unit = {
         }
     },
     
-    createNew: function(data, startingIndex) {
+    createNew: function(data, startingIndex, name) {
         console.assert(data !== null, "[Unit] Cannot instantiate unit with no data!");
         console.assert(startingIndex >= 0 && startingIndex < MainGame.board.tileCount(), "[Unit] Cannot place unit at invalid index!");
 
@@ -23,6 +23,7 @@ var Unit = {
         unit.health = data.startingHealth;
         unit.currentIndex = startingIndex;
         unit.origin = startingIndex;
+        unit.name = name;
         unit.target = null;
 
         unit.nextTurn = function() { Unit.nextTurn(unit); };
@@ -73,7 +74,7 @@ var Unit = {
         }
 
         // maybe update sprite
-    }
+    },
 
     kill: function(unit) {
         // Play death sound

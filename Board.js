@@ -78,6 +78,7 @@ var Tile = {
         tile.getBuilding = function() { return tile.building; };
         tile.setBuilding = function(building) { Tile.setBuilding(tile,building); };
         tile.removeBuilding = function() { Tile.removeBuilding(tile); };
+        tile.damageBuilding = function(damage) { Tile.damageBuilding(tile, damage); };
 
         //// Unit Layer
         // Returns true iff this tile has a unit stationed on it
@@ -140,6 +141,18 @@ var Tile = {
         if (tile.hasBuilding()) {
             tile.removeChild(tile.building);
             tile.building = Building.createNew(null);
+        }
+    },
+
+    damageBuilding: function(tile, damage) {
+        if (tile.hasBuilding()) {
+            tile.building.health -= damage;
+            
+            if (tile.building.health <= 0) {
+                tile.removeBuilding();
+
+                // TODO: Make a rubble
+            }
         }
     },
 
