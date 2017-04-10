@@ -15,7 +15,7 @@ var Unit = {
         }
     },
     
-    createNew: function(data, startingIndex, name) {
+    createNew: function(data, startingIndex) {
         console.assert(data !== null, "[Unit] Cannot instantiate unit with no data!");
         console.assert(startingIndex >= 0 && startingIndex < MainGame.board.tileCount(), "[Unit] Cannot place unit at invalid index!");
 
@@ -25,7 +25,6 @@ var Unit = {
         unit.health = data.startingHealth;
         unit.currentIndex = startingIndex;
         unit.origin = startingIndex;
-        unit.name = name;
         unit.target = null;
 
         unit.nextTurn = function() { Unit.nextTurn(unit); };
@@ -58,25 +57,25 @@ var Unit = {
                 return true; // Aaaaand we're done here. Don't need to actually create a unit
             } else {
                 // Gotta find a new tile.
-
+                return false;
             }
         } else {
             // If the tile is free, spawn here.
-            var spawnTile = MainGame.board.at(spawnIndex);
+            var spawnTile = MainGame.board.at(index);
             Unit.loadUnitData();
-            spawnTile.unit = Unit.createNew(Unit.unitData[unitType], spawnIndex, citizenToRiot.name);
+            spawnTile.unit = Unit.createNew(Unit.unitData[unitType], index);
             spawnTile.addChild(spawnTile.unit);
 
             return true; // Unit was sucessfully spawned
         }
 
-        // If we got an index, then spawn a unit (otherwise, board is completely full and we can assume the player is in enough trouble as is)
-        if (spawnIndex !== -1) {
+        // // If we got an index, then spawn a unit (otherwise, board is completely full and we can assume the player is in enough trouble as is)
+        // if (spawnIndex !== -1) {
             
-        } else {
-            console.log('[Global] Failed to spawn unit');
-            return false;
-        }
+        // } else {
+        //     console.log('[Global] Failed to spawn unit');
+        //     return false;
+        // }
     },
 
     _recursiveSpawn(unit, index, depth) {
@@ -103,7 +102,7 @@ var Unit = {
 
             return true; // Unit was sucessfully spawned
         }
-    }
+    },
 
     nextTurn: function(unit) {
         UnitAI.takeTurn(unit);

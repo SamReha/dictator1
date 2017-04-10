@@ -93,7 +93,7 @@ var Global={
 
             if (spawnSuccessful) {
                 // Remove them from their home
-                building.removePerson();
+                MainGame.board.at(citizenToRiot.home).getBuilding().removePerson();
                 citizenToRiot.home = null;
 
                 // Remove them from their workplace
