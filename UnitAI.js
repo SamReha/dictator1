@@ -185,7 +185,7 @@ var UnitAI = {
 	},
 
 	mergeUnits: function(unit1, unit2) {
-		var transfer = Math.min(unit2.health, 5 - unit1.health);
+		var transfer = Math.min(unit2.health, Unit.maxSize - unit1.health);
 		unit1.addPeople(transfer);
 		unit2.subtractPeople(transfer);
 	}

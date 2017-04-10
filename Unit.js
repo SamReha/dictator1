@@ -6,6 +6,8 @@ var Unit = {
     Riot: 'rioter',
     Homeless: 'homeless',
 
+    maxSize: 5,
+
     loadUnitData: function() {
         if (Unit.unitData === null) {
             Unit.unitData = MainGame.game.cache.getJSON('unitData');
@@ -35,6 +37,73 @@ var Unit = {
 
         return unit;
     },
+
+    // Similar to create new, but handles A) creating unit on a tile that already has a unit and B) childing the unit to the parent tile.
+    // As a convenience, returns true if the spawn was successful, and false otherwise.
+    spawnUnitAt: function(unitType, index) {
+        console.assert(unitType === this.Army || unitType === this.Riot || unitType === this.Homeless);
+        this.loadUnitData();
+
+        var tile = MainGame.board.at(index);
+        var building = tile.getBuilding();
+        var startingHealth = this.unitData[unitType].startingHealth;
+
+        // Test the current index. If there's already a unit here, try to increase it's power by one. Otherwise, find an open tile to spawn on.
+        if (tile.hasUnit()) {
+            var existingUnit = tile.getUnit();
+
+            // Can we attempt a merge?
+            if (existingUnit.type === unitType && existingUnit.health + startingHealth <= this.maxSize) {
+                existingUnit.health += startingHealth;
+                return true; // Aaaaand we're done here. Don't need to actually create a unit
+            } else {
+                // Gotta find a new tile.
+
+            }
+        } else {
+            // If the tile is free, spawn here.
+            var spawnTile = MainGame.board.at(spawnIndex);
+            Unit.loadUnitData();
+            spawnTile.unit = Unit.createNew(Unit.unitData[unitType], spawnIndex, citizenToRiot.name);
+            spawnTile.addChild(spawnTile.unit);
+
+            return true; // Unit was sucessfully spawned
+        }
+
+        // If we got an index, then spawn a unit (otherwise, board is completely full and we can assume the player is in enough trouble as is)
+        if (spawnIndex !== -1) {
+            
+        } else {
+            console.log('[Global] Failed to spawn unit');
+            return false;
+        }
+    },
+
+    _recursiveSpawn(unit, index, depth) {
+        if (depth > MainGame.board.tileCount()) return false; // Base case: we have checked every tile, and failed to find a free tile
+
+        // Test the current index. If there's already a unit here, try to increase it's power by one. Otherwise, find an open tile to spawn on.
+        if (tile.hasUnit()) {
+            var existingUnit = tile.getUnit();
+
+            // Can we attempt a merge?
+            if (existingUnit.type === unitType && existingUnit.health + startingHealth <= this.maxSize) {
+                existingUnit.health += startingHealth;
+                return true; // Aaaaand we're done here. Don't need to actually create a unit
+            } else {
+                // Gotta find a new tile.
+                return Unit._recursiveSpawn(unit, index, depth++);
+            }
+        } else {
+            // If the tile is free, spawn here.
+            var spawnTile = MainGame.board.at(spawnIndex);
+            Unit.loadUnitData();
+            spawnTile.unit = Unit.createNew(Unit.unitData[unitType], spawnIndex, citizenToRiot.name);
+            spawnTile.addChild(spawnTile.unit);
+
+            return true; // Unit was sucessfully spawned
+        }
+    }
 
     nextTurn: function(unit) {
         UnitAI.takeTurn(unit);
