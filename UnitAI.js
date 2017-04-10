@@ -74,6 +74,7 @@ var UnitAI = {
 			targetIndex = unit.target;
 		}
 
+		var currentWeight = MainGame.board.distanceOf(unit.currentIndex, targetIndex);
 		var adjacentTiles = MainGame.board.allAdjacent(unit.currentIndex, 1);
 		var choices = [];
 		for(var i=0; i<adjacentTiles.length; ++i){
@@ -95,8 +96,10 @@ var UnitAI = {
 				choices[i].weight = MainGame.board.distanceOf(adjacentTiles[i],targetIndex)*100;
 				if(choices[i].building === "road")
 					choices[i].weight -= Math.floor(Math.random()*50);
-				else if(unit.type === Unit.Riot && choices[i].building !== "")
+				else if(unit.type === Unit.Riot && choices[i].building !== "" && choices[i].weight <= currentWeight)
 					choices[i].weight = Math.floor(Math.random()*choices[i].weight);
+				else
+					choices[i].weight += Math.floor(Math.random()*50);
 			}else{
 				var adjacentUnit = tile.getUnit();
 				if(unit.type === Unit.Riot && adjacentUnit.type === Unit.Riot && unit.health <= adjacentUnit.health)
