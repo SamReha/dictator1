@@ -124,7 +124,7 @@ var UnitAI = {
 	attackTarget: function(unit) {
 		if (unit.type === Unit.Riot) {
 			var targetTile = MainGame.board.at(unit.target);
-			if(unit.health >= targetUnit.getBuilding().health){
+			if(unit.health >= targetTile.getBuilding().health){
 				unit.target = null;
 				unit.isAttacking = false;
 				var newBuilding = Building.createNew({name:'rubble',level:1,startingTurn:-1,people:0});
