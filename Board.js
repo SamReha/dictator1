@@ -1,7 +1,7 @@
 // require: MainGame.game !== null
 var Tile = {
     // create from JSON. json MUST be a string to prevent the ref issue.
-    fromJSON: function(json) {
+    fromJSON: function(json, index) {
         // create the tile
         /*global MainGame*/
         var tile = MainGame.game.make.sprite(0,0);
@@ -57,6 +57,7 @@ var Tile = {
         }
 
         tile.unit = null;
+        tile.index = index; // For convenience
 
         /* global Building*/
         tile.building=Building.createNew(data.building);
@@ -137,11 +138,24 @@ var Tile = {
     },
 
     removeBuilding: function(tile) {
-        // Don't try and remove a building if we just don't have one
-        if (tile.hasBuilding()) {
-            tile.removeChild(tile.building);
-            tile.building = Building.createNew(null);
+        console.assert(tile.hasBuilding(), "[Tile] Can't remove a building from a tile with no building!");
+
+        if (tile.getBuilding().subtype === 'housing') {
+            var occupants = MainGame.population.getHouseMap()[tile.index];
+        } else {
+            var occupants = MainGame.population.getWorkMap()[tile.index];
         }
+
+        // Evict all residents
+        for (var i in occupants) {
+            MainGame.population.fire(tile.index);
+        }
+
+        /*global updatePopulation*/
+        updatePopulation(false,false);
+
+        tile.removeChild(tile.building);
+        tile.building = Building.createNew(null);
     },
 
     damageBuilding: function(tile, damage) {
@@ -244,6 +258,7 @@ var Board = {
             var rect=board.rectOf(i, 1.0);
             oneTile.x=rect.x;
             oneTile.y=rect.y;
+            oneTile.index = i;
             board.addChild(oneTile);
         }
 
@@ -293,18 +308,20 @@ var Board = {
     },
     // returns all adjacent indice within [N] steps of tile [i]
     allAdjacent: function(b,i,N){
-        var result=[i];
-        var p0=0, p1=1;
-        for(var j=0;j<N;j++){
-            p1=result.length;
-            for(var p=p0;p<p1;p++){
-                var index=result[p];
-                for(var cd=0;cd<12;cd+=2){
-                    var adj=b.adjacent(index,cd);
-                    if(adj) result.push(adj);
+        var result = [i];
+        var p0 = 0, p1 = 1;
+        
+        for (var j = 0; j < N; j++) {
+            p1 = result.length;
+            for (var p = p0; p < p1; p++) {
+                var index = result[p];
+                for (var cd = 0; cd < 12; cd += 2) {
+                    var adj = b.adjacent(index, cd);
+                    if (adj) result.push(adj);
                 }
             }
         }
+
         result.shift();
         return result;
     },

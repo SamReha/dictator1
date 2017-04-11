@@ -27,12 +27,26 @@ var Unit = {
         unit.origin = startingIndex;
         unit.target = null;
 
+        unit.counter = MainGame.game.make.sprite(0, 0, unit.type + '_counter_background');
+        unit.counter.anchor.set(0.5, 0);
+        unit.counter.x = unit.width/2;
+        unit.counter.y = 55;
+        unit.counter.label = MainGame.game.make.text(0, 0, unit.health);
+        unit.counter.label.x = -unit.counter.label.width/2;
+        unit.counter.addChild(unit.counter.label);
+        unit.addChild(unit.counter);
+
+        unit.icon = MainGame.game.make.sprite(0, 0, unit.type + '_icon');
+        unit.icon.anchor.set(0.5, 0);
+        unit.icon.x = unit.width/2;
+        unit.addChild(unit.icon);
+
         unit.nextTurn = function() { Unit.nextTurn(unit); };
         unit.move = function(newIndex) { Unit.move(unit, newIndex); };
         unit.update = function() { Unit.update(unit); };
-        unit.addPeople = function(people) {Unit.addPeople(unit, people); };
-        unit.subtractPeople = function(people) {Unit.subtractPeople(unit, people); };
-        unit.kill = function() {Unit.kill(unit); };
+        unit.addPeople = function(people) { Unit.addPeople(unit, people); };
+        unit.subtractPeople = function(people) { Unit.subtractPeople(unit, people); };
+        unit.kill = function() { Unit.kill(unit); };
 
         return unit;
     },
@@ -53,11 +67,12 @@ var Unit = {
 
             // Can we attempt a merge?
             if (existingUnit.type === unitType && existingUnit.health + startingHealth <= this.maxSize) {
-                existingUnit.health += startingHealth;
+                existingUnit.addPeople(startingHealth);
+                console.log("[Unit] merged new rioter into existing riot");
                 return true; // Aaaaand we're done here. Don't need to actually create a unit
             } else {
                 // Gotta find a new tile.
-                return false;
+                return Unit._recursiveSpawn(unitType, index, 1);
             }
         } else {
             // If the tile is free, spawn here.
@@ -66,42 +81,34 @@ var Unit = {
             spawnTile.unit = Unit.createNew(Unit.unitData[unitType], index);
             spawnTile.addChild(spawnTile.unit);
 
-            return true; // Unit was sucessfully spawned
+            return true; // Unit was successfully spawned
         }
-
-        // // If we got an index, then spawn a unit (otherwise, board is completely full and we can assume the player is in enough trouble as is)
-        // if (spawnIndex !== -1) {
-            
-        // } else {
-        //     console.log('[Global] Failed to spawn unit');
-        //     return false;
-        // }
     },
 
-    _recursiveSpawn(unit, index, depth) {
-        if (depth > MainGame.board.tileCount()) return false; // Base case: we have checked every tile, and failed to find a free tile
+    // Wont try to merge if it encounters a unit
+    _recursiveSpawn(unitType, index, distance) {
+        var indexes = MainGame.board.allAdjacent(index, distance); // An array of tile indexes
 
-        // Test the current index. If there's already a unit here, try to increase it's power by one. Otherwise, find an open tile to spawn on.
-        if (tile.hasUnit()) {
-            var existingUnit = tile.getUnit();
+        // Base case: we've checked every tile. Give up. - FIX THIS
+        if (indexes.length >= MainGame.board.tileCount()) return false;
 
-            // Can we attempt a merge?
-            if (existingUnit.type === unitType && existingUnit.health + startingHealth <= this.maxSize) {
-                existingUnit.health += startingHealth;
-                return true; // Aaaaand we're done here. Don't need to actually create a unit
-            } else {
-                // Gotta find a new tile.
-                return Unit._recursiveSpawn(unit, index, depth++);
+        // Filter out all neighbors that already have units (if we wanna merge, we'll have to be more clever)
+        var freeIndexes = indexes.filter(function(tileIndex) {
+                return !MainGame.board.at(tileIndex).hasUnit();
             }
-        } else {
-            // If the tile is free, spawn here.
-            var spawnTile = MainGame.board.at(spawnIndex);
-            Unit.loadUnitData();
-            spawnTile.unit = Unit.createNew(Unit.unitData[unitType], spawnIndex, citizenToRiot.name);
-            spawnTile.addChild(spawnTile.unit);
+        );
 
-            return true; // Unit was sucessfully spawned
-        }
+        // If there are no free tiles within the current range, then recur with a greater range
+        if (freeIndexes.length === 0) return Unit._recursiveSpawn(index, distance++);
+
+        // We've found a free tile, so let's spawn here.
+        var spawnIndex = freeIndexes[0];
+        var spawnTile = MainGame.board.at(spawnIndex);
+        Unit.loadUnitData();
+        spawnTile.unit = Unit.createNew(Unit.unitData[unitType], spawnIndex);
+        spawnTile.addChild(spawnTile.unit);
+
+        return true; // Unit was successfully spawned
     },
 
     nextTurn: function(unit) {
@@ -129,6 +136,7 @@ var Unit = {
         unit.health += people;
 
         // update health marker
+        unit.counter.label.text = unit.health;
 
         // maybe update sprite
     },
@@ -139,7 +147,11 @@ var Unit = {
         if (unit.health <= 0){
             MainGame.board.at(unit.currentIndex).setUnit(null);
             unit.destroy();
+            return;
         }
+
+        // update health marker
+        unit.counter.label.text = unit.health;
 
         // maybe update sprite
     },

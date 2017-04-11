@@ -1,7 +1,7 @@
 /*global MainGame*/
 var UnitAI = {
 	takeTurn: function(unit) {
-		console.log(MainGame.global.turn, unit.name, unit.currentIndex);
+		//console.log(MainGame.global.turn, unit.name, unit.currentIndex);
 		if (unit.target === null) {
 			unit.target = UnitAI.findTarget(unit);
 		}
@@ -173,6 +173,8 @@ var UnitAI = {
 			if (!targetTile.hasBuilding()) {
 				unit.target = null;
 				unit.isAttacking = false;
+				var newBuilding = Building.createNew({name:'rubble',level:1,startingTurn:-1,people:0});
+				targetTile.setBuilding(newBuilding);
 			}
 		} else if (unit.type === Unit.Army) {
 			var targetUnit = unit.target;

@@ -133,7 +133,7 @@
   },
   "police":{
     "type": "!",
-    "subtype": "millitary",
+    "subtype": "military",
     "playerLabel": "Police Station",
     "cost": 15,
     "maxPeople": 3,
@@ -147,7 +147,7 @@
   },
   "armyBase": {
     "type": "!",
-    "subtype": "millitary",
+    "subtype": "military",
     "playerLabel": "Army Base",
     "cost": 30,
     "maxPeople": 5,
@@ -171,6 +171,14 @@
     "subtype": "road",
     "playerLabel": "Road",
     "cost": 2,
+    "maxPeople": 0,
+    "effects": [{"type": null}]
+  },
+  "rubble": {
+    "type": "-",
+    "subtype": "rubble",
+    "playerLabel": "Rubble",
+    "cost": 0,
     "maxPeople": 0,
     "effects": [{"type": null}]
   },
