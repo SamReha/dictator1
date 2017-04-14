@@ -165,7 +165,9 @@ var Tile = {
             if (tile.building.health <= 0) {
                 tile.removeBuilding();
 
-                // TODO: Make a rubble
+                // Make a rubble
+                var newBuilding = Building.createNew({name:'rubble', level:1, startingTurn:-1, people:0});
+                tile.setBuilding(newBuilding);
             }
         }
     },

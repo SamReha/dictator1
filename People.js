@@ -426,13 +426,11 @@ var Population={
         var bld=MainGame.board.at(tileIndex).getBuilding();
         // console.assert(bld);
         // unset home
-        console.log("firing");
         if (bld.subtype === "housing") {
             //console.log(tileIndex);
             var housed = pop.findHoused();
             for (var i = 0; i < housed.length; i++) {
                 if (pop.people[housed[i]].home === tileIndex) {
-                    console.log("found");
                     bld.removePerson();
                     pop.people[housed[i]].home = null;
                     return true;

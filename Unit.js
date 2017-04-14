@@ -6,6 +6,9 @@ var Unit = {
     Riot: 'rioter',
     Homeless: 'homeless',
 
+    // Styling of numerical label
+    textStyle: { font: '24px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+
     maxSize: 5,
 
     loadUnitData: function() {
@@ -31,7 +34,7 @@ var Unit = {
         unit.counter.anchor.set(0.5, 0);
         unit.counter.x = unit.width/2;
         unit.counter.y = 55;
-        unit.counter.label = MainGame.game.make.text(0, 0, unit.health);
+        unit.counter.label = MainGame.game.make.text(0, 10, unit.health, this.textStyle);
         unit.counter.label.x = -unit.counter.label.width/2;
         unit.counter.addChild(unit.counter.label);
         unit.addChild(unit.counter);
