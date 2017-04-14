@@ -6,9 +6,10 @@ var UnitAI = {
 			unit.target = UnitAI.findTarget(unit);
 		}
 
-		unit.move(UnitAI.chooseMove(unit));
-
-		if(unit.isAttacking)
+		var newMoveIndex = UnitAI.chooseMove(unit);
+		console.log(newMoveIndex);
+		unit.move(newMoveIndex);
+		if (unit.isAttacking)
 			UnitAI.attackTarget(unit);
 	},
 
@@ -47,7 +48,7 @@ var UnitAI = {
 		var targetIndex = null;
 		if (unit.type === Unit.Army) {
 			if (unit.target !== null) {
-				targetIndex = unit.target.currentIndex;
+				targetIndex = unit.target;
 			} else {
 				// If an Army unit does not have a target, then it will patrol roads
 				// If it is not on a road, it will move toward the army base until it finds a road
@@ -77,15 +78,16 @@ var UnitAI = {
 		var currentWeight = MainGame.board.distanceOf(unit.currentIndex, targetIndex);
 		var adjacentTiles = MainGame.board.allAdjacent(unit.currentIndex, 1);
 		var choices = [];
-		for(var i=0; i<adjacentTiles.length; ++i){
+		for(var i = 0; i < adjacentTiles.length; ++i) {
 			// Checking to see if the adjacent hex is the unit's target
 			// if so, then the unit will immediately attack it
-			if(adjacentTiles[i]===targetIndex){
+			if (adjacentTiles[i] === targetIndex) {
 				unit.isAttacking = true;
-				if(unit.type===Unit.Army)
+				if (unit.type === Unit.Army) {
 					return null;
-				else
+				} else {
 					return adjacentTiles[i];
+				}
 			}
 
 			choices.push({tileIndex:adjacentTiles[i],weight:0,building:""});
@@ -114,7 +116,6 @@ var UnitAI = {
 		if (unit.type === Unit.Riot) {
 			if(choices[0].building !== "road" && choices[0].building !== ""){
 				unit.target = choices.tileIndex;
-				unit.isAttacking = true;
 			}
 		}
 
@@ -133,6 +134,8 @@ var UnitAI = {
 			targetTile.damageBuilding(unit.health);
 		} else if (unit.type === Unit.Army) {
 			var targetUnit = unit.target;
+
+			// If the targeted unit is about to die...
 			if(unit.health >= targetUnit.health){
 				unit.target = null;
 				unit.isAttacking = false;

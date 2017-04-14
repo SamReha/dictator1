@@ -29,6 +29,7 @@ var Unit = {
         unit.currentIndex = startingIndex;
         unit.origin = startingIndex;
         unit.target = null;
+        unit.isAttacking = false;
 
         unit.counter = MainGame.game.make.sprite(0, 0, unit.type + '_counter_background');
         unit.counter.anchor.set(0.5, 0);
@@ -47,6 +48,7 @@ var Unit = {
         unit.nextTurn = function() { Unit.nextTurn(unit); };
         unit.move = function(newIndex) { Unit.move(unit, newIndex); };
         unit.update = function() { Unit.update(unit); };
+        unit.hasTarget = function() { return unit.target !== null; };
         unit.addPeople = function(people) { Unit.addPeople(unit, people); };
         unit.subtractPeople = function(people) { Unit.subtractPeople(unit, people); };
         unit.kill = function() { Unit.kill(unit); };
