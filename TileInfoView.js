@@ -529,7 +529,7 @@ var TileDetailView = {
 
     // When a non-housing building gets a worker added or removed, some states need to get updated
     _updateState: function(view, building) {
-        var sentenceStart = 'This building ';
+        var sentenceStart = 'This building generates ';
         var outDescription = '';
 
         var str3 = '';
@@ -541,43 +541,27 @@ var TileDetailView = {
             var outValue = building.effects[outIndex].outputTable[building.people];
 
             if (outType === "health") { 
-                if (outValue === 0) {
-                    outDescription = this._getStatusString(outValue, outType);
-                } else if (outValue > 0 && outValue < 25) {
-                    outDescription = "provides little food.";
-                } else if (outValue >= 25 && outValue < 50) {
-                    outDescription = "provides some food.";
-                } else if (outValue >= 50 && outValue < 75) {
-                    outDescription = "provides plenty of food.";
-                } else outDescription = "provides abundant food.";
+                outDescription = sentenceStart + this._getStatusString(outValue, outType);
 
                 /*global updateHomesNearOutput*/
                 updateHomesNearOutput(view.index);
-            }else if(outType==="education"){
-                if (outValue === 0) {
-                    outDescription = 'provides no education.';
-                } else if (outValue > 0 && outValue < 25) {
-                    outDescription = "provides little education.";
-                } else if (outValue >= 25 && outValue < 50) {
-                    outDescription = "provides some education.";
-                } else if (outValue >= 50 && outValue < 75) {
-                    outDescription = "provides very good education.";
-                } else outDescription = "provides extremely good education.";
+            }else if(outType === "education"){
+                outDescription = sentenceStart + this._getStatusString(outValue, outType);
 
                 /*global updateHomesNearOutput*/
                 updateHomesNearOutput(view.index);
-            }else if(outType==="freedom"){
-                outDescription = 'generates ' + outValue + ' Freedom.';
+            }else if(outType === "freedom"){
+                outDescription = outValue + ' Freedom.';
 
                 /*global updateHomesNearOutput*/
                 updateHomesNearOutput(view.index);
-            }else if(outType==="unrest"){
-                outDescription = 'generates ' + outValue + ' Unrest.';
+            }else if(outType === "unrest"){
+                outDescription = outValue + ' Unrest.';
 
                 /*global updateHomesNearOutput*/
                 updateHomesNearOutput(view.index);
-            }else if(outType==="money"){
-                outDescription = 'generates ₸' + outValue + ' each turn.';
+            }else if(outType === "money"){
+                outDescription = '₸' + outValue + ' each turn.';
 
                 MainGame.global.updateMoneyPerTurn();
             }
@@ -612,38 +596,9 @@ var TileDetailView = {
         var str5="";
         
         if (view.residential) {
-            var sentenceStart = "Residents ";
-            var healthDescription = "are starving.";
-            var eduDescription = "are illiterate.";
-            var shelterDescription = "are unsheltered.";
-
-            if (bld.health > 0 && bld.health < 25) {
-                healthDescription = "have little food.";
-            } else if (bld.health >= 25 && bld.health < 50) {
-                healthDescription = "have some food.";
-            } else if (bld.health >= 50 && bld.health < 75) {
-                healthDescription = "have plenty of food.";
-            } else healthDescription = "have abundant food.";
-
-            if (bld.education > 0 && bld.education < 25) {
-                eduDescription = "have little education.";
-            } else if (bld.education >= 25 && bld.education < 50) {
-                eduDescription = "have some education.";
-            } else if (bld.education >= 50 && bld.education < 75) {
-                eduDescription = "are very well educated.";
-            } else eduDescription = "are extremely well educated.";
-
-            if (bld.shelter > 0 && bld.shelter < 25) {
-                shelterDescription = "have poor shelter.";
-            } else if (bld.shelter >= 25 && bld.shelter < 50) {
-                shelterDescription = "have decent shelter.";
-            } else if (bld.shelter >= 50 && bld.shelter < 75) {
-                shelterDescription = "are very comfortable.";
-            } else shelterDescription = "are extremely comfortable.";
-
-            str3 = sentenceStart + healthDescription;
-            str4 = sentenceStart + eduDescription;
-            str5 = sentenceStart + shelterDescription;
+            str3 = this._getStatusString(bld.health, 'health');
+            str4 = this._getStatusString(bld.health, 'culture');
+            str5 = this._getStatusString(bld.health, 'shelter');
         }
 
         if (bld.effects[0].type !== null) {
