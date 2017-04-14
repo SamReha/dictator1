@@ -18,12 +18,15 @@ var CoalitionQuest={
 		if(!_hiPeopleRef){
 			_hiPeopleRef=[];
 		}
+
 		// if there is a running one, finish it without triggering anything
-		console.assert(this.runningQuests.length<=1);
-		if(this.runningQuests.length===1){
-			this.check(this.runningQuests);
+		console.assert(this.runningQuests.length <= 1);
+		if (this.runningQuests.length===1) {
+			console.log(this.runningQuests);
+			this.check();
 			return;
 		}
+
 		// lazy init
 		if(!this.inited){
 			this.quests=MainGame.game.cache.getJSON('CoalitionQuest');
@@ -31,8 +34,9 @@ var CoalitionQuest={
 			console.log("Parsed CoalitionQuest, total:",this.quests.length);
 			this.inited=true;
 		}
+
 		// now this.quests is good.
-		for(var i=this.quests.length-1;i>=0;i--){
+		for (var i = this.quests.length - 1; i >= 0; i--) {
 			// q is the last one
 			var q=this.quests[i];
 			// check q.cond
@@ -53,10 +57,12 @@ var CoalitionQuest={
 			this.runEvent(q.peopleRef, q.event, q.handler);
 		}
 	},
+
 	_checkCond_: function(condString){
 		var fn=Function("return "+condString);
 		return fn();
 	},
+
 	_getPeople_: function(hiPeopleRef, roles){
 		var peopleRef=hiPeopleRef.filter(function(p){
 			for(var i=0;i<roles.length;i++)
@@ -67,6 +73,7 @@ var CoalitionQuest={
 			return peopleRef;
 		return null;
 	},
+
 	_executeInit_: function(init){
 		Function(init)();
 	},
@@ -100,8 +107,8 @@ var CoalitionQuest={
 		e.setController(controller);
 	},
 
-	reminder: function(name){
-		var quests=this.runningQuests.filter(function(qu){return qu.name==name});
+	reminder: function(name) {
+		var quests = this.runningQuests.filter(function(qu){return qu.name==name});
 		console.assert(quests.length===1);
 		var q=quests[0];
 		console.log("So selected q is:",q);
@@ -120,71 +127,73 @@ var CoalitionQuest={
 	},
 
 	// check every quest to see it 1)fails; or 2)succeeds
-	check: function(runningQuestsRef){
+	check: function() {
 		console.log("Checking running quest");
-		console.assert(runningQuestsRef.length===1);
-		var q=runningQuestsRef[0];
-		var r=q.reminder;
-		var shouldRemove=false;
+		console.assert(this.runningQuests.length === 1);
+		var q = this.runningQuests[0];
+		var r = q.reminder;
+		var shouldRemove = false;
+
 		// check suc
-		console.log("Global money and test m is:",Global.money,CQ.TestQuest);
-		var f=Function("return "+r.controller.check);
-		console.log("f is:",f.toString());
-		if(f()){
+		console.log("Global money and test m is: ", Global.money, CQ.TestQuest);
+		var f = Function("return " + r.controller.check);
+		console.log("f is: ", f.toString());
+		if (f()) {
 			shouldRemove=true;
 			this.questSuc(q);
 		}
+
 		// check fail
 		r.model.remaining--;
-		if(r.model.remaining<0){
-			shouldRemove=true;
-			var f=Function("ppl",r.controller.fail);
+		if (r.model.remaining < 0) {
+			shouldRemove = true;
+			var f = Function("ppl", r.controller.fail);
 			f(q.peopleRef);
 			this.questFail(q);
 		}
+
 		// remove when necessary
-		if(shouldRemove){
+		if (shouldRemove) {
 			q.reminderButton.reminderView.suicide();
 			q.reminderButton.suicide();
 			this.runningQuests.pop();
 		}
 	},
-	questFail: function(q){		
-		console.log("Quest failed for:",q);
+
+	questFail: function(q) {		
+		console.log("Quest failed for:", q);
 		// create a new 1-page info "quest fail"
-		var e=Event.createNew();
-		e.position.set(300,200);
+		var e = Event.createNew();
+		e.position.set(300, 200);
 		e.setModel([
 			{
-				portrait:q.peopleRef[0].portTexture(), 
-				description:q.peopleRef[0].name+" You failed!",
-				buttonTexts:["OK"]
+				portrait: q.peopleRef[0].portTexture(), 
+				description: "You failed to complete a favor for " + q.peopleRef[0].name + ".",
+				buttonTexts: ["OK"]
 			}
 		]);
 		e.setController([
 			[function(){e.suicide()}]
 		]);
 	},
+
 	questSuc: function(q){
-		console.log("Quest suc for:",q);
+		console.log("Quest suc for:", q);
 		// create a 1-page info "quest suc"
-		var e=Event.createNew();
+		var e = Event.createNew();
 		e.position.set(300,200);
 		e.setModel([
 			{
-				portrait:q.peopleRef[0].portTexture(), 
-				description:q.peopleRef[0].name+" Thank you!",
-				buttonTexts:["OK"]
+				portrait: q.peopleRef[0].portTexture(), 
+				description: "You have successfully helped out " + q.peopleRef[0].name + ".",
+				buttonTexts: ["OK"]
 			}
 		]);
 		e.setController([
 			[function(){e.suicide()}]
 		]);
-	}
+	},
 };
-
-
-
 
 // test case code
 function test_coalition_quest(){
