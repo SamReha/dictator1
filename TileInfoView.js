@@ -348,6 +348,23 @@ var TileDetailView = {
         TileDetailView._setupListView_(view, index);
     },
 
+    /* START: This is a big block of functions that transform a building's input or output stats into sentences */
+    _getStatusString: function(outputValue, outputName) {
+        var description = '';
+
+        if (outputValue === 0) {
+            description = "no " + outputName + ".";
+        } else if (outputValue > 0 && outputValue < 25) {
+            description = "little " + outputName + ".";
+        } else if (outputValue >= 25 && outputValue < 50) {
+            description = "some " + outputName + ".";
+        } else if (outputValue >= 50 && outputValue < 75) {
+            description = "a lot of " + outputName + ".";
+        } else description = "maximum " + outputName + ".";
+
+        return description;
+    },
+
     // Forms a sprite that represents an entry in the listview
     _makeEntry_: function(citizen, residential) {
         var entrySprite = MainGame.game.make.sprite(0, 0);
@@ -421,9 +438,9 @@ var TileDetailView = {
         } else {
             // Else, it's a workplace
             entryString = citizen.name + '(';
-            if(citizen.home !== null){
+            if (citizen.home !== null) {
                 entryString += MainGame.board.at(citizen.home).getBuilding().playerLabel + ')'
-            }else{
+            } else {
                 entryString += 'Homeless)'
             }
         }
@@ -492,9 +509,13 @@ var TileDetailView = {
         if (view.residential) {
             var availableNoun = 'bed';
             var occupantNoun = 'resident';
+            var globalAvailability = MainGame.population.findNotHoused().length;
+            var citizenType = 'homeless';
         } else {
             var availableNoun = 'job';
             var occupantNoun = 'worker';
+            var globalAvailability = MainGame.population.findNotEmployed().length;
+            var citizenType = 'jobless'
         }
 
         var availability = building.maxPeople - building.people;
@@ -503,7 +524,7 @@ var TileDetailView = {
         if (availability !== 1) availableNoun += 's';
         if (building.people !== 1) occupantNoun += 's';
 
-        view.availabilityText.text = building.people + ' ' + occupantNoun + ' | ' + availability + ' ' + availableNoun + ' available';
+        view.availabilityText.text = building.people + ' ' + occupantNoun + ' | ' + availability + ' ' + availableNoun + ' available | ' + globalAvailability + ' ' + citizenType;
     },
 
     // When a non-housing building gets a worker added or removed, some states need to get updated
@@ -521,7 +542,7 @@ var TileDetailView = {
 
             if (outType === "health") { 
                 if (outValue === 0) {
-                    outDescription = 'provides no food.';
+                    outDescription = this._getStatusString(outValue, outType);
                 } else if (outValue > 0 && outValue < 25) {
                     outDescription = "provides little food.";
                 } else if (outValue >= 25 && outValue < 50) {
@@ -574,9 +595,7 @@ var TileDetailView = {
             }
         }
 
-        view.textDescription.text = str3;
-        view.textDescription.text = view.textDescription.text + '\n' + str4;
-        view.textDescription.text = view.textDescription.text + '\n' + str5;
+        view.textDescription.text = str3 + '\n' + str4 + '\n' + str5;
     },
 
     updateInfo: function(view, tile) {
@@ -672,8 +691,6 @@ var TileDetailView = {
             }
         }
 
-        view.textDescription.text = str3;
-        view.textDescription.text = view.textDescription.text + '\n' + str4;
-        view.textDescription.text = view.textDescription.text + '\n' + str5;
+        view.textDescription.text = str3 + '\n' + str4 + '\n' + str5;
     }
 };
