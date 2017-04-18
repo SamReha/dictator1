@@ -151,14 +151,15 @@ var Preloader={
         g.load.image('rioter_counter_background', unitDir + 'rioter_counter_background.png');
 
         // load json files
-        g.load.json('stage1','stage1.json');
-        g.load.json('stage2','stage2.json');
-        g.load.json('stageMain','stageMain.json');
-        g.load.json('buildingData','buildingData.json');
-        g.load.json('names','Names.json');
-        g.load.json('CoalitionQuest', 'CoalitionQuest.json');
-        g.load.json('Tutorial', 'Tutorial.json');
-        g.load.json('unitData', 'unitData.json');
+        var jsonDir = 'json/';
+        g.load.json('stage1',         jsonDir + 'stage1.json');
+        g.load.json('stage2',         jsonDir + 'stage2.json');
+        g.load.json('stageMain',      jsonDir + 'stageMain.json');
+        g.load.json('buildingData',   jsonDir + 'buildingData.json');
+        g.load.json('names',          jsonDir + 'Names.json');
+        g.load.json('CoalitionQuest', jsonDir + 'CoalitionQuest.json');
+        g.load.json('Tutorial',       jsonDir + 'Tutorial.json');
+        g.load.json('unitData',       jsonDir + 'unitData.json');
 
         // Load audio assets (should probably be using FMOD for this)
         var audioDir = 'sounds/';
