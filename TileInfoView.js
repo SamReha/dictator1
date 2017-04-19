@@ -110,7 +110,6 @@ var TileDetailView = {
         var offsetX = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*25;
         var offsetY = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*25;
         var rotation = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*1.5;
-        console.log(rotation);
 
         var viewTween = game.add.tween(view).to({alpha:1},200,Phaser.Easing.Cubic.In,true);
         var rotTween = game.add.tween(view).to({x:(game.width/2)+offsetX, y:(game.height/2)+offsetY,angle:rotation},280,Phaser.Easing.Back.Out,true);
@@ -136,6 +135,8 @@ var TileDetailView = {
             view.destroy();
             board.controller.detailView = null;
         });
+        var maxMaskAlpha = view.uiMask.alpha; view.uiMask.alpha = 0;
+        var maskTween = game.add.tween(view.uiMask).to({alpha:maxMaskAlpha},200,Phaser.Easing.Cubic.In,true);
 
         // Class variables
         view.index = buildingIndex;
