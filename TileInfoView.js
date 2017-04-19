@@ -143,10 +143,18 @@ var TileDetailView = {
         view.buildingName = game.make.text(view.icon.x, view.icon.y + view.icon.height + 10, building.playerLabel + ' ', TileDetailView.nameStyle);
         view.addChild(view.buildingName);
 
-        view.textDescription = game.make.text(0, 0, '', TileDetailView.descriptionStyle);
-        view.textDescription.x = view.icon.x + view.icon.width + TileDetailView.horizontalBorderWidth/2 + 2;
-        view.textDescription.y = -view.height/2 + TileDetailView.verticalBorderWidth;
-        view.addChild(view.textDescription);
+        console.log(building);
+
+        if (building.name === 'armyBase') {
+        } else {
+            view.textDescription = game.make.text(0, 0, '', TileDetailView.descriptionStyle);
+            view.textDescription.x = view.icon.x + view.icon.width + TileDetailView.horizontalBorderWidth/2 + 2;
+            view.textDescription.y = -view.height/2 + TileDetailView.verticalBorderWidth;
+            view.addChild(view.textDescription);
+        }
+
+        // view.descriptionArea = game.make.group();
+        // view.addChild(view.descriptionArea);
 
         // ListView Background
         var background = MainGame.game.make.graphics();
@@ -268,7 +276,7 @@ var TileDetailView = {
 
         if (bld.people >= bld.maxPeople)
             return;
-        if(MainGame.population.hire(view.index)){
+        if (MainGame.population.hire(view.index)) {
             if (bld.people >= bld.maxPeople) {
                 view.addPersonButton.visible = false;
             }
@@ -348,11 +356,15 @@ var TileDetailView = {
         TileDetailView._setupListView_(view, index);
     },
 
-    /* START: This is a big block of functions that transform a building's input or output stats into sentences */
+    /* Get's a simple string describing a buildings output (or input) */
     _getStatusString: function(outputValue, outputName) {
         var description = '';
 
-        if (outputValue === 0) {
+        if (outputName === 'freedom' || outputName === 'unrest') {
+            description = outputValue + ' ' + outputName + '.';
+        } if (outputName === 'money') {
+            description = '₸' + outputValue + ' each turn.';
+        } else if (outputValue === 0) {
             description = "no " + outputName + ".";
         } else if (outputValue > 0 && outputValue < 25) {
             description = "little " + outputName + ".";
@@ -437,7 +449,7 @@ var TileDetailView = {
             }
         } else {
             // Else, it's a workplace
-            entryString = citizen.name + '(';
+            entryString = citizen.name + ' (';
             if (citizen.home !== null) {
                 entryString += MainGame.board.at(citizen.home).getBuilding().playerLabel + ')'
             } else {
@@ -530,7 +542,6 @@ var TileDetailView = {
     // When a non-housing building gets a worker added or removed, some states need to get updated
     _updateState: function(view, building) {
         var sentenceStart = 'This building generates ';
-        var outDescription = '';
 
         var str3 = '';
         var str4 = '';
@@ -540,42 +551,20 @@ var TileDetailView = {
             var outType = building.effects[outIndex].type;
             var outValue = building.effects[outIndex].outputTable[building.people];
 
-            if (outType === "health") { 
-                outDescription = sentenceStart + this._getStatusString(outValue, outType);
-
-                /*global updateHomesNearOutput*/
-                updateHomesNearOutput(view.index);
-            }else if(outType === "education"){
-                outDescription = sentenceStart + this._getStatusString(outValue, outType);
-
-                /*global updateHomesNearOutput*/
-                updateHomesNearOutput(view.index);
-            }else if(outType === "freedom"){
-                outDescription = outValue + ' Freedom.';
-
-                /*global updateHomesNearOutput*/
-                updateHomesNearOutput(view.index);
-            }else if(outType === "unrest"){
-                outDescription = outValue + ' Unrest.';
-
-                /*global updateHomesNearOutput*/
-                updateHomesNearOutput(view.index);
-            }else if(outType === "money"){
-                outDescription = '₸' + outValue + ' each turn.';
-
-                MainGame.global.updateMoneyPerTurn();
-            }
+            /*global updateHomesNearOutput*/
+            updateHomesNearOutput(view.index);
+            MainGame.global.updateMoneyPerTurn();
 
             // fix the apartment firing people bug
             if (building.effects[outIndex].type === null)
                 break;
 
             if (outIndex === 0) {
-                str3 = sentenceStart + outDescription;
+                str3 = sentenceStart + this._getStatusString(outValue, outType);;
             } else if(outIndex === 1) {
-                str4 = sentenceStart + outDescription;
+                str4 = sentenceStart + this._getStatusString(outValue, outType);;
             } else if(outIndex === 2) {
-                str5 = sentenceStart + outDescription;
+                str5 = sentenceStart + this._getStatusString(outValue, outType);;
             }
         }
 
@@ -591,57 +580,29 @@ var TileDetailView = {
         var b = MainGame.board;
         var bld = tile.getBuilding();
 
-        var str3="";
-        var str4="";
-        var str5="";
+        var str3 = '';
+        var str4 = '';
+        var str5 = '';
         
         if (view.residential) {
-            str3 = this._getStatusString(bld.health, 'health');
-            str4 = this._getStatusString(bld.health, 'culture');
-            str5 = this._getStatusString(bld.health, 'shelter');
+            var sentenceStart = 'This building recieves ';
+            str3 = sentenceStart + this._getStatusString(bld.health, 'health');
+            str4 = sentenceStart + this._getStatusString(bld.health, 'culture');
+            str5 = sentenceStart + this._getStatusString(bld.health, 'shelter');
         }
 
         if (bld.effects[0].type !== null) {
             for (var outIndex=0; outIndex < bld.effects.length; ++outIndex) {
                 var outType = bld.effects[outIndex].type;
                 var outValue = bld.effects[outIndex].outputTable[bld.people];
-                var sentenceStart = 'This building ';
-                var outDescription = '';
-
-                if (outType === "health") {
-                    if (outValue === 0) {
-                        outDescription = 'provides no food.';
-                    } else if (outValue > 0 && outValue < 25) {
-                        outDescription = "provides little food.";
-                    } else if (outValue >= 25 && outValue < 50) {
-                        outDescription = "provides some food.";
-                    } else if (outValue >= 50 && outValue < 75) {
-                        outDescription = "provides plenty of food.";
-                    } else outDescription = "provides abundant food.";
-                } else if (outType === "education") {
-                    if (outValue === 0) {
-                        outDescription = 'provides no education.';
-                    } else if (outValue > 0 && outValue < 25) {
-                        outDescription = "provides little education.";
-                    } else if (outValue >= 25 && outValue < 50) {
-                        outDescription = "provides some education.";
-                    } else if (outValue >= 50 && outValue < 75) {
-                        outDescription = "provides very good education.";
-                    } else outDescription = "provides extremely good education.";
-                } else if (outType === "freedom") {
-                    outDescription = 'generates ' + outValue + ' Freedom.';
-                } else if (outType === "unrest") {
-                    outDescription = 'generates ' + outValue + ' Unrest.';
-                } else if (outType === "money") {
-                    outDescription = 'generates ₸' + outValue + ' each turn.';
-                }
+                var sentenceStart = 'This building generates ';
         
                 if (outIndex === 0) {
-                    str3 = sentenceStart + outDescription;
+                    str3 = sentenceStart + this._getStatusString(outValue, outType);
                 } else if(outIndex === 1) {
-                    str4 = sentenceStart + outDescription;
+                    str4 = sentenceStart + this._getStatusString(outValue, outType);
                 } else if(outIndex === 2) {
-                    str5 = sentenceStart + outDescription;
+                    str5 = sentenceStart + this._getStatusString(outValue, outType);
                 }
             }
         }
@@ -649,3 +610,14 @@ var TileDetailView = {
         view.textDescription.text = str3 + '\n' + str4 + '\n' + str5;
     }
 };
+
+var ResidentialInfoView = {
+    makeResidential: function(genericView) {
+        // Useful labels - what are we holding in this building? 'x residents | y beds available | z potential occupants'
+        genericView.availableNoun = 'bed';
+        genericView.occupantNoun = 'resident';
+        genericView.nonOccupantType = 'homeless'; // What do you call a person who doesn't have what this building provides to occupants
+
+
+    }
+}

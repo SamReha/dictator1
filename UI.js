@@ -254,15 +254,9 @@ var StatsPanel = {
         statsPanel.yearGroup = MainGame.game.make.sprite(0, 0, 'year_icon');
         statsPanel.yearGroup.x = this.horizontalPad;
         statsPanel.yearGroup.y = (this.unitHeight + this.verticalPad) * 0 + this.verticalPad;
-        statsPanel.yearGroup.inputEnabled = true;
-        statsPanel.yearGroup.input.priorityID = 2;
 
-        var yearToolTip = ToolTip.createNew("Current Year");
-        yearToolTip.x = -yearToolTip.width;
-        yearToolTip.y = 12;
-        statsPanel.yearGroup.addChild(yearToolTip);
-        statsPanel.yearGroup.events.onInputOver.add(function() {yearToolTip.show();}, null);
-        statsPanel.yearGroup.events.onInputOut.add(function() {yearToolTip.hide();}, null);
+        ToolTip.addTipTo(statsPanel.yearGroup, 2, 'Current Year', 0, 12);
+        statsPanel.yearGroup.toolTip.x = -statsPanel.yearGroup.toolTip.width;
 
         statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, 1949+MainGame.global.turn, this.textStyle);
         statsPanel.yearGroup.addChild(statsPanel.yearGroup.textLabel);
@@ -275,8 +269,6 @@ var StatsPanel = {
         }, 0, 1, 0, 2);
         statsPanel.popGroup.x = this.horizontalPad;
         statsPanel.popGroup.y = (this.unitHeight + this.verticalPad) * 1;
-        statsPanel.popGroup.inputEnabled = true;
-        statsPanel.popGroup.input.priorityID = 2;
 
         statsPanel.popGroup.sfxArray = [
             game.make.audio('paper_click_2'),
@@ -285,12 +277,8 @@ var StatsPanel = {
             game.make.audio('paper_click_7')
         ];
 
-        var populationToolTip = ToolTip.createNew("Total Population");
-        populationToolTip.x = -populationToolTip.width;
-        populationToolTip.y = 12;
-        statsPanel.popGroup.addChild(populationToolTip);
-        statsPanel.popGroup.events.onInputOver.add(function() {populationToolTip.show();}, null);
-        statsPanel.popGroup.events.onInputOut.add(function() {populationToolTip.hide();}, null);
+        ToolTip.addTipTo(statsPanel.popGroup, 2, 'Total Population', 0, 12);
+        statsPanel.popGroup.toolTip.x = -statsPanel.popGroup.toolTip.width;
 
         statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
@@ -300,15 +288,9 @@ var StatsPanel = {
         statsPanel.homelessGroup = MainGame.game.make.sprite(0,0, 'homeless_icon');
         statsPanel.homelessGroup.x = this.horizontalPad;
         statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 2;
-        statsPanel.homelessGroup.inputEnabled = true;
-        statsPanel.homelessGroup.input.priorityID = 2;
 
-        var homelessToolTip = ToolTip.createNew("Homeless Citizens");
-        homelessToolTip.x = -homelessToolTip.width;
-        homelessToolTip.y = 12;
-        statsPanel.homelessGroup.addChild(homelessToolTip);
-        statsPanel.homelessGroup.events.onInputOver.add(function() {homelessToolTip.show();}, null);
-        statsPanel.homelessGroup.events.onInputOut.add(function() {homelessToolTip.hide();}, null);
+        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', 0, 12);
+        statsPanel.homelessGroup.toolTip.x = -statsPanel.homelessGroup.toolTip.width;
 
         statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.textLabel);
@@ -318,15 +300,9 @@ var StatsPanel = {
         statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0, 'unemployed_icon');
         statsPanel.unemploymentGroup.x = this.horizontalPad;
         statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 3;
-        statsPanel.unemploymentGroup.inputEnabled = true;
-        statsPanel.unemploymentGroup.input.priorityID = 2;
-
-        var joblessToolTip = ToolTip.createNew("Jobless Citizens");
-        joblessToolTip.x = -joblessToolTip.width;
-        joblessToolTip.y = 12;
-        statsPanel.unemploymentGroup.addChild(joblessToolTip);
-        statsPanel.unemploymentGroup.events.onInputOver.add(function() {joblessToolTip.show();}, null);
-        statsPanel.unemploymentGroup.events.onInputOut.add(function() {joblessToolTip.hide();}, null);
+        
+        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', 0, 12);
+        statsPanel.unemploymentGroup.toolTip.x = -statsPanel.unemploymentGroup.toolTip.width;
 
         statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
@@ -336,15 +312,9 @@ var StatsPanel = {
         statsPanel.warchestGroup = MainGame.game.make.sprite(0, 0, 'money_icon');
         statsPanel.warchestGroup.x = this.horizontalPad;
         statsPanel.warchestGroup.y = (this.unitHeight + this.verticalPad) * 4;
-        statsPanel.warchestGroup.inputEnabled = true;
-        statsPanel.warchestGroup.input.priorityID = 2;
-
-        var moneyToolTip = ToolTip.createNew("National Funds");
-        moneyToolTip.x = -moneyToolTip.width;
-        moneyToolTip.y = 12;
-        statsPanel.warchestGroup.addChild(moneyToolTip);
-        statsPanel.warchestGroup.events.onInputOver.add(function() {moneyToolTip.show();}, null);
-        statsPanel.warchestGroup.events.onInputOut.add(function() {moneyToolTip.hide();}, null);
+        
+        ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', 0, 12);
+        statsPanel.warchestGroup.toolTip.x = -statsPanel.warchestGroup.toolTip.width;
 
         statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, 0, '$0 ', this.textStyle);
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
@@ -359,15 +329,9 @@ var StatsPanel = {
         statsPanel.swissGroup = MainGame.game.make.sprite(0, 0, 'swiss_icon');
         statsPanel.swissGroup.x = this.horizontalPad;
         statsPanel.swissGroup.y = (this.unitHeight + this.verticalPad) * 5;
-        statsPanel.swissGroup.inputEnabled = true;
-        statsPanel.swissGroup.input.priorityID = 2;
 
-        var swissToolTip = ToolTip.createNew("Private Account");
-        swissToolTip.x = -swissToolTip.width;
-        swissToolTip.y = 12;
-        statsPanel.swissGroup.addChild(swissToolTip);
-        statsPanel.swissGroup.events.onInputOver.add(function() {swissToolTip.show();}, null);
-        statsPanel.swissGroup.events.onInputOut.add(function() {swissToolTip.hide();}, null);
+        ToolTip.addTipTo(statsPanel.swissGroup, 2, 'Private Account', 0, 12);
+        statsPanel.swissGroup.toolTip.x = -statsPanel.swissGroup.toolTip.width;
 
         statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '$0 ', this.textStyle);
         statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
@@ -416,7 +380,7 @@ var RiotThermometer = {
 
         // Properties
         thermometer.delta = 0;      // Percent change per turn
-        thermometer.toolTip = ToolTip.createNew('Ow my head');
+        // thermometer.toolTip = ToolTip.createNew('Ow my head');
 
         // Class functions
         thermometer.updateData = function() { RiotThermometer.updateData(thermometer); };
@@ -457,10 +421,7 @@ var FunPanel = {
     unitWidth: 120,
     horizontalPad: 5,
     textStyle: { font: '30px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
-    blue: 0x03cae1,
-    red: 0xff0000,
     barOpacity: .80,
-    thermometerQuantity: 0,
 
     createNew: function() {
         var funPanel = MainGame.game.make.sprite(0, 0, 'fun_panel_backpanel');
@@ -470,54 +431,67 @@ var FunPanel = {
         funPanel.input.priorityID = 1;
 
         // Meter
-        funPanel.meter = MainGame.game.make.sprite(0, 0, 'freedomUnrestMeter');
+        funPanel.meter = MainGame.game.make.sprite(0, 5, 'freedomUnrestMeter');
         funPanel.meter.anchor.x = 0.5;
-        funPanel.meter.y = 5;
         funPanel.addChild(funPanel.meter);
 
         // Do the magic bars
-        funPanel.freedomBar = MainGame.game.make.graphics();
-        funPanel.freedomBar.lineStyle(0);
+        funPanel.freedomBar = MainGame.game.make.sprite(-funPanel.meter.width/2, 4, 'blue');
+        funPanel.freedomBar.alpha = this.barOpacity;
+        funPanel.freedomBar.height = 16;
         funPanel.meter.addChild(funPanel.freedomBar);
 
-        funPanel.unrestBar = MainGame.game.make.graphics();
-        funPanel.unrestBar.lineStyle(0);
+        funPanel.unrestBar = MainGame.game.make.sprite(funPanel.meter.width/2, 28, 'red');
+        funPanel.unrestBar.alpha = this.barOpacity;
+        funPanel.unrestBar.height = 16;
         funPanel.meter.addChild(funPanel.unrestBar);
 
-        // Freedom
-        funPanel.freeSprite = MainGame.game.make.sprite(0, 0, 'freedom_icon');
-        funPanel.freeSprite.anchor.x = 0.5;
-        funPanel.freeSprite.x = -funPanel.meter.width/2 - funPanel.freeSprite.width/2 - 5;
-        funPanel.freeSprite.y = 5;
+        // Meter foreground
+        funPanel.meterForeground = MainGame.game.make.sprite(0, 5, 'freedomUnrestMeter_foreground');
+        funPanel.meterForeground.anchor.x = 0.5;
+        funPanel.addChild(funPanel.meterForeground);
 
-        funPanel.freeSprite.inputEnabled = true;
-        funPanel.freeSprite.input.priorityID = 2;
-        funPanel.freeSprite.toolTip = ToolTip.createNew('Total Freedom');
-        funPanel.freeSprite.toolTip.y = 48;
-        funPanel.freeSprite.events.onInputOver.add(function() {funPanel.freeSprite.toolTip.show();}, null);
-        funPanel.freeSprite.events.onInputOut.add(function() {funPanel.freeSprite.toolTip.hide();}, null);
-        funPanel.freeSprite.addChild(funPanel.freeSprite.toolTip);
+        // Freedom
+        funPanel.freeSprite = MainGame.game.make.sprite(0, 5, 'freedom_icon');
+        funPanel.freeSprite.x = -funPanel.meter.width/2 - funPanel.freeSprite.width/2 - 5;
+        funPanel.freeSprite.anchor.x = 0.5;
+
+        // tween = game.add.tween(logo).to( { x: [ w, w, 0, 0 ], y: [ 0, h, h, 0 ] }, 4000, "Sine.easeInOut", true, -1, false);
+        // tween.onLoop.add(changeMethod, this);
+
+        ToolTip.addTipTo(funPanel.freeSprite, 2, 'Total Freedom', 0, 48);
         funPanel.addChild(funPanel.freeSprite);
 
         // Unrest
-        funPanel.unrestSprite = MainGame.game.make.sprite(0, 0, 'unrest_icon');
-        funPanel.unrestSprite.anchor.x = 0.5;
+        funPanel.unrestSprite = MainGame.game.make.sprite(0, 5, 'unrest_icon');
         funPanel.unrestSprite.x = funPanel.meter.width/2 + funPanel.unrestSprite.width/2 + 5;
-        funPanel.unrestSprite.y = 5;
+        funPanel.unrestSprite.anchor.x = 0.5;
 
-        funPanel.unrestSprite.inputEnabled = true;
-        funPanel.unrestSprite.input.priorityID = 2;
-        funPanel.unrestSprite.toolTip = ToolTip.createNew('Total Unrest');
-        funPanel.unrestSprite.toolTip.y = 48;
-        funPanel.unrestSprite.events.onInputOver.add(function() {funPanel.unrestSprite.toolTip.show();}, null);
-        funPanel.unrestSprite.events.onInputOut.add(function() {funPanel.unrestSprite.toolTip.hide();}, null);
-        funPanel.unrestSprite.addChild(funPanel.unrestSprite.toolTip);
+        ToolTip.addTipTo(funPanel.unrestSprite, 2, 'Total Unrest', 0, 48);
         funPanel.addChild(funPanel.unrestSprite);
 
         // Riot Thermometer
-        funPanel.thermometer = RiotThermometer.createNew(0, 65);
-        funPanel.thermometer.x = -145;
+        funPanel.thermometer = RiotThermometer.createNew(-145, 65);
         funPanel.addChild(funPanel.thermometer);
+
+        // Particles!
+        //  Emitters have a center point and a width/height, which extends from their center point to the left/right and up/down
+        funPanel.steam = MainGame.game.add.emitter(funPanel.x, funPanel.y+funPanel.meter.height, funPanel.meter.height);
+        funPanel.steam.width = funPanel.meter.width;
+
+        funPanel.steam.makeParticles('steam');
+
+        funPanel.steam.minParticleSpeed.set(0, 0);
+        funPanel.steam.maxParticleSpeed.set(0, -100);
+
+        funPanel.steam.setAlpha(0., 0.8);
+        funPanel.steam.setScale(0.5, 0.5, 1, 1);
+        funPanel.steam.gravity = -200;
+
+        //  false means don't explode all the sprites at once, but instead release at a rate of one particle per 100ms
+        //  The 5000 value is the lifespan of each particle before it's killed
+        funPanel.steam.start(false, 5000, 100);
+        funPanel.steam.on = false;
 
         // Class functions
         funPanel.updateData = function() { FunPanel.updateData(funPanel); };
@@ -541,17 +515,11 @@ var FunPanel = {
         funPanel.unrestSprite.toolTip.updateData('Unrest: ' + newUnrest + '%');
 
         // Update magic bars
-        var freedomWidth = globalStats.freedom/100 * funPanel.meter.width;
-        funPanel.freedomBar.clear();
-        funPanel.freedomBar.beginFill(this.blue, this.barOpacity);
-        funPanel.freedomBar.drawRect(-funPanel.meter.width/2, 31, freedomWidth, 10);
-        funPanel.freedomBar.endFill();
+        funPanel.freedomBar.width = globalStats.freedom/100 * funPanel.meter.width;
+        funPanel.unrestBar.width = -globalStats.unrest/100 * funPanel.meter.width;
 
-        var unrestWidth = globalStats.unrest/100 * funPanel.meter.width;
-        funPanel.unrestBar.clear();
-        funPanel.unrestBar.beginFill(this.red, this.barOpacity);
-        funPanel.unrestBar.drawRect(funPanel.meter.width/2, 7, -unrestWidth, 10);
-        funPanel.unrestBar.endFill();
+        // Is it getting steamy up in here?
+        funPanel.steam.on = funPanel.thermometer.visible;
     },
 }
 
@@ -562,6 +530,7 @@ var ToolTip = {
     black: 0x000000,
     opacity: 0.666,
 
+    // Whatever you're doing, you prooobably want to use addTipTo!
     createNew: function(tipText) {
         var style = { font: this.textSize + 'px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle' };
         var toolTipText = MainGame.game.make.text(this.horizontalPad, 2, tipText, style);
@@ -582,6 +551,20 @@ var ToolTip = {
         toolTip.hide = function() { ToolTip.hide(toolTip) };
 
         return toolTip;
+    },
+
+    // Creates a tooltip with the passed-in string, and also handles the configuration details of setting a position, adding it as a child of the parent, and configuring the parent's input options
+    // Prereq: parent is a sprite, or other input-enable-able object
+    // Side effect: parent is now input enabled
+    addTipTo: function(parent, inputPriority, tipText, x, y) {
+        parent.inputEnabled = true;
+        parent.input.priorityID = inputPriority;
+        parent.toolTip = ToolTip.createNew(tipText);
+        parent.toolTip.x = x;
+        parent.toolTip.y = y;
+        parent.events.onInputOver.add(function() {parent.toolTip.show();}, null);
+        parent.events.onInputOut.add(function() {parent.toolTip.hide();}, null);
+        parent.addChild(parent.toolTip);
     },
 
     updateData: function(toolTip, newTipText) {

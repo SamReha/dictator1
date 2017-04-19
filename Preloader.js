@@ -79,28 +79,30 @@ var Preloader={
 
         // load ui assets
         var uiDir = imageDir + 'ui/';
-        g.load.image('tile_hover_backpanel',      uiDir + 'tile_hover_backpanel.png');
-        g.load.image('building_detail_backpanel', uiDir + 'building_detail_backpanel.png');
-        g.load.image('buildMenuBg',               uiDir + 'buildMenuBg.png');
-        g.load.image('buildMenuCover1',           uiDir + 'buildMenuCover1.png');
-        g.load.image('buildMenuCover2',           uiDir + 'buildMenuCover2.png');
-        g.load.image('coalition_backpanel',       uiDir + 'coalition_backpanel.png');
-        g.load.image('coalition_border',          uiDir + 'coalition_outer_edge.png');
-        g.load.image('stats_panel_backpanel',     uiDir + 'stats_panel_backpanel.png');
-        g.load.image('peopleViewBg',              uiDir + 'peopleViewBg.jpg');
-        g.load.image('peopleViewLeftBg',          uiDir + 'peopleViewLeftBg.png');
-        g.load.image('peopleViewRightBg',         uiDir + 'peopleViewRightBg.png');
-        g.load.image('peopleViewContractBg',      uiDir + 'peopleViewContractBg.png');
-        g.load.image('incButton',                 uiDir + 'incButton.png');
-        g.load.image('decButton',                 uiDir + 'decButton.png');
-        g.load.image("pi_prevPage",               uiDir + "pi_prevPage.png");
-        g.load.image("pi_nextPage",               uiDir + "pi_nextPage.png");
-        g.load.image("uiMask",                    uiDir + "uiMask.png");
-        g.load.image("event_bg",                  uiDir + "event_bg.png");
-        g.load.image('freedomUnrestMeter',        uiDir + "freedomUnrestMeter.png");
-        g.load.image('fun_panel_backpanel',       uiDir + 'fun_panel_backpanel.png');
-        g.load.image('thermometer_bulb',          uiDir + 'thermometer_bulb.png');
-        g.load.image('thermometer_tube',          uiDir + 'thermometer_tube.png');
+        g.load.image('tile_hover_backpanel',          uiDir + 'tile_hover_backpanel.png');
+        g.load.image('building_detail_backpanel',     uiDir + 'building_detail_backpanel.png');
+        g.load.image('buildMenuBg',                   uiDir + 'buildMenuBg.png');
+        g.load.image('buildMenuCover1',               uiDir + 'buildMenuCover1.png');
+        g.load.image('buildMenuCover2',               uiDir + 'buildMenuCover2.png');
+        g.load.image('coalition_backpanel',           uiDir + 'coalition_backpanel.png');
+        g.load.image('coalition_border',              uiDir + 'coalition_outer_edge.png');
+        g.load.image('stats_panel_backpanel',         uiDir + 'stats_panel_backpanel.png');
+        g.load.image('peopleViewBg',                  uiDir + 'peopleViewBg.jpg');
+        g.load.image('peopleViewLeftBg',              uiDir + 'peopleViewLeftBg.png');
+        g.load.image('peopleViewRightBg',             uiDir + 'peopleViewRightBg.png');
+        g.load.image('peopleViewContractBg',          uiDir + 'peopleViewContractBg.png');
+        g.load.image('incButton',                     uiDir + 'incButton.png');
+        g.load.image('decButton',                     uiDir + 'decButton.png');
+        g.load.image("pi_prevPage",                   uiDir + "pi_prevPage.png");
+        g.load.image("pi_nextPage",                   uiDir + "pi_nextPage.png");
+        g.load.image("uiMask",                        uiDir + "uiMask.png");
+        g.load.image("event_bg",                      uiDir + "event_bg.png");
+        g.load.image('freedomUnrestMeter',            uiDir + "freedomUnrestMeter.png");
+        g.load.image('freedomUnrestMeter_foreground', uiDir + 'freedomUnrestMeter_foreground.png');
+        g.load.image('fun_panel_backpanel',           uiDir + 'fun_panel_backpanel.png');
+        g.load.image('thermometer_bulb',              uiDir + 'thermometer_bulb.png');
+        g.load.image('thermometer_tube',              uiDir + 'thermometer_tube.png');
+        g.load.image('steam',                         uiDir + 'steam.png');
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
@@ -140,6 +142,13 @@ var Preloader={
         for(var i = 1; i <= 4; ++i){
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');
         }
+
+        //// load colors
+        var colorDir = uiDir + 'colors/';
+        g.load.spritesheet('red',    colorDir + 'red.png');
+        g.load.spritesheet('blue',   colorDir + 'blue.png');
+        g.load.spritesheet('green',  colorDir + 'green.png');
+        g.load.spritesheet('purple', colorDir + 'purple.png');
 
         //// load unit spritesheets
         var unitDir = imageDir + 'units/';
