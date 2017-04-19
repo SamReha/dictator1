@@ -456,9 +456,6 @@ var FunPanel = {
         funPanel.freeSprite.x = -funPanel.meter.width/2 - funPanel.freeSprite.width/2 - 5;
         funPanel.freeSprite.anchor.x = 0.5;
 
-        // tween = game.add.tween(logo).to( { x: [ w, w, 0, 0 ], y: [ 0, h, h, 0 ] }, 4000, "Sine.easeInOut", true, -1, false);
-        // tween.onLoop.add(changeMethod, this);
-
         ToolTip.addTipTo(funPanel.freeSprite, 2, 'Total Freedom', 0, 48);
         funPanel.addChild(funPanel.freeSprite);
 
@@ -472,7 +469,7 @@ var FunPanel = {
 
         // Riot Thermometer
         funPanel.thermometer = RiotThermometer.createNew(-145, 65);
-        funPanel.addChild(funPanel.thermometer);
+        //funPanel.addChild(funPanel.thermometer);
 
         // Particles!
         //  Emitters have a center point and a width/height, which extends from their center point to the left/right and up/down
@@ -484,13 +481,14 @@ var FunPanel = {
         funPanel.steam.minParticleSpeed.set(0, 0);
         funPanel.steam.maxParticleSpeed.set(0, -100);
 
-        funPanel.steam.setAlpha(0., 0.8);
-        funPanel.steam.setScale(0.5, 0.5, 1, 1);
+        funPanel.steam.setAlpha(0.0, 0.6, 400, Phaser.Easing.Linear.None, true);
+        funPanel.steam.minParticleScale = 0.25;
+        funPanel.steam.maxParticleScale = 0.5;
         funPanel.steam.gravity = -200;
 
         //  false means don't explode all the sprites at once, but instead release at a rate of one particle per 100ms
         //  The 5000 value is the lifespan of each particle before it's killed
-        funPanel.steam.start(false, 5000, 100);
+        funPanel.steam.start(false, 800, 10);
         funPanel.steam.on = false;
 
         // Class functions
@@ -515,10 +513,16 @@ var FunPanel = {
         funPanel.unrestSprite.toolTip.updateData('Unrest: ' + newUnrest + '%');
 
         // Update magic bars
-        funPanel.freedomBar.width = globalStats.freedom/100 * funPanel.meter.width;
-        funPanel.unrestBar.width = -globalStats.unrest/100 * funPanel.meter.width;
+        //funPanel.freedomBar.width = globalStats.freedom/100 * funPanel.meter.width;
+        //funPanel.unrestBar.width = -globalStats.unrest/100 * funPanel.meter.width;
+
+        var tweenFreedom = MainGame.game.add.tween(funPanel.freedomBar).to({width: globalStats.freedom/100 * funPanel.meter.width}, 200).start();
+        var tweenUnrest = MainGame.game.add.tween(funPanel.unrestBar).to({width: -globalStats.unrest/100 * funPanel.meter.width}, 200).start();
 
         // Is it getting steamy up in here?
+        funPanel.steam.frequency = 110 - funPanel.thermometer.delta;
+        funPanel.steam.width = (funPanel.thermometer.delta/100 * funPanel.meter.width) * 0.9 + (funPanel.meter.width * 0.1);
+        funPanel.steam.x = MainGame.game.width/2 - funPanel.meter.width/2 + funPanel.freedomBar.width - (funPanel.thermometer.delta/100 * funPanel.meter.width)/2;
         funPanel.steam.on = funPanel.thermometer.visible;
     },
 }
