@@ -105,7 +105,15 @@ var TileDetailView = {
         view.input.priorityID = 101;
         view.anchor.set(0.5, 0.5);
         view.x = game.width / 2;
-        view.y = game.height / 2;
+        view.y = game.height / 4;
+        view.alpha = 0;
+        var offsetX = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*25;
+        var offsetY = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*25;
+        var rotation = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*1.5;
+        console.log(rotation);
+
+        var viewTween = game.add.tween(view).to({alpha:1},200,Phaser.Easing.Cubic.In,true);
+        var rotTween = game.add.tween(view).to({x:(game.width/2)+offsetX, y:(game.height/2)+offsetY,angle:rotation},280,Phaser.Easing.Back.Out,true);
 
         if (building.subtype === 'housing') {
             var availableNoun = 'bed';
@@ -253,6 +261,10 @@ var TileDetailView = {
         view.closeSfx = game.make.audio('message_close');
         view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         view.demolishSfx = game.make.audio('building_placement_' + Math.ceil(Math.random()*5)); // Assume we have 5 building sounds
+
+        view.scale.setTo(2,2);
+
+        var scaleTween = game.add.tween(view.scale).to({x:1,y:1},200,Phaser.Easing.Quadratic.In,true);
 
         // Class func
         view.updateInfo = function(tile) { return TileDetailView.updateInfo(view,tile); };
