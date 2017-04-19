@@ -557,12 +557,14 @@ var Board = {
         // console.log("Center of camera:",screenCenter);
 
         // set offset of the board
-        var oldX=b.x;
-        var oldY=b.y;
-        b.x=(screenCenter.x-center_i.x);
-        b.y=(screenCenter.y-center_i.y);
-        b._offset.x+=oldX-b.x;
-        b._offset.y+=oldY-b.y;
+        var newX=screenCenter.x-center_i.x; var offsetX=b.x-newX;
+        var newY=screenCenter.y-center_i.y; var offsetY=b.y-newY;
+        var boardTween = game.add.tween(b).to({x:newX,y:newY},150,Phaser.Easing.Linear.In,true);
+        var offsetTween = game.add.tween(b._offset).to({x:offsetX,y:offsetY},150,Phaser.Easing.Linear.In,true);
+        // b.x=(screenCenter.x-center_i.x);
+        // b.y=(screenCenter.y-center_i.y);
+        // b._offset.x+=oldX-b.x;
+        // b._offset.y+=oldY-b.y;
 
         // MainGame.mapSelector.positionBuildingDetail(b);
     },
