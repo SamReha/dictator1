@@ -7,7 +7,8 @@ var DUiMask={
 		if(!_isAbove)
 			MainGame.game.world.moveDown(m);
 		m.scale.set(MainGame.game.width/16, MainGame.game.height/16);
-		m.alpha=0.5;
+		m.alpha=0;
+        var maskTween = game.add.tween(m).to({alpha:0.5},200,Phaser.Easing.Cubic.In,true);
 
 		// Class func
 		m.setController=function(priorityID,callback){DUiMask.setController(m,priorityID,callback)};
