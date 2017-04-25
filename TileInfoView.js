@@ -152,7 +152,7 @@ var TileDetailView = {
         view.buildingName = game.make.text(view.icon.x, view.icon.y + view.icon.height + 10, building.playerLabel + ' ', TileDetailView.nameStyle);
         view.addChild(view.buildingName);
 
-        console.log(building);
+        //console.log(building);
 
         if (building.name === 'armyBase') {
         } else {

@@ -373,14 +373,14 @@ var RiotThermometer = {
         thermometer.visible = false;
 
         thermometer.tube = MainGame.game.make.sprite(thermometer.width, 0, 'thermometer_tube');
-        thermometer.tube.fluid = MainGame.game.make.graphics();
-        thermometer.tube.fluid.lineStyle(0);
+        thermometer.tube.fluid = MainGame.game.make.sprite(0, 20, 'red');
+        thermometer.tube.fluid.alpha = this.barOpacity;
+        thermometer.tube.fluid.height = 8;
         thermometer.tube.addChild(thermometer.tube.fluid);
         thermometer.addChild(thermometer.tube);
 
         // Properties
         thermometer.delta = 0;      // Percent change per turn
-        // thermometer.toolTip = ToolTip.createNew('Ow my head');
 
         // Class functions
         thermometer.updateData = function() { RiotThermometer.updateData(thermometer); };
@@ -400,10 +400,7 @@ var RiotThermometer = {
         // Only bother updating if I am visible.
         if (thermometer.visible) {
             var fillAmount = (MainGame.global.thermometerFill/100) * thermometer.tube.width; // thermometerFill is percent fill of thermometer
-            thermometer.tube.fluid.clear();
-            thermometer.tube.fluid.beginFill(this.red, this.barOpacity);
-            thermometer.tube.fluid.drawRect(0, 19, fillAmount, 10);
-            thermometer.tube.fluid.endFill();
+            MainGame.game.add.tween(thermometer.tube.fluid).to({width: fillAmount}, 200).start();
         }
     },
 
@@ -469,14 +466,14 @@ var FunPanel = {
 
         // Riot Thermometer
         funPanel.thermometer = RiotThermometer.createNew(-145, 65);
-        //funPanel.addChild(funPanel.thermometer);
+        funPanel.addChild(funPanel.thermometer);
 
         // Particles!
         //  Emitters have a center point and a width/height, which extends from their center point to the left/right and up/down
         funPanel.steam = MainGame.game.add.emitter(funPanel.x, funPanel.y+funPanel.meter.height, funPanel.meter.height);
         funPanel.steam.width = funPanel.meter.width;
 
-        funPanel.steam.makeParticles('steam');
+        funPanel.steam.makeParticles(['whitePuff0', 'whitePuff1', 'whitePuff2', 'whitePuff3', 'whitePuff4', 'whitePuff5', 'whitePuff6', 'whitePuff7', 'whitePuff8', 'whitePuff9', 'whitePuff10']);
 
         funPanel.steam.minParticleSpeed.set(0, 0);
         funPanel.steam.maxParticleSpeed.set(0, -100);
@@ -513,11 +510,8 @@ var FunPanel = {
         funPanel.unrestSprite.toolTip.updateData('Unrest: ' + newUnrest + '%');
 
         // Update magic bars
-        //funPanel.freedomBar.width = globalStats.freedom/100 * funPanel.meter.width;
-        //funPanel.unrestBar.width = -globalStats.unrest/100 * funPanel.meter.width;
-
-        var tweenFreedom = MainGame.game.add.tween(funPanel.freedomBar).to({width: globalStats.freedom/100 * funPanel.meter.width}, 200).start();
-        var tweenUnrest = MainGame.game.add.tween(funPanel.unrestBar).to({width: -globalStats.unrest/100 * funPanel.meter.width}, 200).start();
+        MainGame.game.add.tween(funPanel.freedomBar).to({width: globalStats.freedom/100 * funPanel.meter.width}, 200).start();
+        MainGame.game.add.tween(funPanel.unrestBar).to({width: -globalStats.unrest/100 * funPanel.meter.width}, 200).start();
 
         // Is it getting steamy up in here?
         funPanel.steam.frequency = 110 - funPanel.thermometer.delta;
