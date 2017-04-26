@@ -51,8 +51,8 @@ var MainGame={
         console.log('[MainGame] start...');
 
         // Play Music
-        var music = MainGame.game.add.audio('game_loop');
-        music.play('', 0, 1, true); // Confusing, but should set the track to loop at full volume
+        MainGame.music = MainGame.game.add.audio('game_loop');
+        MainGame.music.play('', 0, 1, false); // Confusing, but should set the track to loop at full volume
         
         // create board
         var stage=MainGame.game.cache.getJSON('stageMain');
