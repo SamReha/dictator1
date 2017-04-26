@@ -123,7 +123,7 @@
         {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": "soy","building": {"name": "fertileFarm","level": 1, "startingTurn": 1,"people": 5}},
         {"terrain": "grass","res": null,"building": {"name": "road","level": 1, "startingTurn": 1,"people": 0}},
-        {"terrain": "grass","res": null,"building": null},
+        {"terrain": "grass","res": null,"building": {"name": "suburb","level": 1,"startingTurn": 1,"people": 0}},
         {"terrain": "grass","res": null,"building": {"name": "school","level": 1, "startingTurn": 1,"people": 1}},
         {"terrain": "grass","res": null,"building": null},
         {"terrain": "grass","res": null,"building": null},
