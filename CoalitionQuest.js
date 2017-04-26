@@ -75,8 +75,7 @@ var CoalitionQuest={
 		console.assert(event.length===handler.length);
 		// console.log("Now run quest:",peopleRef,event,handler);
 		var e=Event.createNew();
-		// TODO: adjust the geo
-		e.position.set(300,100);
+
 		// generate model & controller
 		var model=[];		// an array of tables
 		var controller=[];	// an array of arrays of functions
