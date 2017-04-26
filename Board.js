@@ -559,8 +559,8 @@ var Board = {
         // set offset of the board
         var newX=screenCenter.x-center_i.x; var offsetX=b.x-newX;
         var newY=screenCenter.y-center_i.y; var offsetY=b.y-newY;
-        var boardTween = game.add.tween(b).to({x:newX,y:newY},150,Phaser.Easing.Linear.In,true);
-        var offsetTween = game.add.tween(b._offset).to({x:offsetX,y:offsetY},150,Phaser.Easing.Linear.In,true);
+        var boardTween = game.add.tween(b).to({x:newX,y:newY},200,Phaser.Easing.Quadratic.InOut,true);
+        var offsetTween = game.add.tween(b._offset).to({x:offsetX,y:offsetY},200,Phaser.Easing.Quadratic.InOut,true);
         // b.x=(screenCenter.x-center_i.x);
         // b.y=(screenCenter.y-center_i.y);
         // b._offset.x+=oldX-b.x;

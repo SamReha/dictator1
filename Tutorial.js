@@ -96,9 +96,6 @@ var Tutorial = {
 	runEvent: function(event, handler) {
 		console.assert(event.length === handler.length);
 		var e = Event.createNew();
-		
-		// TODO: adjust the geo
-		e.position.set(300,100);
 
 		// generate model & controller
 		var model = [];		 // an array of tables
