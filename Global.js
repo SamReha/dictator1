@@ -132,7 +132,8 @@ var Global={
         var housing = MainGame.board.findBuilding(null, 'housing');
 
         // Remove all housing that is not the palace
-        housing.filter(function(housingIndex) { return MainGame.board.at(housingIndex).getBuilding().playerLabel === 'Your Palace'; } );
+        housing.filter(function(housingIndex) {
+            return MainGame.board.at(housingIndex).getBuilding().playerLabel === 'Your Palace'; } );
 
         if (housing.length === 0) {
             getGameLoseWindow("Your palace was stormed by revolutionaires. You lose.");
