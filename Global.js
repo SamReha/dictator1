@@ -129,11 +129,7 @@ var Global={
 
     checkGameFail: function() {
         // No palace - Loss due to revolution
-        var housing = MainGame.board.findBuilding(null, 'housing');
-
-        // Remove all housing that is not the palace
-        housing.filter(function(housingIndex) {
-            return MainGame.board.at(housingIndex).getBuilding().playerLabel === 'Your Palace'; } );
+        var housing = MainGame.board.findBuilding('palace');
 
         if (housing.length === 0) {
             getGameLoseWindow("Your palace was stormed by revolutionaires. You lose.");
