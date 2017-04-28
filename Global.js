@@ -35,6 +35,7 @@ var Global={
         Global.money += Global.moneyPerTurn;
         Global.updateFreedomUnrest();
         Global.updateThermometer();
+        Global.checkGameFail();
     },
 
     toString: function(){
@@ -125,4 +126,54 @@ var Global={
 
         Global.moneyPerTurn = totalIncome;
     },
+
+    checkGameFail: function() {
+        // No palace - Loss due to revolution
+        var housing = MainGame.board.findBuilding('palace');
+
+        if (housing.length === 0) {
+            getGameLoseWindow("Your palace was stormed by revolutionaires. You lose.");
+            return;
+        }
+
+        // No money - loss due to economic failure
+        if (this.money <= 0) {
+            getGameLoseWindow("Your government is bankrupt and can no longer function. You lose.");
+            return;
+        }
+
+        // No ministers - loss due to failure to form government
+        if (MainGame.population.highList().length === 0) {
+            getGameLoseWindow("Without any active Ministers, you government has dissolved. You lose.");
+            return;
+        }
+
+        // All Ministers Coup'ing - loss due to Coup
+        // if (this.coups.bureaucrats && this.coups.finance && this.coups.military) {
+        //     getGameLoseWindow("You have been deposed of in a Coup D'etat. You lose.");
+        //     return;
+        // }
+    },
+
+    restart: function() {
+        MainGame.music.stop();
+        MainGame.game.state.restart();
+    },
 };
+
+function getGameLoseWindow(message) {
+    var e = Event.createNew();
+    e.setModel([
+                    {
+                        portrait: "myTextureKey", 
+                        description: message, 
+                        buttonTexts: ["Restart"]
+                    }
+                ]);
+
+    e.setController([
+        [function(){
+            Global.restart();
+        }]
+    ]);
+}

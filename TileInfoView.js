@@ -107,12 +107,13 @@ var TileDetailView = {
         view.x = game.width / 2;
         view.y = game.height / 4;
         view.alpha = 0;
-        var offsetX = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*25;
-        var offsetY = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*25;
-        var rotation = (Math.pow(Math.random()*Math.sqrt(2),2)-1)*1.5;
+        var rand = [Math.random(),Math.random(),Math.random()];
+        var offsetX = (Math.sqrt(Math.abs(2*rand[0]-1))*((2*rand[0]-1)/Math.abs(2*rand[0]-1)))*25;
+        var offsetY = (Math.sqrt(Math.abs(2*rand[1]-1))*((2*rand[1]-1)/Math.abs(2*rand[1]-1)))*25;
+        var rotation = (Math.sqrt(Math.abs(2*rand[2]-1))*((2*rand[2]-1)/Math.abs(2*rand[2]-1)))*1.5;
 
-        var viewTween = game.add.tween(view).to({alpha:1},200,Phaser.Easing.Cubic.In,true);
-        var rotTween = game.add.tween(view).to({x:(game.width/2)+offsetX, y:(game.height/2)+offsetY,angle:rotation},280,Phaser.Easing.Back.Out,true);
+        var viewTween = game.add.tween(view).to({alpha:1},250,Phaser.Easing.Cubic.In,true);
+        var rotTween = game.add.tween(view).to({x:(game.width/2)+offsetX, y:(game.height/2)+offsetY,angle:rotation},400,Phaser.Easing.Back.Out,true);
 
         if (building.subtype === 'housing') {
             var availableNoun = 'bed';
@@ -135,8 +136,6 @@ var TileDetailView = {
             view.destroy();
             board.controller.detailView = null;
         });
-        var maxMaskAlpha = view.uiMask.alpha; view.uiMask.alpha = 0;
-        var maskTween = game.add.tween(view.uiMask).to({alpha:maxMaskAlpha},200,Phaser.Easing.Cubic.In,true);
 
         // Class variables
         view.index = buildingIndex;
@@ -273,7 +272,7 @@ var TileDetailView = {
 
         view.scale.setTo(2,2);
 
-        var scaleTween = game.add.tween(view.scale).to({x:1,y:1},200,Phaser.Easing.Quadratic.In,true);
+        var scaleTween = game.add.tween(view.scale).to({x:1,y:1},250,Phaser.Easing.Quadratic.In,true);
 
         // Class func
         view.updateInfo = function(tile) { return TileDetailView.updateInfo(view,tile); };

@@ -9,12 +9,18 @@
 var Event={
 	createNew: function(isInformation){
 		var v=MainGame.game.add.sprite(0,0,"event_bg");
+
+		// Center by default
+		v.position.set(MainGame.game.width/2 - v.width/2, MainGame.game.height/2 - v.height/2);
+
 		// add bg
 		v.bg=MainGame.game.add.sprite(0,0,"event_bg");
 		v.addChild(v.bg);
+
 		// add decision view
 		v.decisionView=DDecisionView.createNew();
 		v.addChild(v.decisionView);
+
 		// add page inidcator if necessary
 		v.pageIndicator=DPageIndicator.createNew(400, {x:200,y:0});
 		v.addChild(v.pageIndicator);
@@ -23,6 +29,7 @@ var Event={
 		if(!isInformation)
 			v.pageIndicator.visible=false;
 		v.isInformation=isInformation;
+
 		// setup priority
 		v.inputEnabled=true;
 		v.input.priorityID=101;
