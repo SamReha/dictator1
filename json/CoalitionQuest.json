@@ -7,22 +7,22 @@
 		"event":[
 			{	
 				"person":0, 
-				"description":"\nMilitary Minister: Good afternoon, Grand\nLeader.", 
+				"description":"Military Minister: Good afternoon, Grand Leader.", 
 				"buttonTexts":["Hello"]
 			},
 			{
 				"person":0, 
-				"description":"\nMilitary Minister: Though it pains me to ask, the\nmilitary has fallen on hards times and I need cash\nto make ends meet. However, we of course\nmust be discreet. Simply spend ₸10 on building\nprojects this turn. My people will see to it that\nthe funds end up in the right hands.", 
+				"description":"Military Minister: Though it pains me to ask, the military has fallen on hards times and I need cash to make ends meet. However, we of course must be discreet. Simply spend ₸10 on building projects this turn. My people will see to it that the funds end up in the right hands.", 
 				"buttonTexts":["Of Course","Fat Chance"]
 			},
 			{
 				"person":0,
-				"description":"\nMilitary Minister: You are as wise as you are generous.",
+				"description":"Military Minister: You are as wise as you are generous.",
 				"buttonTexts":["Good Day"]
 			},
 			{
 				"person":0,
-				"description":"\nMilitary Minister: I will not forget this betrayal!",
+				"description":"Military Minister: I will not forget this betrayal!",
 				"buttonTexts":["Be Gone!"]
 			}
 		],
@@ -34,7 +34,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"Military Minister:\nSpend ₸10.",
+				"description":"Military Minister: Spend ₸10.",
 				"startAt":-1,
 				"remaining":1
 			},
