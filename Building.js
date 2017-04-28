@@ -41,7 +41,7 @@ var Building = {
             //console.log(b.name);
         }
 
-        b.health = 10;
+        b.integrity = 10;
 
         // Class funcs
         b.isEmpty=function(){return b.name===null};
