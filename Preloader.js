@@ -102,6 +102,7 @@ var Preloader={
         g.load.image('fun_panel_backpanel',           uiDir + 'fun_panel_backpanel.png');
         g.load.image('thermometer_bulb',              uiDir + 'thermometer_bulb.png');
         g.load.image('thermometer_tube',              uiDir + 'thermometer_tube.png');
+        g.load.image('page_texture',                  uiDir + 'page_texture.png');
         
         // load particle sprites
         var particleDir = uiDir + 'particles/'
