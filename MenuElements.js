@@ -10,3 +10,17 @@ var Page = {
         return page;
     },
 };
+
+var TextButton = {
+    createNew: function(x, y, sprite_sheet, callback, callback_context, up, down, over, out, text, textStyle) {
+        var button = game.make.button(x, y, sprite_sheet, callback, callback_context, up, down, over, out);
+        button.inputEnabled = true;
+        button.input.priorityID = 10;
+
+        button.label = game.make.text(0, 0, text, textStyle);
+        button.label.anchor.set(0.5, 0.5);
+        button.addChild(button.label);
+
+        return button;
+    }
+};
