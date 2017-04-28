@@ -4,6 +4,7 @@ var Global={
 	freedom: 0,
     unrest: 0,
     money: 30,
+    privateMoney: 0,
     moneyPerTurn: 0,
     thermometerFill: 0,
     thermometerDelta: 0,

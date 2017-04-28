@@ -250,6 +250,13 @@ var StatsPanel = {
         statsPanel.inputEnabled = true;
         statsPanel.input.priorityID = 1;
 
+        statsPanel.sfxArray = [
+            game.make.audio('paper_click_2'),
+            game.make.audio('paper_click_3'),
+            game.make.audio('paper_click_5'),
+            game.make.audio('paper_click_7')
+        ];
+
         // Year
         statsPanel.yearGroup = MainGame.game.make.sprite(0, 0, 'year_icon');
         statsPanel.yearGroup.x = this.horizontalPad;
@@ -263,19 +270,10 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.yearGroup);
 
         // Population
-        statsPanel.popGroup = MainGame.game.make.button(0, 0, 'population_icon', function(){
+        statsPanel.popGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 1, 'population_icon', function(){
             PeopleView.createNew();
-            statsPanel.popGroup.sfxArray[Math.floor(Math.random()*statsPanel.popGroup.sfxArray.length)].play();
+            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
-        statsPanel.popGroup.x = this.horizontalPad;
-        statsPanel.popGroup.y = (this.unitHeight + this.verticalPad) * 1;
-
-        statsPanel.popGroup.sfxArray = [
-            game.make.audio('paper_click_2'),
-            game.make.audio('paper_click_3'),
-            game.make.audio('paper_click_5'),
-            game.make.audio('paper_click_7')
-        ];
 
         ToolTip.addTipTo(statsPanel.popGroup, 2, 'Total Population', 0, 12);
         statsPanel.popGroup.toolTip.x = -statsPanel.popGroup.toolTip.width;
@@ -309,9 +307,7 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.unemploymentGroup);
 
         // State Money (warchest)
-        statsPanel.warchestGroup = MainGame.game.make.sprite(0, 0, 'money_icon');
-        statsPanel.warchestGroup.x = this.horizontalPad;
-        statsPanel.warchestGroup.y = (this.unitHeight + this.verticalPad) * 4;
+        statsPanel.warchestGroup = MainGame.game.make.sprite(this.horizontalPad, (this.unitHeight + this.verticalPad) * 4, 'money_icon');
         
         ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', 0, 12);
         statsPanel.warchestGroup.toolTip.x = -statsPanel.warchestGroup.toolTip.width;
@@ -326,14 +322,15 @@ var StatsPanel = {
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.moneyPerTurnText);
 
         // Swiss Bank (personal money)
-        statsPanel.swissGroup = MainGame.game.make.sprite(0, 0, 'swiss_icon');
-        statsPanel.swissGroup.x = this.horizontalPad;
-        statsPanel.swissGroup.y = (this.unitHeight + this.verticalPad) * 5;
+        statsPanel.swissGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 5, 'swiss_icon', function(){
+            PrivateAccountView.createNew();
+            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
+        }, 0, 1, 0, 2);
 
         ToolTip.addTipTo(statsPanel.swissGroup, 2, 'Private Account', 0, 12);
         statsPanel.swissGroup.toolTip.x = -statsPanel.swissGroup.toolTip.width;
 
-        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '$0 ', this.textStyle);
+        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '₸0 ', this.textStyle);
         statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
         statsPanel.addChild(statsPanel.swissGroup);
 
@@ -346,8 +343,8 @@ var StatsPanel = {
             var newUnemployment = MainGame.population.findNotEmployed().length + ' ';
             var newYear = 1949 + globalStats.turn + ' ';
             var newWarchest = '₸' + globalStats.money + ' ';
-            var newMoneyPerTurn = (globalStats.moneyPerTurn >= 0) ? '(+' + globalStats.moneyPerTurn + ' ) ' : '(' + globalStats.moneyPerTurn + ' ) ';
-            var newSwissAccount = '₸' + 0 + ' ';
+            var newMoneyPerTurn = (globalStats.moneyPerTurn >= 0) ? '(+' + globalStats.moneyPerTurn + ') ' : '(' + globalStats.moneyPerTurn + ') ';
+            var newSwissAccount = '₸' + globalStats.privateMoney + ' ';
 
             statsPanel.yearGroup.textLabel.text = newYear;
             statsPanel.popGroup.textLabel.text = newPop;
