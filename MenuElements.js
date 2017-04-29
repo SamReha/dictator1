@@ -17,7 +17,7 @@ var TextButton = {
         button.inputEnabled = true;
         button.input.priorityID = 10;
 
-        button.label = game.make.text(0, 0, text, textStyle);
+        button.label = game.make.text(button.width/2, button.height/2, text, textStyle);
         button.label.anchor.set(0.5, 0.5);
         button.addChild(button.label);
 
