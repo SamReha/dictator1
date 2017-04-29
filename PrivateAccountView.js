@@ -19,6 +19,15 @@ var PrivateAccountView = {
         accountView.anchor.set(0.5, 0.5);
         accountView.position.set(MainGame.game.width/2, MainGame.game.height/2);
 
+        accountView.sfxArray = [
+            game.make.audio('paper_click_2'),
+            game.make.audio('paper_click_3'),
+            game.make.audio('paper_click_5'),
+            game.make.audio('paper_click_7')
+        ];
+
+        accountView.moneySfx = game.make.audio('money_earned');
+
         // setup the mask
         /* global DUiMask */
         accountView.uiMask = DUiMask.createNew();
@@ -34,9 +43,9 @@ var PrivateAccountView = {
         accountView.addChild(accountView.depositLabelText);
 
         // Show current deposit amount
-        accountView.depositText = MainGame.game.make.text(0, accountView.depositLabelText.y + 40, '₸' + MainGame.global.privateMoney, this.header1);
-        accountView.depositText.anchor.set(0.5, 0);
-        accountView.addChild(accountView.depositText);
+        accountView.depositAmountText = MainGame.game.make.text(0, accountView.depositLabelText.y + 40, '₸' + MainGame.global.privateMoney, this.header1);
+        accountView.depositAmountText.anchor.set(0.5, 0);
+        accountView.addChild(accountView.depositAmountText);
 
         // Show current milestone
         accountView.currentMilText = MainGame.game.make.text(-accountView.width/2 + Page.margin.x*1.5, -accountView.width/4, "Current Milestone:", this.header2);
@@ -60,7 +69,9 @@ var PrivateAccountView = {
         accountView.makeWithdrawal = TextButton.createNew(0, accountView.height/2 - Page.margin.y, 'small_generic_button', function() {
             if (PrivateAccountView.canWithdraw(accountView.withdrawalAmount)) {
                 PrivateAccountView.makeWithdrawal(accountView.withdrawalAmount);
+                accountView.withdrawalAmount = 0;
                 accountView.updateData();
+                accountView.moneySfx.play();
             }
         }, null, 0, 2, 1, 2, 'Withdraw', this.header2);
         accountView.makeWithdrawal.x -= accountView.makeWithdrawal.width/2;
@@ -75,7 +86,11 @@ var PrivateAccountView = {
         accountView.decreaseWithdrawal = MainGame.game.make.button(0, accountView.withdrawalText.y, 'redMinusButton', function() {
             accountView.withdrawalAmount--;
             accountView.updateData();
-        });
+            accountView.sfxArray[Math.floor(Math.random()*accountView.sfxArray.length)].play();
+        }, null, 1, 0, 2, 1);
+        accountView.decreaseWithdrawal.inputEnabled = true;
+        accountView.decreaseWithdrawal.input.priorityID = 10;
+
         accountView.decreaseWithdrawal.x = -accountView.makeWithdrawal.width;
         accountView.decreaseWithdrawal.anchor.set(0.5, 0.5);
         accountView.addChild(accountView.decreaseWithdrawal);
@@ -83,7 +98,11 @@ var PrivateAccountView = {
         accountView.increaseWithdrawal = MainGame.game.make.button(60, accountView.withdrawalText.y, 'redPlusButton', function() {
             accountView.withdrawalAmount++;
             accountView.updateData();
-        });
+            accountView.sfxArray[Math.floor(Math.random()*accountView.sfxArray.length)].play();
+        }, null, 1, 0, 2, 1);
+        accountView.increaseWithdrawal.inputEnabled = true;
+        accountView.increaseWithdrawal.input.priorityID = 10;
+
         accountView.increaseWithdrawal.x = accountView.makeWithdrawal.width;
         accountView.increaseWithdrawal.anchor.set(0.5, 0.5);
         accountView.addChild(accountView.increaseWithdrawal);
@@ -94,7 +113,9 @@ var PrivateAccountView = {
         accountView.makeDeposit = TextButton.createNew(0, accountView.withdrawalText.y, 'small_generic_button', function() {
             if (PrivateAccountView.canDeposit(accountView.depositAmount)) {
                 PrivateAccountView.makeDeposit(accountView.depositAmount);
+                accountView.depositAmount = 0;
                 accountView.updateData();
+                accountView.moneySfx.play();
             }
         }, null, 0, 2, 1, 2, 'Deposit', this.header2);
         accountView.makeDeposit.x -= accountView.makeDeposit.width/2;
@@ -109,7 +130,8 @@ var PrivateAccountView = {
         accountView.decreaseDeposit = MainGame.game.make.button(0, accountView.depositText.y, 'redMinusButton', function() {
             accountView.depositAmount--;
             accountView.updateData();
-        });
+            accountView.sfxArray[Math.floor(Math.random()*accountView.sfxArray.length)].play();
+        }, null, 1, 0, 2, 1);
         accountView.decreaseDeposit.inputEnabled = true;
         accountView.decreaseDeposit.input.priorityID = 10;
 
@@ -120,7 +142,8 @@ var PrivateAccountView = {
         accountView.increaseDeposit = MainGame.game.make.button(60, accountView.depositText.y, 'redPlusButton', function() {
             accountView.depositAmount++;
             accountView.updateData();
-        });
+            accountView.sfxArray[Math.floor(Math.random()*accountView.sfxArray.length)].play();
+        }, null, 1, 0, 2, 1);
         accountView.increaseDeposit.inputEnabled = true;
         accountView.increaseDeposit.input.priorityID = 10;
 
@@ -138,7 +161,7 @@ var PrivateAccountView = {
     },
 
     updateData: function(accountView) {
-        accountView.depositText.text          = '₸' + MainGame.global.privateMoney;
+        accountView.depositAmountText.text    = '₸' + MainGame.global.privateMoney;
         accountView.currentMilAmountText.text = '₸' + this.getCurrentMilestone();
         accountView.nextMilAmountText.text    = '₸' + this.getNextMilestone();
         accountView.depositText.text          = '₸' + accountView.depositAmount;
@@ -165,7 +188,8 @@ var PrivateAccountView = {
     getCurrentMilestone: function() {
         var milIndex = 0;
 
-        while (MainGame.global.privateMoney > this.mileStones[milIndex]) milIndex++;
+        while (MainGame.global.privateMoney >= this.mileStones[milIndex]) milIndex++;
+        milIndex--;
         milIndex = Math.min(Math.max(milIndex, 0), this.mileStones.length-1);
 
         return this.mileStones[milIndex];
@@ -174,8 +198,7 @@ var PrivateAccountView = {
     getNextMilestone: function() {
         var milIndex = 0;
 
-        while (MainGame.global.privateMoney > this.mileStones[milIndex]) milIndex++;
-        milIndex++;
+        while (MainGame.global.privateMoney >= this.mileStones[milIndex]) milIndex++;
         milIndex = Math.min(Math.max(milIndex, 0), this.mileStones.length-1);
 
         return this.mileStones[milIndex];

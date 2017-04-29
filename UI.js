@@ -251,10 +251,15 @@ var StatsPanel = {
         statsPanel.input.priorityID = 1;
 
         statsPanel.sfxArray = [
-            game.make.audio('paper_click_2'),
-            game.make.audio('paper_click_3'),
-            game.make.audio('paper_click_5'),
-            game.make.audio('paper_click_7')
+            // game.make.audio('paper_click_2'),
+            // game.make.audio('paper_click_3'),
+            // game.make.audio('paper_click_5'),
+            // game.make.audio('paper_click_7')
+            game.make.audio('typewriter_click_1'),
+            game.make.audio('typewriter_click_2'),
+            game.make.audio('typewriter_click_3'),
+            game.make.audio('typewriter_click_4'),
+            game.make.audio('typewriter_click_5')
         ];
 
         // Year
