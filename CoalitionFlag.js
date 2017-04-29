@@ -115,15 +115,19 @@ var CoalitionFlag = {
 			button.toolTip.x -= button.toolTip.width;
 			return button;
 		} else {
+			var toolTipText = 'Hire a Minister of ';
 			switch (coalitionType) {
 				case Person.Bureaucrat:
 					textureString = 'portrait_border_bureau';
+					toolTipText += 'Bureaucracy';
 					break;
 				case Person.Merchant:
 					textureString = 'portrait_border_finance';
+					toolTipText += 'Finance';
 					break;
 				case Person.Military:
 					textureString = 'portrait_border_military';
+					toolTipText += 'The Military';
 					break;
 				default:
 					break;
@@ -133,7 +137,7 @@ var CoalitionFlag = {
 			sprite.anchor.x = 1;
 			sprite.inputEnabled = true;
 			
-			ToolTip.addTipTo(sprite, 1, 'Hire a Minister', MainGame.game.width - sprite.width*this.scale - (CoalitionFlag.horizontalPad*2*this.scale), 0);
+			ToolTip.addTipTo(sprite, 1, toolTipText, MainGame.game.width - sprite.width*this.scale - (CoalitionFlag.horizontalPad*2*this.scale), 0);
 			sprite.toolTip.x -= sprite.toolTip.width;
 			return sprite;
 		}
