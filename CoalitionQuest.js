@@ -90,7 +90,7 @@ var CoalitionQuest={
 		for(var i=0;i<event.length;i++){
 			let currentPerson=peopleRef[event[i].person];
 			model.push({
-				portrait:currentPerson.portTexture(),
+				portrait:currentPerson.getPortTexString(),
 				description:event[i].description,
 				buttonTexts:event[i].buttonTexts
 			});
@@ -166,7 +166,7 @@ var CoalitionQuest={
 		e.position.set(300, 200);
 		e.setModel([
 			{
-				portrait: q.peopleRef[0].portTexture(), 
+				portrait: q.peopleRef[0].getPortTexString(), 
 				description: "You failed to complete a favor for " + q.peopleRef[0].name + ".",
 				buttonTexts: ["OK"]
 			}
@@ -183,7 +183,7 @@ var CoalitionQuest={
 		e.position.set(300,200);
 		e.setModel([
 			{
-				portrait: q.peopleRef[0].portTexture(), 
+				portrait: q.peopleRef[0].getPortTexString(), 
 				description: "You have successfully helped out " + q.peopleRef[0].name + ".",
 				buttonTexts: ["OK"]
 			}
@@ -200,8 +200,8 @@ function test_coalition_quest(){
 };
 
 var hiPeople=[
-	{name:"Yi", role:"?", portTexture:function(){return "military_port_0"}},
-	{name:"MJ", role:"!", portTexture:function(){return "military_port_1"}}
+	{name:"Yi", role:"?", getPortTexString:function(){return "military_port_0"}},
+	{name:"MJ", role:"!", getPortTexString:function(){return "military_port_1"}}
 ];
 
 

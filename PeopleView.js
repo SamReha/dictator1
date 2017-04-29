@@ -193,23 +193,19 @@ var PeopleLeftView={
 	// makes the portrait + name. TODO: re-arrange the visual elements
 	_makeEntry_: function(oneEntryData,view,index) {
 		var buttonString;
-		var portraitString;
 		var roleNumber;
 		switch (oneEntryData.role) {
 			case Person.Bureaucrat:
 				roleNumber = 0;
 				buttonString = 'portrait_border_bureau';
-				portraitString = 'bureaucrat_port_' + oneEntryData.portIndex;
 				break;
 			case Person.Merchant:
 				roleNumber = 1;
 				buttonString = 'portrait_border_finance';
-				portraitString = 'merchant_port_' + oneEntryData.portIndex;
 				break;
 			case Person.Military:
 				roleNumber = 2;
 				buttonString = 'portrait_border_military';
-				portraitString = 'military_port_' + oneEntryData.portIndex;
 				break;
 			default:
 				break;
@@ -218,7 +214,7 @@ var PeopleLeftView={
 		var entrySprite = MainGame.game.make.button(0, 0, buttonString, function(){
 			PeopleLeftView.onPersonSelected(view,roleNumber,index);},entrySprite,1,0,2,1);
 		entrySprite.input.priorityID=120;
-		var portrait = MainGame.game.make.sprite(0, 0, portraitString);
+		var portrait = MainGame.game.make.sprite(0, 0, oneEntryData.getPortTexString());
 		portrait.anchor.setTo(0.5,0.5);
 		entrySprite.addChild(portrait);
 		// var name = oneEntryData.name.split(" ");

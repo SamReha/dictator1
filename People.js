@@ -23,7 +23,7 @@ var Person={
         // Class vars
         p.type=data.type;               // must be one of Person.types
         p.name=(data.name?data.name:Person.randomName());   // either given or randomized
-        p.portIndex=(data.portIndex!==undefined?data.portIndex:null);     // nullable
+        p.portIndex = (data.portIndex !== undefined ? data.portIndex : null);     // nullable
         p.workplace=data.workplace;     // nullable, index of the tile
         p.home=data.home;               // nullable, index of the tile
         p.health=(data.health?data.health:0);           // int
@@ -40,12 +40,22 @@ var Person={
         p.salary=(data.salary?data.salary:null);
 
         // Class funcs
-        p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
-        p.report=function(){return Person.report(p)};  // Class func: Declaration
-        p.portTexture=function(){
-            console.assert(p.type>=Person.Mid);
-            var tb={"?":"bureaucrat_port_", "$":"merchant_port_", "!":"military_port_"}; 
-            return tb[p.role]+p.portIndex;
+        p.update = function(board,nextTurn) { return Person.update(p,board,nextTurn); };
+        p.report = function(){ return Person.report(p); };  // Class func: Declaration
+        p.getPortTexString = function() {
+            console.assert(p.type >= Person.Mid);
+
+            // If we don't already have a port index, get one!
+            if (p.portIndex === null) {
+                p.portIndex = Math.floor(Math.random()*10);
+            }
+
+            var tb = {
+                "?":"bureaucrat_port_",
+                "$":"merchant_port_",
+                "!":"military_port_"
+            }; 
+            return tb[p.role] + p.portIndex;
         };
         p.findHousing=function(){return Person.findHousing(p)};
         p.toString=function(){return "<Person:"+p.name+",type:"+p.type+",role:"+p.role+">"};

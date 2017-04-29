@@ -91,22 +91,19 @@ var CoalitionFlag = {
 			switch (coalitionType) {
 				case Person.Bureaucrat:
 					textureString = 'portrait_border_bureau';
-					portraitString = 'bureaucrat_port_' + minister.portIndex;
 					break;
 				case Person.Merchant:
 					textureString = 'portrait_border_finance';
-					portraitString = 'merchant_port_' + minister.portIndex;
 					break;
 				case Person.Military:
 					textureString = 'portrait_border_military';
-					portraitString = 'military_port_' + minister.portIndex;
 					break;
 				default:
 					break;
 			}
 
 			var button = MainGame.game.make.button(0, 0, textureString, function() {CoalitionFlag.showMinisterContract(minister);}, 1, 0, 2, 1);
-			var portrait = MainGame.game.make.sprite(-5, 5, portraitString);
+			var portrait = MainGame.game.make.sprite(-5, 5, minister.getPortTexString());
 			portrait.anchor.setTo(1,0);
 			button.addChild(portrait);
 			button.anchor.x = 1;
