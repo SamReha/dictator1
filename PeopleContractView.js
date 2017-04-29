@@ -11,26 +11,9 @@ var PeopleContractView={
 		v.inputEnabled=true;
 		v.input.priorityID=120;
 		v.newPayLevel=(personDataRef.payLevel?personDataRef.payLevel:0);
-		// TODO: adjust layout!!
-		// setup its elements
-			// port & name
-		var textureString;
-		switch (personDataRef.role) {
-			case Person.Bureaucrat:
-				textureString = 'bureaucrat_port_' + personDataRef.portIndex;
-				break;
-			case Person.Merchant:
-				textureString = 'merchant_port_' + personDataRef.portIndex;
-				break;
-			case Person.Military:
-				textureString = 'military_port_' + personDataRef.portIndex;
-				break;
-			default:
-				break;
-		}
 
 		// ----Portrait, Name, Title, and Stats----
-		v.port = MainGame.game.make.sprite((v.width/8), (v.height/9), textureString);
+		v.port = MainGame.game.make.sprite((v.width/8), (v.height/9), personDataRef.getPortTexString());
 		v.port.anchor.setTo(0.5,0.5);
 		v.port.scale.setTo(1.5,1.5);
 		v.addChild(v.port);

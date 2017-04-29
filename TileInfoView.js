@@ -553,6 +553,9 @@ var TileDetailView = {
 
     // When a non-housing building gets a worker added or removed, some states need to get updated
     _updateState: function(view, building) {
+        if (building.name == "armyBase")
+            return;
+        
         var sentenceStart = 'This building generates ';
 
         var str3 = '';
@@ -584,7 +587,7 @@ var TileDetailView = {
     },
 
     updateInfo: function(view, tile) {
-        if (!tile.hasBuilding())
+        if (!tile.hasBuilding() || tile.getBuilding().name == "armyBase")
             return;
 
         TileDetailView._updateAvailabilityText(view, tile.getBuilding());

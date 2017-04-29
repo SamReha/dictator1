@@ -4,14 +4,15 @@
 // Texture Requirement: 'small_generic_button' (use Find-Replace to change)
 
 var DDecisionView={
-	font: {font:"30px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
+	font: { font:"21px myKaiti", fill:"black", shadowColor:"black", shadowOffsetX:1, shadowOffsetY:1, wordWrap: true, wordWrapWidth: 380 },
+    buttonStyle: {font:"30px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
-		[],											// 0 button
-		[{x:347,y:337}],							// 1 button
-		[{x:272,y:337},{x:472,y:337}],				// 2 buttons
-		[{x:0,y:337},{x:300,y:337},{x:400,y:337}],	// 3 buttons
-		[{x:0,y:337},{x:150,y:337},{x:300,y:337},{x:450,y:337}]	// 4 buttons
+		[],                                                     // 0 button
+		[{x:300,y:275}],                                        // 1 button
+		[{x:200,y:275},{x:400,y:275}],                          // 2 buttons
+		[{x:100,y:275},{x:300,y:275},{x:500,y:275}],            // 3 buttons
+		[{x:0,y:275},{x:150,y:275},{x:300,y:275},{x:450,y:275}] // 4 buttons
 	],
 
 	createNew: function(){
@@ -21,10 +22,10 @@ var DDecisionView={
 		v.portrait=MainGame.game.add.sprite(50,20);
 		v.addChild(v.portrait);
 		// add description text
-		v.description=MainGame.game.add.text(75,40,"",DDecisionView.font);
+		v.description=MainGame.game.add.text(200, 88, '', DDecisionView.font);
 		v.addChild(v.description);
 		// add buttons array
-		v.buttons=[];
+		v.buttons = [];
 
 		// Class func
 		// sets the Model(data). Every arg is nullable(==[will be unchanged])
@@ -58,7 +59,7 @@ var DDecisionView={
 				"small_generic_button", null, v.buttons[i], 0, 1, 2);
             v.buttons[i].anchor.set(0.5, 0.5);
 
-			v.buttons[i].label = MainGame.game.add.text(0, 0, _buttonText[i], DDecisionView.font);
+			v.buttons[i].label = MainGame.game.add.text(0, 0, _buttonText[i], DDecisionView.buttonStyle);
             v.buttons[i].label.anchor.set(0.5, 0.5);
 			v.buttons[i].addChild(v.buttons[i].label);
 			v.addChild(v.buttons[i]);
