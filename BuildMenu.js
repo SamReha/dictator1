@@ -87,8 +87,10 @@ var BuildMenu={
 		/*global Hud*/
 		// buildMenu -: buyBuildingBtn, seeCoalitionBtn, etc.
 		var buyMansionBtn = MainGame.game.make.button((bm.width/8), (bm.height/4), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyMansionBtn, 'mansion');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyMansionBtn, 'mansion');
+			buyMansionBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buyMansionBtn.anchor.x = 0.5;  // Anchor in center
 		buyMansionBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var mansionText = MainGame.game.make.text(0, -40, "Mansion\n₸10", BuildMenu.styleNormal);
@@ -104,8 +106,10 @@ var BuildMenu={
 
         // SUBURB
 		var buySuburbBtn = MainGame.game.make.button((bm.width*3/8), (bm.height/4), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySuburbBtn, 'suburb');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySuburbBtn, 'suburb');
+			buySuburbBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buySuburbBtn.anchor.x = 0.5;  // Anchor in center
 		buySuburbBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var suburbText = MainGame.game.make.text(0, -40, "Suburb\n₸10", BuildMenu.styleNormal);
@@ -121,8 +125,10 @@ var BuildMenu={
 
         // APARTMENT
 		var buyApartmentBtn = MainGame.game.make.button((bm.width*5/8), (bm.height/4), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyApartmentBtn, 'apartment');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyApartmentBtn, 'apartment');
+			buyApartmentBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buyApartmentBtn.anchor.x = 0.5;  // Anchor in center
 		buyApartmentBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var apartmentText = MainGame.game.make.text(0, -40, "Apartment\n₸10", BuildMenu.styleNormal);
@@ -138,8 +144,10 @@ var BuildMenu={
 
         // ROAD
 		var buyRoadBtn = MainGame.game.make.button((bm.width*7/8), (bm.height/4), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyRoadBtn, 'road');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyRoadBtn, 'road');
+			buyRoadBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buyRoadBtn.anchor.x = 0.5;  // Anchor in center
 		buyRoadBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var roadText = MainGame.game.make.text(0, -40, "Road\n₸2", BuildMenu.styleNormal);
@@ -155,8 +163,10 @@ var BuildMenu={
 
 		// SCHOOL
 		var buySchoolBtn = MainGame.game.make.button((bm.width/4), 5*(bm.height/12), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'school');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'school');
+			buySchoolBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buySchoolBtn.anchor.x = 0.5;  // Anchor in center
 		buySchoolBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var schoolText = MainGame.game.make.text(0, -40, "School\n₸15", BuildMenu.styleNormal);
@@ -172,8 +182,10 @@ var BuildMenu={
 
 		// PARK
 		var buyParkBtn = MainGame.game.make.button((bm.width/11), (2*(bm.height/3)-10), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyParkBtn, 'park');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyParkBtn, 'park');
+			buyParkBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buyParkBtn.anchor.x = 0.5;  // Anchor in center
 		buyParkBtn.anchor.y = 1;
 		var parkText = MainGame.game.make.text(0, -40, "Park\n₸15", BuildMenu.styleNormal);
@@ -190,8 +202,10 @@ var BuildMenu={
 
 		// FACTORY / LUMBERYARD
 		var buyFactoryBtn = MainGame.game.make.button((bm.width/12), 5*(bm.height/12), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFactoryBtn, 'lumberYard');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFactoryBtn, 'lumberYard');
+			buyFactoryBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buyFactoryBtn.anchor.x = 0.5;  // Anchor in center
 		buyFactoryBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var factoryText = MainGame.game.make.text(0, -40, "LumberYard\n₸30", BuildMenu.styleNormal);
@@ -207,8 +221,10 @@ var BuildMenu={
 
 		// ARMYBASE
 		var buyArmyBaseBtn = MainGame.game.make.button((bm.width/12), 5*(bm.height/12), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyArmyBaseBtn, 'armyBase');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyArmyBaseBtn, 'armyBase');
+			buyArmyBaseBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buyArmyBaseBtn.anchor.x = 0.5;  // Anchor in center
 		buyArmyBaseBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var armyBaseText = MainGame.game.make.text(0, -40, "Army Base\n₸30", BuildMenu.styleNormal);
@@ -224,8 +240,10 @@ var BuildMenu={
 
 		// Police Station
 		var buyPoliceStationBtn = MainGame.game.make.button((bm.width/4), 5*(bm.height/12), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyPoliceStationBtn, 'police');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyPoliceStationBtn, 'police');
+			buyPoliceStationBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buyPoliceStationBtn.anchor.x = 0.5;  // Anchor in center
 		buyPoliceStationBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var policeStationText = MainGame.game.make.text(0, -40, "Police Station\n₸30", BuildMenu.styleNormal);
@@ -241,8 +259,10 @@ var BuildMenu={
 
 		// FARM
 		var buyFarmBtn = MainGame.game.make.button((bm.width/11), 5*(bm.height/12), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFarmBtn, 'fertileFarm');},
-			buildMenu, 0, 1, 2, 2);
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFarmBtn, 'fertileFarm');
+			buyFarmBtn.toolTip.hide();
+		},
+		buildMenu, 0, 1, 2, 2);
 		buyFarmBtn.anchor.x = 0.5;  // Anchor in center
 		buyFarmBtn.anchor.y = 1;  // Anchor on bottom left corner
 		var farmText = MainGame.game.make.text(0, -40, "Farm\n₸10", BuildMenu.styleNormal);

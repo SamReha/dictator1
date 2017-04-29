@@ -453,7 +453,7 @@ var FunPanel = {
         funPanel.freeSprite.x = -funPanel.meter.width/2 - funPanel.freeSprite.width/2 - 5;
         funPanel.freeSprite.anchor.x = 0.5;
 
-        ToolTip.addTipTo(funPanel.freeSprite, 2, 'Total Freedom', 0, 48);
+        ToolTip.addTipTo(funPanel.freeSprite, 2, 'Total Freedom', funPanel.x + funPanel.freeSprite.x, 48);
         funPanel.addChild(funPanel.freeSprite);
 
         // Unrest
@@ -461,7 +461,7 @@ var FunPanel = {
         funPanel.unrestSprite.x = funPanel.meter.width/2 + funPanel.unrestSprite.width/2 + 5;
         funPanel.unrestSprite.anchor.x = 0.5;
 
-        ToolTip.addTipTo(funPanel.unrestSprite, 2, 'Total Unrest', 0, 48);
+        ToolTip.addTipTo(funPanel.unrestSprite, 2, 'Total Unrest', funPanel.x + funPanel.unrestSprite.x, 48);
         funPanel.addChild(funPanel.unrestSprite);
 
         // Riot Thermometer
@@ -575,8 +575,6 @@ var ToolTip = {
     },
 
     show: function(toolTip) {
-        //console.log(toolTip.parent);
-        //toolTip.bringToTop();
         MainGame.game.world.bringToTop(toolTip);
         toolTip.visible = true;
     },
