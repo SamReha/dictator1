@@ -4,7 +4,7 @@
 // Texture Requirement: 'small_generic_button' (use Find-Replace to change)
 
 var DDecisionView={
-	font: { font:"24px myKaiti", fill:"black", shadowColor:"black", shadowOffsetX:1, shadowOffsetY:1, wordWrap: true, wordWrapWidth: 380 },
+	font: { font:"21px myKaiti", fill:"black", shadowColor:"black", shadowOffsetX:1, shadowOffsetY:1, wordWrap: true, wordWrapWidth: 380 },
     buttonStyle: {font:"30px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
@@ -22,7 +22,7 @@ var DDecisionView={
 		v.portrait=MainGame.game.add.sprite(50,20);
 		v.addChild(v.portrait);
 		// add description text
-		v.description=MainGame.game.add.text(200, 90, '', DDecisionView.font);
+		v.description=MainGame.game.add.text(200, 88, '', DDecisionView.font);
 		v.addChild(v.description);
 		// add buttons array
 		v.buttons = [];
