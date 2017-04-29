@@ -534,11 +534,13 @@ var ToolTip = {
         var toolTipText = MainGame.game.make.text(this.horizontalPad, 2, tipText, style);
         toolTipText.text = tipText;
 
-        var toolTip = MainGame.game.make.graphics();
-        toolTip.lineStyle(0);
-        toolTip.beginFill(this.black, this.opacity);
-        toolTip.drawRect(0, 0, toolTipText.width + (this.horizontalPad * 2), toolTipText.height + (this.verticalPad * 2));
-        toolTip.endFill();
+        var toolTip = MainGame.game.add.group();
+        toolTip.backPanel = MainGame.game.make.graphics();
+        toolTip.backPanel.lineStyle(0);
+        toolTip.backPanel.beginFill(this.black, this.opacity);
+        toolTip.backPanel.drawRect(0, 0, toolTipText.width + (this.horizontalPad * 2), toolTipText.height + (this.verticalPad * 2));
+        toolTip.backPanel.endFill();
+        toolTip.addChild(toolTip.backPanel);
 
         toolTip.textLabel = toolTipText;
         toolTip.addChild(toolTipText);
@@ -562,18 +564,19 @@ var ToolTip = {
         parent.toolTip.y = y;
         parent.events.onInputOver.add(function() {parent.toolTip.show();}, null);
         parent.events.onInputOut.add(function() {parent.toolTip.hide();}, null);
-        parent.addChild(parent.toolTip);
     },
 
     updateData: function(toolTip, newTipText) {
         toolTip.textLabel.text = newTipText;
-        toolTip.clear();
-        toolTip.beginFill(this.black, this.opacity);
-        toolTip.drawRect(0, 0, toolTip.textLabel.width + (this.horizontalPad * 2), toolTip.textLabel.height + (this.verticalPad * 2));
-        toolTip.endFill();
+        toolTip.backPanel.clear();
+        toolTip.backPanel.beginFill(this.black, this.opacity);
+        toolTip.backPanel.drawRect(0, 0, toolTip.textLabel.width + (this.horizontalPad * 2), toolTip.textLabel.height + (this.verticalPad * 2));
+        toolTip.backPanel.endFill();
     },
 
     show: function(toolTip) {
+        //console.log(toolTip.parent);
+        //toolTip.bringToTop();
         MainGame.game.world.bringToTop(toolTip);
         toolTip.visible = true;
     },

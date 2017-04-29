@@ -5,6 +5,7 @@ var CoalitionFlag = {
 	verticalBorderPad: 5,
 	verticalPad: 20,
 	horizontalPad: 5,
+	scale: 1.25,
 
 	createNew: function() {
 		/* global MainGame */
@@ -12,7 +13,7 @@ var CoalitionFlag = {
 		coalitionFlag.anchor.x = 1;
 		coalitionFlag.inputEnabled = true;
 		coalitionFlag.input.priorityID = 0;
-		coalitionFlag.scale.setTo(1.25, 1.25);
+		coalitionFlag.scale.setTo(this.scale, this.scale);
 
 		// coalitionFlag.border = MainGame.game.make.sprite(5, 0, 'coalition_border');
 		// coalitionFlag.border.anchor.x = 1;
@@ -27,16 +28,19 @@ var CoalitionFlag = {
 		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(Person.Bureaucrat, bureaucrats, CoalitionFlag.showBureaucratContract);
 		coalitionFlag.bureaucrat.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.bureaucrat.y = CoalitionFlag.verticalBorderPad;
+		coalitionFlag.bureaucrat.toolTip.y = (coalitionFlag.y + coalitionFlag.bureaucrat.y)*this.scale;
 		coalitionFlag.addChild(coalitionFlag.bureaucrat);
 
 		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(Person.Merchant, merchants);
 		coalitionFlag.merchant.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.merchant.y = coalitionFlag.bureaucrat.y + (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad);
+		coalitionFlag.merchant.toolTip.y = (coalitionFlag.y + coalitionFlag.merchant.y)*this.scale;
 		coalitionFlag.addChild(coalitionFlag.merchant);
 
 		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(Person.Military, militaries);
 		coalitionFlag.military.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.military.y = coalitionFlag.merchant.y + (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad);
+		coalitionFlag.military.toolTip.y = (coalitionFlag.y + coalitionFlag.military.y)*this.scale;
 		coalitionFlag.addChild(coalitionFlag.military);
 		
 		// Functions
@@ -61,16 +65,19 @@ var CoalitionFlag = {
 		coalitionFlag.bureaucrat = CoalitionFlag.getCoalitionPortrait(Person.Bureaucrat, bureaucrats);
 		coalitionFlag.bureaucrat.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.bureaucrat.y = CoalitionFlag.verticalBorderPad;
+		coalitionFlag.bureaucrat.toolTip.y = (coalitionFlag.y + coalitionFlag.bureaucrat.y)*this.scale;
 		coalitionFlag.addChild(coalitionFlag.bureaucrat);
 
 		coalitionFlag.merchant = CoalitionFlag.getCoalitionPortrait(Person.Merchant, merchants);
 		coalitionFlag.merchant.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.merchant.y = coalitionFlag.bureaucrat.y + (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad);
+		coalitionFlag.merchant.toolTip.y = (coalitionFlag.y + coalitionFlag.merchant.y)*this.scale;
 		coalitionFlag.addChild(coalitionFlag.merchant);
 
 		coalitionFlag.military = CoalitionFlag.getCoalitionPortrait(Person.Military, militaries);
 		coalitionFlag.military.x = -CoalitionFlag.horizontalPad;
 		coalitionFlag.military.y = coalitionFlag.merchant.y + (CoalitionFlag.unitHeight + CoalitionFlag.verticalPad);
+		coalitionFlag.military.toolTip.y = (coalitionFlag.y + coalitionFlag.military.y)*this.scale;
 		coalitionFlag.addChild(coalitionFlag.military);
 	},
 
@@ -103,16 +110,9 @@ var CoalitionFlag = {
 			portrait.anchor.setTo(1,0);
 			button.addChild(portrait);
 			button.anchor.x = 1;
-			button.inputEnabled = true;
-			button.input.priorityID = 1;
 
-			var toolTip = ToolTip.createNew(minister.name);
-			toolTip.x = -56 - toolTip.width;
-			toolTip.y = 18;
-			button.addChild(toolTip);
-			button.events.onInputOver.add(function() {toolTip.show();}, null);
-			button.events.onInputOut.add(function() {toolTip.hide();}, null);
-
+			ToolTip.addTipTo(button, 1, minister.name, MainGame.game.width - button.width*this.scale - (CoalitionFlag.horizontalPad*2*this.scale), 0);
+			button.toolTip.x -= button.toolTip.width;
 			return button;
 		} else {
 			switch (coalitionType) {
@@ -132,15 +132,9 @@ var CoalitionFlag = {
 			var sprite = MainGame.game.make.button(0, 0, textureString, function() {PeopleView.createNew();}, 2, 1, 0, 2);
 			sprite.anchor.x = 1;
 			sprite.inputEnabled = true;
-			sprite.input.priorityID = 1;
-
-			var toolTip = ToolTip.createNew('Hire a Minister');
-			toolTip.x = -56 - toolTip.width;
-			toolTip.y = 18;
-        	sprite.addChild(toolTip);
-        	sprite.events.onInputOver.add(function() {toolTip.show();}, null);
-        	sprite.events.onInputOut.add(function() {toolTip.hide();}, null);
-
+			
+			ToolTip.addTipTo(sprite, 1, 'Hire a Minister', MainGame.game.width - sprite.width*this.scale - (CoalitionFlag.horizontalPad*2*this.scale), 0);
+			sprite.toolTip.x -= sprite.toolTip.width;
 			return sprite;
 		}
 	},
