@@ -255,8 +255,8 @@ var StatsPanel = {
         statsPanel.yearGroup.x = this.horizontalPad;
         statsPanel.yearGroup.y = (this.unitHeight + this.verticalPad) * 0 + this.verticalPad;
 
-        ToolTip.addTipTo(statsPanel.yearGroup, 2, 'Current Year', 0, 12);
-        statsPanel.yearGroup.toolTip.x = -statsPanel.yearGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.yearGroup, 2, 'Current Year', statsPanel.x, statsPanel.y + statsPanel.yearGroup.y + 12);
+        statsPanel.yearGroup.toolTip.x -= statsPanel.yearGroup.toolTip.width;
 
         statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, 1949+MainGame.global.turn, this.textStyle);
         statsPanel.yearGroup.addChild(statsPanel.yearGroup.textLabel);
@@ -277,8 +277,8 @@ var StatsPanel = {
             game.make.audio('paper_click_7')
         ];
 
-        ToolTip.addTipTo(statsPanel.popGroup, 2, 'Total Population', 0, 12);
-        statsPanel.popGroup.toolTip.x = -statsPanel.popGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.popGroup, 2, 'Total Population', statsPanel.x, statsPanel.y + statsPanel.popGroup.y + 12);
+        statsPanel.popGroup.toolTip.x -= statsPanel.popGroup.toolTip.width;
 
         statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
@@ -289,8 +289,8 @@ var StatsPanel = {
         statsPanel.homelessGroup.x = this.horizontalPad;
         statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 2;
 
-        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', 0, 12);
-        statsPanel.homelessGroup.toolTip.x = -statsPanel.homelessGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x, statsPanel.y + statsPanel.homelessGroup.y + 12);
+        statsPanel.homelessGroup.toolTip.x -= statsPanel.homelessGroup.toolTip.width;
 
         statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.textLabel);
@@ -301,8 +301,8 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.x = this.horizontalPad;
         statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 3;
         
-        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', 0, 12);
-        statsPanel.unemploymentGroup.toolTip.x = -statsPanel.unemploymentGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
+        statsPanel.unemploymentGroup.toolTip.x -= statsPanel.unemploymentGroup.toolTip.width;
 
         statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
@@ -313,8 +313,8 @@ var StatsPanel = {
         statsPanel.warchestGroup.x = this.horizontalPad;
         statsPanel.warchestGroup.y = (this.unitHeight + this.verticalPad) * 4;
         
-        ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', 0, 12);
-        statsPanel.warchestGroup.toolTip.x = -statsPanel.warchestGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', statsPanel.x, statsPanel.y + statsPanel.warchestGroup.y + 12);
+        statsPanel.warchestGroup.toolTip.x -= statsPanel.warchestGroup.toolTip.width;
 
         statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, 0, '$0 ', this.textStyle);
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
@@ -330,8 +330,8 @@ var StatsPanel = {
         statsPanel.swissGroup.x = this.horizontalPad;
         statsPanel.swissGroup.y = (this.unitHeight + this.verticalPad) * 5;
 
-        ToolTip.addTipTo(statsPanel.swissGroup, 2, 'Private Account', 0, 12);
-        statsPanel.swissGroup.toolTip.x = -statsPanel.swissGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.swissGroup, 2, 'Private Account', statsPanel.x, statsPanel.y + statsPanel.swissGroup.y + 12);
+        statsPanel.swissGroup.toolTip.x -= statsPanel.swissGroup.toolTip.width;
 
         statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '$0 ', this.textStyle);
         statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
