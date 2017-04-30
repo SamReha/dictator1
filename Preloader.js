@@ -157,12 +157,14 @@ var Preloader={
 
         //// load unit spritesheets
         var unitDir = imageDir + 'units/';
-        g.load.image('army_idle',   unitDir + 'army_idle.png');
-        g.load.image('army_moving', unitDir + 'army_moving.png');
-        g.load.image('riot_idle',   unitDir + 'riot_idle.png');
-        g.load.image('riot_moving', unitDir + 'riot_moving.png');
-        g.load.image('rioter_icon', unitDir + 'rioter_icon.png');
-        g.load.image('rioter_counter_background', unitDir + 'rioter_counter_background.png');
+        g.load.image('army_idle',                  unitDir + 'army_idle.png');
+        g.load.image('army_moving',                unitDir + 'army_moving.png');
+        g.load.image('soldier_icon',               unitDir + 'soldier_icon.png');
+        g.load.image('soldier_counter_background', unitDir + 'soldier_counter_background.png');
+        g.load.image('riot_idle',                  unitDir + 'riot_idle.png');
+        g.load.image('riot_moving',                unitDir + 'riot_moving.png');
+        g.load.image('rioter_icon',                unitDir + 'rioter_icon.png');
+        g.load.image('rioter_counter_background',  unitDir + 'rioter_counter_background.png');
 
         // load json files
         var jsonDir = 'json/';
