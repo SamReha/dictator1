@@ -161,12 +161,13 @@ var TileDetailView = {
                 view.deploySoldiers(buildingIndex);
             }, null, 0, 2, 1, 2, 'Deploy Soldiers', TileDetailView.buttonStyle);
             view.deployButton.input.priorityID = 102;
+            view.deployButton.visible = !building.squadDeployed;
 
             view.recallButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
                 view.recallSoldiers(buildingIndex);
             }, null, 0, 2, 1, 2, 'Recall Soldiers', TileDetailView.buttonStyle);
             view.recallButton.input.priorityID = 102;
-            view.recallButton.visible = false;
+            view.recallButton.visible = building.squadDeployed;
 
             view.addChild(view.recallButton);
             view.addChild(view.deployButton);
@@ -312,7 +313,7 @@ var TileDetailView = {
             view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
             /*global updatePopulation*/
-            updatePopulation(false,false);
+            updatePopulation(false, false);
         }else{
             // Play an error sound
             view.add_remove_sfx.play();
@@ -630,16 +631,33 @@ var TileDetailView = {
     },
 
     deploySoldiers: function(view, buildingIndex) {
-        var building = MainGame.board.at(buildingIndex).getBuilding();
+        var tile = MainGame.board.at(buildingIndex)
+        var building = tile.getBuilding();
         if (building.people > 0) {
-            Unit.loadUnitData();
-            building.soldiers = Unit.spawnUnitAt(Unit.Army, buildingIndex);
-            building.soldiers.health = view.people;
+            Unit.spawnUnitAt(Unit.Army, buildingIndex);
+            building.squad = tile.getUnit();
+            building.squad.addPeople(building.people-1);
+            building.squadDeployed = true;
+
+            // while (building.people > 0) {
+            //     building.removePerson();
+            // }
+            // /*global updatePopulation*/
+            // updatePopulation(false, false);
+
+            view.deployButton.visible = false;
+            view.recallButton.visible = true;
         }
     },
 
     recallSoldiers: function(view, buildingIndex) {
+        var building = MainGame.board.at(buildingIndex).getBuilding();
+        building.squad.target = buildingIndex;
 
+        building.squadDeployed = false;
+
+        view.deployButton.visible = true;
+        view.recallButton.visible = false;
     },
 };
 
