@@ -317,7 +317,7 @@ var StatsPanel = {
         ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', statsPanel.x, statsPanel.y + statsPanel.warchestGroup.y + 12);
         statsPanel.warchestGroup.toolTip.x -= statsPanel.warchestGroup.toolTip.width;
 
-        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, 0, '$0 ', this.textStyle);
+        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, 0, '₸0 ', this.textStyle);
         statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
         statsPanel.addChild(statsPanel.warchestGroup);
 
