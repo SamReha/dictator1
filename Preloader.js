@@ -112,7 +112,6 @@ var Preloader={
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
-        g.load.spritesheet('btnHire',                   buttonDir + 'btnHire.png', 64, 20, 4);
         g.load.spritesheet('build_button',              buttonDir + 'build_button.png', 144, 80, 3);
         g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
         g.load.spritesheet('buttonSprite',              buttonDir + 'button_spritesheet.png', 128, 48, 4);
@@ -141,7 +140,7 @@ var Preloader={
         g.load.spritesheet('homeless_icon',     iconDir + 'homeless_icon.png');
         g.load.spritesheet('unemployed_icon',   iconDir + 'unemployed_icon.png');
         g.load.spritesheet('unrest_icon',       iconDir + 'unrest_icon.png');
-        g.load.spritesheet('year_icon',         iconDir + 'year_icon.png');
+        g.load.spritesheet('year_icon',         iconDir + 'year_icon.png', 46, 46, 3);
         g.load.spritesheet('swiss_icon',        iconDir + 'swiss_account_icon.png', 46, 46, 3);
         g.load.spritesheet('construction_icon', iconDir + 'construction_icon.png');
         for(var i = 1; i <= 4; ++i){
