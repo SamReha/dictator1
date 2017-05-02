@@ -263,7 +263,10 @@ var StatsPanel = {
         ];
 
         // Year
-        statsPanel.yearGroup = MainGame.game.make.sprite(0, 0, 'year_icon');
+        statsPanel.yearGroup = MainGame.game.make.button(0, 0, 'year_icon', function(){
+            YearView.createNew();
+            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
+        }, 0, 1, 0, 2);
         statsPanel.yearGroup.x = this.horizontalPad;
         statsPanel.yearGroup.y = (this.unitHeight + this.verticalPad) * 0 + this.verticalPad;
 
