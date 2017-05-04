@@ -315,7 +315,10 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.unemploymentGroup);
 
         // State Money (warchest)
-        statsPanel.warchestGroup = MainGame.game.make.sprite(this.horizontalPad, (this.unitHeight + this.verticalPad) * 4, 'money_icon');
+        statsPanel.warchestGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 4, 'money_icon', function(){
+            FinanceView.createNew();
+            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
+        }, 0, 1, 0, 2);
         
         ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', statsPanel.x, statsPanel.y + statsPanel.warchestGroup.y + 12);
         statsPanel.warchestGroup.toolTip.x -= statsPanel.warchestGroup.toolTip.width;

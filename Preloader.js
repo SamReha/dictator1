@@ -135,7 +135,7 @@ var Preloader={
         //// load icons
         var iconDir = uiDir + 'icons/';
         g.load.spritesheet('freedom_icon',      iconDir + 'freedom_icon.png');
-        g.load.spritesheet('money_icon',        iconDir + 'money_icon.png');
+        g.load.spritesheet('money_icon',        iconDir + 'money_icon.png', 46, 46, 3);
         g.load.spritesheet('population_icon',   iconDir + 'population_icon.png', 46, 46, 3);
         g.load.spritesheet('homeless_icon',     iconDir + 'homeless_icon.png');
         g.load.spritesheet('unemployed_icon',   iconDir + 'unemployed_icon.png');
