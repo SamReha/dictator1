@@ -79,31 +79,39 @@ var Preloader={
 
         // load ui assets
         var uiDir = imageDir + 'ui/';
-        g.load.image('tile_hover_backpanel',          uiDir + 'tile_hover_backpanel.png');
-        g.load.image('building_detail_backpanel',     uiDir + 'building_detail_backpanel.png');
-        g.load.image('buildMenuBg',                   uiDir + 'buildMenuBg.png');
-        g.load.image('buildMenuCover1',               uiDir + 'buildMenuCover1.png');
-        g.load.image('buildMenuCover2',               uiDir + 'buildMenuCover2.png');
-        g.load.image('coalition_backpanel',           uiDir + 'coalition_backpanel.png');
-        g.load.image('coalition_border',              uiDir + 'coalition_outer_edge.png');
-        g.load.image('stats_panel_backpanel',         uiDir + 'stats_panel_backpanel.png');
-        g.load.image('peopleViewBg',                  uiDir + 'peopleViewBg.jpg');
-        g.load.image('peopleViewLeftBg',              uiDir + 'peopleViewLeftBg.png');
-        g.load.image('peopleViewRightBg',             uiDir + 'peopleViewRightBg.png');
-        g.load.image('peopleViewContractBg',          uiDir + 'peopleViewContractBg.png');
-        g.load.image('incButton',                     uiDir + 'incButton.png');
-        g.load.image('decButton',                     uiDir + 'decButton.png');
-        g.load.image("pi_prevPage",                   uiDir + "pi_prevPage.png");
-        g.load.image("pi_nextPage",                   uiDir + "pi_nextPage.png");
-        g.load.image("uiMask",                        uiDir + "uiMask.png");
-        g.load.image("event_bg",                      uiDir + "event_bg.png");
-        g.load.image('freedomUnrestMeter',            uiDir + "freedomUnrestMeter.png");
-        g.load.image('freedomUnrestMeter_foreground', uiDir + 'freedomUnrestMeter_foreground.png');
-        g.load.image('fun_panel_backpanel',           uiDir + 'fun_panel_backpanel.png');
-        g.load.image('thermometer_bulb',              uiDir + 'thermometer_bulb.png');
-        g.load.image('thermometer_tube',              uiDir + 'thermometer_tube.png');
-        g.load.image('page_texture',                  uiDir + 'page_texture.png');
-        
+        g.load.image('tile_hover_backpanel',            uiDir + 'tile_hover_backpanel.png');
+        g.load.image('building_detail_backpanel',       uiDir + 'building_detail_backpanel.png');
+        g.load.image('buildMenuBg',                     uiDir + 'buildMenuBg.png');
+        g.load.image('buildMenuCover1',                 uiDir + 'buildMenuCover1.png');
+        g.load.image('buildMenuCover2',                 uiDir + 'buildMenuCover2.png');
+        g.load.image('coalition_backpanel',             uiDir + 'coalition_backpanel.png');
+        g.load.image('coalition_border',                uiDir + 'coalition_outer_edge.png');
+        g.load.image('stats_panel_backpanel',           uiDir + 'stats_panel_backpanel.png');
+        g.load.image('peopleViewBg',                    uiDir + 'peopleViewBg.jpg');
+        g.load.image('peopleViewLeftBg',                uiDir + 'peopleViewLeftBg.png');
+        g.load.image('peopleViewRightBg',               uiDir + 'peopleViewRightBg.png');
+        g.load.image('peopleViewContractBg',            uiDir + 'peopleViewContractBg.png');
+        g.load.image('incButton',                       uiDir + 'incButton.png');
+        g.load.image('decButton',                       uiDir + 'decButton.png');
+        g.load.image("pi_prevPage",                     uiDir + "pi_prevPage.png");
+        g.load.image("pi_nextPage",                     uiDir + "pi_nextPage.png");
+        g.load.image("uiMask",                          uiDir + "uiMask.png");
+        g.load.image("event_bg",                        uiDir + "event_bg.png");
+        g.load.image('freedomUnrestMeter',              uiDir + "freedomUnrestMeter.png");
+        g.load.image('freedomUnrestMeter_foreground',   uiDir + 'freedomUnrestMeter_foreground.png');
+        g.load.image('fun_panel_backpanel',             uiDir + 'fun_panel_backpanel.png');
+        g.load.image('thermometer_bulb',                uiDir + 'thermometer_bulb.png');
+        g.load.image('thermometer_tube',                uiDir + 'thermometer_tube.png');
+        g.load.image('page_texture',                    uiDir + 'page_texture.png');
+        g.load.image('single_folder_texture',           uiDir + 'single_folder_texture.png');
+        g.load.image('double_folder_texture',           uiDir + 'double_folder_texture.png');
+        g.load.image('folder_tab_texture',              uiDir + 'folder_tab_texture.png');
+        g.load.image('clipboard_menu_texture',          uiDir + 'clipboard_menu_texture.png');
+        g.load.image('global_binder_texture',           uiDir + 'global_binder_texture.png');
+        for(var i = 0; i < 5; ++i){
+            g.load.image('binder_tab_'+i,               uiDir + 'binder_tab_'+i+'.png');
+        }
+
         // load particle sprites
         var particleDir = uiDir + 'particles/'
         for (var i = 0; i < 25; i++) {
@@ -158,12 +166,12 @@ var Preloader={
 
         //// load unit spritesheets
         var unitDir = imageDir + 'units/';
-        g.load.image('army_idle',   unitDir + 'army_idle.png');
-        g.load.image('army_moving', unitDir + 'army_moving.png');
-        g.load.image('riot_idle',   unitDir + 'riot_idle.png');
-        g.load.image('riot_moving', unitDir + 'riot_moving.png');
-        g.load.image('rioter_icon', unitDir + 'rioter_icon.png');
-        g.load.image('rioter_counter_background', unitDir + 'rioter_counter_background.png');
+        g.load.image('army_idle',                   unitDir + 'army_idle.png');
+        g.load.image('army_moving',                 unitDir + 'army_moving.png');
+        g.load.image('riot_idle',                   unitDir + 'riot_idle.png');
+        g.load.image('riot_moving',                 unitDir + 'riot_moving.png');
+        g.load.image('rioter_icon',                 unitDir + 'rioter_icon.png');
+        g.load.image('rioter_counter_background',   unitDir + 'rioter_counter_background.png');
 
         // load json files
         var jsonDir = 'json/';
