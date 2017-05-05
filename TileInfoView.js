@@ -151,10 +151,27 @@ var TileDetailView = {
         view.buildingName = game.make.text(view.icon.x, view.icon.y + view.icon.height + 10, building.playerLabel + ' ', TileDetailView.nameStyle);
         view.addChild(view.buildingName);
 
-        //console.log(building);
-
+        // Create the deploy, recall buttons as necessary
         if (building.name === 'armyBase') {
-        } else {
+            var position = {
+                x: 0,
+                y: -view.width/2 + TileDetailView.verticalBorderWidth,
+            };
+            view.deployButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
+                view.deploySoldiers(buildingIndex);
+            }, null, 0, 2, 1, 2, 'Deploy Soldiers', TileDetailView.buttonStyle);
+            view.deployButton.input.priorityID = 102;
+            view.deployButton.visible = !building.squadDeployed;
+
+            view.recallButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
+                view.recallSoldiers(buildingIndex);
+            }, null, 0, 2, 1, 2, 'Recall Soldiers', TileDetailView.buttonStyle);
+            view.recallButton.input.priorityID = 102;
+            view.recallButton.visible = building.squadDeployed;
+
+            view.addChild(view.recallButton);
+            view.addChild(view.deployButton);
+        } else { // Otherwise, give the usual description
             view.textDescription = game.make.text(0, 0, '', TileDetailView.descriptionStyle);
             view.textDescription.x = view.icon.x + view.icon.width + TileDetailView.horizontalBorderWidth/2 + 2;
             view.textDescription.y = -view.height/2 + TileDetailView.verticalBorderWidth;
@@ -210,40 +227,26 @@ var TileDetailView = {
 
         if (building.subtype !== "road" && building.name !== "palace" && building.startingTurn <= MainGame.global.turn) {
             // Hire button
-            view.addPersonButton = game.make.button(0, 0, 'small_generic_button', 
-                function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 2, 1, 2);
+            view.addPersonButton = TextButton.createNew(0, 0, 'small_generic_button', 
+                function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 2, 1, 2, addPersonString, TileDetailView.buttonStyle);
 
-            view.addPersonButton.anchor.x = 0.5;
-            view.addPersonButton.inputEnabled = true;
             view.addPersonButton.input.priorityID = 102;
-            view.addPersonButton.x = -view.width/4;
+            view.addPersonButton.x = -view.width/4 - view.addPersonButton.width/2;
             view.addPersonButton.y = view.height/2 - view.addPersonButton.height*2 - TileDetailView.verticalBorderWidth - 5;
             view.addChild(view.addPersonButton);
-
-            var addPersonText = game.make.text(0, 0, addPersonString, TileDetailView.buttonStyle);
-            addPersonText.x = -addPersonText.width/2;
-            addPersonText.y = addPersonText.height/2;
-            view.addPersonButton.addChild(addPersonText);
 
             if (building.people >= building.maxPeople) {
                 view.addPersonButton.visible = false;
             }
 
             // Fire button
-            view.removePersonButton = game.make.button(0, 0, 'small_generic_button',
-                function() {TileDetailView._onFireButtonPressed_(view)}, view, 0, 2, 1, 2);
+            view.removePersonButton = TextButton.createNew(0, 0, 'small_generic_button',
+                function() {TileDetailView._onFireButtonPressed_(view)}, view, 0, 2, 1, 2, removePersonString, TileDetailView.buttonStyle);
 
-            view.removePersonButton.anchor.x = 0.5;
-            view.removePersonButton.inputEnabled = true;
             view.removePersonButton.input.priorityID = 102;
-            view.removePersonButton.x = view.width/4;
+            view.removePersonButton.x = view.width/4 - view.removePersonButton.width/2;
             view.removePersonButton.y = view.height/2 - view.removePersonButton.height*2 - TileDetailView.verticalBorderWidth - 5;
             view.addChild(view.removePersonButton);
-
-            var removePersonText = game.make.text(0, 0, removePersonString, TileDetailView.buttonStyle);
-            removePersonText.x = -removePersonText.width/2;
-            removePersonText.y = removePersonText.height/2;
-            view.removePersonButton.addChild(removePersonText);
 
             if (building.people <= 0) {
                 view.removePersonButton.visible = false;
@@ -276,6 +279,8 @@ var TileDetailView = {
 
         // Class func
         view.updateInfo = function(tile) { return TileDetailView.updateInfo(view,tile); };
+        view.deploySoldiers = function(buildingIndex) { TileDetailView.deploySoldiers(view, buildingIndex); };
+        view.recallSoldiers = function(buildingIndex) { TileDetailView.recallSoldiers(view, buildingIndex); };
 
         return view;
     },
@@ -308,7 +313,7 @@ var TileDetailView = {
             view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
             /*global updatePopulation*/
-            updatePopulation(false,false);
+            updatePopulation(false, false);
         }else{
             // Play an error sound
             view.add_remove_sfx.play();
@@ -623,7 +628,37 @@ var TileDetailView = {
         }
 
         view.textDescription.text = str3 + '\n' + str4 + '\n' + str5;
-    }
+    },
+
+    deploySoldiers: function(view, buildingIndex) {
+        var tile = MainGame.board.at(buildingIndex)
+        var building = tile.getBuilding();
+        if (building.people > 0) {
+            Unit.spawnUnitAt(Unit.Army, buildingIndex);
+            building.squad = tile.getUnit();
+            building.squad.addPeople(building.people-1);
+            building.squadDeployed = true;
+
+            // while (building.people > 0) {
+            //     building.removePerson();
+            // }
+            // /*global updatePopulation*/
+            // updatePopulation(false, false);
+
+            view.deployButton.visible = false;
+            view.recallButton.visible = true;
+        }
+    },
+
+    recallSoldiers: function(view, buildingIndex) {
+        var building = MainGame.board.at(buildingIndex).getBuilding();
+        building.squad.target = buildingIndex;
+
+        building.squadDeployed = false;
+
+        view.deployButton.visible = true;
+        view.recallButton.visible = false;
+    },
 };
 
 var ResidentialInfoView = {

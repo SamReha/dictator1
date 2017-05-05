@@ -41,6 +41,11 @@ var Building = {
             //console.log(b.name);
         }
 
+        if (b.name === 'armyBase') {
+            b.squad =  null;
+            b.squadDeployed = false;
+        }
+
         b.health = 10;
 
         // Class funcs

@@ -4,9 +4,11 @@ var Global={
 	freedom: 0,
     unrest: 0,
     money: 30,
+    privateMoney: 0,
     moneyPerTurn: 0,
     thermometerFill: 0,
     thermometerDelta: 0,
+    yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
 
     // calcAvgEducation: function(){
 
@@ -25,7 +27,10 @@ var Global={
 
     // },
 
-    nextTurn: function(){
+    nextTurn: function() {
+        // Makes sure we record the state BEFORE updating all the game info
+        Global.updateYearViewData();
+
         ++Global.turn;
         /*global MainGame*/
         MainGame.board.nextTurn(Global.turn);
@@ -153,6 +158,20 @@ var Global={
         //     getGameLoseWindow("You have been deposed of in a Coup D'etat. You lose.");
         //     return;
         // }
+    },
+
+    updateYearViewData: function() {
+        var homeless     = MainGame.population.findNotHoused().length;
+        var jobless      = MainGame.population.findNotEmployed().length;
+        var workingClass = MainGame.population.lowList().length;
+
+        this.yearViewData[this.yearViewData.length] = {
+            year:              1949 + this.turn,
+            population:        MainGame.population.count(),
+            employmentPercent: Math.floor(100 - (jobless / workingClass) * 100),
+            homelessPercent:   Math.floor((homeless / workingClass) * 100),
+            publicFunds:       this.money
+        };
     },
 
     restart: function() {

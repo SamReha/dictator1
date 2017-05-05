@@ -120,8 +120,6 @@ var Preloader={
 
         //// load button spritesheets
         var buttonDir = uiDir + 'buttons/';
-        g.load.spritesheet('btnHire',                   buttonDir + 'btnHire.png', 64, 20, 4);
-        g.load.spritesheet('btnFire',                   buttonDir + 'btnFire.png', 64, 20, 4);
         g.load.spritesheet('build_button',              buttonDir + 'build_button.png', 144, 80, 3);
         g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
         g.load.spritesheet('buttonSprite',              buttonDir + 'button_spritesheet.png', 128, 48, 4);
@@ -145,13 +143,13 @@ var Preloader={
         //// load icons
         var iconDir = uiDir + 'icons/';
         g.load.spritesheet('freedom_icon',      iconDir + 'freedom_icon.png');
-        g.load.spritesheet('money_icon',        iconDir + 'money_icon.png');
+        g.load.spritesheet('money_icon',        iconDir + 'money_icon.png', 46, 46, 3);
         g.load.spritesheet('population_icon',   iconDir + 'population_icon.png', 46, 46, 3);
         g.load.spritesheet('homeless_icon',     iconDir + 'homeless_icon.png');
         g.load.spritesheet('unemployed_icon',   iconDir + 'unemployed_icon.png');
         g.load.spritesheet('unrest_icon',       iconDir + 'unrest_icon.png');
-        g.load.spritesheet('year_icon',         iconDir + 'year_icon.png');
-        g.load.spritesheet('swiss_icon',        iconDir + 'swiss_account_icon.png');
+        g.load.spritesheet('year_icon',         iconDir + 'year_icon.png', 46, 46, 3);
+        g.load.spritesheet('swiss_icon',        iconDir + 'swiss_account_icon.png', 46, 46, 3);
         g.load.spritesheet('construction_icon', iconDir + 'construction_icon.png');
         for(var i = 1; i <= 4; ++i){
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');
@@ -166,12 +164,14 @@ var Preloader={
 
         //// load unit spritesheets
         var unitDir = imageDir + 'units/';
-        g.load.image('army_idle',                   unitDir + 'army_idle.png');
-        g.load.image('army_moving',                 unitDir + 'army_moving.png');
-        g.load.image('riot_idle',                   unitDir + 'riot_idle.png');
-        g.load.image('riot_moving',                 unitDir + 'riot_moving.png');
-        g.load.image('rioter_icon',                 unitDir + 'rioter_icon.png');
-        g.load.image('rioter_counter_background',   unitDir + 'rioter_counter_background.png');
+        g.load.image('army_idle',                  unitDir + 'army_idle.png');
+        g.load.image('army_moving',                unitDir + 'army_moving.png');
+        g.load.image('soldier_icon',               unitDir + 'soldier_icon.png');
+        g.load.image('soldier_counter_background', unitDir + 'soldier_counter_background.png');
+        g.load.image('riot_idle',                  unitDir + 'riot_idle.png');
+        g.load.image('riot_moving',                unitDir + 'riot_moving.png');
+        g.load.image('rioter_icon',                unitDir + 'rioter_icon.png');
+        g.load.image('rioter_counter_background',  unitDir + 'rioter_counter_background.png');
 
         // load json files
         var jsonDir = 'json/';
@@ -193,8 +193,9 @@ var Preloader={
 
         //// load sfx
         var sfxDir = audioDir + 'sfx/';
-        g.load.audio('message_open', sfxDir + 'messages/message_open_SFX.wav');
+        g.load.audio('message_open',  sfxDir + 'messages/message_open_SFX.wav');
         g.load.audio('message_close', sfxDir + 'messages/message_close_SFX.wav');
+        g.load.audio('money_earned',  sfxDir + 'money_earned/money_earned_SFX.wav');
 
         for (var i = 1; i <= 14; i++) {
             g.load.audio('cloth_click_' + i, sfxDir + 'clicks/cloth_click/cloth_click_' + i + '_SFX.wav');
@@ -210,6 +211,10 @@ var Preloader={
 
         for (var i = 1; i <= 5; ++i) {
             g.load.audio('empty_click_' + i, sfxDir + 'clicks/empty_click/empty_click_' + i + '_SFX.wav');
+        }
+
+        for (var i = 1; i <= 5; ++i) {
+            g.load.audio('typewriter_click_' + i, sfxDir + 'clicks/typewriter_clicks/typewriter_clicks_' + i + '.wav');
         }
     }
 };

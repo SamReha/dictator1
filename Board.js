@@ -239,6 +239,8 @@ var Board = {
         board.findRes=function(type){return Board.findRes(board,type)};
         // returns all the *indice* of the building type(nullable)/subtype(nullable)
         board.findBuilding=function(name,type,subtype,effect){return Board.findBuilding(board,name,type,subtype,effect)};
+        // Returns the tile indexes of all units currently on the board, filtered by type (set type === null if you just want all units)
+        board.findUnits = function(type) { return Board.findUnits(board, type); };
         // build new shanty town next to a random road tile and return index
         board.buildShanty=function(){return Board.buildShanty(board)};
         // go to next turn
@@ -441,6 +443,7 @@ var Board = {
                 res.push(i);
         return res;
     },
+
     findBuilding: function(b,name,type,subtype,effect){
         var res=[];
         var N=b.tileCount();
@@ -463,6 +466,24 @@ var Board = {
         }
         return res;
     },
+
+    findUnits: function(board, type) {
+        var unitIndexes = [];
+        var size = board.tileCount();
+
+        for (var i = 0; i < size; i++) {
+            var tile = board.at(i);
+
+            if (tile.hasUnit()) {
+                if (type === null || tile.getUnit().type === type) {
+                    unitIndexes.push(i);
+                }
+            }
+        }
+
+        return unitIndexes;
+    },
+
     buildShanty: function(board){
         var roads = board.findBuilding(null,null,"road",null);
         var choices = [];
