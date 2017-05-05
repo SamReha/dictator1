@@ -23,12 +23,14 @@ var FinanceView = {
             game.make.audio('paper_click_7')
         ];
 
+        financeView.closeSfx = game.make.audio('message_close');
+
         // setup the mask
         /* global DUiMask */
         financeView.uiMask = DUiMask.createNew();
         financeView.uiMask.setController(2, function() {
             financeView.uiMask.destroy();
-            //financeView.sfx.play();
+            financeView.closeSfx.play();
             financeView.destroy();
         });
 
@@ -140,7 +142,7 @@ var FinanceView = {
         entry.showButton = TextButton.createNew(width*2, 0, 'small_generic_button', function() {
             // close the menu
             financeView.uiMask.destroy();
-            //financeView.sfx.play();
+            financeView.closeSfx.play();
             financeView.destroy();
 
             // Move the camera

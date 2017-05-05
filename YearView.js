@@ -18,12 +18,14 @@ var YearView = {
             game.make.audio('paper_click_7')
         ];
 
+        yearView.closeSfx = game.make.audio('message_close');
+
         // setup the mask
         /* global DUiMask */
         yearView.uiMask = DUiMask.createNew();
         yearView.uiMask.setController(2, function() {
             yearView.uiMask.destroy();
-            //yearView.sfx.play();
+            yearView.closeSfx.play();
             yearView.destroy();
         });
 

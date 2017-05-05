@@ -26,6 +26,8 @@ var PrivateAccountView = {
             game.make.audio('paper_click_7')
         ];
 
+        accountView.closeSfx = game.make.audio('message_close');
+
         accountView.moneySfx = game.make.audio('money_earned');
 
         // setup the mask
@@ -33,7 +35,7 @@ var PrivateAccountView = {
         accountView.uiMask = DUiMask.createNew();
         accountView.uiMask.setController(2, function(){
             accountView.uiMask.destroy();
-            //accountView.sfx.play();
+            accountView.closeSfx.play();
             accountView.destroy();
         });
 
