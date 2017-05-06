@@ -105,7 +105,7 @@ var BoardController={
 
 		// If the tile is empty, don't bother showing a panel (unless it is water or mountain)
 		var tile = MainGame.board.at(index);
-		if (!tile.hasBuilding() && tile.getResType() === null) {
+		if (!tile.hasBuilding()) {
 			if ((tile.getTerrainType() !== 'water') && (tile.getTerrainType() !== 'mountain')) {
 				return;
 			}

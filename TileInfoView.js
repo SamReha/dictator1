@@ -18,27 +18,15 @@ var TileBriefView = {
         var tile = MainGame.board.at(index);
         var labelText = '';
 
-        if (tile.getBuilding()) {
+        if (tile.hasBuilding()) {
             labelText = tile.getBuilding().playerLabel;
         } else {
-            labelText = tile.getRes();
+            labelText = tile.terrainLabel;
         }
 
         view.label = MainGame.game.make.text(view.texture.width*0.5, view.texture.height*0.5, labelText, this.fontBrief[0]);
         view.label.anchor.set(0.5);
         view.addChild(view.label);
-
-        // label position
-        //var startPos = {x:view.texture.width*0.5, y:view.texture.height*0.5 - 40};
-
-		// // creates 3 lines
-		// var lines=["building", "people"];
-		// for(var i=0;i<lines.length;i++){
-		// 	var oneLine = MainGame.game.make.text(startPos.x, startPos.y + 45*i, "", this.fontBrief[i]);
-		// 	oneLine.anchor.set(0.5);
-		// 	view.addChild(oneLine);
-		// 	view[lines[i]]=oneLine;
-		// }
 
 		// Class vars
 		view.index = index;
