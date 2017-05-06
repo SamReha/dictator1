@@ -165,16 +165,12 @@ var BuildingDetail = {
             }
 
             // Demolish button
-            view.demolishButton = MainGame.game.make.button(0, 0, 'small_generic_button',
-                function() { BuildingDetail.demolishBuilding(view); }, view, 0, 2, 1, 2);
-            view.demolishButton.anchor.set(0.5, 0.5);
-            view.demolishButton.y = view.height/2 - view.demolishButton.height/2 - this.verticalBorderWidth;
-            view.demolishButton.inputEnabled = true;
-            view.demolishButton.input.priorityID = 102;
+            view.demolishButton = TextButton.createNew(0, 0, 'small_generic_button',
+                function() { BuildingDetail.demolishBuilding(view); }, view, 0, 2, 1, 2, 'Demolish -₸10', this.buttonStyle);
 
-            var demolishText = MainGame.game.make.text(0, 0, 'Demolish -₸10', this.buttonStyle);
-            demolishText.anchor.set(0.5, 0.5);
-            view.demolishButton.addChild(demolishText);
+            view.demolishButton.input.priorityID = 102;
+            view.demolishButton.x = -view.demolishButton.width/2;
+            view.demolishButton.y = view.height/2 - view.demolishButton.height - this.verticalBorderWidth;
             view.addChild(view.demolishButton);
         }
 
