@@ -1,3 +1,21 @@
+var BDOverView = {
+    createNew: function() {
+
+    },
+}
+
+var BDOccupants = {
+    createNew: function() {
+
+    },
+}
+
+var BDOutput = {
+    createNew: function() {
+
+    },
+}
+
 var BuildingDetail = {
     verticalBorderWidth: 30,
     horizontalBorderWidth: 20,
