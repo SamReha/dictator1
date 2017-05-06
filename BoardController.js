@@ -90,7 +90,7 @@ var BoardController={
 		}
 	},
 
-	showTileBrief: function(bc, index){		
+	showTileBrief: function(bc, index) {		
 		/* global TileBriefInfoView */
 		if(index===null || index===undefined)
 			return;
@@ -111,19 +111,16 @@ var BoardController={
 			}
 		}
 
-		var tile=bc.modelView.at(index);
-		console.assert(tile);
 		bc.briefView = TileBriefView.createNew(index);
-		bc.briefView.updateInfo(tile);
 		bc.briefView.updatePos();
 		bc.mouseOverTimer.loop(10,bc.briefView.updatePos);
 		bc.mouseOverTimer.start();
 	},
 
-	hideTileBrief: function(bc){
-		if(bc.briefView){
+	hideTileBrief: function(bc) {
+		if (bc.briefView) {
 			bc.briefView.destroy();
-			bc.briefView=null;
+			bc.briefView = null;
 		}
 	},
 	
