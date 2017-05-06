@@ -1,9 +1,3 @@
-// fonts list
-var fontBrief=[
-	{font:"30px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
-	{font:"30px myKaiti", fill:"white", boundsAlignH:"top", boundsAlignV:"middle"},
-	{font:"30px myKaiti", fill:"lightgreen", boundsAlignH:"top", boundsAlignV:"middle"}
-];
 var fontDetail=[
 	{font:"28px myKaiti", fill:"black", boundsAlignH:"top", boundsAlignV:"middle"},
 	{font:"24px myKaiti", fill:"black", boundsAlignH:"top", boundsAlignV:"middle"}
@@ -15,76 +9,80 @@ function _showBuildingAndPeople_(building, buildingTextView, peopleTextView){
 	buildingTextView.text = building.playerLabel;//building.name.toUpperCase();	
 	if(building.maxPeople){
 		if(building.subtype==="housing")
-			peopleTextView.text="Residents:"+building.people+"/"+building.maxPeople;
+			peopleTextView.text="Residents: "+building.people+"/"+building.maxPeople;
 		else
-			peopleTextView.text="Jobs:"+building.people+"/"+building.maxPeople;
+			peopleTextView.text="Jobs: "+building.people+"/"+building.maxPeople;
 	}else{
 		peopleTextView.text=" - ";
 	}
-	// now add color!
-    // Nope!
-	// var colorTable={"?":"yellow", "!":"orangered", "$":"green", "-":"white"};
-	// console.assert(colorTable[building.type], "Unknown building type! Must be ?(bureau), !(mil), $(commercial) or -(no type).");
-	// buildingTextView.addColor(colorTable[building.type], 0);
-	// peopleTextView.addColor(colorTable[building.type], 0);
 }
 
 var TileBriefView = {
-    style: { font: "30px myKaiti", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500, boundsAlignH: "center", boundsAlignV: "middle" , backgroundColor: "#ffff00" },
+    // fonts list
+    fontBrief: [
+        {font: "40px myKaiti", fill: "white", boundsAlignH: "top", boundsAlignV: "middle"},
+        {font: "40px myKaiti", fill: "lightgreen", boundsAlignH: "top", boundsAlignV: "middle"}
+    ],
 
 	createNew: function(index) {
-		console.assert(index || index===0);
-		/* global MainGame */
-		var game=MainGame.game;
-		// bg
-		var view=game.add.sprite(0,0,"tile_hover_backpanel");
-		// label position
-		var startPos={x:view.texture.width*0.5, y:view.texture.height*0.5-30};
+		console.assert(index || index === 0);
 
-		// creates 3 lines
-		var lines=["terrain", "building", "people"];
-		for(var i=0;i<lines.length;i++){
-			var oneLine=game.make.text(startPos.x, startPos.y+35*i,"",fontBrief[i]);
-			oneLine.anchor.set(0.5);
-			view.addChild(oneLine);
-			view[lines[i]]=oneLine;
-		}
+        var view = MainGame.game.add.sprite(0, 0, "tile_hover_backpanel");
+
+        var tile = MainGame.board.at(index);
+        var labelText = '';
+
+        if (tile.getBuilding()) {
+            labelText = tile.getBuilding().playerLabel;
+        } else {
+            labelText = tile.getRes();
+        }
+
+        view.label = MainGame.game.make.text(view.texture.width*0.5, view.texture.height*0.5, labelText, this.fontBrief[0]);
+        view.label.anchor.set(0.5);
+        view.addChild(view.label);
+
+        // label position
+        //var startPos = {x:view.texture.width*0.5, y:view.texture.height*0.5 - 40};
+
+		// // creates 3 lines
+		// var lines=["building", "people"];
+		// for(var i=0;i<lines.length;i++){
+		// 	var oneLine = MainGame.game.make.text(startPos.x, startPos.y + 45*i, "", this.fontBrief[i]);
+		// 	oneLine.anchor.set(0.5);
+		// 	view.addChild(oneLine);
+		// 	view[lines[i]]=oneLine;
+		// }
 
 		// Class vars
 		view.index = index;
-		// view.terrain
-		// view.building
-		// view.people
-		// --- the above class vars can be accessed now ---
 
 		// Class func
-		view.updateInfo=function(tile){return TileBriefView.updateInfo(view,tile)};
-		view.updatePos=function(){return TileBriefView.updatePos(view)};
+		view.updateInfo = function(tile) { return TileBriefView.updateInfo(view,tile) };
+		view.updatePos = function() { return TileBriefView.updatePos(view) };
 		return view;
 	},
 
-	updateInfo: function(t, tile){
+	updateInfo: function(view, tile) {
 		console.assert(tile);
-        // show terrain+res info
-        t.terrain.text=tile.terrainLabel + (tile.getResType()?" ("+tile.resLabel+")":"" );
 
         // show building+people info
         if(tile.hasBuilding()) {
-        	_showBuildingAndPeople_(tile.getBuilding(), t.building, t.people);
+        	//_showBuildingAndPeople_(tile.getBuilding(), view.building, view.people);
         }
 	},
 
-	updatePos: function(t){
+	updatePos: function(view) {
         /*global MainGame*/
-        var board=MainGame.board;
-        var tile=board.at(t.index);
-        t.x=board.x+tile.x*board.currentScale;
-        t.y=board.y+(tile.y+tile.height*7)*board.currentScale;
-        t.scale.set(board.currentScale);
+        var board = MainGame.board;
+        var tile = board.at(view.index);
+        view.x = board.x + tile.x*board.currentScale;
+        view.y = board.y + (tile.y + tile.height*7)*board.currentScale;
+        view.scale.set(board.currentScale);
 	}
 };
 
-var TileDetailView = {
+var BuildingDetail = {
     verticalBorderWidth: 30,
     horizontalBorderWidth: 20,
     nameStyle: { font:"22px myKaiti", fill:"black", boundsAlignH:"top", boundsAlignV:"middle", shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 1, shadowOffsetY: 1 },
@@ -141,40 +139,40 @@ var TileDetailView = {
         view.index = buildingIndex;
         view.iconFrame = game.make.sprite(0, 0, 'detail_icon_frame');
         view.icon = game.make.sprite(0, 0, building.detailIconTexture);;
-        view.icon.x = (-view.width / 2) + TileDetailView.horizontalBorderWidth;
-        view.icon.y = (-view.height / 2) + TileDetailView.verticalBorderWidth;
+        view.icon.x = (-view.width / 2) + this.horizontalBorderWidth;
+        view.icon.y = (-view.height / 2) + this.verticalBorderWidth;
         view.iconFrame.x = -8;
         view.iconFrame.y = -8;
         view.icon.addChild(view.iconFrame);
         view.addChild(view.icon);
 
-        view.buildingName = game.make.text(view.icon.x, view.icon.y + view.icon.height + 10, building.playerLabel + ' ', TileDetailView.nameStyle);
+        view.buildingName = game.make.text(view.icon.x, view.icon.y + view.icon.height + 10, building.playerLabel + ' ', this.nameStyle);
         view.addChild(view.buildingName);
 
         // Create the deploy, recall buttons as necessary
         if (building.name === 'armyBase') {
             var position = {
                 x: 0,
-                y: -view.width/2 + TileDetailView.verticalBorderWidth,
+                y: -view.width/2 + this.verticalBorderWidth,
             };
             view.deployButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
                 view.deploySoldiers(buildingIndex);
-            }, null, 0, 2, 1, 2, 'Deploy Soldiers', TileDetailView.buttonStyle);
+            }, null, 0, 2, 1, 2, 'Deploy Soldiers', this.buttonStyle);
             view.deployButton.input.priorityID = 102;
             view.deployButton.visible = !building.squadDeployed;
 
             view.recallButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
                 view.recallSoldiers(buildingIndex);
-            }, null, 0, 2, 1, 2, 'Recall Soldiers', TileDetailView.buttonStyle);
+            }, null, 0, 2, 1, 2, 'Recall Soldiers', this.buttonStyle);
             view.recallButton.input.priorityID = 102;
             view.recallButton.visible = building.squadDeployed;
 
             view.addChild(view.recallButton);
             view.addChild(view.deployButton);
         } else { // Otherwise, give the usual description
-            view.textDescription = game.make.text(0, 0, '', TileDetailView.descriptionStyle);
-            view.textDescription.x = view.icon.x + view.icon.width + TileDetailView.horizontalBorderWidth/2 + 2;
-            view.textDescription.y = -view.height/2 + TileDetailView.verticalBorderWidth;
+            view.textDescription = game.make.text(0, 0, '', this.descriptionStyle);
+            view.textDescription.x = view.icon.x + view.icon.width + this.horizontalBorderWidth/2 + 2;
+            view.textDescription.y = -view.height/2 + this.verticalBorderWidth;
             view.addChild(view.textDescription);
         }
 
@@ -183,9 +181,9 @@ var TileDetailView = {
 
         // ListView Background
         var background = MainGame.game.make.graphics();
-        var backgroundX = (-view.width/2) + TileDetailView.horizontalBorderWidth;
+        var backgroundX = (-view.width/2) + this.horizontalBorderWidth;
         var backgroundY = -85;
-        var backgroundWitdh = view.width - (TileDetailView.horizontalBorderWidth * 2);
+        var backgroundWitdh = view.width - (this.horizontalBorderWidth * 2);
         var backgroundHeight = 125;
         background.lineStyle(0);
         background.beginFill(0x000000, 0.66);
@@ -198,7 +196,7 @@ var TileDetailView = {
         var pageCount = Math.ceil(building.people / view.itemsPerPage);
         view.pageIndicator = DPageIndicator.createNew((view.width*1/8),{x:(view.width*1/2),y:0}); //width, textPos
         view.pageIndicator.setModel(0, pageCount); // current, max
-        view.pageIndicator.setController(function(index){ TileDetailView.onPageChanged(view, index); }, 111);
+        view.pageIndicator.setController(function(index){ BuildingDetail.onPageChanged(view, index); }, 111);
         view.pageIndicator.x = -(view.width*1/2);
         view.pageIndicator.y = (view.height*1/8);
         view.pageIndicator.visible = (pageCount > 1);
@@ -213,14 +211,14 @@ var TileDetailView = {
             false,               // not horizontal
             110                  // priority ID
         );
-        TileDetailView._setupListView_(view, 0);
-        view.occupantListView.x = -view.width/2 + TileDetailView.horizontalBorderWidth;
+        BuildingDetail._setupListView_(view, 0);
+        view.occupantListView.x = -view.width/2 + this.horizontalBorderWidth;
         view.occupantListView.y = -120;
         view.addChild(view.occupantListView);
 
         // Availability Text
         var availibilityString = (building.maxPeople - building.people) + ' ' + availableNoun + 's available';
-        view.availabilityText = game.make.text(0, 0, availibilityString, TileDetailView.descriptionStyle); // Example: 3 jobs available, or No beds available
+        view.availabilityText = game.make.text(0, 0, availibilityString, this.descriptionStyle); // Example: 3 jobs available, or No beds available
         view.availabilityText.anchor.set(0.5, 0.5);
         view.availabilityText.y = (view.height*9/48);
         view.addChild(view.availabilityText);
@@ -228,11 +226,11 @@ var TileDetailView = {
         if (building.subtype !== "road" && building.name !== "palace" && building.startingTurn <= MainGame.global.turn) {
             // Hire button
             view.addPersonButton = TextButton.createNew(0, 0, 'small_generic_button', 
-                function() {TileDetailView._onHireButtonPressed_(view)}, view, 0, 2, 1, 2, addPersonString, TileDetailView.buttonStyle);
+                function() {BuildingDetail._onHireButtonPressed_(view)}, view, 0, 2, 1, 2, addPersonString, this.buttonStyle);
 
             view.addPersonButton.input.priorityID = 102;
             view.addPersonButton.x = -view.width/4 - view.addPersonButton.width/2;
-            view.addPersonButton.y = view.height/2 - view.addPersonButton.height*2 - TileDetailView.verticalBorderWidth - 5;
+            view.addPersonButton.y = view.height/2 - view.addPersonButton.height*2 - this.verticalBorderWidth - 5;
             view.addChild(view.addPersonButton);
 
             if (building.people >= building.maxPeople) {
@@ -241,11 +239,11 @@ var TileDetailView = {
 
             // Fire button
             view.removePersonButton = TextButton.createNew(0, 0, 'small_generic_button',
-                function() {TileDetailView._onFireButtonPressed_(view)}, view, 0, 2, 1, 2, removePersonString, TileDetailView.buttonStyle);
+                function() {BuildingDetail._onFireButtonPressed_(view)}, view, 0, 2, 1, 2, removePersonString, this.buttonStyle);
 
             view.removePersonButton.input.priorityID = 102;
             view.removePersonButton.x = view.width/4 - view.removePersonButton.width/2;
-            view.removePersonButton.y = view.height/2 - view.removePersonButton.height*2 - TileDetailView.verticalBorderWidth - 5;
+            view.removePersonButton.y = view.height/2 - view.removePersonButton.height*2 - this.verticalBorderWidth - 5;
             view.addChild(view.removePersonButton);
 
             if (building.people <= 0) {
@@ -254,13 +252,13 @@ var TileDetailView = {
 
             // Demolish button
             view.demolishButton = game.make.button(0, 0, 'small_generic_button',
-                function() { TileDetailView.demolishBuilding(view); }, view, 0, 2, 1, 2);
+                function() { BuildingDetail.demolishBuilding(view); }, view, 0, 2, 1, 2);
             view.demolishButton.anchor.set(0.5, 0.5);
-            view.demolishButton.y = view.height/2 - view.demolishButton.height/2 - TileDetailView.verticalBorderWidth;
+            view.demolishButton.y = view.height/2 - view.demolishButton.height/2 - this.verticalBorderWidth;
             view.demolishButton.inputEnabled = true;
             view.demolishButton.input.priorityID = 102;
 
-            var demolishText = game.make.text(0, 0, 'Demolish -₸10', TileDetailView.buttonStyle);
+            var demolishText = game.make.text(0, 0, 'Demolish -₸10', this.buttonStyle);
             demolishText.anchor.set(0.5, 0.5);
             view.demolishButton.addChild(demolishText);
             view.addChild(view.demolishButton);
@@ -278,15 +276,15 @@ var TileDetailView = {
         var scaleTween = game.add.tween(view.scale).to({x:1,y:1},250,Phaser.Easing.Quadratic.In,true);
 
         // Class func
-        view.updateInfo = function(tile) { return TileDetailView.updateInfo(view,tile); };
-        view.deploySoldiers = function(buildingIndex) { TileDetailView.deploySoldiers(view, buildingIndex); };
-        view.recallSoldiers = function(buildingIndex) { TileDetailView.recallSoldiers(view, buildingIndex); };
+        view.updateInfo = function(tile) { return BuildingDetail.updateInfo(view,tile); };
+        view.deploySoldiers = function(buildingIndex) { BuildingDetail.deploySoldiers(view, buildingIndex); };
+        view.recallSoldiers = function(buildingIndex) { BuildingDetail.recallSoldiers(view, buildingIndex); };
 
         return view;
     },
 
     // event process
-    _onHireButtonPressed_: function(view){
+    _onHireButtonPressed_: function(view) {
         /*global MainGame*/
         var bld = MainGame.board.at(view.index).building;
         console.assert(bld, "Building can NOT be null!");
@@ -300,13 +298,13 @@ var TileDetailView = {
             view.removePersonButton.visible = true;
 
             // update display
-            TileDetailView._updateAvailabilityText(view, bld);
+            BuildingDetail._updateAvailabilityText(view, bld);
 
             if (!view.residential) {
-                TileDetailView._updateState(view, bld);
+                BuildingDetail._updateState(view, bld);
             }
 
-            TileDetailView._setupListView_(view, 0);
+            BuildingDetail._setupListView_(view, 0);
 
             // Play some funky music white boi
             view.add_remove_sfx.play();
@@ -346,15 +344,15 @@ var TileDetailView = {
             view.addPersonButton.visible = true;
 
             // update display
-            TileDetailView._updateAvailabilityText(view, bld);
+            BuildingDetail._updateAvailabilityText(view, bld);
 
             // If we're a workplace, update relevant gamestates
             if (!view.residential) {
-                TileDetailView._updateState(view, bld);
+                BuildingDetail._updateState(view, bld);
             }
 
             // Update the list view
-            TileDetailView._setupListView_(view, 0);
+            BuildingDetail._setupListView_(view, 0);
 
             // Play some funky music white boi
             view.add_remove_sfx.play();
@@ -362,7 +360,7 @@ var TileDetailView = {
 
             /*global updatePopulation*/
             updatePopulation(false,false);
-        }else{
+        } else {
             // Play an error sound
             view.add_remove_sfx.play();
             view.add_remove_sfx = game.make.audio('empty_click_' + Math.ceil(Math.random()*5)); // Assume we have 14 cloth click sounds
@@ -370,7 +368,7 @@ var TileDetailView = {
     },
 
     onPageChanged: function(view, index) {
-        TileDetailView._setupListView_(view, index);
+        BuildingDetail._setupListView_(view, index);
     },
 
     /* Get's a simple string describing a buildings output (or input) */
@@ -474,7 +472,7 @@ var TileDetailView = {
             }
         }
 
-        var entryText = MainGame.game.make.text(0, 0, entryString, TileDetailView.listStyle);
+        var entryText = MainGame.game.make.text(0, 0, entryString, this.listStyle);
         entrySprite.addChild(entryText);
         return entrySprite;
     },
@@ -494,7 +492,7 @@ var TileDetailView = {
 
         for (var i = startIndex; i < endIndex; i++) {
             var citizen = MainGame.population.at(occupants[i]);
-            view.occupantListView.add(TileDetailView._makeEntry_(citizen, view.residential));
+            view.occupantListView.add(BuildingDetail._makeEntry_(citizen, view.residential));
         }
 
         // See if we should show a page indicator
@@ -580,11 +578,11 @@ var TileDetailView = {
                 break;
 
             if (outIndex === 0) {
-                str3 = sentenceStart + this._getStatusString(outValue, outType);;
+                str3 = sentenceStart + BuildingDetail._getStatusString(outValue, outType);;
             } else if(outIndex === 1) {
-                str4 = sentenceStart + this._getStatusString(outValue, outType);;
+                str4 = sentenceStart + BuildingDetail._getStatusString(outValue, outType);;
             } else if(outIndex === 2) {
-                str5 = sentenceStart + this._getStatusString(outValue, outType);;
+                str5 = sentenceStart + BuildingDetail._getStatusString(outValue, outType);;
             }
         }
 
@@ -595,7 +593,7 @@ var TileDetailView = {
         if (!tile.hasBuilding() || tile.getBuilding().name == "armyBase")
             return;
 
-        TileDetailView._updateAvailabilityText(view, tile.getBuilding());
+        BuildingDetail._updateAvailabilityText(view, tile.getBuilding());
 
         var b = MainGame.board;
         var bld = tile.getBuilding();
@@ -606,9 +604,9 @@ var TileDetailView = {
         
         if (view.residential) {
             var sentenceStart = 'This building recieves ';
-            str3 = sentenceStart + this._getStatusString(bld.health, 'health');
-            str4 = sentenceStart + this._getStatusString(bld.health, 'culture');
-            str5 = sentenceStart + this._getStatusString(bld.health, 'shelter');
+            str3 = sentenceStart + BuildingDetail._getStatusString(bld.health, 'health');
+            str4 = sentenceStart + BuildingDetail._getStatusString(bld.health, 'culture');
+            str5 = sentenceStart + BuildingDetail._getStatusString(bld.health, 'shelter');
         }
 
         if (bld.effects[0].type !== null) {
@@ -618,11 +616,11 @@ var TileDetailView = {
                 var sentenceStart = 'This building generates ';
         
                 if (outIndex === 0) {
-                    str3 = sentenceStart + this._getStatusString(outValue, outType);
+                    str3 = sentenceStart + BuildingDetail._getStatusString(outValue, outType);
                 } else if(outIndex === 1) {
-                    str4 = sentenceStart + this._getStatusString(outValue, outType);
+                    str4 = sentenceStart + BuildingDetail._getStatusString(outValue, outType);
                 } else if(outIndex === 2) {
-                    str5 = sentenceStart + this._getStatusString(outValue, outType);
+                    str5 = sentenceStart + BuildingDetail._getStatusString(outValue, outType);
                 }
             }
         }

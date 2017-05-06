@@ -128,26 +128,23 @@ var BoardController={
 	},
 	
 	showTileDetail: function(bc, index){
-		/* global TileDetailView */
-		if(index===null || index===undefined)
-			return;
-		if(bc.detailView){
+		if (index===null || index===undefined) return;
+
+		if (bc.detailView) {
 			if (bc.detailView.index === index) {
                 BoardController.hideTileDetail(bc);
 				return;
-            }
-			else{
+            } else {
 				bc.mouseTimer.stop(true);
 				BoardController.hideTileDetail(bc);
 			}
 		}
+		
 		var tile = bc.modelView.at(index);
 		if(!tile.hasBuilding() || tile.getBuilding().name === 'road')
 			return;
-		//console.log("Now show tile detail:"+index);
-		var tile=bc.modelView.at(index);
-		//console.assert(tile);
-		bc.detailView=TileDetailView.createNew(index);
+
+		bc.detailView = BuildingDetail.createNew(index);
 		bc.detailView.updateInfo(tile);
 	},
 
