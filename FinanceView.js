@@ -225,7 +225,7 @@ var FinanceView = {
         financeView.revenue = [];
 
         // Get all money-effecting buildings
-        var moneyProducers = MainGame.board.findBuilding(null, null, null, null);// 'money');
+        var moneyProducers = MainGame.board.findBuilding(null, null, null, 'money');
 
         // If they have a positive effect (a revenue), then append them to the revenue list
         for (var i = 0; i < moneyProducers.length; i++) {

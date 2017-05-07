@@ -3,6 +3,7 @@ var Global={
     turn: 1,
 	freedom: 0,
     unrest: 0,
+    startingMoney: 30,
     money: 30,
     privateMoney: 0,
     moneyPerTurn: 0,
@@ -177,6 +178,7 @@ var Global={
     restart: function() {
         MainGame.music.stop();
         MainGame.game.state.restart();
+        MainGame.global.money = Global.startingMoney;
     },
 };
 

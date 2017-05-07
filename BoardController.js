@@ -92,7 +92,7 @@ var BoardController={
 		}
 	},
 
-	showTileBrief: function(bc, index){		
+	showTileBrief: function(bc, index) {		
 		/* global TileBriefInfoView */
 		if(index===null || index===undefined)
 			return;
@@ -107,49 +107,43 @@ var BoardController={
 
 		// If the tile is empty, don't bother showing a panel (unless it is water or mountain)
 		var tile = MainGame.board.at(index);
-		if (!tile.hasBuilding() && tile.getResType() === null) {
+		if (!tile.hasBuilding()) {
 			if ((tile.getTerrainType() !== 'water') && (tile.getTerrainType() !== 'mountain')) {
 				return;
 			}
 		}
 
-		var tile=bc.modelView.at(index);
-		console.assert(tile);
 		bc.briefView = TileBriefView.createNew(index);
-		bc.briefView.updateInfo(tile);
 		bc.briefView.updatePos();
 		bc.mouseOverTimer.loop(10,bc.briefView.updatePos);
 		bc.mouseOverTimer.start();
 	},
 
-	hideTileBrief: function(bc){
-		if(bc.briefView){
+	hideTileBrief: function(bc) {
+		if (bc.briefView) {
 			bc.briefView.destroy();
-			bc.briefView=null;
+			bc.briefView = null;
 		}
 	},
 	
 	showTileDetail: function(bc, index){
-		/* global TileDetailView */
-		if(index===null || index===undefined)
-			return;
-		if(bc.detailView){
+		if (index===null || index===undefined) return;
+
+		if (bc.detailView) {
 			if (bc.detailView.index === index) {
                 BoardController.hideTileDetail(bc);
 				return;
-            }
-			else{
+            } else {
 				bc.mouseTimer.stop(true);
 				BoardController.hideTileDetail(bc);
 			}
 		}
+		
 		var tile = bc.modelView.at(index);
 		if(!tile.hasBuilding() || tile.getBuilding().name === 'road')
 			return;
-		//console.log("Now show tile detail:"+index);
-		var tile=bc.modelView.at(index);
-		//console.assert(tile);
-		bc.detailView=TileDetailView.createNew(index);
+
+		bc.detailView = BuildingDetail.createNew(index);
 		bc.detailView.updateInfo(tile);
 	},
 
