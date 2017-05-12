@@ -58,6 +58,15 @@ var MoneyPanel = {
             moneyPanel.warchestGroup.textLabel.text = newWarchest;
             moneyPanel.warchestGroup.moneyPerTurnText.text = newMoneyPerTurn;
             moneyPanel.swissGroup.textLabel.text = newSwissAccount;
+
+            // What color do we set the moneyPerTurn to?
+            if (globalStats.moneyPerTurn > 0) {
+                moneyPanel.warchestGroup.moneyPerTurnText.addColor('LimeGreen', 0);
+            } else if (globalStats.moneyPerTurn < 0) {
+                moneyPanel.warchestGroup.moneyPerTurnText.addColor('Crimson', 0);
+            } else {
+                moneyPanel.warchestGroup.moneyPerTurnText.addColor('white', 0);
+            }
         }, moneyPanel);
 
         return moneyPanel;

@@ -143,7 +143,7 @@ var Global={
         }
 
         // No money - loss due to economic failure
-        if (this.money <= 0) {
+        if (this.money < 0 && this.moneyPerTurn < 0) {
             getGameLoseWindow("Your government is bankrupt and can no longer function. You lose.");
             return;
         }
