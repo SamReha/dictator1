@@ -21,8 +21,8 @@ var MoneyPanel = {
         }, 0, 1, 0, 2);
         moneyPanel.warchestGroup.y = moneyPanel.height/2 - moneyPanel.warchestGroup.height/2;
         
-        ToolTip.addTipTo(moneyPanel.warchestGroup, 2, 'Public Funds', moneyPanel.x, moneyPanel.y + moneyPanel.warchestGroup.y + 12);
-        moneyPanel.warchestGroup.toolTip.x -= moneyPanel.warchestGroup.toolTip.width;
+        ToolTip.addTipTo(moneyPanel.warchestGroup, 2, 'Public Funds', moneyPanel.x, moneyPanel.y + moneyPanel.warchestGroup.y + moneyPanel.warchestGroup.height);
+        //moneyPanel.warchestGroup.toolTip.x -= moneyPanel.warchestGroup.toolTip.width;
 
         moneyPanel.warchestGroup.textLabel = MainGame.game.make.text(moneyPanel.warchestGroup.x + moneyPanel.warchestGroup.width + 1, 0, '₸0 ', this.textStyle);
         moneyPanel.warchestGroup.addChild(moneyPanel.warchestGroup.textLabel);
@@ -39,8 +39,8 @@ var MoneyPanel = {
         }, 0, 1, 0, 2);
         moneyPanel.swissGroup.y = moneyPanel.height/2 - moneyPanel.swissGroup.height/2;
 
-        ToolTip.addTipTo(moneyPanel.swissGroup, 2, 'Private Account', moneyPanel.x, moneyPanel.y + moneyPanel.swissGroup.y + 12);
-        moneyPanel.swissGroup.toolTip.x -= moneyPanel.swissGroup.toolTip.width;
+        ToolTip.addTipTo(moneyPanel.swissGroup, 2, 'Private Account', moneyPanel.x + moneyPanel.swissGroup.x, moneyPanel.y + moneyPanel.swissGroup.y + moneyPanel.warchestGroup.height);
+        //moneyPanel.swissGroup.toolTip.x -= moneyPanel.swissGroup.toolTip.width;
 
         moneyPanel.swissGroup.textLabel = MainGame.game.make.text(moneyPanel.swissGroup.width + 1, 0, '₸0 ', this.textStyle);
         moneyPanel.swissGroup.textLabel.y = moneyPanel.swissGroup.height/2 - moneyPanel.swissGroup.textLabel.height/2;
