@@ -14,6 +14,9 @@ var Hud = {
 
         hud.name = "HUD"; // Useful for debugging
 
+        var moneyPanel = MoneyPanel.createNew();
+        hud.addChild(moneyPanel);
+
         //      global vars
         var statsPanel = StatsPanel.createNew();
         hud.addChild(statsPanel);
@@ -314,37 +317,6 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
         statsPanel.addChild(statsPanel.unemploymentGroup);
 
-        // State Money (warchest)
-        statsPanel.warchestGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 4, 'money_icon', function(){
-            FinanceView.createNew();
-            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
-        }, 0, 1, 0, 2);
-        
-        ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', statsPanel.x, statsPanel.y + statsPanel.warchestGroup.y + 12);
-        statsPanel.warchestGroup.toolTip.x -= statsPanel.warchestGroup.toolTip.width;
-
-        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, 0, '₸0 ', this.textStyle);
-        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
-        statsPanel.addChild(statsPanel.warchestGroup);
-
-        // Money Per Turn
-        statsPanel.warchestGroup.moneyPerTurnText = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '(+0) ', this.textStyle);
-        statsPanel.warchestGroup.moneyPerTurnText.y = 20;
-        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.moneyPerTurnText);
-
-        // Swiss Bank (personal money)
-        statsPanel.swissGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 5, 'swiss_icon', function(){
-            PrivateAccountView.createNew();
-            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
-        }, 0, 1, 0, 2);
-
-        ToolTip.addTipTo(statsPanel.swissGroup, 2, 'Private Account', statsPanel.x, statsPanel.y + statsPanel.swissGroup.y + 12);
-        statsPanel.swissGroup.toolTip.x -= statsPanel.swissGroup.toolTip.width;
-
-        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '₸0 ', this.textStyle);
-        statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
-        statsPanel.addChild(statsPanel.swissGroup);
-
         // Set update loop
         MainGame.game.time.events.loop(300, function() {
             var globalStats = MainGame.global;
@@ -353,17 +325,11 @@ var StatsPanel = {
             var newHomeless = MainGame.population.findNotHoused().length + ' ';
             var newUnemployment = MainGame.population.findNotEmployed().length + ' ';
             var newYear = 1949 + globalStats.turn + ' ';
-            var newWarchest = '₸' + globalStats.money + ' ';
-            var newMoneyPerTurn = (globalStats.moneyPerTurn >= 0) ? '(+' + globalStats.moneyPerTurn + ') ' : '(' + globalStats.moneyPerTurn + ') ';
-            var newSwissAccount = '₸' + globalStats.privateMoney + ' ';
 
             statsPanel.yearGroup.textLabel.text = newYear;
             statsPanel.popGroup.textLabel.text = newPop;
             statsPanel.homelessGroup.textLabel.text = newHomeless;
             statsPanel.unemploymentGroup.textLabel.text = newUnemployment;
-            statsPanel.warchestGroup.textLabel.text = newWarchest;
-            statsPanel.warchestGroup.moneyPerTurnText.text = newMoneyPerTurn;
-            statsPanel.swissGroup.textLabel.text = newSwissAccount;
         }, statsPanel);
 
         return statsPanel;

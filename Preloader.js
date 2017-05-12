@@ -87,6 +87,7 @@ var Preloader={
         g.load.image('coalition_backpanel',           uiDir + 'coalition_backpanel.png');
         g.load.image('coalition_border',              uiDir + 'coalition_outer_edge.png');
         g.load.image('stats_panel_backpanel',         uiDir + 'stats_panel_backpanel.png');
+        g.load.image('money_backpanel',               uiDir + 'money_backpanel.png');
         g.load.image('peopleViewBg',                  uiDir + 'peopleViewBg.jpg');
         g.load.image('peopleViewLeftBg',              uiDir + 'peopleViewLeftBg.png');
         g.load.image('peopleViewRightBg',             uiDir + 'peopleViewRightBg.png');
