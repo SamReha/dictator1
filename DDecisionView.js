@@ -19,7 +19,7 @@ var DDecisionView={
 		// create the view
 		var v=MainGame.game.add.sprite(0,0);
 		// add portrait
-		v.portrait=MainGame.game.add.sprite(50,20);
+		v.portrait = MainGame.game.add.sprite(50, 110);
 		v.addChild(v.portrait);
 		// add description text
 		v.description=MainGame.game.add.text(200, 88, '', DDecisionView.font);

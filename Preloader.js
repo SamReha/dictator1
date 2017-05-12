@@ -145,6 +145,8 @@ var Preloader={
         g.load.spritesheet('swiss_icon',        iconDir + 'swiss_account_icon.png', 46, 46, 3);
         g.load.spritesheet('construction_icon', iconDir + 'construction_icon.png');
         g.load.spritesheet('person_icon',       iconDir + 'person_icon.png');
+        g.load.spritesheet('exclamation_01',       iconDir + 'exclamation_01.png');
+        g.load.spritesheet('exclamation_02',       iconDir + 'exclamation_02.png');
 
         for(var i = 1; i <= 4; ++i){
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');

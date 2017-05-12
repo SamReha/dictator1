@@ -186,7 +186,7 @@ function getGameLoseWindow(message) {
     var e = Event.createNew();
     e.setModel([
                     {
-                        portrait: "myTextureKey", 
+                        portrait: 'exclamation_01', 
                         description: message, 
                         buttonTexts: ["Restart"]
                     }
