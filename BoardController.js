@@ -267,9 +267,8 @@ var BoardController={
         for(var j=0;j<tileCount;j++){
         	var tile=bc.modelView.at(j);
         	tile.inputEnabled=true;
-        	tile.input.pixelPerfectClick=true;
+        	// tile.input.pixelPerfectClick=true;
         	// tile.input.pixelPerfectOver=true;
-        	console.log("got here");
         	tile.events.onInputUp.add(inputUpCallbacks[j]);
         	tile.events.onInputDown.add(inputDownCallbacks[j]);
         	tile.events.onInputOver.add(inputOverCallbacks[j]);

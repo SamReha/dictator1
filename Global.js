@@ -29,9 +29,6 @@ var Global={
     // },
 
     nextTurn: function() {
-        // Makes sure we record the state BEFORE updating all the game info
-        Global.updateYearViewData();
-
         ++Global.turn;
         /*global MainGame*/
         MainGame.board.nextTurn(Global.turn);
@@ -42,6 +39,9 @@ var Global={
         Global.updateFreedomUnrest();
         Global.updateThermometer();
         Global.checkGameFail();
+        
+        // Makes sure we record the state after updating all the game info
+        Global.updateYearViewData();
     },
 
     toString: function(){

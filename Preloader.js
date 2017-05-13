@@ -109,6 +109,7 @@ var Preloader={
         g.load.image('clipboard_menu_texture',          uiDir + 'clipboard_menu_texture.png');
         g.load.image('clipboard_menu_clip',             uiDir + 'clipboard_menu_clip.png');
         g.load.image('global_binder_texture',           uiDir + 'global_binder_texture.png');
+        g.load.image('building_binder_texture',         uiDir + 'building_binder_texture.png');
         g.load.image('binder_menu_ring',                uiDir + 'binder_menu_ring.png');
 
         // load particle sprites
@@ -138,8 +139,8 @@ var Preloader={
         g.load.spritesheet('yellowMinusButton',         buttonDir + 'yellow_minus_button.png', 48, 48, 3);
         g.load.spritesheet('yellowPlusButton',          buttonDir + 'yellow_plus_button.png', 48, 48, 3);
         g.load.spritesheet('pencil_circle_button',      buttonDir + 'pencil_circle_button.png', 120, 48, 3);
-        for(var i = 0; i < 5; ++i){
-            g.load.spritesheet('binder_tab_'+i,         buttonDir + 'binder_tab_'+i+'.png');
+        for(var i = 1; i <= 5; ++i){
+            g.load.spritesheet('binder_tab_'+i,         buttonDir + 'binder_tab_'+i+'.png',35,100,3);
         }
 
 
