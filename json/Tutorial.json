@@ -121,7 +121,7 @@
 	{
 		"name":"housing",
 		"cond":"Tutorial.builtNewHouse()",
-		"init":"Tut.numHouses = MainGame.board.findBuilding(null, 'housing', null).length",
+		"init":"Tut.numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length",
 		"event":[
 			{	
 				"description":"Great job staffing that factory! So far, we have only talked about roads and workplaces. The final type of building is a residence. A residence is a place for a person to live. Try building a residence in your country.", 
