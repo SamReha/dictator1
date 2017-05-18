@@ -4,8 +4,6 @@ var Preloader={
 
         // Builings
         var buildingDir = imageDir + 'buildings/';
-        // Placeholder assets
-        g.load.image('hospital1',    buildingDir + 'hospital.png');
         // Vertical Slice assets
         g.load.image('apartment1',   buildingDir + 'apartment.png');
         g.load.image('armyBase1',    buildingDir + 'armyBase.png');
@@ -43,8 +41,6 @@ var Preloader={
 
         // Resources
         var resourceDir = imageDir + 'resources/';
-        // Placeholder assets
-        g.load.image('oil',    resourceDir + 'oil.png');
         // Vertical Slice assets
         g.load.image('forest1',   resourceDir + 'forest1.png');
         g.load.image('forest2',   resourceDir + 'forest2.png');
@@ -52,12 +48,7 @@ var Preloader={
 
         // Terrain
         var resourceDir = imageDir + 'terrains/';
-        // Placeholder assets
-        g.load.image('coast',    resourceDir + 'coast_tile.png');
-        g.load.image('desert',   resourceDir + 'desert_tile.png');
-        g.load.image('grass',    resourceDir + 'grass_tile.png');
-        g.load.image('mountain', resourceDir + 'mountain_tile.png');
-        g.load.image('water',    resourceDir + 'water_tile.png');
+
         // Vertical Slice assets
         g.load.image('grass1',    resourceDir + 'grass1.png');
         g.load.image('grass2',    resourceDir + 'grass2.png');
@@ -85,7 +76,6 @@ var Preloader={
         g.load.image('buildMenuCover1',               uiDir + 'buildMenuCover1.png');
         g.load.image('buildMenuCover2',               uiDir + 'buildMenuCover2.png');
         g.load.image('coalition_backpanel',           uiDir + 'coalition_backpanel.png');
-        g.load.image('coalition_border',              uiDir + 'coalition_outer_edge.png');
         g.load.image('stats_panel_backpanel',         uiDir + 'stats_panel_backpanel.png');
         g.load.image('money_backpanel',               uiDir + 'money_backpanel.png');
         g.load.image('peopleViewBg',                  uiDir + 'peopleViewBg.jpg');
@@ -115,7 +105,6 @@ var Preloader={
         var buttonDir = uiDir + 'buttons/';
         g.load.spritesheet('build_button',              buttonDir + 'build_button.png', 144, 80, 3);
         g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
-        g.load.spritesheet('buttonSprite',              buttonDir + 'button_spritesheet.png', 128, 48, 4);
         g.load.spritesheet('closeButton',               buttonDir + 'close_button.png', 48, 48, 3);
         g.load.spritesheet('buy_button',                buttonDir + 'buy_button.png', 120, 48, 3);
         g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);
