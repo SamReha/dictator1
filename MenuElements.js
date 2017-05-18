@@ -44,7 +44,7 @@ var TestPage = {
 
         page.buildingBinderButton = MainGame.game.make.button(0,page.globalBinderButton.y + page.globalBinderButton.height,'small_generic_button',
             function(){
-                Binder.createNew(Binder.building,0);
+                Binder.createNew(Binder.building,0,MainGame.board.findBuilding("mansion",null,null,null)[0]);
             }, MainGame, 1, 0, 2, 2);
         page.buildingBinderButton.input.priorityID = 100;
         page.addChild(page.buildingBinderButton);
@@ -124,7 +124,7 @@ var Binder = {
 	global: "globalStats",
 	building: "buildingDetail",
 
-	createNew: function(type,activeTab,building) {
+	createNew: function(type,activeTab,bdIndex) {
 		var binder = MainGame.game.add.sprite(0,0,(type===Binder.global?'global_binder_texture':'building_binder_texture'));
 		binder.anchor.setTo(.5,.5);
 		binder.x = MainGame.game.width/4; binder.y = MainGame.game.height/2;
@@ -136,10 +136,11 @@ var Binder = {
 		binder.tabs = [];
 		var tabNumber = 5;
 		if(binder.type === Binder.building){
-        	binder.building = building;
-			if(binder.building === "palace")
+        	binder.bdIndex = bdIndex;
+        	binder.bdName = MainGame.board.at(binder.bdIndex).getBuilding().name;
+			if(binder.bdName === "palace")
 				tabNumber = 1;
-			else if(binder.building === "armyBase" || binder.building === "hospital" || binder.building === "prison")
+			else if(binder.bdName === "armyBase" || binder.bdName === "hospital" || binder.bdName === "prison")
 				tabNumber = 4;
 			else
 				tabNumber = 3;
@@ -182,17 +183,26 @@ var Binder = {
 	changeTabs: function(binder,tabIndex){
 		if(tabIndex === binder.activeTab)
 			return;
+		if(binder.activeTab !== null)
+			var maxX = binder.tabs[binder.activeTab].x;
+		else
+			var maxX = binder.tabs[0].x;
 		binder.activeTab = tabIndex;
 		for(var i = binder.tabs.length-1; i >= 0; --i){
 			if(tabIndex-i >= 0){
+				binder.tabs[tabIndex-i].x = maxX + binder.tabs[tabIndex-i].width*i/10;
 				binder.tabs[tabIndex-i].bringToTop();
 				binder.tabs[tabIndex-i].input.priorityID = 100 - i;
 			}
 			if(tabIndex+i < binder.tabs.length){
+				binder.tabs[tabIndex+i].x = maxX + binder.tabs[tabIndex+i].width*i/10;
 				binder.tabs[tabIndex+i].bringToTop();
 				binder.tabs[tabIndex+i].input.priorityID = 100 - i;
 			}
 		}
+
+		if(binder.type === Binder.building)
+			var bdInfo = binder.page.bdInfo;
 
 		binder.page.destroy();
 		//binder.page.forEach(function(e){e.kill();});
@@ -201,22 +211,22 @@ var Binder = {
 		/* global BuildingDetail */
 		switch(tabIndex){
 			case 0:
-				binder.page = (binder.type===Binder.global?YearView.createNew():BuildingDetail.createNew());
+				binder.page = (binder.type===Binder.global?YearView.createNew():BDOverView.createNew(binder.bdIndex,bdInfo));
 				//binder.page = TestPage.createNew();
 				break;
 			case 1:
-				binder.page = (binder.type===Binder.global?FinanceView.createNew():BuildingDetail.createNew());
+				binder.page = (binder.type===Binder.global?FinanceView.createNew():BDOccupants.createNew(binder.bdIndex,bdInfo));
 				//binder.page = TestPage.createNew();
 				break;
 			case 2:
 				//repalce PeopleView with new population view
-				//binder.page = (binder.type===Binder.global?PeopleView.createNew():BuildingDetail.createNew());
-				binder.page = TestPage.createNew();
+				binder.page = (binder.type===Binder.global?TestPage.createNew():BDOutput.createNew(binder.bdIndex,bdInfo));
+				// binder.page = TestPage.createNew();
 				break;
 			case 3:
 				//replace PeopleView with new social elite view
-				//binder.page = (binder.type===Binder.global?PeopleView.createNew():BuildingDetail.createNew());
-				binder.page = TestPage.createNew();
+				binder.page = (binder.type===Binder.global?TestPage.createNew():BDMisc.createNew(binder.bdIndex,bdInfo));
+				// binder.page = TestPage.createNew();
 				break;
 			case 4:
 				//replace PeopleView with new working class view
@@ -224,7 +234,7 @@ var Binder = {
 				binder.page = TestPage.createNew();
 				break;
 			default:
-				binder.page = (binder.type===Binder.global?YearView.createNew():BuildingDetail.createNew());
+				binder.page = (binder.type===Binder.global?YearView.createNew():BDOverView.createNew(binder.bdIndex,bdInfo));
 				break;
 		}
 		binder.binderGroup.addChild(binder.page);
@@ -249,7 +259,26 @@ var Clipboard = {
 		clipboard.anchor.setTo(.5,.5);
 		clipboard.x = MainGame.game.width*3/4; clipboard.y = MainGame.game.height/2;
 
-		clipboard.page = TestPage.createNew();
+		switch(type){
+			case Clipboard.worker:
+				clipboard.page = TestPage.createNew();
+				break;
+			case Clipboard.elite:
+				clipboard.page = TestPage.createNew();
+				break;
+			case Clipboard.minister:
+				clipboard.page = TestPage.createNew();
+				break;
+			case Clipboard.building:
+				clipboard.page = TestPage.createNew();
+				break;
+			case Clipboard.account:
+				clipboard.page = PrivateAccountView.createNew();
+				break;
+			default:
+				clipboard.page = TestPage.createNew();
+				break;
+		}
 		clipboard.addChild(clipboard.page);
 		//clipboard.page.anchor.setTo(.5,.5);
 
@@ -278,6 +307,23 @@ var TextButton = {
     }
 };
 
+var TextLinkButton = {
+	createNew: function(x, y, text, textStyle, ){
+		var button = MainGame.game.make.group();
+
+		button.buttonBack = MainGame.game.make.graphics(0,0);
+
+		button.buttonBack.beginFill(0x000000,0);
+		button.buttonBack.drawRect(0,0,120,144);
+	}
+};
+
+var TextButtonList = {
+	createNew: function(){
+
+	}
+};
+
 var MenuController = {
 	menuOpen: false,	// bool
 	currentMenu: [],	// stack of strings {left, right, leftright, mid}
@@ -291,137 +337,137 @@ var MenuController = {
 		menu.inputEnabled = true;
 		menu.input.priorityID = 4;
 
-		if(!MenuController.menuOpen){
+		if(!this.menuOpen){
         	/* global DUiMask */
-			MenuController.uiMask = DUiMask.createNew();
-			MenuController.uiMask.setController(2, function() {
+			this.uiMask = DUiMask.createNew();
+			this.uiMask.setController(2, function() {
 				MenuController.uiMask.destroy();
 				MenuController.closeSfx.play();
 				MenuController.closeAllMenus();
         	});
 
-        	MenuController.closeSfx = game.make.audio('message_close');
+        	this.closeSfx = game.make.audio('message_close');
 
-        	MenuController.menuOpen = true;
+        	this.menuOpen = true;
 
 		} else {
-			var curMenuType = MenuController.currentMenu.pop();
+			var curMenuType = this.currentMenu.pop();
 			var curMenu = null;
 
 			if(curMenuType === "mid"){
-				MenuController.currentMenu.push(curMenuType);
+				this.currentMenu.push(curMenuType);
 
-				curMenu = MenuController.midMenusOpen.pop();
-				MenuController.exitSlideTopOrBot(curMenu,1);
-				MenuController.midMenusOpen.push(curMenu);
+				curMenu = this.midMenusOpen.pop();
+				this.exitSlideTopOrBot(curMenu,1);
+				this.midMenusOpen.push(curMenu);
 			}
 			if(curMenuType.includes("left")){
-				MenuController.currentMenu.push(curMenuType);
+				this.currentMenu.push(curMenuType);
 
-				curMenu = MenuController.leftMenusOpen.pop();
+				curMenu = this.leftMenusOpen.pop();
 				if(side === "right")
-					MenuController.shiftSlideToSide(curMenu,-1);
+					this.shiftSlideToSide(curMenu,-1);
 				else
-					MenuController.exitSlideToSide(curMenu,-1);
-				MenuController.leftMenusOpen.push(curMenu);
+					this.exitSlideToSide(curMenu,-1);
+				this.leftMenusOpen.push(curMenu);
 			}
 			if(curMenuType.includes("right")){
-				MenuController.currentMenu.push(curMenuType);
+				this.currentMenu.push(curMenuType);
 
-				curMenu = MenuController.rightMenusOpen.pop();
+				curMenu = this.rightMenusOpen.pop();
 				if(side === "left")
-					MenuController.shiftSlideToSide(curMenu,1);
+					this.shiftSlideToSide(curMenu,1);
 				else
-					MenuController.exitSlideToSide(curMenu,1);
-				MenuController.rightMenusOpen.push(curMenu);
+					this.exitSlideToSide(curMenu,1);
+				this.rightMenusOpen.push(curMenu);
 			}
 		}
 
 		if(side === "left"){
 			if(curMenuType === "right" || curMenuType === "leftright"){
-				MenuController.enterFallFromAbove(menu,-1);
-				MenuController.currentMenu.pop();
-				MenuController.currentMenu.push("leftright");
+				this.enterFallFromAbove(menu,-1);
+				this.currentMenu.pop();
+				this.currentMenu.push("leftright");
 			}else{
-				MenuController.enterFallFromAbove(menu,0);
-				MenuController.currentMenu.push("left");
+				this.enterFallFromAbove(menu,0);
+				this.currentMenu.push("left");
 			}
-			MenuController.leftMenusOpen.push(menu);
+			this.leftMenusOpen.push(menu);
 		} else if(side === "right"){
 			if(curMenuType === "left" || curMenuType === "leftright"){
-				MenuController.enterFallFromAbove(menu,1);
-				MenuController.currentMenu.pop();
-				MenuController.currentMenu.push("leftright");
+				this.enterFallFromAbove(menu,1);
+				this.currentMenu.pop();
+				this.currentMenu.push("leftright");
 			}else{
-				MenuController.enterFallFromAbove(menu,0);
-				MenuController.currentMenu.push("right");
+				this.enterFallFromAbove(menu,0);
+				this.currentMenu.push("right");
 			}
-			MenuController.rightMenusOpen.push(menu);
+			this.rightMenusOpen.push(menu);
 		} else{
-			MenuController.currentMenu.push("mid");
-			MenuController.enterFallFromAbove(menu,0);
-			MenuController.midMenusOpen.push(menu);
+			this.currentMenu.push("mid");
+			this.enterFallFromAbove(menu,0);
+			this.midMenusOpen.push(menu);
 		}
 	},
 
 	// side - string {left, right, leftright}
 	closeCurMenu: function(side){
-		var curMenuType = MenuController.currentMenu.pop();
+		var curMenuType = this.currentMenu.pop();
 		var curMenu = null;
 
 		if(curMenuType === "leftright"){
 			if(side.includes("left"))
-				MenuController.exitSlideTopOrBot(MenuController.leftMenusOpen.pop(),-1);
+				this.exitSlideTopOrBot(this.leftMenusOpen.pop(),-1);
 			if(side.includes("right"))
-				MenuController.exitSlideTopOrBot(MenuController.rightMenusOpen.pop(),-1);
+				this.exitSlideTopOrBot(this.rightMenusOpen.pop(),-1);
 		}else{
 			if(side === "left")
-				MenuController.exitSlideToSide(MenuController.leftMenusOpen.pop(),-1);
+				this.exitSlideToSide(this.leftMenusOpen.pop(),-1);
 			else if(side === "right")
-				MenuController.exitSlideToSide(MenuController.rightMenusOpen.pop(),1);
+				this.exitSlideToSide(this.rightMenusOpen.pop(),1);
 			else
-				MenuController.exitSlideTopOrBot(MenuController.midMenusOpen.pop(),-1);
+				this.exitSlideTopOrBot(this.midMenusOpen.pop(),-1);
 		}
 
 		if(currentMenu.length > 0){
-			curMenuType = MenuController.currentMenu.pop();
-			MenuController.currentMenu.push(curMenuType);
+			curMenuType = this.currentMenu.pop();
+			this.currentMenu.push(curMenuType);
 
 			if(curMenuType === "mid"){
-				curMenu = MenuController.midMenusOpen.pop();
-				MenuController.enterFallFromAbove(curMenu, 0);
-				MenuController.midMenusOpen.push(curMenu);
+				curMenu = this.midMenusOpen.pop();
+				this.enterFallFromAbove(curMenu, 0);
+				this.midMenusOpen.push(curMenu);
 			}else{
 				if(curMenuType.includes("left")){
-					curMenu = MenuController.leftMenusOpen.pop();
-					MenuController.enterFallFromAbove(curMenu, (curMenuType.includes("right")?-1:0));
-					MenuController.leftMenusOpen.push(curMenu);
+					curMenu = this.leftMenusOpen.pop();
+					this.enterFallFromAbove(curMenu, (curMenuType.includes("right")?-1:0));
+					this.leftMenusOpen.push(curMenu);
 				}
 				if(curMenuType.includes("right")){
-					curMenu = MenuController.rightMenusOpen.pop();
-					MenuController.enterFallFromAbove(curMenu, (curMenuType.includes("left")?1:0));
-					MenuController.rightMenusOpen.push(curMenu);
+					curMenu = this.rightMenusOpen.pop();
+					this.enterFallFromAbove(curMenu, (curMenuType.includes("left")?1:0));
+					this.rightMenusOpen.push(curMenu);
 				}
 			}
 		}else{
-			MenuController.uiMask.destroy();
-			MenuController.closeSfx.play();
+			this.uiMask.destroy();
+			this.closeSfx.play();
 		}
 	},
 
 	closeAllMenus: function(){
-		for(var i = 0; i < MenuController.leftMenusOpen.length; ++i)
-			MenuController.leftMenusOpen[i].destroy();
-		for(var i = 0; i < MenuController.rightMenusOpen.length; ++i)
-			MenuController.rightMenusOpen[i].destroy();
-		for(var i = 0; i < MenuController.midMenusOpen.length; ++i)
-			MenuController.midMenusOpen[i].destroy();
+		for(var i = 0; i < this.leftMenusOpen.length; ++i)
+			this.leftMenusOpen[i].destroy();
+		for(var i = 0; i < this.rightMenusOpen.length; ++i)
+			this.rightMenusOpen[i].destroy();
+		for(var i = 0; i < this.midMenusOpen.length; ++i)
+			this.midMenusOpen[i].destroy();
 		
-		MenuController.leftMenusOpen = [];
-		MenuController.rightMenusOpen = [];
-		MenuController.midMenusOpen = [];
-		MenuController.currentMenu = [];
-		MenuController.menuOpen = false;
+		this.leftMenusOpen = [];
+		this.rightMenusOpen = [];
+		this.midMenusOpen = [];
+		this.currentMenu = [];
+		this.menuOpen = false;
 	},
 
 	enterFallFromAbove: function(menu, side){
@@ -472,5 +518,5 @@ var MenuController = {
 		shiftscale1.chain(shiftscale2);
 	},
 
-	sqrtEaseFunction: function(num){return (Math.sqrt(Math.abs(2*num[2]-1))*((2*num[2]-1)/Math.abs(2*num[2]-1)));}
+	sqrtEaseFunction: function(num){return (Math.sqrt(Math.abs(2*num[2]-1))*((2*num[2]-1)/Math.abs(2*num[2]-1)));},
 };

@@ -11,7 +11,7 @@ var Global={
     thermometerDelta: 0,
     yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
 
-    // calcAvgEducation: function(){
+    // calcAvgCulture: function(){
 
     // },
     // calcAvgHealth: function(){
@@ -51,7 +51,7 @@ var Global={
         return string
     },
 
-    // Finds the current Freedom value by averaging the health and education of all low people
+    // Finds the current Freedom value by averaging the health and culture of all low people
     updateFreedomUnrest: function(){
         var freeAv = 0;
         var unrestAv = 0;
@@ -61,7 +61,7 @@ var Global={
         for(var index=0;index<lowList.length;++index){
             // =================================================================
             // change later when influential members are a thing
-            if(lowList[index].health>=50 && lowList[index].education>=50 && lowList[index].shelter>=50)
+            if(lowList[index].health>=50 && lowList[index].culture>=50 && lowList[index].shelter>=50)
                 continue;
             // ===================================================================
             //console.log("Person of type "+lowList[index].type+" living at "+lowList[index].home+" - Freedom: "+lowList[index].freedom+" - Unrest: "+lowList[index].unrest);
@@ -143,7 +143,7 @@ var Global={
         }
 
         // No money - loss due to economic failure
-        if (this.money <= 0) {
+        if (this.money < 0 && this.moneyPerTurn < 0) {
             getGameLoseWindow("Your government is bankrupt and can no longer function. You lose.");
             return;
         }
@@ -186,7 +186,7 @@ function getGameLoseWindow(message) {
     var e = Event.createNew();
     e.setModel([
                     {
-                        portrait: "myTextureKey", 
+                        portrait: 'exclamation_01', 
                         description: message, 
                         buttonTexts: ["Restart"]
                     }

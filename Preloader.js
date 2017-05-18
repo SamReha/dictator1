@@ -5,50 +5,39 @@ var Preloader={
         // Builings
         var buildingDir = imageDir + 'buildings/';
         // Placeholder assets
-        g.load.image('hospital1',    buildingDir + 'hospital.png');
+        g.load.image('hospital1',       buildingDir + 'hospital.png');
         // Vertical Slice assets
-        g.load.image('apartment1',   buildingDir + 'apartment.png');
-        g.load.image('armyBase1',    buildingDir + 'armyBase.png');
-        g.load.image('fertileFarm1', buildingDir + 'fertileFarm.png');
-        g.load.image('armyBase1',    buildingDir + "armyBase.png");
-        g.load.image('factory1',     buildingDir + 'factory.png');
-        g.load.image('lumberYard1',  buildingDir + 'factory.png');
-        g.load.image('mansion1',     buildingDir + 'mansion.png');                
-        g.load.image('palace1',      buildingDir + 'palace.png');
-        g.load.image('park1',        buildingDir + 'park.png');
-        g.load.image('police1',      buildingDir + 'police.png');
-        g.load.image('road1',        buildingDir + 'road.png');
-        g.load.image('school1',      buildingDir + 'school.png');
-        g.load.image('shantyTown1',  buildingDir + 'shantyTown.png');
-        g.load.image('suburb1',      buildingDir + 'suburb.png');
-        g.load.image('weakFarm1',    buildingDir + 'weakFarm.png');
-        g.load.image('rubble1',       buildingDir + 'rubble.png');
+        g.load.image('apartment1',      buildingDir + 'apartment.png');
+        g.load.image('armyBase1',       buildingDir + 'armyBase.png');
+        g.load.image('farm1',           buildingDir + 'farm.png');
+        g.load.image('armyBase1',       buildingDir + "armyBase.png");
+        g.load.image('factory1',        buildingDir + 'factory.png');
+        g.load.image('lumberYard1',     buildingDir + 'factory.png');
+        g.load.image('mansion1',        buildingDir + 'mansion.png');                
+        g.load.image('palace1',         buildingDir + 'palace.png');
+        g.load.image('park1',           buildingDir + 'park.png');
+        g.load.image('police1',         buildingDir + 'police.png');
+        g.load.image('road1',           buildingDir + 'road.png');
+        g.load.image('school1',         buildingDir + 'school.png');
+        g.load.image('shantyTown1',     buildingDir + 'shantyTown.png');
+        g.load.image('suburb1',         buildingDir + 'suburb.png');
+        g.load.image('rubble1',         buildingDir + 'rubble.png');
 
         // Building Detail Icons
         var detailIconDir = buildingDir + 'detail_icons/';
-        g.load.image('apartment_detail',   detailIconDir + 'apartment.png');
-        g.load.image('fertileFarm_detail', detailIconDir + 'farm.jpg');
-        g.load.image('weakFarm_detail',    detailIconDir + 'farm.jpg');
-        g.load.image('armyBase_detail',    detailIconDir + 'armyBase.jpg');
-        g.load.image('factory_detail',     detailIconDir + 'factory.jpg');
-        g.load.image('lumberYard_detail',  detailIconDir + 'factory.jpg');
-        g.load.image('mansion_detail',     detailIconDir + 'mansion.png');
-        g.load.image('palace_detail',      detailIconDir + 'palace.png');
-        g.load.image('road_detail',        detailIconDir + 'road.jpg');
-        g.load.image('school_detail',      detailIconDir + 'school.png');
-        g.load.image('shantyTown_detail',  detailIconDir + 'shantyTown.png');
-        g.load.image('suburb_detail',      detailIconDir + 'suburb.png');
-        g.load.image('park_detail',        detailIconDir + 'park.png');
-        g.load.image('detail_icon_frame',  detailIconDir + 'detail_icon_frame.png');
-
-        // Resources
-        var resourceDir = imageDir + 'resources/';
-        // Placeholder assets
-        g.load.image('oil',    resourceDir + 'oil.png');
-        // Vertical Slice assets
-        g.load.image('forest1',   resourceDir + 'forest1.png');
-        g.load.image('forest2',   resourceDir + 'forest2.png');
-        g.load.image('soy',      resourceDir + 'soy.png');
+        g.load.image('apartment_detail',    detailIconDir + 'apartment.png');
+        g.load.image('farm_detail',         detailIconDir + 'farm.jpg');
+        g.load.image('armyBase_detail',     detailIconDir + 'armyBase.jpg');
+        g.load.image('factory_detail',      detailIconDir + 'factory.jpg');
+        g.load.image('lumberYard_detail',   detailIconDir + 'factory.jpg');
+        g.load.image('mansion_detail',      detailIconDir + 'mansion.png');
+        g.load.image('palace_detail',       detailIconDir + 'palace.png');
+        g.load.image('road_detail',         detailIconDir + 'road.jpg');
+        g.load.image('school_detail',       detailIconDir + 'school.png');
+        g.load.image('shantyTown_detail',   detailIconDir + 'shantyTown.png');
+        g.load.image('suburb_detail',       detailIconDir + 'suburb.png');
+        g.load.image('park_detail',         detailIconDir + 'park.png');
+        g.load.image('detail_icon_frame',   detailIconDir + 'detail_icon_frame.png');
 
         // Terrain
         var resourceDir = imageDir + 'terrains/';
@@ -87,6 +76,7 @@ var Preloader={
         g.load.image('coalition_backpanel',             uiDir + 'coalition_backpanel.png');
         g.load.image('coalition_border',                uiDir + 'coalition_outer_edge.png');
         g.load.image('stats_panel_backpanel',           uiDir + 'stats_panel_backpanel.png');
+        g.load.image('money_backpanel',                 uiDir + 'money_backpanel.png');
         g.load.image('peopleViewBg',                    uiDir + 'peopleViewBg.jpg');
         g.load.image('peopleViewLeftBg',                uiDir + 'peopleViewLeftBg.png');
         g.load.image('peopleViewRightBg',               uiDir + 'peopleViewRightBg.png');
@@ -146,16 +136,24 @@ var Preloader={
 
         //// load icons
         var iconDir = uiDir + 'icons/';
-        g.load.spritesheet('freedom_icon',      iconDir + 'freedom_icon.png');
+        g.load.image('freedom_icon',            iconDir + 'freedom_icon.png');
         g.load.spritesheet('money_icon',        iconDir + 'money_icon.png', 46, 46, 3);
         g.load.spritesheet('population_icon',   iconDir + 'population_icon.png', 46, 46, 3);
-        g.load.spritesheet('homeless_icon',     iconDir + 'homeless_icon.png');
-        g.load.spritesheet('unemployed_icon',   iconDir + 'unemployed_icon.png');
-        g.load.spritesheet('unrest_icon',       iconDir + 'unrest_icon.png');
+        g.load.image('homeless_icon',           iconDir + 'homeless_icon.png');
+        g.load.image('unemployed_icon',         iconDir + 'unemployed_icon.png');
+        g.load.image('unrest_icon',             iconDir + 'unrest_icon.png');
         g.load.spritesheet('year_icon',         iconDir + 'year_icon.png', 46, 46, 3);
         g.load.spritesheet('swiss_icon',        iconDir + 'swiss_account_icon.png', 46, 46, 3);
-        g.load.spritesheet('construction_icon', iconDir + 'construction_icon.png');
-        g.load.spritesheet('person_icon',       iconDir + 'person_icon.png');
+        g.load.image('construction_icon',       iconDir + 'construction_icon.png');
+        g.load.image('person_icon',             iconDir + 'person_icon.png');
+        g.load.image('exclamation_01',          iconDir + 'exclamation_01.png');
+        g.load.image('exclamation_02',          iconDir + 'exclamation_02.png');
+        g.load.image('culture_output_full',     iconDir + 'culture_output_full.png')
+        g.load.image('freedom_output_full',     iconDir + 'freedom_output_full.png')
+        g.load.image('health_output_full',      iconDir + 'health_output_full.png')
+        g.load.image('money_output_full',       iconDir + 'money_output_full.png')
+        g.load.image('shelter_output_full',     iconDir + 'shelter_output_full.png')
+        g.load.image('unrest_output_full',      iconDir + 'unrest_output_full.png')
 
         for(var i = 1; i <= 4; ++i){
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');

@@ -14,6 +14,9 @@ var Hud = {
 
         hud.name = "HUD"; // Useful for debugging
 
+        var moneyPanel = MoneyPanel.createNew();
+        hud.addChild(moneyPanel);
+
         //      global vars
         var statsPanel = StatsPanel.createNew();
         hud.addChild(statsPanel);
@@ -26,45 +29,45 @@ var Hud = {
         hud.addChild(hud.coalitionFlag);
 
         // Menu test buttons
-        hud.singleFolderButton = MainGame.game.make.button(0,0,'small_generic_button',
-            function(){
-                /*global SingleFolder*/
-                SingleFolder.createNew();
-            }, MainGame, 1, 0, 2, 2);
-        hud.singleFolderButton.input.priorityID = hudInputPriority;
-        hud.addChild(hud.singleFolderButton);
+        // hud.singleFolderButton = MainGame.game.make.button(0,moneyPanel.height,'small_generic_button',
+        //     function(){
+        //         /*global SingleFolder*/
+        //         SingleFolder.createNew();
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.singleFolderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.singleFolderButton);
 
-        hud.doubleFolderButton = MainGame.game.make.button(0,hud.singleFolderButton.y + hud.singleFolderButton.height,'small_generic_button',
-            function(){
-                /*global DoubleFolder*/
-                DoubleFolder.createNew();
-            }, MainGame, 1, 0, 2, 2);
-        hud.doubleFolderButton.input.priorityID = hudInputPriority;
-        hud.addChild(hud.doubleFolderButton);
+        // hud.doubleFolderButton = MainGame.game.make.button(0,hud.singleFolderButton.y + hud.singleFolderButton.height,'small_generic_button',
+        //     function(){
+        //         /*global DoubleFolder*/
+        //         DoubleFolder.createNew();
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.doubleFolderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.doubleFolderButton);
 
-        hud.globalBinderButton = MainGame.game.make.button(0,hud.doubleFolderButton.y + hud.doubleFolderButton.height,'small_generic_button',
-            function(){
-                /*global Binder*/
-                Binder.createNew(Binder.global,0);
-            }, MainGame, 1, 0, 2, 2);
-        hud.globalBinderButton.input.priorityID = hudInputPriority;
-        hud.addChild(hud.globalBinderButton);
+        // hud.globalBinderButton = MainGame.game.make.button(0,hud.doubleFolderButton.y + hud.doubleFolderButton.height,'small_generic_button',
+        //     function(){
+        //         /*global Binder*/
+        //         Binder.createNew(Binder.global,0);
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.globalBinderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.globalBinderButton);
 
-        hud.buildingBinderButton = MainGame.game.make.button(0,hud.globalBinderButton.y + hud.globalBinderButton.height,'small_generic_button',
-            function(){
-                /*global Binder*/
-                Binder.createNew(Binder.building,0);
-            }, MainGame, 1, 0, 2, 2);
-        hud.buildingBinderButton.input.priorityID = hudInputPriority;
-        hud.addChild(hud.buildingBinderButton);
+        // hud.buildingBinderButton = MainGame.game.make.button(0,hud.globalBinderButton.y + hud.globalBinderButton.height,'small_generic_button',
+        //     function(){
+        //         /*global Binder*/
+        //         Binder.createNew(Binder.building,0,MainGame.board.findBuilding("school",null,null,null)[0]);
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.buildingBinderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.buildingBinderButton);
 
-        hud.clipboardBinderButton = MainGame.game.make.button(0,hud.buildingBinderButton.y + hud.buildingBinderButton.height,'small_generic_button',
-            function(){
-                /*global Clipboard*/
-                Clipboard.createNew();
-            }, MainGame, 1, 0, 2, 2);
-        hud.clipboardBinderButton.input.priorityID = hudInputPriority;
-        hud.addChild(hud.clipboardBinderButton);
+        // hud.clipboardBinderButton = MainGame.game.make.button(0,hud.buildingBinderButton.y + hud.buildingBinderButton.height,'small_generic_button',
+        //     function(){
+        //         /*global Clipboard*/
+        //         Clipboard.createNew();
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.clipboardBinderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.clipboardBinderButton);
 
 
         // "Next Turn" button
@@ -190,15 +193,9 @@ var BuildingPlacer = {
             var tile = MainGame.board.at(self.mapIndex);
             // Might be nice to move these into Tile as convenience methods...
             var terrainType = tile.terrain.key;
-            var tileResource = tile.res.key;
             var hasBuilding = tile.getBuilding().name != null ? true : false;
             // If the terrain is impassable, or a building already exists
             self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || hasBuilding);
-            
-            // Special consideration: lumberYards can only be built on forest
-            if (self.buildingType === 'lumberYard' && self.canBuild) {
-                self.canBuild = tileResource === 'forest' ? true : false;
-            }
         } else self.canBuild = false;
 
         // Check for build cancel
@@ -228,9 +225,6 @@ var BuildingPlacer = {
             }
             
             // Create a building object
-            if (self.buildingType === 'fertileFarm' && tile.getResType() !== 'soy') {
-                self.buildingType = 'weakFarm';
-            }
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
             newBuilding.tint = newTint;
             if(newBuilding.startingTurn- MainGame.global.turn>0){
@@ -356,37 +350,6 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
         statsPanel.addChild(statsPanel.unemploymentGroup);
 
-        // State Money (warchest)
-        statsPanel.warchestGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 4, 'money_icon', function(){
-            FinanceView.createNew();
-            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
-        }, 0, 1, 0, 2);
-        
-        ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', statsPanel.x, statsPanel.y + statsPanel.warchestGroup.y + 12);
-        statsPanel.warchestGroup.toolTip.x -= statsPanel.warchestGroup.toolTip.width;
-
-        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, 0, '₸0 ', this.textStyle);
-        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
-        statsPanel.addChild(statsPanel.warchestGroup);
-
-        // Money Per Turn
-        statsPanel.warchestGroup.moneyPerTurnText = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '(+0) ', this.textStyle);
-        statsPanel.warchestGroup.moneyPerTurnText.y = 20;
-        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.moneyPerTurnText);
-
-        // Swiss Bank (personal money)
-        statsPanel.swissGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 5, 'swiss_icon', function(){
-            PrivateAccountView.createNew();
-            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
-        }, 0, 1, 0, 2);
-
-        ToolTip.addTipTo(statsPanel.swissGroup, 2, 'Private Account', statsPanel.x, statsPanel.y + statsPanel.swissGroup.y + 12);
-        statsPanel.swissGroup.toolTip.x -= statsPanel.swissGroup.toolTip.width;
-
-        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '₸0 ', this.textStyle);
-        statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
-        statsPanel.addChild(statsPanel.swissGroup);
-
         // Set update loop
         MainGame.game.time.events.loop(300, function() {
             var globalStats = MainGame.global;
@@ -395,17 +358,11 @@ var StatsPanel = {
             var newHomeless = MainGame.population.findNotHoused().length + ' ';
             var newUnemployment = MainGame.population.findNotEmployed().length + ' ';
             var newYear = 1949 + globalStats.turn + ' ';
-            var newWarchest = '₸' + globalStats.money + ' ';
-            var newMoneyPerTurn = (globalStats.moneyPerTurn >= 0) ? '(+' + globalStats.moneyPerTurn + ') ' : '(' + globalStats.moneyPerTurn + ') ';
-            var newSwissAccount = '₸' + globalStats.privateMoney + ' ';
 
             statsPanel.yearGroup.textLabel.text = newYear;
             statsPanel.popGroup.textLabel.text = newPop;
             statsPanel.homelessGroup.textLabel.text = newHomeless;
             statsPanel.unemploymentGroup.textLabel.text = newUnemployment;
-            statsPanel.warchestGroup.textLabel.text = newWarchest;
-            statsPanel.warchestGroup.moneyPerTurnText.text = newMoneyPerTurn;
-            statsPanel.swissGroup.textLabel.text = newSwissAccount;
         }, statsPanel);
 
         return statsPanel;

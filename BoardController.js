@@ -140,11 +140,12 @@ var BoardController={
 		}
 		
 		var tile = bc.modelView.at(index);
-		if(!tile.hasBuilding() || tile.getBuilding().name === 'road')
+		if(!tile.hasBuilding() || tile.getBuilding().name === 'road' || tile.getBuilding().startingTurn > MainGame.global.turn)
 			return;
 
-		bc.detailView = BuildingDetail.createNew(index);
-		bc.detailView.updateInfo(tile);
+		//bc.detailView = BuildingDetail.createNew(index);
+		//bc.detailView.updateInfo(tile);
+		bc.detailView = Binder.createNew(Binder.building,0,index);
 	},
 
 	hideTileDetail: function(bc){
