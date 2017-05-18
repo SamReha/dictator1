@@ -1,7 +1,7 @@
 // singleton
 var Global={
     turn: 1,
-	freedom: 0,
+    freedom: 0,
     unrest: 0,
     startingMoney: 30,
     money: 30,
@@ -36,11 +36,10 @@ var Global={
         /*global MainGame*/
         MainGame.board.nextTurn(Global.turn);
 
-        /*globabl updatePopulation*/
-        updatePopulation(true,true);
+        /*global updatePopulation*/
+        updatePopulation(true, true);
         Global.updateMoneyPerTurn();
         Global.money += Global.moneyPerTurn;
-        Global.updateFreedomUnrest();
         Global.updateThermometer();
         Global.checkGameFail();
     },
@@ -59,23 +58,21 @@ var Global={
         /*global MainGame*/
         var lowList = MainGame.population.lowList();
         
-        for(var index=0;index<lowList.length;++index){
+        for (var index = 0; index < lowList.length; ++index) {
             // =================================================================
-            // change later when influential members are a thing
-            if(lowList[index].health>=50 && lowList[index].education>=50 && lowList[index].shelter>=50)
+            // TODO: change later when influential members are a thing
+            if (lowList[index].health >= 50 && lowList[index].education >= 50 && lowList[index].shelter >= 50)
                 continue;
-            // ===================================================================
-            //console.log("Person of type "+lowList[index].type+" living at "+lowList[index].home+" - Freedom: "+lowList[index].freedom+" - Unrest: "+lowList[index].unrest);
+            // =================================================================
             freeAv += lowList[index].freedom;
             unrestAv += lowList[index].unrest;
         }
-        //console.log("freeTotal: "+freeAv+" unrestTotal: "+unrestAv+" low people: "+lowList.length);
-        freeAv = Math.round(freeAv/lowList.length,0);
-        unrestAv = Math.round(unrestAv/lowList.length,0);
 
-        // console.log(MainGame.board.findBuilding(null,null,"road",null).length);
-        Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,null,"road",null).length,0,100);
-        Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length,0,100);
+        freeAv = Math.round(freeAv/lowList.length, 0);
+        unrestAv = Math.round(unrestAv/lowList.length, 0);
+
+        Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,null,"road",null).length, 0, 100);
+        Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length, 0, 100);
     },
 
     // Updates thermometer data. In general, should be called AFTER updateFreedomUnrest()
