@@ -38,6 +38,7 @@ var Global={
 
         /*globabl updatePopulation*/
         updatePopulation(true,true);
+        Global.updateMoneyPerTurn();
         Global.money += Global.moneyPerTurn;
         Global.updateFreedomUnrest();
         Global.updateThermometer();
