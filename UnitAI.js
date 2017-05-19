@@ -118,7 +118,6 @@ var UnitAI = {
 				unit.target = choices.tileIndex;
 			}
 		}
-
 		return choices[0].tileIndex;
 	},
 	

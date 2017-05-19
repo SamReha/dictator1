@@ -474,13 +474,13 @@ var Board = {
     // to next turn
     nextTurn: function(b,turn){
         // DFS call nextTurn
-        var stack=[b];
-        while(stack.length>0){
-            var node=stack.pop();
+        var queue=[b];
+        while(queue.length>0){
+            var node=queue.shift();
             if(node.nextTurn && node!==b)
                 node.nextTurn(turn);
             for(var i=0;i<node.children.length;i++){
-                stack.push(node.children[i]);
+                queue.push(node.children[i]);
             }
         }
     },

@@ -136,10 +136,7 @@ var Person={
             p.shelter = house.shelter;
     
             // Get new culture
-            if (p.culture < house.culture && nextTurn) {
-                /*global Person*/
-                p.culture = clampedSum(p.culture, Person.learningSpeed, house.culture);
-            }
+            p.culture = house.culture;
         }
         else if(nextTurn){
             if(!p.findHousing()){
@@ -159,7 +156,7 @@ var Person={
                 p.setMidClass();
             }
         }else if(p.health < 50 || p.shelter < 50 || p.culture < 50) {
-            console.log("demotion");
+            console.log("demotion: "+p.name+" "+p.health+" "+p.culture+" "+p.shelter);
             if(p.type === Person.Hi){
                 p.unSetHighClass();
             }
