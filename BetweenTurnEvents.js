@@ -176,18 +176,32 @@ var showThermometerUpdate = function(callback) {
 };
 
 var showUnitAction = function(callback) {
+    var processUnitUpdates = function(unitList, index) {
+        // If we've handled every unit, bail out and execute the callback.
+        if (index >= unitList.length) {
+            callback();
+            return;
+        }
+
+        // Tween to the tile
+        MainGame.board.cameraCenterOn(unitList[index].currentIndex);
+
+        // Update the unit
+        unitList[index].takeTurn();
+
+        // Wait a bit, then process the next unit.
+        var timer = MainGame.game.time.create(true);
+        timer.add(750, function() {
+            processUnitUpdates(unitList, ++index);
+        }, null);
+        timer.start();
+    }
+
     // Start by getting a list of all active units.
     var units = MainGame.board.findUnits(null).map(function(unitIndex) {
         return MainGame.board.at(unitIndex).getUnit();
     });
-    console.log(units);
-
-    for (var i = 0; i < units.length; i++) {
-        units[i].takeTurn();
-    }
     
     // Then, start recursively spawning events to handle each notification
-    //makeBuildingCompletionEvents(newBuildingIndexes, 0);
-
-    callback();
+    processUnitUpdates(units, 0);
 };

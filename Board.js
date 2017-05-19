@@ -101,15 +101,17 @@ var Tile = {
         updatePopulation(false,false);
 
         tile.removeChild(tile.building);
-        tile.building = Building.createNew(null);
+        tile.building = null;
     },
 
     damageBuilding: function(tile, damage) {
         if (tile.hasBuilding()) {
-            tile.building.health -= damage;
+            tile.building.integrity -= damage;
             
-            if (tile.building.health <= 0) {
+            if (tile.building.integrity <= 0) {
                 tile.removeBuilding();
+
+                console.log("building destroyed");
 
                 // Make a rubble
                 var newBuilding = Building.createNew({name:'rubble', level:1, startingTurn:-1, people:0});
@@ -474,13 +476,14 @@ var Board = {
     // to next turn
     nextTurn: function(b, turn) {
         // DFS call nextTurn
-        var stack = [b];
-        while (stack.length > 0) {
-            var node = stack.pop();
-            if (node.nextTurn && node!==b)
+        var queue=[b];
+        while(queue.length>0){
+            var node=queue.shift();
+            if(node.nextTurn && node!==b){
                 node.nextTurn(turn);
-            for (var i = 0; i < node.children.length; i++) {
-                stack.push(node.children[i]);
+            }
+            for(var i=0;i<node.children.length;i++){
+                queue.push(node.children[i]);
             }
         }
     },

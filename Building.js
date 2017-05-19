@@ -46,7 +46,8 @@ var Building = {
             b.squadDeployed = false;
         }
 
-        b.health = 10;
+        b.integrity = 10;
+
 
         // Class funcs
         b.isEmpty=function(){return b.name===null};

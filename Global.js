@@ -20,7 +20,7 @@ var Global={
                 showUnitAction(function() {
                     showNewPeople(function() {
                         showHomelessCamps(function() {
-                            console.log('we did it!');
+                            return;
                         });
                     });
                 });

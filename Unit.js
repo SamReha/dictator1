@@ -1,5 +1,6 @@
 var Unit = {
     unitData: null,
+    unitNumber: 0,
 
     // Type things
     Army: 'soldier',
@@ -30,6 +31,8 @@ var Unit = {
         unit.origin = startingIndex;
         unit.target = null;
         unit.isAttacking = false;
+        unit.number = ++Unit.unitNumber;
+        unit.updateNum = 0;
 
         unit.counter = MainGame.game.make.sprite(0, 0, unit.type + '_counter_background');
         unit.counter.anchor.set(0.5, 0);
@@ -47,7 +50,6 @@ var Unit = {
 
         unit.takeTurn = function() { Unit.takeTurn(unit); };
         unit.move = function(newIndex) { Unit.move(unit, newIndex); };
-        unit.update = function() { Unit.update(unit); };
         unit.hasTarget = function() { return unit.target !== null; };
         unit.addPeople = function(people) { Unit.addPeople(unit, people); };
         unit.subtractPeople = function(people) { Unit.subtractPeople(unit, people); };
@@ -118,6 +120,8 @@ var Unit = {
 
     /* Renamed nextTurn() to takeTurn() so that Units wouldn't be processed in Board's nextTurn() */
     takeTurn: function(unit) {
+        ++unit.updateNum;
+        //console.log("unit @ "+unit.currentIndex+" - update # "+unit.updateNum);
         UnitAI.takeTurn(unit);
     },
 
@@ -130,14 +134,9 @@ var Unit = {
 
         // TODO: Maybe lerp an animation as it moves between tiles?
         if (!newTile.hasUnit()) {
-            // Tween to the tile
-            MainGame.board.cameraCenterOn(newIndex);
-
             newTile.setUnit(unit);
             currentTile.setUnit(null);
             unit.currentIndex = newIndex;
-        } else {
-            // Do I need to merge the groups?
         }
     },
 

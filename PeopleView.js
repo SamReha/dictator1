@@ -257,7 +257,7 @@ var PeopleView={
 		if(!lowData)
 			lowData=MainGame.population.lowList();
 		if(!buDataRef){
-			console.log("bureaucracy: "+MainGame.population.typeRoleList(Person.Mid,Person.Bureaucrat));
+			// console.log("bureaucracy: "+MainGame.population.typeRoleList(Person.Mid,Person.Bureaucrat));
 			buDataRef=MainGame.population.typeRoleList(Person.Hi,Person.Bureaucrat);
 			buDataRef=buDataRef.concat(MainGame.population.typeRoleList(Person.Mid,Person.Bureaucrat));
 		}
