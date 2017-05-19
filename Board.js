@@ -479,7 +479,7 @@ var Board = {
         var queue=[b];
         while(queue.length>0){
             var node=queue.shift();
-            if(node.nextTurn && node!==b)
+            if(node.nextTurn && node!==b){
                 node.nextTurn(turn);
             }
             for(var i=0;i<node.children.length;i++){
