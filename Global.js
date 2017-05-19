@@ -3,12 +3,15 @@ var Global={
     turn: 1,
 	freedom: 0,
     unrest: 0,
+    startingMoney: 30,
     money: 30,
+    privateMoney: 0,
     moneyPerTurn: 0,
     thermometerFill: 0,
     thermometerDelta: 0,
+    yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
 
-    // calcAvgEducation: function(){
+    // calcAvgCulture: function(){
 
     // },
     // calcAvgHealth: function(){
@@ -25,7 +28,7 @@ var Global={
 
     // },
 
-    nextTurn: function(){
+    nextTurn: function() {
         ++Global.turn;
         /*global MainGame*/
         MainGame.board.nextTurn(Global.turn);
@@ -36,6 +39,9 @@ var Global={
         Global.updateFreedomUnrest();
         Global.updateThermometer();
         Global.checkGameFail();
+        
+        // Makes sure we record the state after updating all the game info
+        Global.updateYearViewData();
     },
 
     toString: function(){
@@ -45,7 +51,7 @@ var Global={
         return string
     },
 
-    // Finds the current Freedom value by averaging the health and education of all low people
+    // Finds the current Freedom value by averaging the health and culture of all low people
     updateFreedomUnrest: function(){
         var freeAv = 0;
         var unrestAv = 0;
@@ -55,7 +61,7 @@ var Global={
         for(var index=0;index<lowList.length;++index){
             // =================================================================
             // change later when influential members are a thing
-            if(lowList[index].health>=50 && lowList[index].education>=50 && lowList[index].shelter>=50)
+            if(lowList[index].health>=50 && lowList[index].culture>=50 && lowList[index].shelter>=50)
                 continue;
             // ===================================================================
             //console.log("Person of type "+lowList[index].type+" living at "+lowList[index].home+" - Freedom: "+lowList[index].freedom+" - Unrest: "+lowList[index].unrest);
@@ -137,7 +143,7 @@ var Global={
         }
 
         // No money - loss due to economic failure
-        if (this.money <= 0) {
+        if (this.money < 0 && this.moneyPerTurn < 0) {
             getGameLoseWindow("Your government is bankrupt and can no longer function. You lose.");
             return;
         }
@@ -155,9 +161,24 @@ var Global={
         // }
     },
 
+    updateYearViewData: function() {
+        var homeless     = MainGame.population.findNotHoused().length;
+        var jobless      = MainGame.population.findNotEmployed().length;
+        var workingClass = MainGame.population.lowList().length;
+
+        this.yearViewData[this.yearViewData.length] = {
+            year:              1949 + this.turn,
+            population:        MainGame.population.count(),
+            employmentPercent: Math.floor(100 - (jobless / workingClass) * 100),
+            homelessPercent:   Math.floor((homeless / workingClass) * 100),
+            publicFunds:       this.money
+        };
+    },
+
     restart: function() {
         MainGame.music.stop();
         MainGame.game.state.restart();
+        MainGame.global.money = Global.startingMoney;
     },
 };
 
@@ -165,7 +186,7 @@ function getGameLoseWindow(message) {
     var e = Event.createNew();
     e.setModel([
                     {
-                        portrait: "myTextureKey", 
+                        portrait: 'exclamation_01', 
                         description: message, 
                         buttonTexts: ["Restart"]
                     }

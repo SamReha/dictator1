@@ -23,11 +23,11 @@ var Person={
         // Class vars
         p.type=data.type;               // must be one of Person.types
         p.name=(data.name?data.name:Person.randomName());   // either given or randomized
-        p.portIndex=(data.portIndex!==undefined?data.portIndex:null);     // nullable
+        p.portIndex = (data.portIndex !== undefined ? data.portIndex : null);     // nullable
         p.workplace=data.workplace;     // nullable, index of the tile
         p.home=data.home;               // nullable, index of the tile
         p.health=(data.health?data.health:0);           // int
-        p.education=(data.education?data.education:0);  // int
+        p.culture=(data.culture?data.culture:0);        // int
         p.shelter=(data.shelter?data.shelter:0);        // int
         p.freedom=0;        // int
         p.unrest=0;         // int
@@ -40,12 +40,22 @@ var Person={
         p.salary=(data.salary?data.salary:null);
 
         // Class funcs
-        p.update=function(board,nextTurn){return Person.update(p,board,nextTurn)};
-        p.report=function(){return Person.report(p)};  // Class func: Declaration
-        p.portTexture=function(){
-            console.assert(p.type>=Person.Mid);
-            var tb={"?":"bureaucrat_port_", "$":"merchant_port_", "!":"military_port_"}; 
-            return tb[p.role]+p.portIndex;
+        p.update = function(board,nextTurn) { return Person.update(p,board,nextTurn); };
+        p.report = function(){ return Person.report(p); };  // Class func: Declaration
+        p.getPortTexString = function() {
+            console.assert(p.type >= Person.Mid);
+
+            // If we don't already have a port index, get one!
+            if (p.portIndex === null) {
+                p.portIndex = Math.floor(Math.random()*10);
+            }
+
+            var tb = {
+                "?":"bureaucrat_port_",
+                "$":"merchant_port_",
+                "!":"military_port_"
+            }; 
+            return tb[p.role] + p.portIndex;
         };
         p.findHousing=function(){return Person.findHousing(p)};
         p.toString=function(){return "<Person:"+p.name+",type:"+p.type+",role:"+p.role+">"};
@@ -108,7 +118,7 @@ var Person={
                 var house = board.at(housingIndices[i]).getBuilding();
                 p.health = house.health;
                 p.shelter = house.shelter;
-                // p.education = house.education;
+                // p.culture = house.culture;
                 return true;
             }
         }
@@ -125,10 +135,10 @@ var Person={
             // Get new shelter
             p.shelter = house.shelter;
     
-            // Get new education
-            if (p.education < house.education && nextTurn) {
+            // Get new culture
+            if (p.culture < house.culture && nextTurn) {
                 /*global Person*/
-                p.education = clampedSum(p.education, Person.learningSpeed, house.education);
+                p.culture = clampedSum(p.culture, Person.learningSpeed, house.culture);
             }
         }
         else if(nextTurn){
@@ -144,18 +154,18 @@ var Person={
         }
         // Update social class
         if(p.type === Person.Low){
-            if(p.health >= 50 && p.shelter >= 50 && p.education >= 50) {
+            if(p.health >= 50 && p.shelter >= 50 && p.culture >= 50) {
                 console.log("promotion!");
                 p.setMidClass();
             }
-        }else if(p.health < 50 || p.shelter < 50 || p.education < 50) {
+        }else if(p.health < 50 || p.shelter < 50 || p.culture < 50) {
             console.log("demotion");
             if(p.type === Person.Hi){
                 p.unSetHighClass();
             }
             p.setLowClass();
         }else{
-            p.baseInfluence = Math.floor(((p.health-50)+(p.shelter-50)+(p.education-50))/3);
+            p.baseInfluence = Math.floor(((p.health-50)+(p.shelter-50)+(p.culture-50))/3);
             p.accruedInfluence+=(p.type===Person.Mid?1:2);
             p.accruedInfluence=Math.min(p.accruedInfluence,50);
             if(p.type===Person.Hi){
@@ -168,7 +178,7 @@ var Person={
     updateFreeUn: function(p,board){
         if(p.home!==null){
             var house = board.at(p.home).getBuilding();
-            p.freedom = Phaser.Math.clamp(Math.min(p.health,50) + Math.min(p.education,50) + house.aoeFreedom,0,100);
+            p.freedom = Phaser.Math.clamp(Math.min(p.health,50) + Math.min(p.culture,50) + house.aoeFreedom,0,100);
             p.unrest = Phaser.Math.clamp(Math.max(50-p.health,0) + Math.max(50-p.shelter,0) + house.aoeUnrest,0,100);
         }
         else{
@@ -359,7 +369,7 @@ var Population={
             var house = MainGame.board.at(per.home).getBuilding();
             per.health=house.health;
             per.shelter=house.shelter;
-            per.education=house.education;
+            per.culture=house.culture;
         }
     },
     

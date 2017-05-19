@@ -5,19 +5,19 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"Congratulations! \nEither by hook or by crook, \nyou have found yourself appointed as the \nSupreme Leader of the Republic of Tian.", 
+				"description":"Congratulations! Either by hook or by crook, you have found yourself appointed as the Supreme Leader of the Republic of Tian.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"The year is 1950.\nThough you are currently in control of your\nfledgling nation, that power may be just as\neasily stripped away.", 
+				"description":"The year is 1950. Though you are currently in control of your fledgling nation, that power may be just as easily stripped away.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Establish your government, build your nation\nand bring about an era of greatness for the \npeople of Tian!",
+				"description":"Establish your government, build your nation and bring about an era of greatness for the people of Tian!",
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Would you like to know more about \nrunning your country?",
+				"description":"Would you like to know more about running your country?",
 				"buttonTexts":["Yes", "No"]
 			}
 		],
@@ -46,19 +46,19 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"One of your most important jobs in Tian is \nordering the construction of new buildings.", 
+				"description":"One of your most important jobs in Tian is ordering the construction of new buildings.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"You can open the Build Menu by clicking on \nthe Build button in the bottom left corner \nat any time.", 
+				"description":"You can open the Build Menu by clicking on the Build button in the bottom left corner at any time.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"The most basic kind of building is a Road. \nA productive working class is important, \nbut to get them to work, there must be a road\nconnecting their home to a workplace.",
+				"description":"The most basic kind of building is a Road. A productive working class is important, but to get them to work, there must be a road connecting their home to a workplace.",
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Find the Lumber Yard and the Apartment \nthat are already on the map, and use Roads to\nconnect them.",
+				"description":"Find the Lumber Yard and the Apartment that are already on the map, and use Roads to connect them.",
 				"buttonTexts":["Okay"]
 			}
 		],
@@ -87,15 +87,15 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"Now you have connected the Lumber Yard \nto the rest of your working people, \nclick on your Lumber Yard to open its menu, \nand you will see the Hire Worker button. \nUnemployed people with road access will \ncome work there if you press it.", 
+				"description":"Now you have connected the Lumber Yard to the rest of your working people, click on your Lumber Yard to open its menu, and you will see the Hire Worker button. Unemployed people with road access will come work there if you press it.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Once you have assigned workers, \nthe Lumber Yard produces money each turn. \nDifferent kinds of workplaces produce \ndifferent kinds of outputs.", 
+				"description":"Once you have assigned workers, the Lumber Yard produces money each turn. Different kinds of workplaces produce different kinds of outputs.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Right now you do not have any unemployed\ncitizens. Try clicking on the School nearest to\nthe Lumber Yard and firing one teacher. Then\nclick on the Lumber Yard and rehire them as\na laborer.", 
+				"description":"Right now you do not have any unemployed citizens. Try clicking on the School nearest to the Lumber Yard and firing one teacher. Then click on the Lumber Yard and rehire them as a laborer.", 
 				"buttonTexts":["Okay"]
 			}
 
@@ -121,18 +121,18 @@
 	{
 		"name":"housing",
 		"cond":"Tutorial.builtNewHouse()",
-		"init":"Tut.numHouses = MainGame.board.findBuilding(null, 'housing', null).length",
+		"init":"Tut.numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length",
 		"event":[
 			{	
-				"description":"Great job staffing that factory! \nSo far, we have only talked about \nroads and workplaces. \nThe final type of building is a residence. \nA residence is a place for a person to live. \nTry building a residence in your country.", 
+				"description":"Great job staffing that factory! So far, we have only talked about roads and workplaces. The final type of building is a residence. A residence is a place for a person to live. Try building a residence in your country.", 
 				"buttonTexts":["Continue"]
 			},
 			{	
-				"description":"Open the Build Menu again. \nSelect an Apartment and click the Buy button. \nMove your mouse over an available tile, \nand left click again to place the building.", 
+				"description":"Open the Build Menu again. Select an Apartment and click the Buy button. Move your mouse over an available tile, and left click again to place the building.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"When that building is ready, \npeople can move in. \nThe population of Tian will grow each year. \nIf there is not enough available housing, \nsome people will become homeless.", 
+				"description":"When that building is ready, people can move in. The population of Tian will grow each year. If there is not enough available housing, some people will become homeless.", 
 				"buttonTexts":["Okay"]
 			}
 		],
@@ -160,39 +160,39 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"You must maintain control of the working class\nto stay in power. The working class generates\nFreedom and Unrest based on their current\nliving conditions and their opinion on you. \nAccess to education, food and roads will increase\nFreedom. Hunger, poor living conditions and\nunemployment will increase Unrest.", 
+				"description":"You must maintain control of the working class to stay in power. The working class generates Freedom and Unrest based on their current living conditions and their opinion on you. Access to education, food and roads will increase Freedom. Hunger, poor living conditions and unemployment will increase Unrest.", 
 				"buttonTexts":["Continue"]
 			},
 			{	
-				"description":"Your population’s Freedom and Unrest are\ndisplayed at the top of the screen.", 
+				"description":"Your population’s Freedom and Unrest are displayed at the top of the screen.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Remember: the less freedom your people have,\nthe more unrestful they can become before\ntriggering a Popular Revolution.", 
+				"description":"Remember: the less freedom your people have, the more unrestful they can become before triggering a Popular Revolution.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Please direct your attention to the Stats Panel\non the lower right edge of the screen. This panel\ndisplays data about what year it is, the current\npopulation, the national funds of Tian and\nyour private bank account.", 
+				"description":"Please direct your attention to the Stats Panel on the lower right edge of the screen. This panel displays data about what year it is, the current population, the national funds of Tian and your private bank account.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Keep a close eye on these numbers as the\ngame progresses.", 
+				"description":"Keep a close eye on these numbers as the game progresses.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Your economy is borne on the back of the\nworking class, but not every citizen of Tian is\ncondemned to a life of toil. The most\ncomfortable, well fed and well educated citizens\nascend to the Social Elite. Labor is beneath the\nlikes of these uncommon citizens, but that does\nnot mean they are useless to you.", 
+				"description":"Your economy is borne on the back of the working class, but not every citizen of Tian is condemned to a life of toil. The most comfortable, well fed and well educated citizens ascend to the Social Elite. Labor is beneath the likes of these uncommon citizens, but that does not mean they are useless to you.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"You will need to recruit Ministers to help actuate\nyour government. Each Social Elite citizen falls\ninto one of three factions: Financiers, Military\nOfficers and Bureaucrats. You may choose one\nElite to become Minister of their faction, which\nwill unlock new building options in the Build Menu.", 
+				"description":"You will need to recruit Ministers to help actuate your government. Each Social Elite citizen falls into one of three factions: Financiers, Military Officers and Bureaucrats. You may choose one Elite to become Minister of their faction, which will unlock new building options in the Build Menu.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"No one rules alone, and ending a turn with no\nactive Ministers will result in your government\nbeing overthrown in a Coup d’etat. Strengthen\nyour government by ensuring you have at least\none Minister on the payroll at all times.", 
+				"description":"No one rules alone, and ending a turn with no active Ministers will result in your government being overthrown in a Coup d’etat. Strengthen your government by ensuring you have at least one Minister on the payroll at all times.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"You are almost at the end of your first turn.\nBefore you can move on, navigate to the\nPopulation Menu by clicking on the Population\nicon in the Stats Panel. Choose an Elite\nBureaucrat from the left-hand side of the menu,\nand hire them on. Afterwards, you can\ncheck the Build Menu to see what new buildings\nare available.", 
+				"description":"You are almost at the end of your first turn. Before you can move on, navigate to the Population Menu by clicking on the Population icon in the Stats Panel. Choose an Elite Bureaucrat from the left-hand side of the menu, and hire them on. Afterwards, you can check the Build Menu to see what new buildings are available.", 
 				"buttonTexts":["Continue"]
 			}
 		],
@@ -226,7 +226,7 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"Congratulations! You now know the basics of\nhow to run your country and help yourself\nand your people to thrive. You may click the\nEnd Turn button in the lower right corner to\nadvance to the next turn.\n\nGood luck.", 
+				"description":"Congratulations! You now know the basics of how to run your country and help yourself and your people to thrive. You may click the End Turn button in the lower right corner to advance to the next turn.\n\nGood luck.", 
 				"buttonTexts":["Play"]
 			}
 		],

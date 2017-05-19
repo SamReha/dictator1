@@ -54,7 +54,7 @@ var UnitAI = {
 			} else {
 				// If an Army unit does not have a target, then it will patrol roads
 				// If it is not on a road, it will move toward the army base until it finds a road
-				if (MainGame.board.at(unit.currentIndex).getBuilding().name === "road") {
+				if (MainGame.board.at(unit.currentIndex).getBuilding().name === "road" || unit.currentIndex === unit.origin) {
 					var adjacent = MainGame.board.allAdjacent(unit.currentIndex,1);
 					var roads = [];
 					for(var i=0; i<adjacent.length; ++i){

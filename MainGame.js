@@ -52,7 +52,8 @@ var MainGame={
 
         // Play Music
         MainGame.music = MainGame.game.add.audio('game_loop');
-        MainGame.music.play('', 0, 1, false); // Confusing, but should set the track to loop at full volume
+        MainGame.music.play('', 0, 1, true); // Confusing, but should set the track to loop at full volume
+        //MainGame.music.loopFull(1.0);
         
         // create board
         var stage=MainGame.game.cache.getJSON('stageMain');
@@ -68,6 +69,7 @@ var MainGame={
 
         /*global updatePopulation*/
         updatePopulation(false,true);
+        Global.updateYearViewData();
         //MainGame.global.updateFreedomUnrest();
 
         /*global Tutorial*/

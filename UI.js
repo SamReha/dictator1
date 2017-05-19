@@ -14,6 +14,9 @@ var Hud = {
 
         hud.name = "HUD"; // Useful for debugging
 
+        var moneyPanel = MoneyPanel.createNew();
+        hud.addChild(moneyPanel);
+
         //      global vars
         var statsPanel = StatsPanel.createNew();
         hud.addChild(statsPanel);
@@ -24,6 +27,48 @@ var Hud = {
         //      Coalition Flag
         hud.coalitionFlag = CoalitionFlag.createNew();
         hud.addChild(hud.coalitionFlag);
+
+        // Menu test buttons
+        // hud.singleFolderButton = MainGame.game.make.button(0,moneyPanel.height,'small_generic_button',
+        //     function(){
+        //         /*global SingleFolder*/
+        //         SingleFolder.createNew();
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.singleFolderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.singleFolderButton);
+
+        // hud.doubleFolderButton = MainGame.game.make.button(0,hud.singleFolderButton.y + hud.singleFolderButton.height,'small_generic_button',
+        //     function(){
+        //         /*global DoubleFolder*/
+        //         DoubleFolder.createNew();
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.doubleFolderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.doubleFolderButton);
+
+        // hud.globalBinderButton = MainGame.game.make.button(0,hud.doubleFolderButton.y + hud.doubleFolderButton.height,'small_generic_button',
+        //     function(){
+        //         /*global Binder*/
+        //         Binder.createNew(Binder.global,0);
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.globalBinderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.globalBinderButton);
+
+        // hud.buildingBinderButton = MainGame.game.make.button(0,hud.globalBinderButton.y + hud.globalBinderButton.height,'small_generic_button',
+        //     function(){
+        //         /*global Binder*/
+        //         Binder.createNew(Binder.building,0,MainGame.board.findBuilding("school",null,null,null)[0]);
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.buildingBinderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.buildingBinderButton);
+
+        // hud.clipboardBinderButton = MainGame.game.make.button(0,hud.buildingBinderButton.y + hud.buildingBinderButton.height,'small_generic_button',
+        //     function(){
+        //         /*global Clipboard*/
+        //         Clipboard.createNew();
+        //     }, MainGame, 1, 0, 2, 2);
+        // hud.clipboardBinderButton.input.priorityID = hudInputPriority;
+        // hud.addChild(hud.clipboardBinderButton);
+
 
         // "Next Turn" button
         hud.btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'endturn_button',
@@ -148,15 +193,9 @@ var BuildingPlacer = {
             var tile = MainGame.board.at(self.mapIndex);
             // Might be nice to move these into Tile as convenience methods...
             var terrainType = tile.terrain.key;
-            var tileResource = tile.res.key;
             var hasBuilding = tile.getBuilding().name != null ? true : false;
             // If the terrain is impassable, or a building already exists
             self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || hasBuilding);
-            
-            // Special consideration: lumberYards can only be built on forest
-            if (self.buildingType === 'lumberYard' && self.canBuild) {
-                self.canBuild = tileResource === 'forest' ? true : false;
-            }
         } else self.canBuild = false;
 
         // Check for build cancel
@@ -186,9 +225,6 @@ var BuildingPlacer = {
             }
             
             // Create a building object
-            if (self.buildingType === 'fertileFarm' && tile.getResType() !== 'soy') {
-                self.buildingType = 'weakFarm';
-            }
             var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
             newBuilding.tint = newTint;
             if(newBuilding.startingTurn- MainGame.global.turn>0){
@@ -250,35 +286,41 @@ var StatsPanel = {
         statsPanel.inputEnabled = true;
         statsPanel.input.priorityID = 1;
 
+        statsPanel.sfxArray = [
+            // game.make.audio('paper_click_2'),
+            // game.make.audio('paper_click_3'),
+            // game.make.audio('paper_click_5'),
+            // game.make.audio('paper_click_7')
+            game.make.audio('typewriter_click_1'),
+            game.make.audio('typewriter_click_2'),
+            game.make.audio('typewriter_click_3'),
+            game.make.audio('typewriter_click_4'),
+            game.make.audio('typewriter_click_5')
+        ];
+
         // Year
-        statsPanel.yearGroup = MainGame.game.make.sprite(0, 0, 'year_icon');
+        statsPanel.yearGroup = MainGame.game.make.button(0, 0, 'year_icon', function(){
+            Binder.createNew(Binder.global,0);
+            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
+        }, 0, 1, 0, 2);
         statsPanel.yearGroup.x = this.horizontalPad;
         statsPanel.yearGroup.y = (this.unitHeight + this.verticalPad) * 0 + this.verticalPad;
 
-        ToolTip.addTipTo(statsPanel.yearGroup, 2, 'Current Year', 0, 12);
-        statsPanel.yearGroup.toolTip.x = -statsPanel.yearGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.yearGroup, 2, 'Current Year', statsPanel.x, statsPanel.y + statsPanel.yearGroup.y + 12);
+        statsPanel.yearGroup.toolTip.x -= statsPanel.yearGroup.toolTip.width;
 
         statsPanel.yearGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, 1949+MainGame.global.turn, this.textStyle);
         statsPanel.yearGroup.addChild(statsPanel.yearGroup.textLabel);
         statsPanel.addChild(statsPanel.yearGroup);
 
         // Population
-        statsPanel.popGroup = MainGame.game.make.button(0, 0, 'population_icon', function(){
+        statsPanel.popGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 1, 'population_icon', function(){
             PeopleView.createNew();
-            statsPanel.popGroup.sfxArray[Math.floor(Math.random()*statsPanel.popGroup.sfxArray.length)].play();
+            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
-        statsPanel.popGroup.x = this.horizontalPad;
-        statsPanel.popGroup.y = (this.unitHeight + this.verticalPad) * 1;
 
-        statsPanel.popGroup.sfxArray = [
-            game.make.audio('paper_click_2'),
-            game.make.audio('paper_click_3'),
-            game.make.audio('paper_click_5'),
-            game.make.audio('paper_click_7')
-        ];
-
-        ToolTip.addTipTo(statsPanel.popGroup, 2, 'Total Population', 0, 12);
-        statsPanel.popGroup.toolTip.x = -statsPanel.popGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.popGroup, 2, 'Total Population', statsPanel.x, statsPanel.y + statsPanel.popGroup.y + 12);
+        statsPanel.popGroup.toolTip.x -= statsPanel.popGroup.toolTip.width;
 
         statsPanel.popGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
@@ -289,8 +331,8 @@ var StatsPanel = {
         statsPanel.homelessGroup.x = this.horizontalPad;
         statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 2;
 
-        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', 0, 12);
-        statsPanel.homelessGroup.toolTip.x = -statsPanel.homelessGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x, statsPanel.y + statsPanel.homelessGroup.y + 12);
+        statsPanel.homelessGroup.toolTip.x -= statsPanel.homelessGroup.toolTip.width;
 
         statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.homelessGroup.addChild(statsPanel.homelessGroup.textLabel);
@@ -301,41 +343,12 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.x = this.horizontalPad;
         statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 3;
         
-        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', 0, 12);
-        statsPanel.unemploymentGroup.toolTip.x = -statsPanel.unemploymentGroup.toolTip.width;
+        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
+        statsPanel.unemploymentGroup.toolTip.x -= statsPanel.unemploymentGroup.toolTip.width;
 
         statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
         statsPanel.addChild(statsPanel.unemploymentGroup);
-
-        // State Money (warchest)
-        statsPanel.warchestGroup = MainGame.game.make.sprite(0, 0, 'money_icon');
-        statsPanel.warchestGroup.x = this.horizontalPad;
-        statsPanel.warchestGroup.y = (this.unitHeight + this.verticalPad) * 4;
-        
-        ToolTip.addTipTo(statsPanel.warchestGroup, 2, 'Public Funds', 0, 12);
-        statsPanel.warchestGroup.toolTip.x = -statsPanel.warchestGroup.toolTip.width;
-
-        statsPanel.warchestGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, 0, '$0 ', this.textStyle);
-        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.textLabel);
-        statsPanel.addChild(statsPanel.warchestGroup);
-
-        // Money Per Turn
-        statsPanel.warchestGroup.moneyPerTurnText = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '(+0) ', this.textStyle);
-        statsPanel.warchestGroup.moneyPerTurnText.y = 20;
-        statsPanel.warchestGroup.addChild(statsPanel.warchestGroup.moneyPerTurnText);
-
-        // Swiss Bank (personal money)
-        statsPanel.swissGroup = MainGame.game.make.sprite(0, 0, 'swiss_icon');
-        statsPanel.swissGroup.x = this.horizontalPad;
-        statsPanel.swissGroup.y = (this.unitHeight + this.verticalPad) * 5;
-
-        ToolTip.addTipTo(statsPanel.swissGroup, 2, 'Private Account', 0, 12);
-        statsPanel.swissGroup.toolTip.x = -statsPanel.swissGroup.toolTip.width;
-
-        statsPanel.swissGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '$0 ', this.textStyle);
-        statsPanel.swissGroup.addChild(statsPanel.swissGroup.textLabel);
-        statsPanel.addChild(statsPanel.swissGroup);
 
         // Set update loop
         MainGame.game.time.events.loop(300, function() {
@@ -345,17 +358,11 @@ var StatsPanel = {
             var newHomeless = MainGame.population.findNotHoused().length + ' ';
             var newUnemployment = MainGame.population.findNotEmployed().length + ' ';
             var newYear = 1949 + globalStats.turn + ' ';
-            var newWarchest = '₸' + globalStats.money + ' ';
-            var newMoneyPerTurn = (globalStats.moneyPerTurn >= 0) ? '(+' + globalStats.moneyPerTurn + ' ) ' : '(' + globalStats.moneyPerTurn + ' ) ';
-            var newSwissAccount = '₸' + 0 + ' ';
 
             statsPanel.yearGroup.textLabel.text = newYear;
             statsPanel.popGroup.textLabel.text = newPop;
             statsPanel.homelessGroup.textLabel.text = newHomeless;
             statsPanel.unemploymentGroup.textLabel.text = newUnemployment;
-            statsPanel.warchestGroup.textLabel.text = newWarchest;
-            statsPanel.warchestGroup.moneyPerTurnText.text = newMoneyPerTurn;
-            statsPanel.swissGroup.textLabel.text = newSwissAccount;
         }, statsPanel);
 
         return statsPanel;
@@ -453,7 +460,7 @@ var FunPanel = {
         funPanel.freeSprite.x = -funPanel.meter.width/2 - funPanel.freeSprite.width/2 - 5;
         funPanel.freeSprite.anchor.x = 0.5;
 
-        ToolTip.addTipTo(funPanel.freeSprite, 2, 'Total Freedom', 0, 48);
+        ToolTip.addTipTo(funPanel.freeSprite, 2, 'Total Freedom', funPanel.x + funPanel.freeSprite.x, 48);
         funPanel.addChild(funPanel.freeSprite);
 
         // Unrest
@@ -461,7 +468,7 @@ var FunPanel = {
         funPanel.unrestSprite.x = funPanel.meter.width/2 + funPanel.unrestSprite.width/2 + 5;
         funPanel.unrestSprite.anchor.x = 0.5;
 
-        ToolTip.addTipTo(funPanel.unrestSprite, 2, 'Total Unrest', 0, 48);
+        ToolTip.addTipTo(funPanel.unrestSprite, 2, 'Total Unrest', funPanel.x + funPanel.unrestSprite.x, 48);
         funPanel.addChild(funPanel.unrestSprite);
 
         // Riot Thermometer
@@ -534,11 +541,13 @@ var ToolTip = {
         var toolTipText = MainGame.game.make.text(this.horizontalPad, 2, tipText, style);
         toolTipText.text = tipText;
 
-        var toolTip = MainGame.game.make.graphics();
-        toolTip.lineStyle(0);
-        toolTip.beginFill(this.black, this.opacity);
-        toolTip.drawRect(0, 0, toolTipText.width + (this.horizontalPad * 2), toolTipText.height + (this.verticalPad * 2));
-        toolTip.endFill();
+        var toolTip = MainGame.game.add.group();
+        toolTip.backPanel = MainGame.game.make.graphics();
+        toolTip.backPanel.lineStyle(0);
+        toolTip.backPanel.beginFill(this.black, this.opacity);
+        toolTip.backPanel.drawRect(0, 0, toolTipText.width + (this.horizontalPad * 2), toolTipText.height + (this.verticalPad * 2));
+        toolTip.backPanel.endFill();
+        toolTip.addChild(toolTip.backPanel);
 
         toolTip.textLabel = toolTipText;
         toolTip.addChild(toolTipText);
@@ -562,15 +571,14 @@ var ToolTip = {
         parent.toolTip.y = y;
         parent.events.onInputOver.add(function() {parent.toolTip.show();}, null);
         parent.events.onInputOut.add(function() {parent.toolTip.hide();}, null);
-        parent.addChild(parent.toolTip);
     },
 
     updateData: function(toolTip, newTipText) {
         toolTip.textLabel.text = newTipText;
-        toolTip.clear();
-        toolTip.beginFill(this.black, this.opacity);
-        toolTip.drawRect(0, 0, toolTip.textLabel.width + (this.horizontalPad * 2), toolTip.textLabel.height + (this.verticalPad * 2));
-        toolTip.endFill();
+        toolTip.backPanel.clear();
+        toolTip.backPanel.beginFill(this.black, this.opacity);
+        toolTip.backPanel.drawRect(0, 0, toolTip.textLabel.width + (this.horizontalPad * 2), toolTip.textLabel.height + (this.verticalPad * 2));
+        toolTip.backPanel.endFill();
     },
 
     show: function(toolTip) {

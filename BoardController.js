@@ -9,13 +9,14 @@ var BoardController={
 		bc.modelView=board;
 		bc.enabled=true;
 		bc.cameraSpeed = {x:150,y:100};
-		bc.cameraKey = {w:false,a:false,s:false,d:false};
+		bc.cameraKey = {w:false,a:false,s:false,d:false,up:false,down:false,left:false,right:false};
 		bc.cameraTimer=MainGame.game.time.create(false);
 		bc.panTimer=MainGame.game.time.create(false);
 		bc.mouseTimer=MainGame.game.time.create(false);
 		bc.mouseOverTimer=MainGame.game.time.create(false);
 		bc.briefView=null;
 		bc.detailView=null;
+		bc.tileRectRatio = bc.modelView.tileWidth/(bc.modelView.tileHeight*2);
 
 /////////////////////////////////////////////////////////////
 		// Class funcs
@@ -42,6 +43,7 @@ var BoardController={
 		// get the rel pos
 		var globalPos={x:MainGame.game.input.x, y:MainGame.game.input.y};
 		var localPos={x:globalPos.x-bc.modelView.x, y:globalPos.y-bc.modelView.y};
+
 		// event processing
 		if(type==="up"){
 			// end the timer
@@ -90,7 +92,7 @@ var BoardController={
 		}
 	},
 
-	showTileBrief: function(bc, index){		
+	showTileBrief: function(bc, index) {		
 		/* global TileBriefInfoView */
 		if(index===null || index===undefined)
 			return;
@@ -105,50 +107,45 @@ var BoardController={
 
 		// If the tile is empty, don't bother showing a panel (unless it is water or mountain)
 		var tile = MainGame.board.at(index);
-		if (!tile.hasBuilding() && tile.getResType() === null) {
+		if (!tile.hasBuilding()) {
 			if ((tile.getTerrainType() !== 'water') && (tile.getTerrainType() !== 'mountain')) {
 				return;
 			}
 		}
 
-		var tile=bc.modelView.at(index);
-		console.assert(tile);
 		bc.briefView = TileBriefView.createNew(index);
-		bc.briefView.updateInfo(tile);
 		bc.briefView.updatePos();
 		bc.mouseOverTimer.loop(10,bc.briefView.updatePos);
 		bc.mouseOverTimer.start();
 	},
 
-	hideTileBrief: function(bc){
-		if(bc.briefView){
+	hideTileBrief: function(bc) {
+		if (bc.briefView) {
 			bc.briefView.destroy();
-			bc.briefView=null;
+			bc.briefView = null;
 		}
 	},
 	
 	showTileDetail: function(bc, index){
-		/* global TileDetailView */
-		if(index===null || index===undefined)
-			return;
-		if(bc.detailView){
+		if (index===null || index===undefined) return;
+
+		if (bc.detailView) {
 			if (bc.detailView.index === index) {
                 BoardController.hideTileDetail(bc);
 				return;
-            }
-			else{
+            } else {
 				bc.mouseTimer.stop(true);
 				BoardController.hideTileDetail(bc);
 			}
 		}
+		
 		var tile = bc.modelView.at(index);
-		if(!tile.hasBuilding() || tile.getBuilding().name === 'road')
+		if(!tile.hasBuilding() || tile.getBuilding().name === 'road' || tile.getBuilding().startingTurn > MainGame.global.turn)
 			return;
-		//console.log("Now show tile detail:"+index);
-		var tile=bc.modelView.at(index);
-		//console.assert(tile);
-		bc.detailView=TileDetailView.createNew(index);
-		bc.detailView.updateInfo(tile);
+
+		//bc.detailView = BuildingDetail.createNew(index);
+		//bc.detailView.updateInfo(tile);
+		bc.detailView = Binder.createNew(Binder.building,0,index);
 	},
 
 	hideTileDetail: function(bc){
@@ -182,18 +179,50 @@ var BoardController={
 		}else if(key==="D" && type==="down"){
 			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
             bc.cameraKey.d = true;
+		}else if(key==="UpArrow" && type==="down"){
+			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
+            bc.cameraKey.up = true;
+		}else if(key==="DownArrow" && type==="down"){
+			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
+            bc.cameraKey.down = true;
+		}else if(key==="LeftArrow" && type==="down"){
+			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
+            bc.cameraKey.left = true;
+		}else if(key==="RightARrow" && type==="down"){
+			if(!bc.cameraTimer.running){bc.cameraTimer.start();}
+            bc.cameraKey.right = true;
 		}else if(key==="W" && type==="up"){
             bc.cameraKey.w = false;
-            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d){bc.cameraTimer.stop(false);}
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d&&
+            	!bc.cameraKey.up&&!bc.cameraKey.down&&!bc.cameraKey.left&&!bc.cameraKey.right){bc.cameraTimer.stop(false);}
 		}else if(key==="S" && type==="up"){
             bc.cameraKey.s = false;
-            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d){bc.cameraTimer.stop(false);}
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d&&
+            	!bc.cameraKey.up&&!bc.cameraKey.down&&!bc.cameraKey.left&&!bc.cameraKey.right){bc.cameraTimer.stop(false);}
 		}else if(key==="A" && type==="up"){
             bc.cameraKey.a = false;
-            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d){bc.cameraTimer.stop(false);}
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d&&
+            	!bc.cameraKey.up&&!bc.cameraKey.down&&!bc.cameraKey.left&&!bc.cameraKey.right){bc.cameraTimer.stop(false);}
 		}else if(key==="D" && type==="up"){
             bc.cameraKey.d = false;
-            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d){bc.cameraTimer.stop(false);}
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d&&
+            	!bc.cameraKey.up&&!bc.cameraKey.down&&!bc.cameraKey.left&&!bc.cameraKey.right){bc.cameraTimer.stop(false);}
+		}else if(key==="UpArrow" && type==="up"){
+            bc.cameraKey.up = false;
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d&&
+            	!bc.cameraKey.up&&!bc.cameraKey.down&&!bc.cameraKey.left&&!bc.cameraKey.right){bc.cameraTimer.stop(false);}
+		}else if(key==="DownArrow" && type==="up"){
+            bc.cameraKey.down = false;
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d&&
+            	!bc.cameraKey.up&&!bc.cameraKey.down&&!bc.cameraKey.left&&!bc.cameraKey.right){bc.cameraTimer.stop(false);}
+		}else if(key==="LeftArrow" && type==="up"){
+            bc.cameraKey.left = false;
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d&&
+            	!bc.cameraKey.up&&!bc.cameraKey.down&&!bc.cameraKey.left&&!bc.cameraKey.right){bc.cameraTimer.stop(false);}
+		}else if(key==="RightARrow" && type==="up"){
+            bc.cameraKey.right = false;
+            if(!bc.cameraKey.w&&!bc.cameraKey.s&&!bc.cameraKey.a&&!bc.cameraKey.d&&
+            	!bc.cameraKey.up&&!bc.cameraKey.down&&!bc.cameraKey.left&&!bc.cameraKey.right){bc.cameraTimer.stop(false);}
 		}
 		else{
 			console.assert(false);
@@ -204,16 +233,16 @@ var BoardController={
 		var xSum=0;
 		var ySum=0;
 
-		if(bc.cameraKey.w){
+		if(bc.cameraKey.w||bc.cameraKey.up){
 			ySum-=bc.cameraSpeed.y;
 		}
-		if(bc.cameraKey.s){
+		if(bc.cameraKey.s||bc.cameraKey.down){
 			ySum+=bc.cameraSpeed.y;
 		}
-		if(bc.cameraKey.a){
+		if(bc.cameraKey.a||bc.cameraKey.left){
 			xSum-=bc.cameraSpeed.x;
 		}
-		if(bc.cameraKey.d){
+		if(bc.cameraKey.d||bc.cameraKey.right){
 			xSum+=bc.cameraSpeed.x;
 		}
 
@@ -239,6 +268,8 @@ var BoardController={
         for(var j=0;j<tileCount;j++){
         	var tile=bc.modelView.at(j);
         	tile.inputEnabled=true;
+        	// tile.input.pixelPerfectClick=true;
+        	// tile.input.pixelPerfectOver=true;
         	tile.events.onInputUp.add(inputUpCallbacks[j]);
         	tile.events.onInputDown.add(inputDownCallbacks[j]);
         	tile.events.onInputOver.add(inputOverCallbacks[j]);
@@ -272,6 +303,25 @@ var BoardController={
 			add(function(){BoardController.onKeyboardEvent(bc,"down","D")});
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.D).onUp.
 			add(function(){BoardController.onKeyboardEvent(bc,"up","D")});
-
+		//	UpArrow
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.
+			add(function(){BoardController.onKeyboardEvent(bc,"down","UpArrow")});
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.UP).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","UpArrow")});
+		//	DownArrow
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.
+			add(function(){BoardController.onKeyboardEvent(bc,"down","DownArrow")});
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","DownArrow")});
+		//	LeftArrow
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.
+			add(function(){BoardController.onKeyboardEvent(bc,"down","LeftArrow")});
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","LeftArrow")});
+		//	RightARrow
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.
+			add(function(){BoardController.onKeyboardEvent(bc,"down","RightARrow")});
+		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onUp.
+			add(function(){BoardController.onKeyboardEvent(bc,"up","RightARrow")});
 	},
 };

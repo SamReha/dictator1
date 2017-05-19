@@ -15,33 +15,6 @@ var Tile = {
         tile.terrain.key = tempTerrain;
         tile.addChild(tile.terrain);
 
-        //tile.res=MainGame.game.make.sprite(0,0,data.res);
-        tile.resType = data.res;
-        if (data.res === 'forest') {
-            data.res += MainGame.game.rnd.integerInRange(1, 2);
-            tile.res = MainGame.game.make.sprite(0, 0, data.res);
-            tile.res.key = 'forest';
-            tile.addChild(tile.res);
-        } else {
-            tile.res = MainGame.game.make.sprite(0, 0, data.res);
-            tile.addChild(tile.res);
-        }
-
-        // Set resLabel and terrainLabel
-        switch (tile.resType) {
-            case 'forest':
-                tile.resLabel = 'Forest';
-                break;
-            case 'coal':
-                tile.resLabel = 'Coal';
-                break;
-            case 'soy':
-                tile.resLabel = 'Soy Pasture';
-                break;
-            default:
-                break;
-        }
-
         switch (tile.terrain.key) {
             case 'grass':
                 tile.terrainLabel = 'Grass';
@@ -67,11 +40,6 @@ var Tile = {
         //// Terrain Layer
         tile.getTerrain = function() { return tile.terrain; };
         tile.getTerrainType = function() { return tile.terrain.key; };
-
-        //// Resource Layer TODO: remove!
-        tile.getResType = function() { return tile.resType; };
-        tile.getRes = function() { return tile.res; };
-        tile.removeRes = function() { Tile.removeRes(tile); };
         
         //// Building Layer
         // Returns true iff this tile has a building on it
@@ -97,14 +65,6 @@ var Tile = {
         return JSON.stringify(data);
     },
 
-    //// Resource Layer TODO: remove!
-    removeRes: function(tile) {
-        tile.resType = null;
-        tile.removeChild(tile.res);
-        tile.res = MainGame.game.make.sprite(0,0, null);
-        tile.addChild(tile.res);
-    },
-
     //// Building Layer
     setBuilding: function(tile, building) {
         // If this building already exists on this tile, do nothing
@@ -116,20 +76,6 @@ var Tile = {
         if (tile.building) {
             tile.removeChild(tile.building);
             tile.building = null;
-        }
-
-        // Based on the type of the building, check to see if we need to remove the tile's resource (if any)
-        if (tile.getResType() !== null) {
-            console.log(building);
-            if (tile.getResType() === 'forest') {
-                if (building.name !== 'lumberYard') {
-                    tile.removeRes();
-                }
-            } else if (tile.getResType() === 'soy') {
-                if (building.name !== 'fertileFarm') {
-                    tile.removeRes();
-                }
-            }
         }
 
         // Apply the new building to the tile
@@ -237,10 +183,10 @@ var Board = {
         board.hasRoadConnect=function(i,j){return Board.hasRoadConnect(board,i,j)};
         // returns all the *indice* of the terrain type
         board.findTerrain=function(type){return Board.findTerrain(board,type)};
-        // returns all the *indice* of the res type
-        board.findRes=function(type){return Board.findRes(board,type)};
         // returns all the *indice* of the building type(nullable)/subtype(nullable)
         board.findBuilding=function(name,type,subtype,effect){return Board.findBuilding(board,name,type,subtype,effect)};
+        // Returns the tile indexes of all units currently on the board, filtered by type (set type === null if you just want all units)
+        board.findUnits = function(type) { return Board.findUnits(board, type); };
         // build new shanty town next to a random road tile and return index
         board.buildShanty=function(){return Board.buildShanty(board)};
         // go to next turn
@@ -435,14 +381,6 @@ var Board = {
                 res.push(i);
         return res;
     },
-    findRes: function(b,type){
-        var res=[];
-        var N=b.tileCount();
-        for(var i=0;i<N;i++)
-            if(b.at(i).getResType()===type)
-                res.push(i);
-        return res;
-    },
     findBuilding: function(b,name,type,subtype,effect){
         var res=[];
         var N=b.tileCount();
@@ -465,6 +403,24 @@ var Board = {
         }
         return res;
     },
+
+    findUnits: function(board, type) {
+        var unitIndexes = [];
+        var size = board.tileCount();
+
+        for (var i = 0; i < size; i++) {
+            var tile = board.at(i);
+
+            if (tile.hasUnit()) {
+                if (type === null || tile.getUnit().type === type) {
+                    unitIndexes.push(i);
+                }
+            }
+        }
+
+        return unitIndexes;
+    },
+
     buildShanty: function(board){
         var roads = board.findBuilding(null,null,"road",null);
         var choices = [];

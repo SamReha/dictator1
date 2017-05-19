@@ -8,17 +8,17 @@
 
 var Event={
 	createNew: function(isInformation){
-		var v=MainGame.game.add.sprite(0,0,"event_bg");
+		var v = MainGame.game.add.sprite(0, 0, "event_bg");
 
 		// Center by default
 		v.position.set(MainGame.game.width/2 - v.width/2, MainGame.game.height/2 - v.height/2);
 
 		// add bg
-		v.bg=MainGame.game.add.sprite(0,0,"event_bg");
+		v.bg = MainGame.game.add.sprite(0, 0, "event_bg");
 		v.addChild(v.bg);
 
 		// add decision view
-		v.decisionView=DDecisionView.createNew();
+		v.decisionView = DDecisionView.createNew();
 		v.addChild(v.decisionView);
 
 		// add page inidcator if necessary
@@ -31,11 +31,11 @@ var Event={
 		v.isInformation=isInformation;
 
 		// setup priority
-		v.inputEnabled=true;
-		v.input.priorityID=101;
+		v.inputEnabled = true;
+		v.input.priorityID = 101;
 
 		// setup a mask (not child)
-		v.uiMask=DUiMask.createNew();
+		v.uiMask = DUiMask.createNew();
 		v.uiMask.setController(100, function(){
 			if(isInformation){
 				v.uiMask.destroy();
