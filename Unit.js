@@ -45,7 +45,7 @@ var Unit = {
         unit.icon.x = unit.width/2;
         unit.addChild(unit.icon);
 
-        unit.nextTurn = function() { Unit.nextTurn(unit); };
+        unit.takeTurn = function() { Unit.takeTurn(unit); };
         unit.move = function(newIndex) { Unit.move(unit, newIndex); };
         unit.update = function() { Unit.update(unit); };
         unit.hasTarget = function() { return unit.target !== null; };
@@ -116,7 +116,8 @@ var Unit = {
         return true; // Unit was successfully spawned
     },
 
-    nextTurn: function(unit) {
+    /* Renamed nextTurn() to takeTurn() so that Units wouldn't be processed in Board's nextTurn() */
+    takeTurn: function(unit) {
         UnitAI.takeTurn(unit);
     },
 
@@ -129,6 +130,9 @@ var Unit = {
 
         // TODO: Maybe lerp an animation as it moves between tiles?
         if (!newTile.hasUnit()) {
+            // Tween to the tile
+            MainGame.board.cameraCenterOn(newIndex);
+
             newTile.setUnit(unit);
             currentTile.setUnit(null);
             unit.currentIndex = newIndex;

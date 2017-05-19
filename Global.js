@@ -11,31 +11,18 @@ var Global={
     thermometerDelta: 0,
     yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
 
-    // calcAvgCulture: function(){
-
-    // },
-    // calcAvgHealth: function(){
-
-    // },
-    // calcAvgShelter: function(){
-
-    // },
-    // calcAvgSalary: function(){
-
-    // },
-
-    // calcOvrIncome: function(){
-
-    // },
-
     nextTurn: function() {
         ++Global.turn;
 
         // Then, let's start going through the sequence of update functions
-        showNewBuildings(function() {
-            showNewPeople(function() {
-                showHomelessCamps(function() {
-                    console.log('we did it!');
+        showThermometerUpdate(function() {
+            showNewBuildings(function() {
+                showUnitAction(function() {
+                    showNewPeople(function() {
+                        showHomelessCamps(function() {
+                            console.log('we did it!');
+                        });
+                    });
                 });
             });
         });
@@ -43,10 +30,8 @@ var Global={
         /*global MainGame*/
         MainGame.board.nextTurn(Global.turn);
 
-        /*global updatePopulation*/
         Global.updateMoneyPerTurn();
         Global.money += Global.moneyPerTurn;
-        Global.updateThermometer();
         //Global.checkGameFail();
         
         // Makes sure we record the state after updating all the game info
@@ -82,43 +67,6 @@ var Global={
 
         Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,null,"road",null).length, 0, 100);
         Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length, 0, 100);
-    },
-
-    // Updates thermometer data. In general, should be called AFTER updateFreedomUnrest()
-    updateThermometer: function() {
-        // Get new delta (how much the thermometer will change by this turn)
-        this.thermometerDelta = this.freedom + this.unrest - 100;
-
-        // Apply delta
-        this.thermometerFill = Phaser.Math.clamp(this.thermometerFill + this.thermometerDelta, 0, 100); ;
-
-        // Check if unit spawn
-        if (this.thermometerFill >= 100) {
-            this.thermometerFill = 50;
-
-            // Compute angriest citizen
-            var workingClass = MainGame.population.lowList();
-            workingClass.sort(function(a, b) {
-                return b.unrest - a.unrest;
-            });
-            var citizenToRiot = workingClass[0];
-        
-            var spawnSuccessful = Unit.spawnUnitAt(Unit.Riot, citizenToRiot.home);
-
-            if (spawnSuccessful) {
-                // Remove them from their home
-                MainGame.board.at(citizenToRiot.home).getBuilding().removePerson();
-                citizenToRiot.home = null;
-
-                // Remove them from their workplace
-                var workIndex = citizenToRiot.workplace;
-                if (workIndex !== null) {
-                    var workPlace = MainGame.board.at(workIndex).getBuilding();
-                    workPlace.removePerson();
-                    citizenToRiot.work = null;
-                }
-            }
-        }
     },
 
     updateMoneyPerTurn: function(){

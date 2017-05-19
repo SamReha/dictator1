@@ -111,3 +111,83 @@ var showHomelessCamps = function(callback) {
     // Then, start recursively spawning events to handle each notification
     makeBuildingCompletionEvents(newBuildingIndexes, 0);
 };
+
+var showThermometerUpdate = function(callback) {
+    // Get new delta (how much the thermometer will change by this turn)
+    Global.thermometerDelta = Global.freedom + Global.unrest - 100;
+
+    // Apply delta
+    Global.thermometerFill = Phaser.Math.clamp(Global.thermometerFill + Global.thermometerDelta, 0, 100);
+
+    // Check if unit spawn
+    if (Global.thermometerFill >= 100) {
+        Global.thermometerFill = 50;
+
+        // Compute angriest citizen
+        var workingClass = MainGame.population.lowList();
+        workingClass.sort(function(a, b) {
+            return b.unrest - a.unrest;
+        });
+        var citizenToRiot = workingClass[0];
+    
+        var didSpawn = Unit.spawnUnitAt(Unit.Riot, citizenToRiot.home);
+
+        if (didSpawn) {
+            // Tween to the tile
+            MainGame.board.cameraCenterOn(citizenToRiot.home);
+
+            // Remove them from their home
+            MainGame.board.at(citizenToRiot.home).getBuilding().removePerson();
+            citizenToRiot.home = null;
+
+            // Remove them from their workplace
+            var workIndex = citizenToRiot.workplace;
+            if (workIndex !== null) {
+                var workPlace = MainGame.board.at(workIndex).getBuilding();
+                workPlace.removePerson();
+                citizenToRiot.work = null;
+            }
+
+            // Wait a bit, then spawn the event.
+            var timer = MainGame.game.time.create(true);
+            timer.add(300, function() {
+            var e = Event.createNew();
+                e.setModel([
+                                {
+                                    portrait: 'exclamation_01', 
+                                    description: 'Due to rising tensions, a citizen has begun to riot!', 
+                                    buttonTexts: ["OK"]
+                                }
+                            ]);
+
+                e.setController([
+                    [function() {
+                        e.suicide();
+                        callback();
+                    }]
+                ]);
+            }, null);
+            timer.start();
+        }
+    } else {
+        // Else, no spawn occured, so we should just move on
+        callback();
+    }
+};
+
+var showUnitAction = function(callback) {
+    // Start by getting a list of all active units.
+    var units = MainGame.board.findUnits(null).map(function(unitIndex) {
+        return MainGame.board.at(unitIndex).getUnit();
+    });
+    console.log(units);
+
+    for (var i = 0; i < units.length; i++) {
+        units[i].takeTurn();
+    }
+    
+    // Then, start recursively spawning events to handle each notification
+    //makeBuildingCompletionEvents(newBuildingIndexes, 0);
+
+    callback();
+};

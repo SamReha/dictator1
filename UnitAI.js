@@ -7,7 +7,7 @@ var UnitAI = {
 		}
 
 		var newMoveIndex = UnitAI.chooseMove(unit);
-		console.log(newMoveIndex);
+		//console.log(newMoveIndex);
 		unit.move(newMoveIndex);
 		if (unit.isAttacking)
 			UnitAI.attackTarget(unit);
@@ -123,6 +123,9 @@ var UnitAI = {
 	},
 	
 	attackTarget: function(unit) {
+		// Tween to the tile
+        MainGame.board.cameraCenterOn(unit.target);
+
 		if (unit.type === Unit.Riot) {
 			var targetTile = MainGame.board.at(unit.target);
 
