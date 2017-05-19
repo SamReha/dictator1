@@ -537,14 +537,14 @@ var Board = {
         return index;
     },
     // to next turn
-    nextTurn: function(b,turn){
+    nextTurn: function(b, turn) {
         // DFS call nextTurn
-        var stack=[b];
-        while(stack.length>0){
-            var node=stack.pop();
-            if(node.nextTurn && node!==b)
+        var stack = [b];
+        while (stack.length > 0) {
+            var node = stack.pop();
+            if (node.nextTurn && node!==b)
                 node.nextTurn(turn);
-            for(var i=0;i<node.children.length;i++){
+            for (var i = 0; i < node.children.length; i++) {
                 stack.push(node.children[i]);
             }
         }

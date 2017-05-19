@@ -33,6 +33,9 @@ var Global={
         Global.updateYearViewData();
 
         ++Global.turn;
+
+        // Then, let's start going through the sequence of update functions
+
         /*global MainGame*/
         MainGame.board.nextTurn(Global.turn);
 
@@ -48,11 +51,11 @@ var Global={
         var string = "Freedom: "+this.freedom+"%  Unrest: "+this.unrest+"%  $="+this.money+"K (";
         if(this.moneyPerTurn >= 0){string += "+"+this.moneyPerTurn+"K/turn)";}
         else{string += "-"+this.moneyPerTurn+"/turn)"};
-        return string
+        return string;
     },
 
     // Finds the current Freedom value by averaging the health and education of all low people
-    updateFreedomUnrest: function(){
+    updateFreedomUnrest: function() {
         var freeAv = 0;
         var unrestAv = 0;
         /*global MainGame*/

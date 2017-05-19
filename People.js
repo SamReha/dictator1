@@ -357,7 +357,7 @@ var Population={
         console.log("[Population] end of report.");
     },
     
-    increase: function(pop,amount){
+    increase: function(pop,amount) {
         for(var i = 0; i < amount; i++) {
             var per=Person.createNew({"type":0,"workplace":null,"home":null});
             pop.people.push(per);
@@ -371,6 +371,8 @@ var Population={
             per.shelter=house.shelter;
             per.education=house.education;
         }
+
+        Global.updateFreedomUnrest();
     },
     
     hire: function(pop,tileIndex){
