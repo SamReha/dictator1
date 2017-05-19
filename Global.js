@@ -32,14 +32,18 @@ var Global={
         ++Global.turn;
 
         // Then, let's start going through the sequence of update functions
-        // First off, new buildings:
-        showNewBuildings(function() { console.log('we did it!'); });
+        showNewBuildings(function() {
+            showNewPeople(function() {
+                showHomelessCamps(function() {
+                    console.log('we did it!');
+                });
+            });
+        });
 
         /*global MainGame*/
         MainGame.board.nextTurn(Global.turn);
 
         /*global updatePopulation*/
-        updatePopulation(true, true);
         Global.updateMoneyPerTurn();
         Global.money += Global.moneyPerTurn;
         Global.updateThermometer();

@@ -5,11 +5,6 @@ var updatePopulation = function(nextTurn, updatingHomes) {
 	var houseList = MainGame.board.findBuilding(null,null,"housing",null);
 	//var workMap = pop.getWorkMap();
 	// var houseMap = pop.getHouseMap();
-
-	if (nextTurn) {
-		pop.increase(Math.floor(Math.random()*3)+1);
-	}
-
 	if (updatingHomes) {
 		for(var houseIndex=0;houseIndex<houseList.length;++houseIndex){
 			var h=MainGame.board.at(houseList[houseIndex]).getBuilding();
@@ -46,14 +41,6 @@ var updatePopulation = function(nextTurn, updatingHomes) {
 	// 	pop.people[personIndex] = person;
 	// }
 	pop.update(nextTurn);
-
-	/*global Global*/
-	Global.updateFreedomUnrest();
-};
-
-var clampedSum = function(a, b, max) {
-	var sum = a + b;
-	return sum > max ? max : sum;
 };
 
 var updateHomesNearOutput = function(tileIndex,range){

@@ -343,9 +343,15 @@ var Population={
     },
 
     // Class func: Implementation
-    update: function(pop,nextTurn){
+    update: function(pop, nextTurn) {
+        if (nextTurn)
+            pop.increase(Math.floor(Math.random()*3)+1);
+
         /*global MainGame*/
-        pop.people.forEach(function(p){p.update(MainGame.board,nextTurn)});
+        pop.people.forEach(function(p) { p.update(MainGame.board, nextTurn); });
+
+        /*global Global*/
+        Global.updateFreedomUnrest();
     },
     
     report: function(pop){

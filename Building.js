@@ -74,7 +74,7 @@ var Building = {
     },
 
     nextTurn: function(b,turn){
-        if(b.startingTurn===turn){
+        if (b.startingTurn===turn && b.constructionIcon) {
             b.tint = 0xffffff;
             b.constructionIcon.destroy();
             b.counterIcon.destroy();
