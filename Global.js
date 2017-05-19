@@ -32,6 +32,8 @@ var Global={
         ++Global.turn;
 
         // Then, let's start going through the sequence of update functions
+        // First off, new buildings:
+        showNewBuildings(function() { console.log('we did it!'); });
 
         /*global MainGame*/
         MainGame.board.nextTurn(Global.turn);
@@ -41,7 +43,7 @@ var Global={
         Global.updateMoneyPerTurn();
         Global.money += Global.moneyPerTurn;
         Global.updateThermometer();
-        Global.checkGameFail();
+        //Global.checkGameFail();
         
         // Makes sure we record the state after updating all the game info
         Global.updateYearViewData();

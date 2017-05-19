@@ -181,7 +181,7 @@ var Board = {
         board.hasRoadConnect=function(i,j){return Board.hasRoadConnect(board,i,j)};
         // returns all the *indice* of the terrain type
         board.findTerrain=function(type){return Board.findTerrain(board,type)};
-        // returns all the *indice* of the building type(nullable)/subtype(nullable)
+        // Returns the INDEXES of all the buildings matching type(nullable)/subtype(nullable)
         board.findBuilding=function(name,type,subtype,effect){return Board.findBuilding(board,name,type,subtype,effect)};
         // Returns the tile indexes of all units currently on the board, filtered by type (set type === null if you just want all units)
         board.findUnits = function(type) { return Board.findUnits(board, type); };
