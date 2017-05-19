@@ -3,10 +3,13 @@ var YearView = {
     header2: { font: '20px myKaiti' },
 
     createNew: function() {
-        var yearView = Page.createNew();
-        yearView.input.priorityID = 3;
-        yearView.anchor.set(0.5, 0.5);
-        yearView.position.set(MainGame.game.width/2, MainGame.game.height/2);
+        var yearView = MainGame.game.make.group();
+
+        yearView.page = Page.createNew();
+        yearView.page.anchor.setTo(.5,.5);
+        yearView.addChild(yearView.page);
+
+        //yearView.position.set(MainGame.game.width/2, MainGame.game.height/2);
 
         yearView.records = MainGame.global.yearViewData;
         yearView.entryWidth = (yearView.width - (Page.margin.x*2)) / 5;
@@ -22,12 +25,12 @@ var YearView = {
 
         // setup the mask
         /* global DUiMask */
-        yearView.uiMask = DUiMask.createNew();
-        yearView.uiMask.setController(2, function() {
-            yearView.uiMask.destroy();
-            yearView.closeSfx.play();
-            yearView.destroy();
-        });
+        // yearView.uiMask = DUiMask.createNew();
+        // yearView.uiMask.setController(2, function() {
+        //     yearView.uiMask.destroy();
+        //     yearView.closeSfx.play();
+        //     yearView.destroy();
+        // });
 
         yearView.label = MainGame.game.make.text(0, -yearView.height/2 + Page.margin.y, 'State Records', this.header1);
         yearView.label.anchor.set(0.5, 0);
@@ -62,6 +65,8 @@ var YearView = {
         yearView.listView.x = -yearView.width/2 + Page.margin.x;
         yearView.listView.y =  yearView.header.y + yearView.header.height;
         yearView.addChild(yearView.listView);
+
+        return yearView;
     },
 
     _setupListView_: function(yearView, pageIndex) {

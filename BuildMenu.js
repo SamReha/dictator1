@@ -262,7 +262,7 @@ var BuildMenu={
 
 		// FARM
 		var buyFarmBtn = MainGame.game.make.button((buildMenu.width/11), 5*(buildMenu.height/12), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFarmBtn, 'fertileFarm');
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFarmBtn, 'farm');
 			buyFarmBtn.toolTip.hide();
 		},
 		buildMenu, 0, 1, 2, 2);

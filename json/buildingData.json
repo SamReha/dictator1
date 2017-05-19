@@ -1,11 +1,11 @@
 {
   "shantyTown": {
-    "type": "?",
+    "faction": "Infrastucture",
     "subtype": "housing",
     "playerLabel": "Homeless Camp",
     "cost": 0,
     "health": 0,
-    "education": 0,
+    "culture": 0,
     "aoeFreedom": 0,
     "aoeUnrest": 0,
     "shelter": 0,
@@ -14,12 +14,12 @@
     "effects": [{"type": null}]
   },
   "apartment": {
-    "type": "?",
+    "faction": "Infrastucture",
     "subtype": "housing",
     "playerLabel": "Apartment",
     "cost": 10,
     "health": 0,
-    "education": 0,
+    "culture": 0,
     "aoeFreedom": 0,
     "aoeUnrest": 0,
     "shelter": 0,
@@ -28,12 +28,12 @@
     "effects": [{"type": null}]
   },
   "suburb": {
-    "type": "?",
+    "faction": "Infrastucture",
     "subtype": "housing",
     "playerLabel": "Suburbs",
     "cost": 10,
     "health": 0,
-    "education": 0,
+    "culture": 0,
     "aoeFreedom": 0,
     "aoeUnrest": 0,
     "shelter": 0,
@@ -42,12 +42,12 @@
     "effects": [{"type": null}]
   },
   "mansion": {
-    "type": "?",
+    "faction": "Infrastucture",
     "subtype": "housing",
     "playerLabel": "Mansion",
     "cost": 10,
     "health": 0,
-    "education": 0,
+    "culture": 0,
     "aoeFreedom": 0,
     "aoeUnrest": 0,
     "shelter": 0,
@@ -56,12 +56,12 @@
     "effects": [{"type": null}]
   },
   "palace":{
-    "type": "?",
+    "faction": "Infrastucture",
     "subtype": "housing",
     "playerLabel": "Your Palace",
     "cost": 0,
     "health": 100,
-    "education": 100,
+    "culture": 100,
     "aoeFreedom": 0,
     "aoeUnrest": 0,
     "shelter": 100,
@@ -69,24 +69,9 @@
     "maxPeople": 0,
     "effects": [{"type": null}]
   },
-
-  "weakFarm": {
-    "type": "?",
-    "subtype": "health",
-    "playerLabel": "Farm",
-    "cost": 10,
-    "maxPeople": 5,
-    "effects": [
-      {
-        "type": "health",
-        "outputTable": [0, 5, 10, 15, 20, 25],
-        "range": 2
-      }
-    ]
-  },
-  "fertileFarm": {
-    "type": "?",
-    "subtype": "health",
+  "farm": {
+    "faction": "Bureaucratic",
+    "subtype": "blueCollar",
     "playerLabel": "Farm",
     "cost": 10,
     "maxPeople": 5,
@@ -98,27 +83,99 @@
       }
     ]
   },
+  "library":{
+    "faction": "Bureaucratic",
+    "subtype": "blueCollar",
+    "playerLabel": "Library",
+    "cost": 15,
+    "maxPeople": 3,
+    "effects": [
+      {
+        "type": "culture",
+        "outputTable": [0, 20, 40, 60],
+        "range":2
+      },
+      {
+        "type": "freedom",
+        "outputTable": [0, 3, 6, 9],
+        "range": 2
+      }
+    ]
+  },
+  "hospital":{
+    "faction": "Bureaucratic",
+    "subtype": "whiteCollar",
+    "playerLabel": "Hospital",
+    "cost": 30,
+    "maxPeople": 4,
+    "effects": [
+      {
+        "type": "health",
+        "outputTable": [0, 25, 50, 75, 100],
+        "range":2
+      },
+      {
+        "type": "unrest",
+        "outputTable": [0, -5, -10, -15, -20],
+        "range": 2
+      }
+    ],
+    "misc":
+      {
+        "maxOccupants": 5,
+        "effects": [
+          {
+            "type": "shelter",
+            "outputTable": [75, 75, 75, 75, 75, 75],
+            "range": 0
+          },
+          {
+            "type": "money",
+            "outputTable": [0, 7, 14, 21, 28, 35]
+          }
+        ]
+      }
+  },
+  "university":{
+    "faction": "Bureaucratic",
+    "subtype": "whiteCollar",
+    "playerLabel": "University",
+    "cost": 35,
+    "maxPeople": 2,
+    "effects": [
+      {
+        "type": "culture",
+        "outputTable": [0, 50, 100],
+        "range": 2
+      },
+      {
+        "type": "freedom",
+        "outputTable": [0, 8, 16],
+        "range": 2
+      }
+    ]
+  },
   "school": {
-    "type": "?",
+    "faction": "Bureaucratic",
     "subtype": "education",
     "playerLabel": "School",
     "cost": 15,
     "maxPeople": 3,
     "effects": [
       {
-        "type": "freedom",
-        "outputTable": [0, 3, 6, 9],
+        "type": "culture",
+        "outputTable": [0, 20, 40, 60],
         "range": 2
       },
       {
-        "type": "education",
-        "outputTable": [0, 20, 40, 60],
+        "type": "freedom",
+        "outputTable": [0, 3, 6, 9],
         "range": 2
       }
     ]
   },
   "park":{
-    "type": "?",
+    "faction": "Bureaucratic",
     "subtype": "public",
     "playerLabel": "Park",
     "cost": 15,
@@ -131,8 +188,93 @@
       }
     ]
   },
+  "market":{
+    "faction": "Commerce",
+    "subtype": "whiteCollar",
+    "playerLabel": "Market",
+    "cost": 10,
+    "maxPeople": 4,
+    "effects": [
+      {
+        "type": "money",
+        "outputTable": [0, 2, 4, 6, 8]
+      },
+      {
+        "type": "health",
+        "outputTable": [0, 2, 4, 6, 8],
+        "range": 2
+      }
+    ]
+  },
+  "cinema":{
+    "faction": "Commerce",
+    "subtype": "whiteCollar",
+    "playerLabel": "Cinema",
+    "cost": 15,
+    "maxPeople": 2,
+    "effects": [
+      {
+        "type": "money",
+        "outputTable": [0, 5, 10]
+      },
+      {
+        "type": "freedom",
+        "outputTable": [0, 3, 6],
+        "range": 2
+      }
+    ]
+  },
+  "opiumDen":{
+    "faction": "Commerce",
+    "subtype": "blueCollar",
+    "playerLabel": "Opium Den",
+    "cost": 30,
+    "maxPeople": 5,
+    "effects": [
+      {
+        "type": "money",
+        "outputTable": [0, 3, 6, 9, 12, 15]
+      },
+      {
+        "type": "health",
+        "outputTable": [0, -3, -6, -9, -12, -15],
+        "range": 2
+      }
+    ]
+  },
+  "factory":{
+    "faction": "Commerce",
+    "subtype": "blueCollar",
+    "playerLabel": "Factory",
+    "cost": 50,
+    "maxPeople": 7,
+    "effects": [
+      {
+        "type": "money",
+        "outputTable": [0, 4, 8, 12, 16, 20, 24, 28]
+      },
+      {
+        "type": "unrest",
+        "outputTable": [0, 2, 4, 6, 8, 10, 12, 14],
+        "range": 2
+      }
+    ]
+  },
+  "lumberYard": {
+    "faction": "Commerce",
+    "subtype": "production",
+    "playerLabel": "Lumber Yard",
+    "cost": 30,
+    "maxPeople": 7,
+    "effects": [
+      {
+        "type": "money",
+        "outputTable": [0, 3, 6, 9, 12, 15, 18, 21]
+      }
+    ]
+  },
   "police":{
-    "type": "!",
+    "faction": "Military",
     "subtype": "military",
     "playerLabel": "Police Station",
     "cost": 15,
@@ -145,29 +287,70 @@
       }
     ]
   },
-  "armyBase": {
-    "type": "!",
-    "subtype": "military",
-    "playerLabel": "Army Base",
-    "cost": 30,
-    "maxPeople": 5,
-    "effects": [{"type": null}]
-  },
-  "lumberYard": {
-    "type": "$",
-    "subtype": "production",
-    "playerLabel": "Lumber Yard",
-    "cost": 30,
-    "maxPeople": 7,
+  "radioStation":{
+    "faction": "Military",
+    "subtype": "whiteCollar",
+    "playerLabel": "Radio Station",
+    "cost": 15,
+    "maxPeople": 3,
     "effects": [
       {
-        "type": "money",
-        "outputTable": [0, 3, 6, 9, 12, 15, 18, 21]
+        "type": "culture",
+        "outputTable": [0, 2, 4, 6, 8],
+        "range": 3
+      },
+      {
+        "type": "unrest",
+        "outputTable": [0, -5, -10, -15],
+        "range": 3
       }
     ]
   },
+  "armyBase": {
+    "faction": "Military",
+    "subtype": "military",
+    "playerLabel": "Army Base",
+    "cost": 15,
+    "maxPeople": 5,
+    "effects": [{"type": null}],
+    "misc":
+      {
+        "deployed": false,
+        "effects": [{"type": null}]
+      }
+  },
+  "prison":{
+    "faction": "Military",
+    "subtype": "military",
+    "playerLabel": "Prison",
+    "cost": 25,
+    "maxPeople": 7,
+    "effects": [
+      {
+        "type": "freedom",
+        "outputTable": [0, -5, -10, -15],
+        "range": 2
+      }
+    ],
+    "misc":
+      {
+        "maxOccupants": 5,
+        "effects": [
+          {
+            "type": "shelter",
+            "outputTable": [50, 50, 45, 40, 35, 30],
+            "range": 0
+          },
+          {
+            "type": "health",
+            "outputTable": [15, 15, 15, 10, 10, 10],
+            "range": 0
+          }
+        ]
+      }
+  },
   "road": {
-    "type": "-",
+    "faction": "Infrastucture",
     "subtype": "road",
     "playerLabel": "Road",
     "cost": 2,
@@ -175,7 +358,7 @@
     "effects": [{"type": null}]
   },
   "rubble": {
-    "type": "-",
+    "faction": "None",
     "subtype": "rubble",
     "playerLabel": "Rubble",
     "cost": 0,

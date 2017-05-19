@@ -16,7 +16,7 @@ var MoneyPanel = {
 
         // State Money (warchest)
         moneyPanel.warchestGroup = MainGame.game.make.button(2, 0, 'money_icon', function(){
-            FinanceView.createNew();
+            Binder.createNew(Binder.global,1);
             moneyPanel.sfxArray[Math.floor(Math.random()*moneyPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
         moneyPanel.warchestGroup.y = moneyPanel.height/2 - moneyPanel.warchestGroup.height/2;
@@ -34,7 +34,7 @@ var MoneyPanel = {
 
         // Swiss Bank (personal money)
         moneyPanel.swissGroup = MainGame.game.make.button(moneyPanel.width/2, 0, 'swiss_icon', function() {
-            PrivateAccountView.createNew();
+            Clipboard.createNew(Clipboard.account);
             moneyPanel.sfxArray[Math.floor(Math.random()*moneyPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
         moneyPanel.swissGroup.y = moneyPanel.height/2 - moneyPanel.swissGroup.height/2;

@@ -14,10 +14,11 @@ var PrivateAccountView = {
     header2: { font: '20px myKaiti' },
 
     createNew: function() {
-        var accountView = Page.createNew();
-        accountView.input.priorityID = 3;
-        accountView.anchor.set(0.5, 0.5);
-        accountView.position.set(MainGame.game.width/2, MainGame.game.height/2);
+        var accountView = MainGame.game.make.group();
+
+        accountView.page = Page.createNew();
+        accountView.page.anchor.set(0.5, 0.5);
+        accountView.addChild(accountView.page);
 
         accountView.sfxArray = [
             game.make.audio('paper_click_2'),
@@ -31,13 +32,12 @@ var PrivateAccountView = {
         accountView.moneySfx = game.make.audio('money_earned');
 
         // setup the mask
-        /* global DUiMask */
-        accountView.uiMask = DUiMask.createNew();
-        accountView.uiMask.setController(2, function(){
-            accountView.uiMask.destroy();
-            accountView.closeSfx.play();
-            accountView.destroy();
-        });
+        // accountView.uiMask = DUiMask.createNew();
+        // accountView.uiMask.setController(2, function(){
+        //     accountView.uiMask.destroy();
+        //     accountView.closeSfx.play();
+        //     accountView.destroy();
+        // });
 
         // Show current deposit amount
         accountView.depositLabelText = MainGame.game.make.text(0, -accountView.height/2 + Page.margin.y + 10, "Account Balance", this.header1);

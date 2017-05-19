@@ -69,6 +69,7 @@ var MainGame={
 
         /*global updatePopulation*/
         updatePopulation(false,true);
+        Global.updateYearViewData();
         //MainGame.global.updateFreedomUnrest();
 
         /*global Tutorial*/

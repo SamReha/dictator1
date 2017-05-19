@@ -23,7 +23,7 @@ var updatePopulation = function(nextTurn, updatingHomes) {
 	// 	var person = lowList[personIndex];
 	// 	var homeIndex = person.home;
 		
-	// 	//console.log("updatePopulation health: " + person.health + " education: " + person.education + " shelter: " + person.shelter);
+	// 	//console.log("updatePopulation health: " + person.health + " culture: " + person.culture + " shelter: " + person.shelter);
 		
 	// 	// This check can be safely ignored once shanty towns are spawning correctly
 	// 	if (MainGame.board.at(homeIndex) != undefined) {
@@ -35,10 +35,10 @@ var updatePopulation = function(nextTurn, updatingHomes) {
 	// 		// Get new shelter
 	// 		person.shelter = home.shelter;
 	
-	// 		// Get new education
-	// 		if (person.education < home.education && nextTurn) {
+	// 		// Get new culture
+	// 		if (person.culture < home.culture && nextTurn) {
 	// 			/*global Person*/
-	// 			person.education = clampedSum(person.education, Person.learningSpeed, home.education);
+	// 			person.culture = clampedSum(person.culture, Person.learningSpeed, home.culture);
 	// 		}
 	// 	}
 		
@@ -69,7 +69,7 @@ var updateHomesNearOutput = function(tileIndex,range){
 var updateHome = function(houseIndex){
 	var home = MainGame.board.at(houseIndex).building;
 	home.health = getEffectOutputInRangeByType(houseIndex, "health");
-	home.education = getEffectOutputInRangeByType(houseIndex, "education");
+	home.culture = getEffectOutputInRangeByType(houseIndex, "culture");
 	home.aoeFreedom = getEffectOutputInRangeByType(houseIndex, "freedom");
 	home.aoeUnrest = getEffectOutputInRangeByType(houseIndex, "unrest");
 	home.shelter = home.maxShelter;
@@ -84,7 +84,7 @@ var getEffectOutputInRangeByType = function(homeIndex, type) {
 	for (var index=0;index<allBuildingIndexes.length;++index) {
 		var buildingData = MainGame.board.at(allBuildingIndexes[index]).building;
 		
-		// If the distance between the two buildings is <= the range of the eduBuilding, accumulate education
+		// If the distance between the two buildings is <= the range of the eduBuilding, accumulate culture
 		var effectList = buildingData.effects;
 		for (var effectIndex=0;effectIndex<effectList.length;++effectIndex) {
 			var thisEffect = effectList[effectIndex];

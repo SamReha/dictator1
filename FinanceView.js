@@ -3,10 +3,11 @@ var FinanceView = {
     header2: { font: '20px myKaiti' },
 
     createNew: function() {
-        var financeView = Page.createNew();
-        financeView.input.priorityID = 3;
-        financeView.anchor.set(0.5, 0.5);
-        financeView.position.set(MainGame.game.width/2, MainGame.game.height/2);
+        var financeView = MainGame.game.make.group();
+
+        financeView.page = Page.createNew();
+        financeView.page.anchor.setTo(.5,.5);
+        financeView.addChild(financeView.page);
 
         financeView.expenditures = [];
         financeView.revenue = [];
@@ -26,13 +27,12 @@ var FinanceView = {
         financeView.closeSfx = game.make.audio('message_close');
 
         // setup the mask
-        /* global DUiMask */
-        financeView.uiMask = DUiMask.createNew();
-        financeView.uiMask.setController(2, function() {
-            financeView.uiMask.destroy();
-            financeView.closeSfx.play();
-            financeView.destroy();
-        });
+        // financeView.uiMask = DUiMask.createNew();
+        // financeView.uiMask.setController(2, function() {
+        //     financeView.uiMask.destroy();
+        //     financeView.closeSfx.play();
+        //     financeView.destroy();
+        // });
 
         financeView.label = MainGame.game.make.text(0, -financeView.height/2 + Page.margin.y, 'Finances', this.header1);
         financeView.label.anchor.set(0.5, 0);
@@ -94,6 +94,8 @@ var FinanceView = {
 
         financeView.revPageIndicator.x = -financeView.width/2 + Page.margin.x - financeView.revPageIndicator.width/3;
         financeView.revPageIndicator.y = financeView.revListView.y + (financeView.entryHeight*6);
+        
+        return financeView;
     },
 
     _setupExpListView_: function(financeView, pageIndex) {

@@ -11,7 +11,7 @@ var Global={
     thermometerDelta: 0,
     yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
 
-    // calcAvgEducation: function(){
+    // calcAvgCulture: function(){
 
     // },
     // calcAvgHealth: function(){
@@ -29,9 +29,6 @@ var Global={
     // },
 
     nextTurn: function() {
-        // Makes sure we record the state BEFORE updating all the game info
-        Global.updateYearViewData();
-
         ++Global.turn;
 
         // Then, let's start going through the sequence of update functions
@@ -45,6 +42,9 @@ var Global={
         Global.money += Global.moneyPerTurn;
         Global.updateThermometer();
         Global.checkGameFail();
+        
+        // Makes sure we record the state after updating all the game info
+        Global.updateYearViewData();
     },
 
     toString: function(){

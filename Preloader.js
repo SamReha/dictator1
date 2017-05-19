@@ -5,46 +5,37 @@ var Preloader={
         // Builings
         var buildingDir = imageDir + 'buildings/';
         // Vertical Slice assets
-        g.load.image('apartment1',   buildingDir + 'apartment.png');
-        g.load.image('armyBase1',    buildingDir + 'armyBase.png');
-        g.load.image('fertileFarm1', buildingDir + 'fertileFarm.png');
-        g.load.image('armyBase1',    buildingDir + "armyBase.png");
-        g.load.image('factory1',     buildingDir + 'factory.png');
-        g.load.image('lumberYard1',  buildingDir + 'factory.png');
-        g.load.image('mansion1',     buildingDir + 'mansion.png');                
-        g.load.image('palace1',      buildingDir + 'palace.png');
-        g.load.image('park1',        buildingDir + 'park.png');
-        g.load.image('police1',      buildingDir + 'police.png');
-        g.load.image('road1',        buildingDir + 'road.png');
-        g.load.image('school1',      buildingDir + 'school.png');
-        g.load.image('shantyTown1',  buildingDir + 'shantyTown.png');
-        g.load.image('suburb1',      buildingDir + 'suburb.png');
-        g.load.image('weakFarm1',    buildingDir + 'weakFarm.png');
-        g.load.image('rubble1',       buildingDir + 'rubble.png');
+        g.load.image('apartment1',      buildingDir + 'apartment.png');
+        g.load.image('armyBase1',       buildingDir + 'armyBase.png');
+        g.load.image('farm1',           buildingDir + 'farm.png');
+        g.load.image('armyBase1',       buildingDir + "armyBase.png");
+        g.load.image('factory1',        buildingDir + 'factory.png');
+        g.load.image('lumberYard1',     buildingDir + 'factory.png');
+        g.load.image('mansion1',        buildingDir + 'mansion.png');                
+        g.load.image('palace1',         buildingDir + 'palace.png');
+        g.load.image('park1',           buildingDir + 'park.png');
+        g.load.image('police1',         buildingDir + 'police.png');
+        g.load.image('road1',           buildingDir + 'road.png');
+        g.load.image('school1',         buildingDir + 'school.png');
+        g.load.image('shantyTown1',     buildingDir + 'shantyTown.png');
+        g.load.image('suburb1',         buildingDir + 'suburb.png');
+        g.load.image('rubble1',         buildingDir + 'rubble.png');
 
         // Building Detail Icons
         var detailIconDir = buildingDir + 'detail_icons/';
-        g.load.image('apartment_detail',   detailIconDir + 'apartment.png');
-        g.load.image('fertileFarm_detail', detailIconDir + 'farm.jpg');
-        g.load.image('weakFarm_detail',    detailIconDir + 'farm.jpg');
-        g.load.image('armyBase_detail',    detailIconDir + 'armyBase.jpg');
-        g.load.image('factory_detail',     detailIconDir + 'factory.jpg');
-        g.load.image('lumberYard_detail',  detailIconDir + 'factory.jpg');
-        g.load.image('mansion_detail',     detailIconDir + 'mansion.png');
-        g.load.image('palace_detail',      detailIconDir + 'palace.png');
-        g.load.image('road_detail',        detailIconDir + 'road.jpg');
-        g.load.image('school_detail',      detailIconDir + 'school.png');
-        g.load.image('shantyTown_detail',  detailIconDir + 'shantyTown.png');
-        g.load.image('suburb_detail',      detailIconDir + 'suburb.png');
-        g.load.image('park_detail',        detailIconDir + 'park.png');
-        g.load.image('detail_icon_frame',  detailIconDir + 'detail_icon_frame.png');
-
-        // Resources
-        var resourceDir = imageDir + 'resources/';
-        // Vertical Slice assets
-        g.load.image('forest1',   resourceDir + 'forest1.png');
-        g.load.image('forest2',   resourceDir + 'forest2.png');
-        g.load.image('soy',      resourceDir + 'soy.png');
+        g.load.image('apartment_detail',    detailIconDir + 'apartment.png');
+        g.load.image('farm_detail',         detailIconDir + 'farm.jpg');
+        g.load.image('armyBase_detail',     detailIconDir + 'armyBase.jpg');
+        g.load.image('factory_detail',      detailIconDir + 'factory.jpg');
+        g.load.image('lumberYard_detail',   detailIconDir + 'factory.jpg');
+        g.load.image('mansion_detail',      detailIconDir + 'mansion.png');
+        g.load.image('palace_detail',       detailIconDir + 'palace.png');
+        g.load.image('road_detail',         detailIconDir + 'road.jpg');
+        g.load.image('school_detail',       detailIconDir + 'school.png');
+        g.load.image('shantyTown_detail',   detailIconDir + 'shantyTown.png');
+        g.load.image('suburb_detail',       detailIconDir + 'suburb.png');
+        g.load.image('park_detail',         detailIconDir + 'park.png');
+        g.load.image('detail_icon_frame',   detailIconDir + 'detail_icon_frame.png');
 
         // Terrain
         var resourceDir = imageDir + 'terrains/';
@@ -70,30 +61,38 @@ var Preloader={
 
         // load ui assets
         var uiDir = imageDir + 'ui/';
-        g.load.image('tile_hover_backpanel',          uiDir + 'tile_hover_backpanel.png');
-        g.load.image('building_detail_backpanel',     uiDir + 'building_detail_backpanel.png');
-        g.load.image('buildMenuBg',                   uiDir + 'buildMenuBg.png');
-        g.load.image('buildMenuCover1',               uiDir + 'buildMenuCover1.png');
-        g.load.image('buildMenuCover2',               uiDir + 'buildMenuCover2.png');
-        g.load.image('coalition_backpanel',           uiDir + 'coalition_backpanel.png');
-        g.load.image('stats_panel_backpanel',         uiDir + 'stats_panel_backpanel.png');
-        g.load.image('money_backpanel',               uiDir + 'money_backpanel.png');
-        g.load.image('peopleViewBg',                  uiDir + 'peopleViewBg.jpg');
-        g.load.image('peopleViewLeftBg',              uiDir + 'peopleViewLeftBg.png');
-        g.load.image('peopleViewRightBg',             uiDir + 'peopleViewRightBg.png');
-        g.load.image('peopleViewContractBg',          uiDir + 'peopleViewContractBg.png');
-        g.load.image('incButton',                     uiDir + 'incButton.png');
-        g.load.image('decButton',                     uiDir + 'decButton.png');
-        g.load.image("pi_prevPage",                   uiDir + "pi_prevPage.png");
-        g.load.image("pi_nextPage",                   uiDir + "pi_nextPage.png");
-        g.load.image("uiMask",                        uiDir + "uiMask.png");
-        g.load.image("event_bg",                      uiDir + "event_bg.png");
-        g.load.image('freedomUnrestMeter',            uiDir + "freedomUnrestMeter.png");
-        g.load.image('freedomUnrestMeter_foreground', uiDir + 'freedomUnrestMeter_foreground.png');
-        g.load.image('fun_panel_backpanel',           uiDir + 'fun_panel_backpanel.png');
-        g.load.image('thermometer_bulb',              uiDir + 'thermometer_bulb.png');
-        g.load.image('thermometer_tube',              uiDir + 'thermometer_tube.png');
-        g.load.image('page_texture',                  uiDir + 'page_texture.png');
+        g.load.image('tile_hover_backpanel',            uiDir + 'tile_hover_backpanel.png');
+        g.load.image('building_detail_backpanel',       uiDir + 'building_detail_backpanel.png');
+        g.load.image('buildMenuBg',                     uiDir + 'buildMenuBg.png');
+        g.load.image('buildMenuCover1',                 uiDir + 'buildMenuCover1.png');
+        g.load.image('buildMenuCover2',                 uiDir + 'buildMenuCover2.png');
+        g.load.image('coalition_backpanel',             uiDir + 'coalition_backpanel.png');
+        g.load.image('stats_panel_backpanel',           uiDir + 'stats_panel_backpanel.png');
+        g.load.image('money_backpanel',                 uiDir + 'money_backpanel.png');
+        g.load.image('peopleViewBg',                    uiDir + 'peopleViewBg.jpg');
+        g.load.image('peopleViewLeftBg',                uiDir + 'peopleViewLeftBg.png');
+        g.load.image('peopleViewRightBg',               uiDir + 'peopleViewRightBg.png');
+        g.load.image('peopleViewContractBg',            uiDir + 'peopleViewContractBg.png');
+        g.load.image('incButton',                       uiDir + 'incButton.png');
+        g.load.image('decButton',                       uiDir + 'decButton.png');
+        g.load.image("pi_prevPage",                     uiDir + "pi_prevPage.png");
+        g.load.image("pi_nextPage",                     uiDir + "pi_nextPage.png");
+        g.load.image("uiMask",                          uiDir + "uiMask.png");
+        g.load.image("event_bg",                        uiDir + "event_bg.png");
+        g.load.image('freedomUnrestMeter',              uiDir + "freedomUnrestMeter.png");
+        g.load.image('freedomUnrestMeter_foreground',   uiDir + 'freedomUnrestMeter_foreground.png');
+        g.load.image('fun_panel_backpanel',             uiDir + 'fun_panel_backpanel.png');
+        g.load.image('thermometer_bulb',                uiDir + 'thermometer_bulb.png');
+        g.load.image('thermometer_tube',                uiDir + 'thermometer_tube.png');
+        g.load.image('page_texture',                    uiDir + 'page_texture.png');
+        g.load.image('single_folder_texture',           uiDir + 'single_folder_texture.png');
+        g.load.image('double_folder_texture',           uiDir + 'double_folder_texture.png');
+        g.load.image('folder_tab_texture',              uiDir + 'folder_tab_texture.png');
+        g.load.image('clipboard_menu_texture',          uiDir + 'clipboard_menu_texture.png');
+        g.load.image('clipboard_menu_clip',             uiDir + 'clipboard_menu_clip.png');
+        g.load.image('global_binder_texture',           uiDir + 'global_binder_texture.png');
+        g.load.image('building_binder_texture',         uiDir + 'building_binder_texture.png');
+        g.load.image('binder_menu_ring',                uiDir + 'binder_menu_ring.png');
         
         // load particle sprites
         var particleDir = uiDir + 'particles/'
@@ -120,22 +119,32 @@ var Preloader={
         g.load.spritesheet('redPlusButton',             buttonDir + 'red_plus_button.png', 48, 48, 3);
         g.load.spritesheet('yellowMinusButton',         buttonDir + 'yellow_minus_button.png', 48, 48, 3);
         g.load.spritesheet('yellowPlusButton',          buttonDir + 'yellow_plus_button.png', 48, 48, 3);
+        g.load.spritesheet('pencil_circle_button',      buttonDir + 'pencil_circle_button.png', 120, 48, 3);
+        for(var i = 1; i <= 5; ++i){
+            g.load.spritesheet('binder_tab_'+i,         buttonDir + 'binder_tab_'+i+'.png',35,100,3);
+        }
 
 
         //// load icons
         var iconDir = uiDir + 'icons/';
-        g.load.spritesheet('freedom_icon',      iconDir + 'freedom_icon.png');
+        g.load.image('freedom_icon',            iconDir + 'freedom_icon.png');
         g.load.spritesheet('money_icon',        iconDir + 'money_icon.png', 46, 46, 3);
         g.load.spritesheet('population_icon',   iconDir + 'population_icon.png', 46, 46, 3);
-        g.load.spritesheet('homeless_icon',     iconDir + 'homeless_icon.png');
-        g.load.spritesheet('unemployed_icon',   iconDir + 'unemployed_icon.png');
-        g.load.spritesheet('unrest_icon',       iconDir + 'unrest_icon.png');
+        g.load.image('homeless_icon',           iconDir + 'homeless_icon.png');
+        g.load.image('unemployed_icon',         iconDir + 'unemployed_icon.png');
+        g.load.image('unrest_icon',             iconDir + 'unrest_icon.png');
         g.load.spritesheet('year_icon',         iconDir + 'year_icon.png', 46, 46, 3);
         g.load.spritesheet('swiss_icon',        iconDir + 'swiss_account_icon.png', 46, 46, 3);
-        g.load.spritesheet('construction_icon', iconDir + 'construction_icon.png');
-        g.load.spritesheet('person_icon',       iconDir + 'person_icon.png');
-        g.load.spritesheet('exclamation_01',       iconDir + 'exclamation_01.png');
-        g.load.spritesheet('exclamation_02',       iconDir + 'exclamation_02.png');
+        g.load.image('construction_icon',       iconDir + 'construction_icon.png');
+        g.load.image('person_icon',             iconDir + 'person_icon.png');
+        g.load.image('exclamation_01',          iconDir + 'exclamation_01.png');
+        g.load.image('exclamation_02',          iconDir + 'exclamation_02.png');
+        g.load.image('culture_output_full',     iconDir + 'culture_output_full.png')
+        g.load.image('freedom_output_full',     iconDir + 'freedom_output_full.png')
+        g.load.image('health_output_full',      iconDir + 'health_output_full.png')
+        g.load.image('money_output_full',       iconDir + 'money_output_full.png')
+        g.load.image('shelter_output_full',     iconDir + 'shelter_output_full.png')
+        g.load.image('unrest_output_full',      iconDir + 'unrest_output_full.png')
 
         for(var i = 1; i <= 4; ++i){
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');
