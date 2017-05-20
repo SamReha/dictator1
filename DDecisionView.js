@@ -3,9 +3,10 @@
 // Design Pattern: M|V|C by functions
 // Texture Requirement: 'small_generic_button' (use Find-Replace to change)
 
-var DDecisionView={
+var DDecisionView = {
 	font: { font:"21px myKaiti", fill:"black", shadowColor:"black", shadowOffsetX:1, shadowOffsetY:1, wordWrap: true, wordWrapWidth: 380 },
     buttonStyle: {font:"30px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
+
 	// the buttons' positions for 0~3 buttons
 	buttonPos: [
 		[],                                                     // 0 button
@@ -27,11 +28,20 @@ var DDecisionView={
 		// add buttons array
 		v.buttons = [];
 
+        // Add some sfx
+        v.clickSfx = [
+            game.make.audio('paper_click_2'),
+            game.make.audio('paper_click_3'),
+            game.make.audio('paper_click_5'),
+            game.make.audio('paper_click_7')
+        ];
+
 		// Class func
 		// sets the Model(data). Every arg is nullable(==[will be unchanged])
 		v.setModel=function(_portrait,_description,_buttonTexts){return DDecisionView.setModel(v,_portrait,_description,_buttonTexts)};
 		// sets the Controller(callbacks). #callbacks must === #buttonTexts defined in .setModel()
 		v.setController=function(callbacks,priorityID){return DDecisionView.setController(v,callbacks,priorityID)};
+        v.playRandomClick = function() { return DDecisionView.playRandomClick(v); };
 
 		// return the view
 		return v;
@@ -78,36 +88,40 @@ var DDecisionView={
 			v.buttons[i].inputEnabled=true;
 			v.buttons[i].input.priorityID=(priorityID?priorityID:20);
 			v.buttons[i].events.onInputUp.add(callbacks[i], v.buttons[i]);
+            v.buttons[i].events.onInputDown.add(function() { v.playRandomClick(); }, v.buttons[i]);
 		}
 	},
+
+    playRandomClick: function(v) {
+        v.clickSfx[Math.floor(Math.random()*v.clickSfx.length)].play();
+    }
 };
 
 
-// The test case function
-function test_DDecisionView(){
-	var deciView=DDecisionView.createNew();
-    deciView.x=300;
-    deciView.y=300;
+// // The test case function
+// function test_DDecisionView(){
+//     var deciView=DDecisionView.createNew();
+//     deciView.x=300;
+//     deciView.y=300;
     
-    // set the model (data)
-    deciView.setModel(
-        'bureaucrat_port_0', 
-        "Hey, please buy me a TOYOTA pickup!", 
-        ["Chg Text", "Chg Port", "Rm Port", "Chg Button"]
-    );
+//     // set the model (data)
+//     deciView.setModel(
+//         'bureaucrat_port_0', 
+//         "Hey, please buy me a TOYOTA pickup!", 
+//         ["Chg Text", "Chg Port", "Rm Port", "Chg Button"]
+//     );
 
-    // set the callback (controller)
-    deciView.setController([
-        function(){deciView.setModel(null, "Text Changed."+this.index)},
-        function(){deciView.setModel('bureaucrat_port_2')},
-    	function(){deciView.setModel('')},
-        function(){
-        	deciView.setModel(null,null,["Good","Bad"]);
-        	deciView.setController([
-        		function(){deciView.setModel(null,"You selected:"+this.index)},
-        		function(){deciView.setModel(null,"You selected:"+this.index)}
-        	]);
-    	}// end of function
-    ]); // end of setController
-
-}
+//     // set the callback (controller)
+//     deciView.setController([
+//         function(){deciView.setModel(null, "Text Changed."+this.index)},
+//         function(){deciView.setModel('bureaucrat_port_2')},
+//         function(){deciView.setModel('')},
+//         function(){
+//             deciView.setModel(null,null,["Good","Bad"]);
+//             deciView.setController([
+//                 function(){deciView.setModel(null,"You selected:"+this.index)},
+//                 function(){deciView.setModel(null,"You selected:"+this.index)}
+//             ]);
+//         }// end of function
+//     ]); // end of setController
+// }
