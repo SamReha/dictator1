@@ -217,6 +217,7 @@ var Preloader={
         for (var i = 1; i <= 5; i++) {
             g.load.audio('building_placement_' + i, sfxDir + 'buildings/building_placement_0' + i + '_SFX.wav');
         }
+        g.load.audio('building_ready', sfxDir + 'buildings/building_ready_SFX.wav');
 
         for (var i = 1; i <= 5; ++i) {
             g.load.audio('empty_click_' + i, sfxDir + 'clicks/empty_click/empty_click_' + i + '_SFX.wav');

@@ -6,6 +6,9 @@ var showNewBuildings = function(callback) {
             return;
         }
 
+        // Make sure the construction effect gets removed when we display this event
+        MainGame.board.at(list[listIndex]).getBuilding().removeConstructionEffect();
+
         // Figure out our pretty data - like a custom message and image.
         var buildingName = MainGame.board.at(list[listIndex]).getBuilding().playerLabel;
         var message = 'A ' + buildingName + ' has been constructed!';
@@ -16,7 +19,9 @@ var showNewBuildings = function(callback) {
         // Wait a bit, then spawn the event.
         var timer = MainGame.game.time.create(true);
         timer.add(500, function() {
-        var e = Event.createNew();
+            MainGame.game.make.audio('building_ready').play();
+
+            var e = Event.createNew();
             e.setModel([
                             {
                                 portrait: 'exclamation_01', 
