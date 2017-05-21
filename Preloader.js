@@ -104,6 +104,7 @@ var Preloader={
         var buttonDir = uiDir + 'buttons/';
         g.load.spritesheet('build_button',              buttonDir + 'build_button.png', 144, 80, 3);
         g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
+        g.load.image('endturn_button_mask',             buttonDir + 'endturn_button_mask.png');
         g.load.spritesheet('closeButton',               buttonDir + 'close_button.png', 48, 48, 3);
         g.load.spritesheet('buy_button',                buttonDir + 'buy_button.png', 120, 48, 3);
         g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);

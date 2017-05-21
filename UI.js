@@ -85,6 +85,14 @@ var Hud = {
         hud.btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         hud.addChild(hud.btnNextTurn);
 
+        hud.btnNextTurnMask = MainGame.game.make.sprite(hud.btnNextTurn.x, hud.btnNextTurn.y, 'endturn_button_mask');
+        hud.btnNextTurnMask.inputEnabled = true;
+        hud.btnNextTurnMask.input.priorityID = hud.btnNextTurn.input.priorityID + 1;
+        hud.btnNextTurnMask.anchor.x = 1;
+        hud.btnNextTurnMask.anchor.y = 1;
+        hud.btnNextTurnMask.visible = false;
+        hud.addChild(hud.btnNextTurnMask);
+
         // Group2: Build
         var buildGroup=MainGame.game.make.group();
         buildGroup.name="buildGroup";
@@ -104,6 +112,8 @@ var Hud = {
         buildBtn.input.priorityID = 1;
         buildBtn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         buildGroup.addChild(buildBtn);
+
+        hud.setEndTurnActive = function(active) { Hud.setEndTurnActive(hud, active); };
         
         return hud;
     },
@@ -146,6 +156,11 @@ var Hud = {
             // Create a building placer
             var buildingPlacer = BuildingPlacer.createNew(buildingType, menu, mask);
         }
+    },
+
+    // Determines whether to end turn button is active or inactive
+    setEndTurnActive: function(hud, active) {
+        hud.btnNextTurnMask.visible = !active;
     },
 };
 

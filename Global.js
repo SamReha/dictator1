@@ -12,6 +12,7 @@ var Global={
     yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
 
     nextTurn: function() {
+        MainGame.hud.setEndTurnActive(false);
         ++Global.turn;
 
         // Then, let's start going through the sequence of update functions
@@ -30,6 +31,8 @@ var Global={
                         
                         // Makes sure we record the state after updating all the game info
                         Global.updateYearViewData();
+
+                        MainGame.hud.setEndTurnActive(true);
                     });
                 });
             });
