@@ -150,8 +150,8 @@ var showThermometerUpdate = function(callback) {
 
             // Wait a bit, then spawn the event.
             var timer = MainGame.game.time.create(true);
-            timer.add(300, function() {
-            var e = Event.createNew();
+            timer.add(2100, function() {
+                var e = Event.createNew();
                 e.setModel([
                                 {
                                     portrait: 'exclamation_01', 
@@ -191,7 +191,7 @@ var showUnitAction = function(callback) {
 
         // Wait a bit, then process the next unit.
         var timer = MainGame.game.time.create(true);
-        timer.add(750, function() {
+        timer.add(2100, function() {
             processUnitUpdates(unitList, ++index);
         }, null);
         timer.start();

@@ -159,11 +159,11 @@ var Preloader={
 
         //// load unit spritesheets
         var unitDir = imageDir + 'units/';
-        g.load.image('army_idle',                  unitDir + 'army_idle.png');
+        g.load.spritesheet('army_idle',            unitDir + 'army_idle.png', 256, 222, 5);
         g.load.image('army_moving',                unitDir + 'army_moving.png');
         g.load.image('soldier_icon',               unitDir + 'soldier_icon.png');
         g.load.image('soldier_counter_background', unitDir + 'soldier_counter_background.png');
-        g.load.image('riot_idle',                  unitDir + 'riot_idle.png');
+        g.load.spritesheet('riot_idle',            unitDir + 'riot_idle.png', 256, 222, 5);
         g.load.image('riot_moving',                unitDir + 'riot_moving.png');
         g.load.image('rioter_icon',                unitDir + 'rioter_icon.png');
         g.load.image('rioter_counter_background',  unitDir + 'rioter_counter_background.png');
@@ -191,6 +191,20 @@ var Preloader={
         g.load.audio('message_open',  sfxDir + 'messages/message_open_SFX.wav');
         g.load.audio('message_close', sfxDir + 'messages/message_close_SFX.wav');
         g.load.audio('money_earned',  sfxDir + 'money_earned/money_earned_SFX.wav');
+
+        //// load riot sfx
+        var riotDir = sfxDir + 'rioters/';
+        g.load.audio('rioter_spawn',  riotDir + 'spawn_rioters/spawn_rioters_SFX.wav');
+        g.load.audio('rioter_attack', riotDir + 'combat_rioters/combat_rioters_SFX_1.wav');
+        g.load.audio('rioter_move',   riotDir + 'move_rioters/move_rioters_02_SFX.wav');
+        g.load.audio('rioter_death',  riotDir + 'dying_rioters/dying_rioters_SFX.wav');
+
+        //// load soldier sfx
+        var soldierDir = sfxDir + 'soldiers/';
+        g.load.audio('soldiers_spawn',  soldierDir + 'spawn_soldiers/spawn_soldiers_SFX.wav');
+        g.load.audio('soldiers_attack', soldierDir + 'combat_soldiers/combat_soldiers_SFX.wav');
+        g.load.audio('soldiers_move',   soldierDir + 'move_soldiers/move_soldiers_SFX.wav');
+        g.load.audio('soldiers_death',  riotDir + 'dying_rioters/dying_rioters_SFX.wav');  // Need to get this one from Matt!!
 
         for (var i = 1; i <= 14; i++) {
             g.load.audio('cloth_click_' + i, sfxDir + 'clicks/cloth_click/cloth_click_' + i + '_SFX.wav');

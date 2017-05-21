@@ -48,6 +48,14 @@ var Unit = {
         unit.icon.x = unit.width/2;
         unit.addChild(unit.icon);
 
+        // SFX
+        unit.spawnSfx = MainGame.game.make.audio(unit.type + '_spawn');
+        unit.attackSfx = MainGame.game.make.audio(unit.type + '_attack');
+        unit.moveSfx = MainGame.game.make.audio(unit.type + '_move');
+        unit.deathSfx = MainGame.game.make.audio(unit.type + '_death');
+
+        unit.spawnSfx.play();
+
         unit.takeTurn = function() { Unit.takeTurn(unit); };
         unit.move = function(newIndex) { Unit.move(unit, newIndex); };
         unit.hasTarget = function() { return unit.target !== null; };
@@ -76,6 +84,7 @@ var Unit = {
             if (existingUnit.type === unitType && existingUnit.health + startingHealth <= this.maxSize) {
                 existingUnit.addPeople(startingHealth);
                 console.log("[Unit] merged new rioter into existing riot");
+                existingUnit.spawnSfx.play();
                 return true; // Aaaaand we're done here. Don't need to actually create a unit
             } else {
                 // Gotta find a new tile.
@@ -132,11 +141,30 @@ var Unit = {
         var currentTile = MainGame.board.at(unit.currentIndex);
         var newTile = MainGame.board.at(newIndex);
 
-        // TODO: Maybe lerp an animation as it moves between tiles?
+        // Move the unit and apply a simple tween animation
         if (!newTile.hasUnit()) {
-            newTile.setUnit(unit);
-            currentTile.setUnit(null);
-            unit.currentIndex = newIndex;
+            unit.moveSfx.play();
+
+            // Compute the movement vector between us and our destination
+            var currentXY = currentTile.world;
+            var newXY = newTile.world;
+            var deltaXY = {
+                x: (newXY.x - currentXY.x)/MainGame.board.currentScale, // Unapply the board scale so that we get the right amount in pixels
+                y: (newXY.y - currentXY.y)/MainGame.board.currentScale
+            };
+
+            var tween = MainGame.game.add.tween(unit).to(deltaXY, 1000, Phaser.Easing.Linear.None, true);
+            tween.onComplete.add(function() {
+                // Move to new tile
+                newTile.setUnit(unit);
+                currentTile.setUnit(null);
+                unit.currentIndex = newIndex;
+                
+                // Unapply tweened movement
+                unit.x -= deltaXY.x;
+                unit.y -= deltaXY.y;
+            }, this);
+            
         }
     },
 
@@ -146,7 +174,8 @@ var Unit = {
         // update health marker
         unit.counter.label.text = unit.health;
 
-        // maybe update sprite
+        // update sprite
+        unit.frame = unit.health-1;
     },
 
     subtractPeople: function(unit, people) {
@@ -161,12 +190,14 @@ var Unit = {
         // update health marker
         unit.counter.label.text = unit.health;
 
-        // maybe update sprite
+        // update sprite
+        unit.frame = unit.health-1;
     },
 
     kill: function(unit) {
         // Play death sound
-        
+        unit.deathSfx.play();
+
         // Play death animation
 
         // Remove from game

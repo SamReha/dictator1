@@ -153,6 +153,8 @@ var UnitAI = {
 			}
 			targetUnit.takeDamage(unit.health);
 		}
+
+		unit.attackSfx.play();
 	},
 
 	mergeUnits: function(unit1, unit2) {
