@@ -5,6 +5,8 @@ var Tile = {
         // create the tile
         /*global MainGame*/
         var tile = MainGame.game.make.sprite(0,0);
+        tile.tileGroup = MainGame.game.make.group();
+        tile.addChild(tile.tileGroup);
         // decode json
         var data = JSON.parse(json);
 
@@ -13,7 +15,7 @@ var Tile = {
         data.terrain += MainGame.game.rnd.integerInRange(1, 3);
         tile.terrain = MainGame.game.make.sprite(0,0,data.terrain);
         tile.terrain.key = tempTerrain;
-        tile.addChild(tile.terrain);
+        tile.tileGroup.addChild(tile.terrain);
 
         switch (tile.terrain.key) {
             case 'grass':
@@ -33,8 +35,8 @@ var Tile = {
         tile.index = index; // For convenience
 
         /* global Building*/
-        tile.building=Building.createNew(data.building);
-        tile.addChild(tile.building);
+        tile.building = Building.createNew(data.building);
+        tile.tileGroup.addChild(tile.building);
 
         // Class funcs
         //// Terrain Layer
@@ -61,7 +63,7 @@ var Tile = {
     },
 
     toJSON: function(t){
-        var data={terrain:t.terrain.key, res:t.res.key, building:JSON.parse(t.building.toJSON())};
+        var data = {terrain:t.terrain.key, res:t.res.key, building:JSON.parse(t.building.toJSON())};
         return JSON.stringify(data);
     },
 
@@ -74,13 +76,13 @@ var Tile = {
 
         // If we already have a building, remove it before the new building this placed.
         if (tile.building) {
-            tile.removeChild(tile.building);
+            tile.tileGroup.removeChild(tile.building);
             tile.building = null;
         }
 
         // Apply the new building to the tile
         tile.building = building;
-        tile.addChild(building);
+        tile.tileGroup.addChild(building);
     },
 
     removeBuilding: function(tile) {
@@ -100,7 +102,7 @@ var Tile = {
         /*global updatePopulation*/
         updatePopulation(false,false);
 
-        tile.removeChild(tile.building);
+        tile.tileGroup.removeChild(tile.building);
         tile.building = null;
     },
 
@@ -111,11 +113,19 @@ var Tile = {
             if (tile.building.integrity <= 0) {
                 tile.removeBuilding();
 
-                console.log("building destroyed");
+                console.log("[Tile] building destroyed");
 
                 // Make a rubble
                 var newBuilding = Building.createNew({name:'rubble', level:1, startingTurn:-1, people:0});
                 tile.setBuilding(newBuilding);
+
+                // Play a demolished sound
+                MainGame.game.make.audio('building_placement_5').play();
+
+                // If we have a unit, make sure it gets sorted on top
+                if (tile.hasUnit()) {
+                    tile.tileGroup.bringToTop(tile.unit);
+                }
             }
         }
     },
@@ -123,13 +133,13 @@ var Tile = {
     //// Unit Layer
     setUnit: function(tile, newUnit) {
         if (tile.unit !== null) {
-            tile.removeChild(tile.unit);
+            tile.tileGroup.removeChild(tile.unit);
         }
 
         tile.unit = newUnit;
 
         if (newUnit !== null) {
-            tile.addChild(tile.unit);
+            tile.tileGroup.addChild(tile.unit);
         }
     },
 };

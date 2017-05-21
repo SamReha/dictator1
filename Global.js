@@ -16,26 +16,24 @@ var Global={
 
         // Then, let's start going through the sequence of update functions
         showThermometerUpdate(function() {
-            showNewBuildings(function() {
-                showUnitAction(function() {
-                    showNewPeople(function() {
-                        showHomelessCamps(function() {
-                            return;
-                        });
+            showUnitAction(function() {
+                showNewBuildings(function() {
+                    showHomelessCamps(function() {
+                        concludeNextTurnSequence();
+
+                        /*global MainGame*/
+                        MainGame.board.nextTurn(Global.turn);
+
+                        Global.updateMoneyPerTurn();
+                        Global.money += Global.moneyPerTurn;
+                        //Global.checkGameFail();
+                        
+                        // Makes sure we record the state after updating all the game info
+                        Global.updateYearViewData();
                     });
                 });
             });
         });
-
-        /*global MainGame*/
-        MainGame.board.nextTurn(Global.turn);
-
-        Global.updateMoneyPerTurn();
-        Global.money += Global.moneyPerTurn;
-        //Global.checkGameFail();
-        
-        // Makes sure we record the state after updating all the game info
-        Global.updateYearViewData();
     },
 
     toString: function(){

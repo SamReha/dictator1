@@ -15,13 +15,13 @@ var showNewBuildings = function(callback) {
 
         // Wait a bit, then spawn the event.
         var timer = MainGame.game.time.create(true);
-        timer.add(300, function() {
+        timer.add(500, function() {
         var e = Event.createNew();
             e.setModel([
                             {
                                 portrait: 'exclamation_01', 
                                 description: message, 
-                                buttonTexts: ["OK"]
+                                buttonTexts: ["Continue"]
                             }
                         ]);
 
@@ -37,33 +37,11 @@ var showNewBuildings = function(callback) {
 
     // Start by getting a list of all new buildings that will appear this turn.
     var newBuildingIndexes = MainGame.board.findBuilding().filter(function(buildingIndex) {
-        return MainGame.board.at(buildingIndex).getBuilding().startingTurn === MainGame.global.turn;
+        return (MainGame.board.at(buildingIndex).getBuilding().startingTurn === MainGame.global.turn) && MainGame.board.at(buildingIndex).getBuilding().name !== 'shantyTown';
     });
     
     // Then, start recursively spawning events to handle each notification
     makeBuildingCompletionEvents(newBuildingIndexes, 0);
-};
-
-var showNewPeople = function(callback) {
-    var oldPopulation = MainGame.population.count();
-    updatePopulation(true, true);
-    var deltaPopulation = MainGame.population.count() - oldPopulation;
-
-    var e = Event.createNew();
-    e.setModel([
-                    {
-                        portrait: 'exclamation_01', 
-                        description: 'The year is now ' + (1949 + MainGame.global.turn) + '. The population has increased by ' + deltaPopulation + ' citizens.', 
-                        buttonTexts: ["OK"]
-                    }
-                ]);
-
-    e.setController([
-        [function() {
-            e.suicide();
-            callback();
-        }]
-    ]);
 };
 
 var showHomelessCamps = function(callback) {
@@ -74,22 +52,18 @@ var showHomelessCamps = function(callback) {
             return;
         }
 
-        // Figure out our pretty data - like a custom message and image.
-        var buildingName = MainGame.board.at(list[listIndex]).getBuilding().playerLabel;
-        var message = 'Due to a lack of available housing, a homeless camp has formed!';
-
         // Tween to the tile
         MainGame.board.cameraCenterOn(list[listIndex]);
 
         // Wait a bit, then spawn the event.
         var timer = MainGame.game.time.create(true);
-        timer.add(300, function() {
+        timer.add(500, function() {
         var e = Event.createNew();
             e.setModel([
                             {
                                 portrait: 'exclamation_01', 
-                                description: message, 
-                                buttonTexts: ["OK"]
+                                description: 'A homeless camp has formed due to a lack of available housing!', 
+                                buttonTexts: ["Continue"]
                             }
                         ]);
 
@@ -113,6 +87,8 @@ var showHomelessCamps = function(callback) {
 };
 
 var showThermometerUpdate = function(callback) {
+    updatePopulation(true, true);
+
     // Get new delta (how much the thermometer will change by this turn)
     Global.thermometerDelta = Global.freedom + Global.unrest - 100;
 
@@ -155,8 +131,8 @@ var showThermometerUpdate = function(callback) {
                 e.setModel([
                                 {
                                     portrait: 'exclamation_01', 
-                                    description: 'Due to rising tensions, a citizen has begun to riot!', 
-                                    buttonTexts: ["OK"]
+                                    description: 'A citizen has begun rioting!', 
+                                    buttonTexts: ["Continue"]
                                 }
                             ]);
 
@@ -204,4 +180,24 @@ var showUnitAction = function(callback) {
     
     // Then, start recursively spawning events to handle each notification
     processUnitUpdates(units, 0);
+};
+
+var concludeNextTurnSequence = function() {
+    var oldPopulation = MainGame.global.yearViewData[MainGame.global.yearViewData.length - 1].population;
+    var deltaPopulation = MainGame.population.count() - oldPopulation;
+
+    var e = Event.createNew();
+    e.setModel([
+                    {
+                        portrait: 'exclamation_01', 
+                        description: 'The year is now ' + (1949 + MainGame.global.turn) + '. The population has increased by ' + deltaPopulation + ' citizens.', 
+                        buttonTexts: ["OK"]
+                    }
+                ]);
+
+    e.setController([
+        [function() {
+            e.suicide();
+        }]
+    ]);
 };
