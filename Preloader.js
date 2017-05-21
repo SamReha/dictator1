@@ -196,7 +196,7 @@ var Preloader={
         var riotDir = sfxDir + 'rioters/';
         g.load.audio('rioter_spawn',  riotDir + 'spawn_rioters/spawn_rioters_SFX.wav');
         g.load.audio('rioter_attack', riotDir + 'combat_rioters/combat_rioters_SFX_1.wav');
-        g.load.audio('rioter_move',   riotDir + 'move_rioters/move_rioters_02_SFX.wav');
+        g.load.audio('rioter_move',   riotDir + 'move_rioters/move_rioters_SFX_1.wav');
         g.load.audio('rioter_death',  riotDir + 'dying_rioters/dying_rioters_SFX.wav');
 
         //// load soldier sfx
