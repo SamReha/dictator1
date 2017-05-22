@@ -150,6 +150,7 @@ var Binder = {
 			binder.tabs.push(MainGame.game.make.button(0,0,'binder_tab_'+(i+1),
 				(newTab(i)),
 				binder,1,0,2,2));
+			binder.tabs[i].scale.setTo(1.25,1.25);
 			binder.tabs[i].input.priorityID = 100;
 			binder.binderGroup.addChild(binder.tabs[i]);
 			binder.tabs[i].anchor.x = 1;
@@ -248,6 +249,7 @@ var Binder = {
 };
 
 var Clipboard = {
+	transfer: "transfer",
 	worker: "workerList",
 	elite: "eliteList",
 	minister: "ministerList",
@@ -260,6 +262,9 @@ var Clipboard = {
 		clipboard.x = MainGame.game.width*3/4; clipboard.y = MainGame.game.height/2;
 
 		switch(type){
+			case Clipboard.transfer:
+				clipboard.page = transferClipboard.createNew();
+				break;
 			case Clipboard.worker:
 				clipboard.page = TestPage.createNew();
 				break;
@@ -290,37 +295,6 @@ var Clipboard = {
 		MenuController.openMenu(clipboard,"right");
 
 		return clipboard;
-	}
-};
-
-var TextButton = {
-    createNew: function(x, y, sprite_sheet, callback, callback_context, up, down, over, out, text, textStyle) {
-        var button = game.make.button(x, y, sprite_sheet, callback, callback_context, up, down, over, out);
-        button.inputEnabled = true;
-        button.input.priorityID = 10;
-
-        button.label = game.make.text(button.width/2, button.height/2, text, textStyle);
-        button.label.anchor.set(0.5, 0.5);
-        button.addChild(button.label);
-
-        return button;
-    }
-};
-
-var TextLinkButton = {
-	createNew: function(x, y, text, textStyle, ){
-		var button = MainGame.game.make.group();
-
-		button.buttonBack = MainGame.game.make.graphics(0,0);
-
-		button.buttonBack.beginFill(0x000000,0);
-		button.buttonBack.drawRect(0,0,120,144);
-	}
-};
-
-var TextButtonList = {
-	createNew: function(){
-
 	}
 };
 
@@ -519,4 +493,64 @@ var MenuController = {
 	},
 
 	sqrtEaseFunction: function(num){return (Math.sqrt(Math.abs(2*num[2]-1))*((2*num[2]-1)/Math.abs(2*num[2]-1)));},
+};
+
+var TextButton = {
+    createNew: function(x, y, sprite_sheet, callback, callback_context, up, down, over, out, text, textStyle) {
+        var button = game.make.button(x, y, sprite_sheet, callback, callback_context, up, down, over, out);
+        button.inputEnabled = true;
+        button.input.priorityID = 10;
+
+        button.label = game.make.text(button.width/2, button.height/2, text, textStyle);
+        button.label.anchor.set(0.5, 0.5);
+        button.addChild(button.label);
+
+        return button;
+    }
+};
+
+var TextLinkButton = {
+	createNew: function(x, y, text, textStyle, callback, callbackContext){
+		var button = MainGame.game.make.group();
+		button.x = x; button.y = y;
+
+		button.text = MainGame.game.make.text(0, 0, text, textStyle);
+		button.text.anchor.setTo(.5,.5);
+		button.addChild(button.text);
+
+		var underline = MainGame.game.make.graphics(0,0);
+		underline.lineStyle(2,0xffffff,1);
+		underline.moveTo(0,0);
+		underline.lineTo(button.text.width,0);
+
+		button.underline = MainGame.game.make.sprite(0,0,underline.generateTexture());
+		button.underline.anchor.setTo(.5,.5);
+		button.addChild(button.underline);
+		button.underline.y = button.text.height*7/20;
+		button.underline.tint = 0x000000;
+
+		var back = MainGame.game.make.graphics(0,0);
+		back.beginFill(0x000000,0);
+		back.drawRect(0,0,button.text.width,button.text.height);
+		back.endFill();
+
+		button.back = MainGame.game.make.sprite(0,0,back.generateTexture());
+		button.back.anchor.setTo(.5,.5);
+		button.addChild(button.back);
+		button.back.inputEnabled = true;
+		button.back.input.priorityID = 30;
+		button.back.events.onInputUp.add(function(){button.underline.tint=0x000000;});
+		button.back.events.onInputUp.add(callback);
+		button.back.events.onInputDown.add(function(){button.underline.tint=0xffffff});
+		button.back.events.onInputOver.add(function(){button.underline.tint=0x999999});
+		button.back.events.onInputOut.add(function(){button.underline.tint=0x000000});
+
+		return button;
+	}
+};
+
+var TextButtonList = {
+	createNew: function(){
+
+	}
 };

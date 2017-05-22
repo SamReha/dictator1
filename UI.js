@@ -153,7 +153,7 @@ var Hud = {
 // Dynamically extends sprite
 var BuildingPlacer = {
     createNew: function(buildingType, menu, mask) {
-        var bP = MainGame.game.add.sprite(0, 0, buildingType + '1');
+        var bP = MainGame.game.add.sprite(0, 0, buildingType);
 
         var zoom = MainGame.board.currentScale;
         bP.scale.set(zoom,zoom);
@@ -221,13 +221,15 @@ var BuildingPlacer = {
             var newTint = 0xffffff;
             if(self.buildingType !== 'road'){
                 startTurn += 2;
-                newTint = 0x444444;
+                newTint = 0x808080;
             }
             
             // Create a building object
-            var newBuilding = Building.createNew({name:self.buildingType,level:1,startingTurn:startTurn,people:0});
-            newBuilding.tint = newTint;
+            var newBuilding = Building.createNew({name:self.buildingType,startingTurn:startTurn,people:0});
             if(newBuilding.startingTurn- MainGame.global.turn>0){
+                newBuilding.loadTexture('construction',0,false);
+                newBuilding.tint = newTint;
+                
                 newBuilding.constructionIcon = MainGame.game.make.sprite(0,0,"construction_icon");
                 newBuilding.constructionIcon.anchor.setTo(1,0);
                 newBuilding.constructionIcon.x=192;
@@ -236,7 +238,7 @@ var BuildingPlacer = {
                 newBuilding.counterIcon = MainGame.game.make.sprite(0,0,"counter_icon"+(newBuilding.startingTurn- MainGame.global.turn));
                 newBuilding.counterIcon.anchor.setTo(1,1);
                 newBuilding.counterIcon.x=192;
-                newBuilding.counterIcon.y=newBuilding.height;
+                newBuilding.counterIcon.y=newBuilding.constructionIcon.height*2;
                 newBuilding.addChild(newBuilding.counterIcon);
             }
 

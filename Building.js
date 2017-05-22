@@ -11,22 +11,22 @@ var Building = {
         }
     },
     createNew: function(data){
-        //console.log("[Building] createNew, the building's textureKey must be name+level.");
+        //console.log("[Building] createNew, the building's textureKey must be name.");
 
         // load building data (first time only)
         Building.loadBuildingData();
 
         var b=null;
 
-        // Class vars: name, level, startingTurn, people, {props_in_buildingData.json[name]}
+        // Class vars: name, startingTurn, people, {props_in_buildingData.json[name]}
         if(!data){
             b=MainGame.game.make.sprite(0,0);
             b.name=null;
         }else{
             /*global MainGame*/
-            b=MainGame.game.make.sprite(0,0,data.name+data.level);
+            b=MainGame.game.make.sprite(0,0,data.name);
 
-            // copy name,level,startingTurn,people
+            // copy name,startingTurn,people
             for(var key in data){
                 b[key]=data[key];
             }
@@ -77,6 +77,7 @@ var Building = {
     nextTurn: function(b,turn){
         if(b.startingTurn===turn){
             b.tint = 0xffffff;
+            b.loadTexture(b.name,0,false);
             b.constructionIcon.destroy();
             b.counterIcon.destroy();
         }else if(b.startingTurn>turn){
