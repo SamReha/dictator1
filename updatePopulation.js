@@ -43,7 +43,7 @@ var updatePopulation = function(nextTurn, updatingHomes) {
 	pop.update(nextTurn);
 };
 
-var updateHomesNearOutput = function(tileIndex,range){
+var updateHomesNearOutput = function(tileIndex,range) {
 	/*global MainGame*/
 	var homes = MainGame.board.findBuilding(null,null,"housing",null);
 	for(var houseIndex=0;houseIndex<homes.length;++houseIndex){

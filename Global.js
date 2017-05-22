@@ -27,7 +27,7 @@ var Global={
 
                         Global.updateMoneyPerTurn();
                         Global.money += Global.moneyPerTurn;
-                        //Global.checkGameFail();
+                        Global.checkGameFail();
                         
                         // Makes sure we record the state after updating all the game info
                         Global.updateYearViewData();

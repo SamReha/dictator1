@@ -177,27 +177,30 @@ var BuildingPlacer = {
         
         bP.deltaTime =  10; // How frequently update is called, in ms
         bP.buildingType = buildingType;
-        bP.canBuild = false;
+        bP.canBuild = true;
         bP.mapIndex = null;
 
         // Assume we have 5 building sounds
         var soundIndex = Math.ceil(Math.random()*5);
         bP.sfx = game.make.audio('building_placement_' + soundIndex);
 
-        bP.update = function() { BuildingPlacer.update(bP); };
+        bP.updateSelf = function() { BuildingPlacer.updateSelf(bP); };
         bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer, menu, mask); };
         bP.cancelBuild = function() { BuildingPlacer.cancelBuild(bP); };
 
         bP.inputEnabled = true;
         bP.input.priorityID = 1;
         
-        MainGame.game.time.events.loop(BuildingPlacer.deltaTime, bP.update, bP);
+        bP.placerTimer = MainGame.game.time.create(false);
+        bP.placerTimer.loop(bP.deltaTime, function() { bP.updateSelf(); }, bP);
+        bP.placerTimer.start();
         MainGame.game.input.onDown.add(bP.clickHandler, bP, 10, MainGame.game.input.activePointer);
 
         return bP;
     },
 
-    update: function(self) {
+    updateSelf: function(self) {
+        console.log('test!');
         // Track the mouse
         self.x = MainGame.game.input.x;
         self.y = MainGame.game.input.y;
@@ -281,6 +284,7 @@ var BuildingPlacer = {
     
     cancelBuild: function(self) {
         MainGame.game.input.onDown.remove(self.clickHandler, self, self, MainGame.game.input.activePointer);
+        self.placerTimer.stop();
         self.kill();
     }
 };
