@@ -439,6 +439,7 @@ var BDController = {
 
             /*global updatePopulation*/
             updatePopulation(false, false);
+            Global.updateMoneyPerTurn();
         }else{
             // Play an error sound
             view.add_remove_sfx.play();
@@ -490,6 +491,7 @@ var BDController = {
 
             /*global updatePopulation*/
             updatePopulation(false,false);
+            Global.updateMoneyPerTurn();
         } else {
             // Play an error sound
             view.add_remove_sfx.play();
