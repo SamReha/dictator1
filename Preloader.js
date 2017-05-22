@@ -5,21 +5,28 @@ var Preloader={
         // Builings
         var buildingDir = imageDir + 'buildings/';
         // Vertical Slice assets
-        g.load.image('apartment1',      buildingDir + 'apartment.png');
-        g.load.image('armyBase1',       buildingDir + 'armyBase.png');
-        g.load.image('farm1',           buildingDir + 'farm.png');
-        g.load.image('armyBase1',       buildingDir + "armyBase.png");
-        g.load.image('factory1',        buildingDir + 'factory.png');
-        g.load.image('lumberYard1',     buildingDir + 'factory.png');
-        g.load.image('mansion1',        buildingDir + 'mansion.png');                
-        g.load.image('palace1',         buildingDir + 'palace.png');
-        g.load.image('park1',           buildingDir + 'park.png');
-        g.load.image('police1',         buildingDir + 'police.png');
-        g.load.image('road1',           buildingDir + 'road.png');
-        g.load.image('school1',         buildingDir + 'school.png');
-        g.load.image('shantyTown1',     buildingDir + 'shantyTown.png');
-        g.load.image('suburb1',         buildingDir + 'suburb.png');
-        g.load.image('rubble1',         buildingDir + 'rubble.png');
+        g.load.image('apartment',       buildingDir + 'apartment.png');
+        g.load.image('armyBase',        buildingDir + 'armyBase.png');
+        g.load.image('cinema',          buildingDir + 'cinema.png');
+        g.load.image('construction',     buildingDir + 'construction.png');
+        g.load.image('farm',            buildingDir + 'farm.png');
+        g.load.image('factory',         buildingDir + 'factory.png');
+        g.load.image('hospital',        buildingDir + 'hospital.png');
+        g.load.image('lumberYard',      buildingDir + 'factory.png');
+        g.load.image('mansion',         buildingDir + 'mansion.png');
+        g.load.image('market',          buildingDir + 'market.png');
+        g.load.image('opiumDen',         buildingDir + 'opiumDen.png');
+        g.load.image('palace',          buildingDir + 'palace.png');
+        g.load.image('park',            buildingDir + 'park.png');
+        g.load.image('police',          buildingDir + 'police.png');
+        g.load.image('prison',          buildingDir + 'prison.png');
+        g.load.image('radioStation',    buildingDir + 'radioStation.png');
+        g.load.image('road',            buildingDir + 'road.png');
+        g.load.image('rubble',          buildingDir + 'rubble.png');
+        g.load.image('school',          buildingDir + 'school.png');
+        g.load.image('shantyTown',      buildingDir + 'shantyTown.png');
+        g.load.image('suburb',          buildingDir + 'suburb.png');
+        g.load.image('university',      buildingDir + 'university.png');
 
         // Building Detail Icons
         var detailIconDir = buildingDir + 'detail_icons/';

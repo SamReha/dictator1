@@ -116,7 +116,7 @@ var Tile = {
                 console.log("[Tile] building destroyed");
 
                 // Make a rubble
-                var newBuilding = Building.createNew({name:'rubble', level:1, startingTurn:-1, people:0});
+                var newBuilding = Building.createNew({name:'rubble', startingTurn:-1, people:0});
                 tile.setBuilding(newBuilding);
 
                 // Play a demolished sound
@@ -480,7 +480,7 @@ var Board = {
 
         var index = choices[Math.floor(Math.random()*choices.length)];
         /* global Building */
-        board.at(index).setBuilding(Building.createNew({name:"shantyTown",level:1,startingTurn:MainGame.global.turn,people:0}));
+        board.at(index).setBuilding(Building.createNew({name:"shantyTown",startingTurn:MainGame.global.turn,people:0}));
         /*global updateHome*/
         updateHome(index);
         return index;
