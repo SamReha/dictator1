@@ -191,11 +191,13 @@ var concludeNextTurnSequence = function() {
     var oldPopulation = MainGame.global.yearViewData[MainGame.global.yearViewData.length - 1].population;
     var deltaPopulation = MainGame.population.count() - oldPopulation;
 
+    var financialMessage = (MainGame.global.moneyPerTurn >= 0) ? ('You have earned ₸' + Math.abs(MainGame.global.moneyPerTurn) + '.') : ('You have lost ₸' + Math.abs(MainGame.global.moneyPerTurn) + '.')
+
     var e = Event.createNew();
     e.setModel([
                     {
                         portrait: 'exclamation_01', 
-                        description: 'The year is now ' + (1949 + MainGame.global.turn) + '. The population has increased by ' + deltaPopulation + ' citizens.', 
+                        description: 'The year is now ' + (1949 + MainGame.global.turn) + '.\nThe population has increased by ' + deltaPopulation + ' citizens.\n' + financialMessage, 
                         buttonTexts: ["OK"]
                     }
                 ]);
