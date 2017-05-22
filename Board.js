@@ -45,7 +45,7 @@ var Tile = {
         
         //// Building Layer
         // Returns true iff this tile has a building on it
-        tile.hasBuilding = function() { return tile.building && !tile.building.isEmpty(); };
+        tile.hasBuilding = function() { return (tile.building !== null && !tile.building.isEmpty()); };
         tile.getBuilding = function() { return tile.building; };
         tile.setBuilding = function(building) { Tile.setBuilding(tile,building); };
         tile.removeBuilding = function() { Tile.removeBuilding(tile); };
@@ -103,7 +103,7 @@ var Tile = {
         updatePopulation(false,false);
 
         tile.tileGroup.removeChild(tile.building);
-        tile.building = null;
+        tile.building = Building.createNew(null);
     },
 
     damageBuilding: function(tile, damage) {
@@ -391,21 +391,23 @@ var Board = {
                 res.push(i);
         return res;
     },
+
     findBuilding: function(b,name,type,subtype,effect){
         var res=[];
         var N=b.tileCount();
-        for(var i=0;i<N;i++){
-            var bld=b.at(i).getBuilding();
-            if(bld.name !== null){
-                if((bld.type===type || !type) && (bld.subtype===subtype || !subtype) && 
-                    (bld.name===name || !name)){
-                    if(!effect){res.push(i);}
-                    else{
-                        for(var bIndex=0;bIndex<bld.effects.length;++bIndex){
-                            if(bld.effects[bIndex].type===effect){
-                                res.push(i);
-                                break;
-                            }
+        for(var i=0;i<N;i++) {
+            if (b.at(i).hasBuilding() === false) continue;
+
+            var bld = b.at(i).getBuilding();
+            if((bld.type===type || !type) && (bld.subtype===subtype || !subtype) && 
+                (bld.name===name || !name)){
+                if (!effect) {
+                    res.push(i);
+                } else {
+                    for(var bIndex=0;bIndex<bld.effects.length;++bIndex){
+                        if(bld.effects[bIndex].type===effect){
+                            res.push(i);
+                            break;
                         }
                     }
                 }
