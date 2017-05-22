@@ -366,7 +366,8 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.unemploymentGroup);
 
         // Set update loop
-        MainGame.game.time.events.loop(300, function() {
+        var timer = MainGame.game.time.create(false);
+        timer.loop(300, function() {
             var globalStats = MainGame.global;
 
             var newPop = MainGame.population.count() + ' ';
@@ -379,6 +380,7 @@ var StatsPanel = {
             statsPanel.homelessGroup.textLabel.text = newHomeless;
             statsPanel.unemploymentGroup.textLabel.text = newUnemployment;
         }, statsPanel);
+        timer.start();
 
         return statsPanel;
     },
@@ -409,9 +411,11 @@ var RiotThermometer = {
         thermometer.setVisibility = function() { RiotThermometer.setVisibility(thermometer); };
 
         // Set update loop
-        MainGame.game.time.events.loop(500, function() {
+        var timer = MainGame.game.time.create(false);
+        timer.loop(500, function() {
             thermometer.updateData();
         }, thermometer);
+        timer.start();
 
         return thermometer;
     },
@@ -514,9 +518,11 @@ var FunPanel = {
         funPanel.updateData = function() { FunPanel.updateData(funPanel); };
 
         // Set update loop
-        MainGame.game.time.events.loop(500, function() {
+        var timer = MainGame.game.time.create(false);
+        timer.loop(500, function() {
             funPanel.updateData();
         }, funPanel);
+        timer.start();
 
         return funPanel;
     },
