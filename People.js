@@ -340,9 +340,15 @@ var Population={
     },
 
     // Class func: Implementation
-    update: function(pop,nextTurn){
+    update: function(pop, nextTurn) {
+        if (nextTurn)
+            pop.increase(Math.floor(Math.random()*3)+1);
+
         /*global MainGame*/
-        pop.people.forEach(function(p){p.update(MainGame.board,nextTurn)});
+        pop.people.forEach(function(p) { p.update(MainGame.board, nextTurn); });
+
+        /*global Global*/
+        Global.updateFreedomUnrest();
     },
     
     report: function(pop){
@@ -354,7 +360,7 @@ var Population={
         console.log("[Population] end of report.");
     },
     
-    increase: function(pop,amount){
+    increase: function(pop,amount) {
         for(var i = 0; i < amount; i++) {
             var per=Person.createNew({"type":0,"workplace":null,"home":null});
             pop.people.push(per);
@@ -368,6 +374,8 @@ var Population={
             per.shelter=house.shelter;
             per.culture=house.culture;
         }
+
+        Global.updateFreedomUnrest();
     },
     
     hire: function(pop,tileIndex){

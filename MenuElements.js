@@ -315,7 +315,6 @@ var MenuController = {
         	/* global DUiMask */
 			this.uiMask = DUiMask.createNew();
 			this.uiMask.setController(2, function() {
-				MenuController.uiMask.destroy();
 				MenuController.closeSfx.play();
 				MenuController.closeAllMenus();
         	});
@@ -430,6 +429,8 @@ var MenuController = {
 	},
 
 	closeAllMenus: function(){
+		MenuController.uiMask.destroy();
+		
 		for(var i = 0; i < this.leftMenusOpen.length; ++i)
 			this.leftMenusOpen[i].destroy();
 		for(var i = 0; i < this.rightMenusOpen.length; ++i)

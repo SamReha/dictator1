@@ -160,6 +160,8 @@ var PeopleContractView={
 		// Play sfx
 		view.paymentChangeSfx.play();
 		view.paymentChangeSfx = game.make.audio('paper_click_' + Math.ceil(Math.random()*8)); // Assume we have 8 paper click sounds
+
+		Global.updateMoneyPerTurn();
 	},
 	onWorkChanged: function(view, isFire){
 		// unSetHiClass removes their salary from their home and sets them to mid
@@ -187,6 +189,8 @@ var PeopleContractView={
 
 		// update view
 		view.updateSelf();
+
+		Global.updateMoneyPerTurn();
 	},
 	updateSelf: function(v){
 		// TODO: hide Hire, update Bure -> Ministor of Bure, etc.

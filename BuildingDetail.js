@@ -1,5 +1,5 @@
 var BDOverView = {
-    createNew: function(buildingIndex,bdInfo) {
+    createNew: function(buildingIndex, bdInfo) {
         if(!bdInfo && (buildingIndex || buildingIndex === 0)){
             var bdInfo = BDController.getInfo(buildingIndex);
         } else if(!bdInfo){
@@ -8,6 +8,7 @@ var BDOverView = {
         }
 
         var overview = MainGame.game.make.group();
+        overview.index = buildingIndex;
 
         overview.page = Page.createNew();
         overview.page.anchor.setTo(.5,.5);
@@ -498,6 +499,7 @@ var BDController = {
 
             /*global updatePopulation*/
             updatePopulation(false, false);
+            Global.updateMoneyPerTurn();
         }else{
             // Play an error sound
             view.add_remove_sfx.play();
@@ -549,6 +551,7 @@ var BDController = {
 
             /*global updatePopulation*/
             updatePopulation(false,false);
+            Global.updateMoneyPerTurn();
         } else {
             // Play an error sound
             view.add_remove_sfx.play();
@@ -691,6 +694,7 @@ var BDController = {
 
             /*global updatePopulation*/
             updatePopulation(false,false);
+            Global.updateMoneyPerTurn();
 
             // Remove the building at view.index
             MainGame.board.at(view.index).removeBuilding();
@@ -701,12 +705,16 @@ var BDController = {
             // Close the Detail View
             view.demolishSfx.play();
             view.demolishButton.freezeFrames = true;
-            view.destroy();
+            //view.destroy();
+            MenuController.uiMask.destroy();
+            MenuController.closeSfx.play();
+            MenuController.closeAllMenus();
             MainGame.board.controller.detailView = null;
         }
     },
 };
 
+
 var transferClipboard = {
     
-}
+};

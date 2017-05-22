@@ -1,7 +1,7 @@
 // singleton
 var Global={
     turn: 1,
-	freedom: 0,
+    freedom: 0,
     unrest: 0,
     startingMoney: 30,
     money: 30,
@@ -11,107 +11,63 @@ var Global={
     thermometerDelta: 0,
     yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
 
-    // calcAvgCulture: function(){
-
-    // },
-    // calcAvgHealth: function(){
-
-    // },
-    // calcAvgShelter: function(){
-
-    // },
-    // calcAvgSalary: function(){
-
-    // },
-
-    // calcOvrIncome: function(){
-
-    // },
-
     nextTurn: function() {
+        MainGame.hud.setEndTurnActive(false);
         ++Global.turn;
-        /*global MainGame*/
-        MainGame.board.nextTurn(Global.turn);
 
-        /*globabl updatePopulation*/
-        updatePopulation(true,true);
-        Global.money += Global.moneyPerTurn;
-        Global.updateFreedomUnrest();
-        Global.updateThermometer();
-        Global.checkGameFail();
-        
-        // Makes sure we record the state after updating all the game info
-        Global.updateYearViewData();
+        // Then, let's start going through the sequence of update functions
+        showThermometerUpdate(function() {
+            showUnitAction(function() {
+                showNewBuildings(function() {
+                    showHomelessCamps(function() {
+                        concludeNextTurnSequence();
+
+                        /*global MainGame*/
+                        MainGame.board.nextTurn(Global.turn);
+
+                        Global.updateMoneyPerTurn();
+                        Global.money += Global.moneyPerTurn;
+                        //Global.checkGameFail();
+                        
+                        // Makes sure we record the state after updating all the game info
+                        Global.updateYearViewData();
+
+                        MainGame.hud.setEndTurnActive(true);
+                    });
+                });
+            });
+        });
     },
 
     toString: function(){
         var string = "Freedom: "+this.freedom+"%  Unrest: "+this.unrest+"%  $="+this.money+"K (";
         if(this.moneyPerTurn >= 0){string += "+"+this.moneyPerTurn+"K/turn)";}
         else{string += "-"+this.moneyPerTurn+"/turn)"};
-        return string
+        return string;
     },
 
-    // Finds the current Freedom value by averaging the health and culture of all low people
-    updateFreedomUnrest: function(){
+    // Finds the current Freedom value by averaging the health and education of all low people
+    updateFreedomUnrest: function() {
         var freeAv = 0;
         var unrestAv = 0;
         /*global MainGame*/
         var lowList = MainGame.population.lowList();
         
-        for(var index=0;index<lowList.length;++index){
+        for (var index = 0; index < lowList.length; ++index) {
             // =================================================================
-            // change later when influential members are a thing
-            if(lowList[index].health>=50 && lowList[index].culture>=50 && lowList[index].shelter>=50)
+            // TODO: change later when influential members are a thing
+            if (lowList[index].health >= 50 && lowList[index].education >= 50 && lowList[index].shelter >= 50)
                 continue;
-            // ===================================================================
-            //console.log("Person of type "+lowList[index].type+" living at "+lowList[index].home+" - Freedom: "+lowList[index].freedom+" - Unrest: "+lowList[index].unrest);
+            // =================================================================
             freeAv += lowList[index].freedom;
             unrestAv += lowList[index].unrest;
         }
-        //console.log("freeTotal: "+freeAv+" unrestTotal: "+unrestAv+" low people: "+lowList.length);
-        freeAv = Math.round(freeAv/lowList.length,0);
-        unrestAv = Math.round(unrestAv/lowList.length,0);
 
-        // console.log(MainGame.board.findBuilding(null,null,"road",null).length);
-        Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,null,"road",null).length,0,100);
-        Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length,0,100);
-    },
+        freeAv = Math.round(freeAv/lowList.length, 0);
+        unrestAv = Math.round(unrestAv/lowList.length, 0);
 
-    // Updates thermometer data. In general, should be called AFTER updateFreedomUnrest()
-    updateThermometer: function() {
-        // Get new delta (how much the thermometer will change by this turn)
-        this.thermometerDelta = this.freedom + this.unrest - 100;
-
-        // Apply delta
-        this.thermometerFill = Phaser.Math.clamp(this.thermometerFill + this.thermometerDelta, 0, 100); ;
-
-        // Check if unit spawn
-        if (this.thermometerFill >= 100) {
-            this.thermometerFill = 50;
-
-            // Compute angriest citizen
-            var workingClass = MainGame.population.lowList();
-            workingClass.sort(function(a, b) {
-                return b.unrest - a.unrest;
-            });
-            var citizenToRiot = workingClass[0];
-        
-            var spawnSuccessful = Unit.spawnUnitAt(Unit.Riot, citizenToRiot.home);
-
-            if (spawnSuccessful) {
-                // Remove them from their home
-                MainGame.board.at(citizenToRiot.home).getBuilding().removePerson();
-                citizenToRiot.home = null;
-
-                // Remove them from their workplace
-                var workIndex = citizenToRiot.workplace;
-                if (workIndex !== null) {
-                    var workPlace = MainGame.board.at(workIndex).getBuilding();
-                    workPlace.removePerson();
-                    citizenToRiot.work = null;
-                }
-            }
-        }
+        Global.freedom = Phaser.Math.clamp(freeAv + MainGame.board.findBuilding(null,null,"road",null).length, 0, 100);
+        Global.unrest = Phaser.Math.clamp(unrestAv + MainGame.population.findNotEmployed().length + MainGame.population.findNotHoused().length, 0, 100);
     },
 
     updateMoneyPerTurn: function(){

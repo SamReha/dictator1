@@ -7,10 +7,11 @@ var UnitAI = {
 		}
 
 		var newMoveIndex = UnitAI.chooseMove(unit);
+		//console.log(newMoveIndex);
 		unit.move(newMoveIndex);
 		if (unit.isAttacking)
 			UnitAI.attackTarget(unit);
-		console.log("");
+		//console.log("");
 	},
 
 	findTarget: function(unit) {
@@ -152,6 +153,8 @@ var UnitAI = {
 			}
 			targetUnit.takeDamage(unit.health);
 		}
+
+		unit.attackSfx.play();
 	},
 
 	mergeUnits: function(unit1, unit2) {

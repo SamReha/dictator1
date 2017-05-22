@@ -48,7 +48,8 @@ var MoneyPanel = {
         moneyPanel.addChild(moneyPanel.swissGroup);
 
         // Set update loop
-        MainGame.game.time.events.loop(300, function() {
+        var timer = MainGame.game.time.create(false);
+        timer.loop(300, function() {
             var globalStats = MainGame.global;
 
             var newWarchest = '₸' + globalStats.money + ' ';
@@ -68,6 +69,7 @@ var MoneyPanel = {
                 moneyPanel.warchestGroup.moneyPerTurnText.addColor('white', 0);
             }
         }, moneyPanel);
+        timer.start();
 
         return moneyPanel;
     },
