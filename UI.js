@@ -200,7 +200,6 @@ var BuildingPlacer = {
     },
 
     updateSelf: function(self) {
-        console.log('test!');
         // Track the mouse
         self.x = MainGame.game.input.x;
         self.y = MainGame.game.input.y;
