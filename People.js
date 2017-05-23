@@ -50,11 +50,11 @@ var Person={
                 p.portIndex = Math.floor(Math.random()*10);
             }
 
-            var tb = {
-                "?":"bureaucrat_port_",
-                "$":"merchant_port_",
-                "!":"military_port_"
-            }; 
+            var tb = {}; 
+            tb[Person.Bureaucrat] = "bureaucrat_port_";
+            tb[Person.Merchant] = "merchant_port_";
+            tb[Person.Military] = "military_port_";
+
             return tb[p.role] + p.portIndex;
         };
         p.findHousing=function(){return Person.findHousing(p)};
