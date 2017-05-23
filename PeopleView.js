@@ -232,10 +232,11 @@ var PeopleLeftView={
 };
 
 
-var PeopleView={
+var PeopleView = {
 	// TODO: please see the required format of lowData, buDataRef, etc.
 	createNew: function(lowData, buDataRef, merDataRef, milDataRef){
-		var pv=MainGame.game.add.sprite(0,0,'peopleViewBg');
+		MainGame.global.ministerViewIsOpen = true;
+		var pv = MainGame.game.add.sprite(0,0,'peopleViewBg');
 
 		// TODO: setup the actual position
 		pv.x=190, pv.y=100;
@@ -247,9 +248,7 @@ var PeopleView={
 		/* global DUiMask */
 		pv.uiMask=DUiMask.createNew();
 		pv.uiMask.setController(100, function(){
-			pv.uiMask.destroy();
-			pv.sfx.play();
-			pv.destroy();
+			pv.closeSelf();
 		});
 
 		// create low people view (right)
@@ -283,7 +282,9 @@ var PeopleView={
 		pv.setVisible=function(value){pv.visible=value};
 		pv.showContractView=function(personDataRef){PeopleView.showContractView(pv,personDataRef)};
 		pv.hideContractView=function(){PeopleView.hideContractView(pv)};
+		pv.closeSelf = function() { PeopleView.closeSelf(pv); };
 
+		MainGame.global.pv = pv;
 		return pv;
 	},
 	showContractView: function(view,personDataRef){
@@ -294,7 +295,7 @@ var PeopleView={
 		console.assert(view);
 		console.assert(personDataRef);
 		view.contract=PeopleContractView.createNew(personDataRef);
-		console.log(view.contract);
+		// console.log(view.contract);
 		view.contract.x=view.right.x;
 		view.addChild(view.contract);
 	},
@@ -304,5 +305,11 @@ var PeopleView={
 			view.contract=null;
 			view.left.lastSelected=null;
 		}
-	}
+	},
+	closeSelf: function(peopleView) {
+		MainGame.global.ministerViewIsOpen = false;
+		peopleView.uiMask.destroy();
+		peopleView.sfx.play();
+		peopleView.destroy();
+	},
 };

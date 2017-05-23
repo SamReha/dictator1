@@ -1,10 +1,12 @@
 /*global MainGame*/
 
-var BuildMenu={
+var BuildMenu = {
 	styleNormal: {font:"24px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
     styleButton: {font:"32px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
-	createNew: function(highData){
+	createNew: function(highData) {
+		MainGame.global.buildMenuOpened = true;
+
 		var hudInputPriority = 110;
 
 		var buildMenu = MainGame.game.add.sprite(0,0,'buildMenuBg');

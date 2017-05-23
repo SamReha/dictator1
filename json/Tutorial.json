@@ -5,15 +5,11 @@
 		"init":"",
 		"event":[
 			{	
-				"description":"Congratulations! Either by hook or by crook, you have found yourself appointed as the Supreme Leader of the Republic of Tian.", 
+				"description":"Congratulations! The year is 1950, and you have been appointed as the supreme leader of the Republic of Tian.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"The year is 1950. Though you are currently in control of your fledgling nation, that power may be just as easily stripped away.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"Establish your government, build your nation and bring about an era of greatness for the people of Tian!",
+				"description":"You are in control of your country - for now. You must establish your government, build your nation and appease the people of Tian if you wish to hold the throne.", 
 				"buttonTexts":["Continue"]
 			},
 			{
@@ -24,8 +20,7 @@
 		"handler":[
 			["e.gotoPage(1)"],
 			["e.gotoPage(2)"],
-			["e.gotoPage(3)"],
-			["Tut.intro=true;e.suicide();Tutorial.generate();Tutorial.disableNextTurn()", "e.suicide()"]
+			["Tut.intro=true;e.suicide();Tutorial.generate();MainGame.hud.setEndTurnActive(false)", "e.suicide()"]
 		],
 		"reminder":{
 			"model":{
@@ -41,31 +36,83 @@
 	},
 
 	{
-		"name":"Roads",
-		"cond":"Tutorial.roadsBuilt()",
+		"name":"OpenBuildMenu",
+		"cond":"Tutorial.hasOpenedBuildMenu()",
 		"init":"",
 		"event":[
 			{	
-				"description":"One of your most important jobs in Tian is ordering the construction of new buildings.", 
+				"description":"One of your most important responsibilities in Tian is ordering the construction of new buildings.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"You can open the Build Menu by clicking on the Build button in the bottom left corner at any time.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"The most basic kind of building is a Road. A productive working class is important, but to get them to work, there must be a road connecting their home to a workplace.",
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"Find the Lumber Yard and the Apartment that are already on the map, and use Roads to connect them.",
-				"buttonTexts":["Okay"]
+				"description":"Try clicking on the BUILD button in the bottom left corner now.", 
+				"buttonTexts":["OK"]
 			}
 		],
 		"handler":[
 			["e.gotoPage(1)"],
-			["e.gotoPage(2)"],
-			["e.gotoPage(3)"],
+			["Tut.roads=true;e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"			
+			}
+		}
+	},
+
+	{
+		"name":"Roads",
+		"cond":"Tutorial.roadsBuilt()",
+		"init":"MainGame.board.cameraCenterOn(142)",
+		"event":[
+			{
+				"description":"The most basic kind of building is a Road. Working class citizens need roads to connect their homes to their places of work.",
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Buy a Road, and use it to connect your Apartment to your Lumberyard (use WASD or Arrow Keys to scroll the map).",
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["Tut.roads=true;e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"			
+			}
+		}
+	},
+
+	{
+		"name":"FireTeacher",
+		"cond":"Tutorial.firedTeacher()",
+		"init":"MainGame.board.cameraCenterOn(112)",
+		"event":[
+			{
+				"description":"Now that you have connected your Lumberyard to your road network, you will need an unemployed citizen to staff it.",
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Click on your school to open its menu. Fire the teacher to create an unemployed citizen.",
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
 			["Tut.roads=true;e.suicide()"]
 		],
 		"reminder":{
@@ -84,25 +131,20 @@
 	{
 		"name":"buildingOutput",
 		"cond":"Tutorial.lumberYardHasWorkers()",
-		"init":"",
+		"init":"MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
 		"event":[
-			{	
-				"description":"Now you have connected the Lumber Yard to the rest of your working people, click on your Lumber Yard to open its menu, and you will see the Hire Worker button. Unemployed people with road access will come work there if you press it.", 
+			{
+				"description":"Lumberyards generate money each year based on how many employees they have.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Once you have assigned workers, the Lumber Yard produces money each turn. Different kinds of workplaces produce different kinds of outputs.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"Right now you do not have any unemployed citizens. Try clicking on the School nearest to the Lumber Yard and firing one teacher. Then click on the Lumber Yard and rehire them as a laborer.", 
-				"buttonTexts":["Okay"]
+				"description":"Click on your Lumberyard to open its menu. Hire your unemployed teacher as a worker to start making money.", 
+				"buttonTexts":["OK"]
 			}
 
 		],
 		"handler":[
 			["e.gotoPage(1)"],
-			["e.gotoPage(2)"],
 			["e.suicide()"]
 		],
 		"reminder":{
@@ -121,24 +163,19 @@
 	{
 		"name":"housing",
 		"cond":"Tutorial.builtNewHouse()",
-		"init":"Tut.numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length",
+		"init":"Tut.numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length;MenuController.closeAllMenus()",
 		"event":[
 			{	
-				"description":"Great job staffing that factory! So far, we have only talked about roads and workplaces. The final type of building is a residence. A residence is a place for a person to live. Try building a residence in your country.", 
+				"description":"Great work! The final type of building is a residence. New citizens enter Tian each year, and they'll need some place to live.", 
 				"buttonTexts":["Continue"]
 			},
 			{	
-				"description":"Open the Build Menu again. Select an Apartment and click the Buy button. Move your mouse over an available tile, and left click again to place the building.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"When that building is ready, people can move in. The population of Tian will grow each year. If there is not enough available housing, some people will become homeless.", 
-				"buttonTexts":["Okay"]
+				"description":"Open the Build Menu again. Select either an Apartment, Suburb or Mansion and place it on any open tile.", 
+				"buttonTexts":["OK"]
 			}
 		],
 		"handler":[
 			["e.gotoPage(1)"],
-			["e.gotoPage(2)"],
 			["e.suicide()"]
 		],
 		"reminder":{
@@ -156,11 +193,15 @@
 
 	{
 		"name":"bigAssTextChain",
-		"cond":"Tutorial.hasMinister()",
+		"cond":"Tutorial.ministerViewIsOpen()",
 		"init":"",
 		"event":[
 			{	
-				"description":"You must maintain control of the working class to stay in power. The working class generates Freedom and Unrest based on their current living conditions and their opinion on you. Access to education, food and roads will increase Freedom. Hunger, poor living conditions and unemployment will increase Unrest.", 
+				"description":"You must maintain control of the working class to stay in power. The working class generates Freedom and Unrest based on their current living conditions and their opinion of you.", 
+				"buttonTexts":["Continue"]
+			},
+			{	
+				"description":"Access to education, food and roads will increase Freedom. Hunger, poor living conditions and unemployment will increase Unrest.", 
 				"buttonTexts":["Continue"]
 			},
 			{	
@@ -168,32 +209,24 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Remember: the less freedom your people have, the more unrestful they can become before triggering a Popular Revolution.", 
+				"description":"Remember: the less freedom your people have, the more unhappy they can become before triggering a Popular Revolution.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Please direct your attention to the Stats Panel on the lower right edge of the screen. This panel displays data about what year it is, the current population, the national funds of Tian and your private bank account.", 
+				"description":"The most comfortable, well fed and well educated citizens in Tian leave the Working Class and enter the Social Elite. Though they do not work normal jobs, they are still useful to you.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Keep a close eye on these numbers as the game progresses.", 
+				"description":"Each Social Elite citizen falls into one of three factions: Financiers, Military Officers, and Bureaucrats. You may choose one Elite to become Minister of their faction, which will unlock new building options.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Your economy is borne on the back of the working class, but not every citizen of Tian is condemned to a life of toil. The most comfortable, well fed and well educated citizens ascend to the Social Elite. Labor is beneath the likes of these uncommon citizens, but that does not mean they are useless to you.", 
+				"description":"No one rules alone, and ending a turn with no active Ministers will result in your government dissolving due to lack of staff.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"You will need to recruit Ministers to help actuate your government. Each Social Elite citizen falls into one of three factions: Financiers, Military Officers and Bureaucrats. You may choose one Elite to become Minister of their faction, which will unlock new building options in the Build Menu.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"No one rules alone, and ending a turn with no active Ministers will result in your government being overthrown in a Coup d’etat. Strengthen your government by ensuring you have at least one Minister on the payroll at all times.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"You are almost at the end of your first turn. Before you can move on, navigate to the Population Menu by clicking on the Population icon in the Stats Panel. Choose an Elite Bureaucrat from the left-hand side of the menu, and hire them on. Afterwards, you can check the Build Menu to see what new buildings are available.", 
-				"buttonTexts":["Continue"]
+				"description":"Click on one of the open portraits in the Ministry panel to hire a minister.", 
+				"buttonTexts":["OK"]
 			}
 		],
 		"handler":[
@@ -204,7 +237,6 @@
 			["e.gotoPage(5)"],
 			["e.gotoPage(6)"],
 			["e.gotoPage(7)"],
-			["e.gotoPage(8)"],
 			["e.suicide()"]
 		],
 		"reminder":{
@@ -221,17 +253,74 @@
 	},
 
 	{
-		"name":"tutorialEnd",
-		"cond":"false",
+		"name":"OpenMinisterView",
+		"cond":"Tutorial.contractIsOpen()",
 		"init":"",
 		"event":[
 			{	
-				"description":"Congratulations! You now know the basics of how to run your country and help yourself and your people to thrive. You may click the End Turn button in the lower right corner to advance to the next turn.\n\nGood luck.", 
+				"description":"Social Elite are listed on the left-hand side of the menu. Click on one of their portraits to bring up their contract and choose to hire them.", 
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Build a new residence (Mansion, Suburb or Apartment)",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""			
+			}
+		}
+	},
+
+	{
+		"name":"SignContract",
+		"cond":"Tutorial.hasMinister()",
+		"init":"",
+		"event":[
+			{	
+				"description":"From the Contract Menu, you can configure a minister's paygrade, and make final decisions about hiring or firing them from your ministry.", 
+				"buttonTexts":["Continue"]
+			},
+			{	
+				"description":"Click 'Hire' to hire this minister.", 
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Build a new residence (Mansion, Suburb or Apartment)",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""			
+			}
+		}
+	},
+
+	{
+		"name":"tutorialEnd",
+		"cond":"false",
+		"init":"MenuController.closeAllMenus();Tutorial.closePeopleView();MainGame.board.cameraCenterOn(82)",
+		"event":[
+			{	
+				"description":"Congratulations! You now know the basics of how to rule your country. Click the End Turn button in the lower right corner to advance to the next year.", 
 				"buttonTexts":["Play"]
 			}
 		],
 		"handler":[
-			["Tutorial.enableNextTurn();e.suicide()"]
+			["MainGame.hud.setEndTurnActive(true);Tutorial.checkTimer.stop();e.suicide()"]
 		],
 		"reminder":{
 			"model":{

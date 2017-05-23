@@ -25,7 +25,9 @@ var Tutorial = {
 			console.assert(this.tuts.length);
 			//console.log("Parsed Tutorials, total: ", this.tuts.length);
 
-			MainGame.game.time.events.loop(50, this.loopingCheck, this);
+			this.checkTimer = MainGame.game.time.create(false);
+			this.checkTimer.loop(50, this.loopingCheck, this);
+			this.checkTimer.start();
 
 			this.initialized = true;
 		}
@@ -163,17 +165,19 @@ var Tutorial = {
 	},
 
 	//// Sequence checks!
+	// Checks to see if the build menu has been opened
+	hasOpenedBuildMenu: function() {
+		return MainGame.global.buildMenuOpened;
+	},
 
 	// Checks to see whether the player has built a road between any home and any lumberyard
 	roadsBuilt: function() {
-		//console.log('ROADS BUILT CHECK');
-		var board = MainGame.board;
-		var homes = board.findBuilding(null, null, 'housing', null);
-		var lumberyards = board.findBuilding(null, null, 'production', null);
+		var homes = MainGame.board.findBuilding(null, null, 'housing', null);
+		var lumberyards = MainGame.board.findBuilding(null, null, 'production', null);
 
 		for (var i = 0; i < homes.length; i++) {
 			for (var k = 0; k < lumberyards.length; k++) {
-				if (board.hasRoadConnect(homes[i], lumberyards[k])) {
+				if (MainGame.board.hasRoadConnect(homes[i], lumberyards[k])) {
 					return true;
 				}
 			}
@@ -182,14 +186,19 @@ var Tutorial = {
 		return false;
 	},
 
+	// Checks to see whether the player has fired the teacher
+	firedTeacher: function() {
+		var school = MainGame.board.at(112).getBuilding();
+		
+		return school.people === 0;
+	},
+
 	// Checks to see whether the player has put staff into their factory
 	lumberYardHasWorkers: function() {
-		//console.log('ROADS BUILT CHECK');
-		var board = MainGame.board;
-		var lumberyards = board.findBuilding(null, null, 'production', null);
+		var lumberyards = MainGame.board.findBuilding(null, null, 'production', null);
 
 		for (var i = 0; i < lumberyards.length; i++) {
-			var lumberyard = board.at(lumberyards[i]).building;
+			var lumberyard = MainGame.board.at(lumberyards[i]).building;
 
 			if (lumberyard.people > 0) return true;
 		}
@@ -203,15 +212,20 @@ var Tutorial = {
 		return Tut.numHouses < numHouses;
 	},
 
+	ministerViewIsOpen: function() {
+		return MainGame.global.ministerViewIsOpen;
+	},
+
+	contractIsOpen: function() {
+		return MainGame.global.contractIsOpen;
+	},
+
 	hasMinister: function() {
 		return MainGame.population.highList().length > 0;
 	},
 
-	disableNextTurn: function() {
-		MainGame.hud.btnNextTurn.visible = false;
+	// Hacky, but it'll make sure the people view is closed until we can put it in a folder menu
+	closePeopleView: function() {
+		MainGame.global.pv.closeSelf();
 	},
-
-	enableNextTurn: function() {
-		MainGame.hud.btnNextTurn.visible = true;
-	}
 };

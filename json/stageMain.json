@@ -123,7 +123,7 @@
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": {"name": "farm", "startingTurn": 1,"people": 5}},
         {"terrain": "grass","building": {"name": "road", "startingTurn": 1,"people": 0}},
-        {"terrain": "grass","building": {"name": "suburb","startingTurn": 1,"people": 0}},
+        {"terrain": "grass","building": null},
         {"terrain": "grass","building": {"name": "school", "startingTurn": 1,"people": 1}},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},

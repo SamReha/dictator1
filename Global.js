@@ -11,6 +11,11 @@ var Global={
     thermometerDelta: 0,
     yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
 
+    // Internal Global States
+    buildMenuOpened: false,    // Set to true the first time the player opens the build menu
+    ministerViewIsOpen: false, // Flag that shows whether or not the minister view is open
+    contractIsOpen: false,     // Flag that shows whether or not a contract is open
+
     nextTurn: function() {
         MainGame.hud.setEndTurnActive(false);
         ++Global.turn;

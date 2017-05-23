@@ -6,6 +6,7 @@ var PeopleContractView={
 	styleButton: {font:"32px myKaiti", fill:"#ffffff", boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.85)", shadowOffsetX: 1, shadowOffsetY: 1 },
 
 	createNew: function(personDataRef){
+		MainGame.global.contractIsOpen = true;
 		var v=MainGame.game.make.sprite(0,0,'peopleViewContractBg');
 		v.dataRef=personDataRef;
 		v.inputEnabled=true;
@@ -144,6 +145,7 @@ var PeopleContractView={
 		return v;
 	},
 	suicide: function(v){
+		MainGame.global.contractIsOpen = false;
 		v.incButton.freezeFrames=true;
 		v.decButton.freezeFrames=true;
 		v.cancelButton.freezeFrames=true;
