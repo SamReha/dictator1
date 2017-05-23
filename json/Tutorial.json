@@ -213,14 +213,6 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Please direct your attention to the Stats Panel on the lower right edge of the screen. This panel displays data about what year it is, the current population, the national funds of Tian and your private bank account.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"Keep a close eye on these numbers as the game progresses.", 
-				"buttonTexts":["Continue"]
-			},
-			{
 				"description":"The most comfortable, well fed and well educated citizens in Tian leave the Working Class and enter the Social Elite. Though they do not work normal jobs, they are still useful to you.", 
 				"buttonTexts":["Continue"]
 			},
@@ -245,8 +237,6 @@
 			["e.gotoPage(5)"],
 			["e.gotoPage(6)"],
 			["e.gotoPage(7)"],
-			["e.gotoPage(8)"],
-			["e.gotoPage(9)"],
 			["e.suicide()"]
 		],
 		"reminder":{
