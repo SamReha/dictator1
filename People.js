@@ -8,9 +8,9 @@ var Person={
     Mid: 1,
     Hi: 2,
     //  for role
-    Bureaucrat: '?',
-    Merchant: '$',
-    Military: '!',
+    Bureaucrat: 'Bureaucratic',
+    Merchant: 'Commerce',
+    Military: 'Military',
 
     learningSpeed: 10,    
     

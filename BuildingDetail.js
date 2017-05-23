@@ -140,7 +140,26 @@ var BDOverView = {
             overview.outputs = [];
 
             for(var i = 0; i < bdInfo.building.effects.length; ++ i){
-                if(bdInfo.building.effects[i].type !== null){
+                if(bdInfo.building.effects[i].type === "money"){
+                    overview.outputs.push({});
+
+                    var effect = bdInfo.building.effects[i];
+                    overview.outputs[i].effectText = MainGame.game.make.text(-overview.width*19/45,overview.height*(2+3*i)/45,effect.type.charAt(0).toUpperCase()+effect.type.slice(1),BDController.body1);
+                    overview.outputs[i].effectText.anchor.setTo(0,.5);     overview.addChild(overview.outputs[i].effectText);
+
+                    overview.outputs[i].effectIcons = [];
+                    for(var j = 0; j < bdInfo.building.maxPeople; ++j){
+                        overview.outputs[i].effectIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,effect.type+'_output_full'));
+                        overview.outputs[i].effectIcons[j].anchor.setTo(.5,.5);     overview.outputs[i].effectIcons[j].scale.setTo(.45,.45);
+                        
+                        if(j < bdInfo.building.people)
+                            overview.outputs[i].effectIcons[j].tint = 0x20a020;
+                        else
+                            overview.outputs[i].effectIcons[j].tint = 0x777777;
+                        overview.outputs[i].effectIcons[j].x += overview.outputs[i].effectIcons[j].width * j*1.1;
+                        overview.addChild(overview.outputs[i].effectIcons[j]);
+                    }
+                } else if(bdInfo.building.effects[i].type !== null){
                     overview.outputs.push({});
 
                     var effect = bdInfo.building.effects[i];
@@ -152,10 +171,10 @@ var BDOverView = {
 
                     overview.outputs[i].effectIcons = [];
                     for(var j = 0; j < Math.ceil(maxOutput/10); ++j){
+                        overview.outputs[i].effectIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,effect.type+'_output_full'));
+                        overview.outputs[i].effectIcons[j].anchor.setTo(.5,.5);     overview.outputs[i].effectIcons[j].scale.setTo(.45,.45);
+
                         if((j+1)*10 <= maxOutput){
-                            overview.outputs[i].effectIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,effect.type+'_output_full'));
-                            overview.outputs[i].effectIcons[j].anchor.setTo(.5,.5);     overview.outputs[i].effectIcons[j].scale.setTo(.45,.45);
-                        
                             if(currentOutput >= (j+1)*10)
                                 overview.outputs[i].effectIcons[j].tint = (currentOutput > 0?0x20a020:0xa02020);
                             else
@@ -671,10 +690,29 @@ var BDController = {
         }
     },
 
-    setupOutputList: function(view, bdInfo, pageIndex){
+    setupOutputList: function(view, bdInfo, pageIndex, outputType){
         view.outputListView.removeAll();
 
         if (bdInfo.residential) {
+            var allBuildingIndexes = MainGame.board.findBuilding(null, null, null, outputType);
+
+            var outputBuildings = [];
+            for (var index=0;index<allBuildingIndexes.length;++index) {
+                var buildingData = MainGame.board.at(allBuildingIndexes[index]).building;
+                
+                // If the distance between the two buildings is <= the range of the eduBuilding, accumulate culture
+                var effectList = buildingData.effects;
+                for (var effectIndex=0;effectIndex<effectList.length;++effectIndex) {
+                    var thisEffect = effectList[effectIndex];
+                    if (thisEffect.type != type) continue;
+                    if (MainGame.board.distanceOf(homeIndex, allBuildingIndexes[index]) <= thisEffect.range) {
+                        
+                        var buildingName = buildingData.name;
+                        var outPut = thisEffect.outputTable[buildingData.people];
+                    }
+                }
+            }
+        } else {
 
         }
     },
@@ -716,5 +754,7 @@ var BDController = {
 
 
 var transferClipboard = {
-    
+    createNew: function(bdInfo){
+
+    }, 
 };

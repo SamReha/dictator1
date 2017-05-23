@@ -47,7 +47,7 @@ var updateHomesNearOutput = function(tileIndex,range) {
 	/*global MainGame*/
 	var homes = MainGame.board.findBuilding(null,null,"housing",null);
 	for(var houseIndex=0;houseIndex<homes.length;++houseIndex){
-		if(MainGame.board.distanceOf(tileIndex,homes[houseIndex]) <= 2 && MainGame.board.at(homes[houseIndex]).building.name!=="palace"){
+		if(MainGame.board.distanceOf(tileIndex,homes[houseIndex]) <= range && MainGame.board.at(homes[houseIndex]).building.name!=="palace"){
 			updateHome(homes[houseIndex]);
 		}
 	}
