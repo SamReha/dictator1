@@ -92,7 +92,7 @@ var showHomelessCamps = function(callback) {
 };
 
 var showThermometerUpdate = function(callback) {
-    updatePopulation(true, true);
+    updateHomes(true);
 
     // Get new delta (how much the thermometer will change by this turn)
     Global.thermometerDelta = Global.freedom + Global.unrest - 100;

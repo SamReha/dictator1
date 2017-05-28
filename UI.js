@@ -265,8 +265,7 @@ var BuildingPlacer = {
             // Bill the player
             MainGame.global.money -= newBuilding.cost;
 
-            /*global updatePopulation*/
-            updatePopulation(false,false);
+            MainGame.population.update(false);
 
             // Make some noise!
             self.sfx.play();

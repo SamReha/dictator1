@@ -197,11 +197,15 @@
 		"init":"",
 		"event":[
 			{	
+				"description":"Good work! Your new residence will be complete in two years.", 
+				"buttonTexts":["Continue"]
+			},
+			{	
 				"description":"You must maintain control of the working class to stay in power. The working class generates Freedom and Unrest based on their current living conditions and their opinion of you.", 
 				"buttonTexts":["Continue"]
 			},
 			{	
-				"description":"Access to education, food and roads will increase Freedom. Hunger, poor living conditions and unemployment will increase Unrest.", 
+				"description":"Access to education, food, and roads will increase Freedom. Hunger, poor living conditions, and unemployment will increase Unrest.", 
 				"buttonTexts":["Continue"]
 			},
 			{	
@@ -237,6 +241,7 @@
 			["e.gotoPage(5)"],
 			["e.gotoPage(6)"],
 			["e.gotoPage(7)"],
+			["e.gotoPage(8)"],
 			["e.suicide()"]
 		],
 		"reminder":{

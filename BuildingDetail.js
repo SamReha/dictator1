@@ -516,8 +516,7 @@ var BDController = {
             view.add_remove_sfx.play();
             view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
-            /*global updatePopulation*/
-            updatePopulation(false, false);
+            MainGame.population.update(false);
             Global.updateMoneyPerTurn();
         }else{
             // Play an error sound
@@ -568,8 +567,7 @@ var BDController = {
             view.add_remove_sfx.play();
             view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
-            /*global updatePopulation*/
-            updatePopulation(false,false);
+            MainGame.population.update(false);;
             Global.updateMoneyPerTurn();
         } else {
             // Play an error sound
@@ -730,8 +728,7 @@ var BDController = {
                 MainGame.population.fire(bdInfo.index);
             }
 
-            /*global updatePopulation*/
-            updatePopulation(false,false);
+            MainGame.population.update(false);
             Global.updateMoneyPerTurn();
 
             // Remove the building at view.index

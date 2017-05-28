@@ -67,8 +67,8 @@ var MainGame={
         /*global Hud*/
         MainGame.hud = Hud.createNew();
 
-        /*global updatePopulation*/
-        updatePopulation(false,true);
+        /*global updateHomes*/
+        updateHomes(false);
         Global.updateYearViewData();
         //MainGame.global.updateFreedomUnrest();
 

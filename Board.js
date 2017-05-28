@@ -99,8 +99,7 @@ var Tile = {
             MainGame.population.fire(tile.index);
         }
 
-        /*global updatePopulation*/
-        updatePopulation(false,false);
+        MainGame.population.update(false);
 
         tile.tileGroup.removeChild(tile.building);
         tile.building = Building.createNew(null);
