@@ -133,18 +133,11 @@ var Hud = {
         return false;
     },
 
-    showBuildMenu: function(hud) {
-        var buildMenu=hud.findChild("buildMenu");
-        console.assert(buildMenu);
-        buildMenu.visible=!buildMenu.visible;
-    },
-
     beginBuilding: function(menu, mask, button, buildingType) {
         // This is the quickest place to add a sound effect for build menu options, so I'll do it here. I'm sorry - Sam
         var sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         sfx.play();
 
-        //console.log( MainGame.game.cache.getJSON('buildingData')[buildingType].cost);
         if (Global.money >= MainGame.game.cache.getJSON('buildingData')[buildingType].cost) {
             // Reset the button state (quick hack)
             button.frame = 1; // This should be whatever frame corresponds to the default state in the sprite sheet
@@ -167,39 +160,51 @@ var Hud = {
 // Building Placer Object
 // Dynamically extends sprite
 var BuildingPlacer = {
+    textStyle: { font: '32px STKaiti', fill: '#ffffff', boundsAlignH: 'center', boundsAlignV: 'middle', shadowBlur: 1, shadowColor: "rgba(0,0,0,0.75)", shadowOffsetX: 2, shadowOffsetY: 2 },
+
     createNew: function(buildingType, menu, mask) {
-        var bP = MainGame.game.add.sprite(0, 0, buildingType);
+        var buildingPlacer = MainGame.game.add.sprite(0, 0, buildingType);
 
         var zoom = MainGame.board.currentScale;
-        bP.scale.set(zoom,zoom);
-
-        bP.anchor.x = bP.anchor.y = 0.5;
+        buildingPlacer.scale.set(zoom,zoom);
+        buildingPlacer.anchor.x = buildingPlacer.anchor.y = 0.5;
+        buildingPlacer.alpha = 0.85;
         
-        bP.deltaTime =  10; // How frequently update is called, in ms
-        bP.buildingType = buildingType;
-        bP.canBuild = true;
-        bP.mapIndex = null;
+        buildingPlacer.deltaTime =  10; // How frequently update is called, in ms
+        buildingPlacer.buildingType = buildingType;
+        buildingPlacer.canBuild = true;
+        buildingPlacer.mapIndex = null;
+
+        // Add some explanatory text
+        var hintText = MainGame.game.make.text(MainGame.game.width/2, MainGame.game.height*0.9, ' Press ESC to cancel build ', this.textStyle);
+        hintText.anchor.set(0.5, 0.5);
+        var hint = MainGame.game.add.graphics();
+        hint.lineStyle(0);
+        hint.beginFill('#000000', 0.666);
+        hint.drawRect(hintText.x - hintText.width/2, hintText.y - hintText.height/2, hintText.width, hintText.height);
+        hint.endFill();
+        hint.addChild(hintText);
+        buildingPlacer.hint = hint;
 
         // Assume we have 5 building sounds
         var soundIndex = Math.ceil(Math.random()*5);
-        bP.sfx = game.make.audio('building_placement_' + soundIndex);
+        buildingPlacer.sfx = game.make.audio('building_placement_' + soundIndex);
 
-        bP.updateSelf = function() { BuildingPlacer.updateSelf(bP); };
-        bP.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(bP, activePointer, menu, mask); };
-        bP.cancelBuild = function() { BuildingPlacer.cancelBuild(bP); };
+        buildingPlacer.updateSelf = function() { BuildingPlacer.updateSelf(buildingPlacer, menu, mask); };
+        buildingPlacer.clickHandler = function(activePointer) { BuildingPlacer.clickHandler(buildingPlacer, activePointer, menu, mask); };
+        buildingPlacer.cancelBuild = function() { BuildingPlacer.cancelBuild(buildingPlacer); };
 
-        bP.inputEnabled = true;
-        bP.input.priorityID = 1;
+        MainGame.global.isBuilding = true;
         
-        bP.placerTimer = MainGame.game.time.create(false);
-        bP.placerTimer.loop(bP.deltaTime, function() { bP.updateSelf(); }, bP);
-        bP.placerTimer.start();
-        MainGame.game.input.onDown.add(bP.clickHandler, bP, 10, MainGame.game.input.activePointer);
+        buildingPlacer.placerTimer = MainGame.game.time.create(false);
+        buildingPlacer.placerTimer.loop(buildingPlacer.deltaTime, function() { buildingPlacer.updateSelf(); }, buildingPlacer);
+        buildingPlacer.placerTimer.start();
+        MainGame.game.input.onDown.add(buildingPlacer.clickHandler, buildingPlacer, 10, MainGame.game.input.activePointer);
 
-        return bP;
+        return buildingPlacer;
     },
 
-    updateSelf: function(self) {
+    updateSelf: function(self, menu, mask) {
         // Track the mouse
         self.x = MainGame.game.input.x;
         self.y = MainGame.game.input.y;
@@ -210,13 +215,15 @@ var BuildingPlacer = {
             var tile = MainGame.board.at(self.mapIndex);
             // Might be nice to move these into Tile as convenience methods...
             var terrainType = tile.terrain.key;
-            var hasBuilding = tile.getBuilding().name != null ? true : false;
             // If the terrain is impassable, or a building already exists
-            self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || hasBuilding);
+            self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || tile.hasBuilding());
         } else self.canBuild = false;
 
         // Check for build cancel
         if (MainGame.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+            menu.visible = true;
+            mask.visible = true;
+            game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)).play();
             self.cancelBuild();
         }
         
@@ -276,14 +283,14 @@ var BuildingPlacer = {
             self.cancelBuild();
         } else {
             console.log("Can't touch this!");
-            menu.visible = true;
-            mask.visible = true;
-            self.cancelBuild();
+            game.make.audio('empty_click_' + Math.ceil(Math.random()*5)).play();
         }
     },
     
     cancelBuild: function(self) {
+        MainGame.global.isBuilding = false;
         MainGame.game.input.onDown.remove(self.clickHandler, self, self, MainGame.game.input.activePointer);
+        self.hint.destroy();
         self.placerTimer.stop();
         self.kill();
     }

@@ -15,6 +15,8 @@ var Global={
     buildMenuOpened: false,    // Set to true the first time the player opens the build menu
     ministerViewIsOpen: false, // Flag that shows whether or not the minister view is open
     contractIsOpen: false,     // Flag that shows whether or not a contract is open
+    inMenu: false,             // Is the player in any sort of menu?
+    isBuilding: false,         // Is the player trying to build a building?
 
     nextTurn: function() {
         MainGame.hud.setEndTurnActive(false);

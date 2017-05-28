@@ -96,13 +96,10 @@ var BoardController={
 		/* global TileBriefInfoView */
 		if(index===null || index===undefined)
 			return;
-		if(bc.briefView){
+
+		if (bc.briefView) {
 			bc.mouseOverTimer.stop(true);
 			BoardController.hideTileBrief(bc);
-		}
-		if(bc.detailView){
-			if(bc.detailView.index===index)
-				return;
 		}
 
 		// If the tile is empty, don't bother showing a panel (unless it is water or mountain)
@@ -127,17 +124,9 @@ var BoardController={
 	},
 	
 	showTileDetail: function(bc, index){
-		if (index===null || index===undefined) return;
+        if (index===null || index===undefined) return;
 
-		if (bc.detailView) {
-			if (bc.detailView.index === index) {
-                BoardController.hideTileDetail(bc);
-				return;
-            } else {
-				bc.mouseTimer.stop(true);
-				BoardController.hideTileDetail(bc);
-			}
-		}
+        if (MainGame.global.isBuilding) return;
 		
 		var tile = bc.modelView.at(index);
 		if(!tile.hasBuilding() || tile.getBuilding().name === 'road' || tile.getBuilding().startingTurn > MainGame.global.turn)
