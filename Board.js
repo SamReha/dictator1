@@ -34,11 +34,20 @@ var Tile = {
         tile.unit = null;
         tile.index = index; // For convenience
 
+        // Use alert if something is going wrong in a tile
+        tile.alert = MainGame.game.make.sprite(0, 0, 'exclamation_01');
+        //tile.alert.anchor.set(0.5, 0.5);
+        tile.tileGroup.addChild(tile.alert);
+        tile.alert.visible = false;
+
         /* global Building*/
         tile.building = Building.createNew(data.building);
         tile.tileGroup.addChild(tile.building);
 
         // Class funcs
+        //// Alert Layer
+        tile.setAlert = function(bool) { tile.alert.visible = bool; };
+
         //// Terrain Layer
         tile.getTerrain = function() { return tile.terrain; };
         tile.getTerrainType = function() { return tile.terrain.key; };

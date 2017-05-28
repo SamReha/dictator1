@@ -11,6 +11,16 @@ var updateHomes = function(nextTurn) {
 	}
 
 	pop.update(nextTurn);
+
+	// Finally, check over all ministers. If they have an impending demotion, flag it now.
+	var ministers = pop.highList();
+	for (var i = 0; i < ministers.length; i++) {
+		var minister = ministers[i];
+		var home = MainGame.board.at(minister.home).getBuilding();
+
+		// Set the alert iff the home does not have the stats to support an Elite.
+		MainGame.board.at(minister.home).setAlert(home.health < 50 || home.shelter < 50 || home.culture < 50);
+	}
 };
 
 var updateHome = function(houseIndex){

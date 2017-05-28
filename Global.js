@@ -21,28 +21,33 @@ var Global={
         MainGame.hud.setEndTurnActive(false);
         ++Global.turn;
 
-        // Then, let's start going through the sequence of update functions
-        showThermometerUpdate(function() {
-            showUnitAction(function() {
-                showNewBuildings(function() {
-                    showHomelessCamps(function() {
-                        concludeNextTurnSequence();
+        // Check no ministry fail before we do any updates (to make sure the player intentionally ended their turn with no ministers)
+        if (!Global.checkNoMinistryFail()) {
+            // Then, let's start going through the sequence of update functions
+            showMinisterDemotions(function() {
+                showThermometerUpdate(function() {
+                    showUnitAction(function() {
+                        showNewBuildings(function() {
+                            showHomelessCamps(function() {
+                                concludeNextTurnSequence();
 
-                        /*global MainGame*/
-                        MainGame.board.nextTurn(Global.turn);
+                                /*global MainGame*/
+                                MainGame.board.nextTurn(Global.turn);
 
-                        Global.updateMoneyPerTurn();
-                        Global.money += Global.moneyPerTurn;
-                        Global.checkGameFail();
-                        
-                        // Makes sure we record the state after updating all the game info
-                        Global.updateYearViewData();
+                                Global.updateMoneyPerTurn();
+                                Global.money += Global.moneyPerTurn;
+                                Global.checkGameFail();
+                                
+                                // Makes sure we record the state after updating all the game info
+                                Global.updateYearViewData();
 
-                        MainGame.hud.setEndTurnActive(true);
+                                MainGame.hud.setEndTurnActive(true);
+                            });
+                        });
                     });
                 });
             });
-        });
+        }
     },
 
     toString: function(){
@@ -95,6 +100,14 @@ var Global={
         Global.moneyPerTurn = totalIncome;
     },
 
+    checkNoMinistryFail: function() {
+        // No ministers - loss due to failure to form government
+        if (MainGame.population.highList().length === 0) {
+            getGameLoseWindow("Without any active Ministers, you government has dissolved. You lose.");
+            return true;
+        } else return false;
+    },
+
     checkGameFail: function() {
         // No palace - Loss due to revolution
         var housing = MainGame.board.findBuilding('palace');
@@ -107,12 +120,6 @@ var Global={
         // No money - loss due to economic failure
         if (this.money < 0 && this.moneyPerTurn < 0) {
             getGameLoseWindow("Your government is bankrupt and can no longer function. You lose.");
-            return;
-        }
-
-        // No ministers - loss due to failure to form government
-        if (MainGame.population.highList().length === 0) {
-            getGameLoseWindow("Without any active Ministers, you government has dissolved. You lose.");
             return;
         }
 

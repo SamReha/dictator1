@@ -187,6 +187,60 @@ var showUnitAction = function(callback) {
     processUnitUpdates(units, 0);
 };
 
+var showMinisterDemotions = function(callback) {
+    var processMinisters = function(ministerList, index) {
+        if (index >= ministerList.length) {
+            callback();
+            return;
+        }
+
+        // If a minister is going to be demoted, tween to their house, demote them, then create an event window explaining what happened.
+        var minister = ministerList[index];
+        var tile = MainGame.board.at(minister.home);
+        var home = tile.getBuilding();
+
+        if (home.health < 50 || home.shelter < 50 || home.culture < 50) {
+            // Tween to the tile
+            MainGame.board.cameraCenterOn(minister.home);
+
+            // Handle demotion
+            minister.unSetHighClass();
+            minister.setLowClass();
+
+            // Wait a bit, then spawn the event.
+            var timer = MainGame.game.time.create(true);
+            timer.add(500, function() {
+            var e = Event.createNew();
+                e.setModel([
+                                {
+                                    portrait: 'exclamation_01', 
+                                    description: minister.name + ' has been forced to resign as minister due to a decline in their living conditions!', 
+                                    buttonTexts: ["Continue"]
+                                }
+                            ]);
+
+                e.setController([
+                    [function() {
+                        tile.setAlert(false);
+                        e.suicide();
+                        processMinisters(ministerList, ++index);
+                    }]
+                ]);
+            }, null);
+            timer.start();
+        } else {
+            // If the minister is fine, just move on to the next one:
+            processMinisters(ministerList, ++index);
+        }
+    }
+
+    // Start by getting a list of all active minsters.
+    var ministers = MainGame.population.highList();
+    
+    // Then, start recursively spawning events to handle each notification
+    processMinisters(ministers, 0);
+}
+
 var concludeNextTurnSequence = function() {
     var oldPopulation = MainGame.global.yearViewData[MainGame.global.yearViewData.length - 1].population;
     var deltaPopulation = MainGame.population.count() - oldPopulation;
