@@ -10,6 +10,7 @@ var Tutorial = {
 	initialized: false,
 	tuts: [],	
 	activeTut: null,
+	activeIndex: 0,
 
 	// generate the tutorials
 	generate: function() {
@@ -21,6 +22,7 @@ var Tutorial = {
 
 		// lazy init
 		if (!this.initialized) {
+			Tut.numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length;
 			this.tuts = MainGame.game.cache.getJSON('Tutorial');
 			console.assert(this.tuts.length);
 			//console.log("Parsed Tutorials, total: ", this.tuts.length);
@@ -32,28 +34,16 @@ var Tutorial = {
 			this.initialized = true;
 		}
 
-		// now this.tuts is good.
-		for (var i = 0; i < this.tuts.length; i++) {
-			// tut is the last one
-			var tut = this.tuts[i];
-			//console.log(tut);
+		var tut = this.tuts[this.activeIndex];
+		// now let's execute the tut
+		// init
+		this._executeInit_(tut.init);
 
-			// check tut.cond
-			if (!this._checkCond_(tut.cond)) {
-				// now let's execute the tut
-				// init
-				this._executeInit_(tut.init);
+		// tuts -> runningTuts
+		this.activeTut = tut;
 
-				// tuts -> runningTuts
-				this.activeTut = tut;
-
-				// run tutorial			
-				this.runEvent(tut.event, tut.handler);
-
-				// Only run the very first incomplete tutorial
-				break;
-			}
-		}
+		// run tutorial			
+		this.runEvent(tut.event, tut.handler);
 	},
 
 	_checkCond_: function(condString) {
@@ -67,31 +57,15 @@ var Tutorial = {
 
 	loopingCheck: function() {
 		if (this.activeTut && this._checkCond_(this.activeTut.cond)) {
-			//console.log(this._checkCond_(this.activeTut.cond));
-			this.activeTut = null;
+			// Update active tutorial
+			this.activeIndex++;
+			this.activeTut = this.tuts[this.activeIndex];
 
-			// Find the next tut
-			for (var i = 0; i < this.tuts.length; i++) {
-				// tut is the last one
-				var tut = this.tuts[i];
-				//console.log(tut);
+			// init
+			this._executeInit_(this.activeTut.init);
 
-				// check tut.cond
-				if (!this._checkCond_(tut.cond)) {
-					// now let's execute the tut
-					// init
-					this._executeInit_(tut.init);
-
-					// tuts -> runningTuts
-					this.activeTut = tut;
-
-					// run tutorial			
-					this.runEvent(tut.event, tut.handler);
-
-					// Only run the very first incomplete tutorial
-					break;
-				}
-			}
+			// run tutorial			
+			this.runEvent(this.activeTut.event, this.activeTut.handler);
 		}
 	},
 
@@ -159,8 +133,8 @@ var Tutorial = {
 		if (f()) {
 			//tut.reminderButton.reminderView.suicide(); TODO: get this working
 			//tut.reminderButton.suicide();
-			this.activeTut = null;
-			Tutorial.generate();
+			// this.activeTut = null;
+			// Tutorial.generate();
 		}
 	},
 
@@ -186,9 +160,29 @@ var Tutorial = {
 		return false;
 	},
 
+	openedSchoolBuildingDetail: function() {
+		console.log('openSchoolBuildingDetail');
+		if (!MenuController.menuOpen) return false;
+		if (MenuController.leftMenusOpen.length !== 1) return false;
+
+		if (MenuController.leftMenusOpen[0].page.index === 128) {
+			return true;
+		} else return false;
+	},
+
+	openedGreenTab: function() {
+		if (!MenuController.menuOpen) return false;
+
+		// console.log(MenuController.leftMenusOpen[0]);
+
+		if (MenuController.leftMenusOpen[0].page.index === 128 && MenuController.leftMenusOpen[0].activeTab === 1) {
+			return true;
+		} else return false;
+	},
+
 	// Checks to see whether the player has fired the teacher
 	firedTeacher: function() {
-		var school = MainGame.board.at(112).getBuilding();
+		var school = MainGame.board.at(128).getBuilding();
 		
 		return school.people === 0;
 	},

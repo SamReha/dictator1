@@ -18,6 +18,8 @@ var BoardController={
 		bc.detailView=null;
 		bc.tileRectRatio = bc.modelView.tileWidth/(bc.modelView.tileHeight*2);
 
+        bc.dontPan = false; // Ugly, dirty hack but you can use it to stop the camera from centering if we just placed a building.
+
 /////////////////////////////////////////////////////////////
 		// Class funcs
 		//	disable/enable all inputs from keyboard/mouse
@@ -45,16 +47,17 @@ var BoardController={
 		var localPos={x:globalPos.x-bc.modelView.x, y:globalPos.y-bc.modelView.y};
 
 		// event processing
-		if(type==="up"){
+		if (type === "up") {
 			// end the timer
 			bc.panTimer.stop(true);
 			// for a click: center the map with index [arg]. 
-			if(!bc.mouseTimer._isDrag_){
-				bc.mouseTimer.stop(true);
-				BoardController.hideTileBrief(bc);
-				// BoardController.hideTileDetail(bc);
-				bc.modelView.cameraCenterOn(arg);
-				BoardController.showTileDetail(bc, arg);
+			if (!bc.mouseTimer._isDrag_) {
+                if (!bc.dontPan) {
+                    bc.mouseTimer.stop(true);
+                    BoardController.hideTileBrief(bc);
+                    bc.modelView.cameraCenterOn(arg);
+                    BoardController.showTileDetail(bc, arg);
+                } else bc.dontPan = false;
 			}
 			bc.mouseTimer._isDrag_=false;
 			// BoardController.hideTileBrief(bc);

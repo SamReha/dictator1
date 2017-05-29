@@ -98,22 +98,74 @@
 	},
 
 	{
-		"name":"FireTeacher",
-		"cond":"Tutorial.firedTeacher()",
-		"init":"MainGame.board.cameraCenterOn(112)",
+		"name":"OpenTeacherMenu",
+		"cond":"Tutorial.openedSchoolBuildingDetail()",
+		"init":"MainGame.board.cameraCenterOn(128)",
 		"event":[
 			{
 				"description":"Now that you have connected your Lumberyard to your road network, you will need an unemployed citizen to staff it.",
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Click on your school to open its menu. Fire the teacher to create an unemployed citizen.",
+				"description":"Let's reassign a worker. Click on the nearby school to open its menu.",
 				"buttonTexts":["OK"]
 			}
 		],
 		"handler":[
 			["e.gotoPage(1)"],
-			["Tut.roads=true;e.suicide()"]
+			["e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"			
+			}
+		}
+	},
+
+	{
+		"name": "OpenGreenTab",
+		"cond": "Tutorial.openedGreenTab()",
+		"init": "",
+		"event": [
+			{
+				"description":"Click on the green tab to see this building's workers.",
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler": [
+			["e.suicide()"]
+		],
+		"reminder": {
+			"model": {
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller": {
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"			
+			}
+		}
+	},
+
+	{
+		"name":"FireTeacher",
+		"cond":"Tutorial.firedTeacher()",
+		"init":"",
+		"event":[
+			{
+				"description":"Press the 'Fire Worker' button to remove the worker.",
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.suicide()"]
 		],
 		"reminder":{
 			"model":{
@@ -155,7 +207,7 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":""			
+				"check":""
 			}
 		}
 	},
@@ -163,13 +215,13 @@
 	{
 		"name":"housing",
 		"cond":"Tutorial.builtNewHouse()",
-		"init":"Tut.numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length;MenuController.closeAllMenus()",
+		"init":"MenuController.closeAllMenus()",
 		"event":[
-			{	
+			{
 				"description":"Great work! The final type of building is a residence. New citizens enter Tian each year, and they'll need some place to live.", 
 				"buttonTexts":["Continue"]
 			},
-			{	
+			{
 				"description":"Open the Build Menu again. Select either an Apartment, Suburb or Mansion and place it on any open tile.", 
 				"buttonTexts":["OK"]
 			}
@@ -186,7 +238,7 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":""			
+				"check":""
 			}
 		}
 	},
@@ -196,19 +248,19 @@
 		"cond":"Tutorial.ministerViewIsOpen()",
 		"init":"",
 		"event":[
-			{	
+			{
 				"description":"Good work! Your new residence will be complete in two years.", 
 				"buttonTexts":["Continue"]
 			},
-			{	
+			{
 				"description":"You must maintain control of the working class to stay in power. The working class generates Freedom and Unrest based on their current living conditions and their opinion of you.", 
 				"buttonTexts":["Continue"]
 			},
-			{	
+			{
 				"description":"Access to education, food, and roads will increase Freedom. Hunger, poor living conditions, and unemployment will increase Unrest.", 
 				"buttonTexts":["Continue"]
 			},
-			{	
+			{
 				"description":"Your population’s Freedom and Unrest are displayed at the top of the screen.", 
 				"buttonTexts":["Continue"]
 			},

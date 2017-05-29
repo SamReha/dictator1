@@ -221,12 +221,11 @@ var Board = {
         var N=board.gridWidth*board.gridHeight;
         for(var i=0;i<N;i++){
             // create the tile group from JSON. json MUST be a string!
-            var oneTile=Tile.fromJSON(JSON.stringify(tileData[i]));
+            var oneTile=Tile.fromJSON(JSON.stringify(tileData[i]), i);
             oneTile.name="tile"+i;
             var rect=board.rectOf(i, 1.0);
             oneTile.x=rect.x;
             oneTile.y=rect.y;
-            oneTile.index = i;
             board.addChild(oneTile);
         }
 

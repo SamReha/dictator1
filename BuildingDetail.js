@@ -217,6 +217,8 @@ var BDOccupants = {
 
         var occupants = MainGame.game.make.group();
 
+        occupants.index = buildingIndex;
+
         occupants.page = Page.createNew();
         occupants.page.anchor.setTo(.5,.5);
         occupants.addChild(occupants.page);

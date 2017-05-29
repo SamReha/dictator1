@@ -199,7 +199,7 @@ var BuildingPlacer = {
         buildingPlacer.placerTimer = MainGame.game.time.create(false);
         buildingPlacer.placerTimer.loop(buildingPlacer.deltaTime, function() { buildingPlacer.updateSelf(); }, buildingPlacer);
         buildingPlacer.placerTimer.start();
-        MainGame.game.input.onDown.add(buildingPlacer.clickHandler, buildingPlacer, 10, MainGame.game.input.activePointer);
+        MainGame.game.input.onUp.add(buildingPlacer.clickHandler, buildingPlacer, 10, MainGame.game.input.activePointer);
 
         return buildingPlacer;
     },
@@ -278,6 +278,14 @@ var BuildingPlacer = {
             self.sfx.play();
             
             // End build mode
+            //tile.events.onInputUp._shouldPropagate = false; Nope
+            //tile.events.onInputUp._bindings.shift(); Nope
+            // self.inputEnabled = true;
+            // self.input.priorityID = 100;
+            // console.log(tile.events.onInputUp);
+
+            MainGame.board.controller.dontPan = true;
+
             menu.destroy();
             mask.destroy();
             self.cancelBuild();
@@ -289,7 +297,7 @@ var BuildingPlacer = {
     
     cancelBuild: function(self) {
         MainGame.global.isBuilding = false;
-        MainGame.game.input.onDown.remove(self.clickHandler, self, self, MainGame.game.input.activePointer);
+        MainGame.game.input.onUp.remove(self.clickHandler, self, 10, MainGame.game.input.activePointer);
         self.hint.destroy();
         self.placerTimer.stop();
         self.kill();
