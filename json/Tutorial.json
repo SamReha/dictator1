@@ -100,7 +100,7 @@
 	{
 		"name":"OpenTeacherMenu",
 		"cond":"Tutorial.openedSchoolBuildingDetail()",
-		"init":"MainGame.board.cameraCenterOn(128)",
+		"init":"MainGame.board.limitInteractionTo(128);MainGame.board.cameraCenterOn(128)",
 		"event":[
 			{
 				"description":"Now that you have connected your Lumberyard to your road network, you will need an unemployed citizen to staff it.",
@@ -183,7 +183,7 @@
 	{
 		"name":"ShowFunPanel",
 		"cond":"Tut.shownFunPanel",
-		"init":"MenuController.closeAllMenus();MainGame.hud.funPanel.visible = true;Tutorial.showFunPanel()",
+		"init":"MainGame.board.enableInteraction();MenuController.closeAllMenus();MainGame.hud.funPanel.visible = true;Tutorial.showFunPanel()",
 		"event":[],
 		"handler":[],
 		"reminder":{
@@ -233,7 +233,7 @@
 	{
 		"name":"buildingOutput",
 		"cond":"Tutorial.lumberYardHasWorkers()",
-		"init":"MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
+		"init":"MainGame.board.limitInteractionTo(159);MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
 		"event":[
 			{
 				"description":"Lumberyards generate money each year based on how many employees they have.", 
@@ -265,7 +265,7 @@
 	{
 		"name":"MoneyPanel",
 		"cond":"Tut.readAboutMoney",
-		"init":"MenuController.closeAllMenus();MainGame.hud.moneyPanel.visible = true",
+		"init":"MainGame.board.enableInteraction();MenuController.closeAllMenus();MainGame.hud.moneyPanel.visible = true",
 		"event":[
 			{
 				"description":"Good work - your economy is now making money!", 

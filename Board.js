@@ -34,6 +34,9 @@ var Tile = {
         tile.unit = null;
         tile.index = index; // For convenience
 
+        // Flag that checks if a tile should be able to be interacted with
+        tile.interactable = true;
+
         // Use alert if something is going wrong in a tile
         tile.alert = MainGame.game.make.sprite(0, 0, 'exclamation_01');
         //tile.alert.anchor.set(0.5, 0.5);
@@ -215,6 +218,15 @@ var Board = {
         board.cameraZoomAt=function(zoom){return Board.cameraZoomAt(board,zoom)};
         // let camera move by (x,y)
         board.cameraMoveBy=function(x,y){return Board.cameraMoveBy(board,x,y)};
+
+        // Disable interaction on a single tile
+        board.disableInteraction = function(i) { return Board.disableInteraction(board, i); };
+
+        // Disable interaction on all tiles except for the given index
+        board.limitInteractionTo = function(i) { return Board.limitInteractionTo(board, i); };
+
+        // Enable interaction on all tiles
+        board.enableInteraction = function() { return Board.enableInteraction(board); };
 
         // init tiles
         var tileData=data.tiles;
@@ -583,5 +595,28 @@ var Board = {
         // console.log("new xy is:",b.x,b.y);
         
         // MainGame.mapSelector.positionBuildingDetail(b);
+    },
+
+    // Disable interaction on a single tile
+    disableInteraction: function(board, i) {
+        console.assert(typeof(i) === "number" && i >= 0 && i < board.tileCount(), "i must be an index.");
+        board.at(i).interactable = false;
+    },
+
+    // Disable interaction on all tiles except for the given index
+    limitInteractionTo: function(board, i) {
+        console.assert(typeof(i) === "number" && i >= 0 && i < board.tileCount(), "i must be an index.");
+
+        for (var index = 0; index < board.tileCount(); index++) {
+            board.at(index).interactable = (i === index);
+            console.log(board.at(index).interactable);
+        }
+    },
+
+    // Enable interaction on all tiles
+    enableInteraction: function(board) {
+        for (var index = 0; index < board.tileCount(); index++) {
+            board.at(index).interactable = true;
+        }
     },
 };

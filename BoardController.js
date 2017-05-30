@@ -105,8 +105,9 @@ var BoardController={
 			BoardController.hideTileBrief(bc);
 		}
 
+        var tile = MainGame.board.at(index);
+
 		// If the tile is empty, don't bother showing a panel (unless it is water or mountain)
-		var tile = MainGame.board.at(index);
 		if (!tile.hasBuilding()) {
 			if ((tile.getTerrainType() !== 'water') && (tile.getTerrainType() !== 'mountain')) {
 				return;
@@ -135,8 +136,9 @@ var BoardController={
 		if(!tile.hasBuilding() || tile.getBuilding().name === 'road' || tile.getBuilding().startingTurn > MainGame.global.turn)
 			return;
 
-		//bc.detailView = BuildingDetail.createNew(index);
-		//bc.detailView.updateInfo(tile);
+        // If the tile is not interactable, don't do anything.
+        if (!tile.interactable) return;
+
 		bc.detailView = Binder.createNew(Binder.building,0,index);
 	},
 
