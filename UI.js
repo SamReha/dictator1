@@ -677,12 +677,20 @@ var UIPointer = {
         // Create tween
         uiPointer.tween = MainGame.game.add.tween(uiPointer).to(deltaXY, 500, Phaser.Easing.Quadratic.InOut, autostart, 0, -1, true);
         uiPointer.timer = MainGame.game.time.create(true);
-        uiPointer.timer.add(duration, function() {
-            callback();
-            uiPointer.tween.stop(true);
-            uiPointer.destroy();
-        });
-        if (autostart) uiPointer.timer.start();
+
+        // If we get a negative or null duration value, loop infinitely.
+        if (duration >= 0) {
+            uiPointer.timer.add(duration, function() {
+                callback();
+                uiPointer.tween.stop(true);
+                uiPointer.destroy();
+            });
+            if (autostart) uiPointer.timer.start();
+        }
+
+        uiPointer.start = function() { UIPointer.start(uiPointer); };
+        uiPointer.pause = function() { UIPointer.pause(uiPointer); };
+        uiPointer.stop = function() { UIPointer.stop(uiPointer); };
 
         return uiPointer;
     },
@@ -700,5 +708,6 @@ var UIPointer = {
     stop: function(uiPointer) {
         uiPointer.tween.stop(false);
         uiPointer.timer.stop(true);
+        uiPointer.destroy();
     }
 };

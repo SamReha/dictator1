@@ -609,7 +609,6 @@ var Board = {
 
         for (var index = 0; index < board.tileCount(); index++) {
             board.at(index).interactable = (i === index);
-            console.log(board.at(index).interactable);
         }
     },
 

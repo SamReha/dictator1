@@ -140,6 +140,50 @@ var Tutorial = {
 		}
 	},
 
+	//// Special Functions
+	setPointerOnBuild: function(bool) {
+		if (bool) {
+			Tut.buildButtonPointer = UIPointer.createNew(72, MainGame.game.height-80, UIPointer.DOWN, -1, null, true);
+		} else if (Tut.buildButtonPointer) {
+			Tut.buildButtonPointer.stop();
+		}
+	},
+
+	setPointerOnBuyRoad: function(bool) {
+		if (bool) {
+			Tut.buyRoadPointer = UIPointer.createNew(975, 125, UIPointer.DOWN, -1, null, true);
+		} else if (Tut.buyRoadPointer) {
+			Tut.buyRoadPointer.stop();
+		}
+	},
+
+	setPointerOnRoadPlacement: function(bool) {
+		if (bool) {
+			Tut.roadPlacementPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
+			MainGame.board.at(114).addChild(Tut.schoolPointer);
+		} else if (Tut.roadPlacementPointer) {
+			Tut.roadPlacementPointer.stop();
+		}
+	},
+
+	setPointerOnSchool: function(bool) {
+		if (bool) {
+			Tut.schoolPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
+			MainGame.board.at(128).addChild(Tut.schoolPointer);
+		} else if (Tut.schoolPointer) {
+			Tut.schoolPointer.stop();
+		}
+	},
+
+	setPointerOnFactory: function(bool) {
+		if (bool) {
+			Tut.factoryPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
+			MainGame.board.at(159).addChild(Tut.factoryPointer);
+		} else if (Tut.factoryPointer) {
+			Tut.factoryPointer.stop();
+		}
+	},
+
 	//// Sequence checks!
 	// Checks to see if the build menu has been opened
 	hasOpenedBuildMenu: function() {
