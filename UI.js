@@ -7,7 +7,6 @@ var Hud = {
     styleButton: {font:"32px myKaiti", fill:"#ffffff"},
 
     createNew: function() {
-
         /*global MainGame*/
         var hud = MainGame.game.add.group();
         var hudInputPriority = 2;
@@ -15,17 +14,21 @@ var Hud = {
         hud.name = "HUD"; // Useful for debugging
 
         var moneyPanel = MoneyPanel.createNew();
+        hud.moneyPanel = moneyPanel;
         hud.addChild(moneyPanel);
 
         //      global vars
         var statsPanel = StatsPanel.createNew();
+        hud.statsPanel = statsPanel;
         hud.addChild(statsPanel);
 
         var funPanel = FunPanel.createNew();
+        hud.funPanel = funPanel;
         hud.addChild(funPanel);
 
         //      Coalition Flag
-        hud.coalitionFlag = CoalitionFlag.createNew();
+        var coalitionFlag = CoalitionFlag.createNew();
+        hud.coalitionFlag = coalitionFlag;
         hud.addChild(hud.coalitionFlag);
 
         // Menu test buttons
@@ -629,4 +632,73 @@ var ToolTip = {
     hide: function(toolTip) {
         toolTip.visible = false;
     }
-}
+};
+
+var UIPointer = {
+    UP:    'up',
+    DOWN:  'down',
+    LEFT:  'left',
+    RIGHT: 'right',
+
+    createNew: function(xPos, yPos, direction, duration, callback, autostart) {
+        // Validate parameters
+        console.assert(direction === this.UP || direction === this.DOWN || direction === this.LEFT || direction === this.RIGHT);
+
+        // Create pointer with correct sprite
+        uiPointer = MainGame.game.add.sprite(xPos, yPos, 'pointer_' + direction);
+
+        // Configure anchor point and create tween target
+        switch (direction) {
+            case this.UP:
+                uiPointer.anchor.set(0.5, 0);
+                var deltaXY = {x: xPos, y: yPos + uiPointer.height};
+                break;
+
+            case this.DOWN:
+                uiPointer.anchor.set(0.5, 1);
+                var deltaXY = {x: xPos, y: yPos - uiPointer.height};
+                break;
+
+            case this.LEFT:
+                uiPointer.anchor.set(0, 0.5);
+                var deltaXY = {x: xPos - uiPointer.width, y: yPos};
+                break;
+
+            case this.RIGHT:
+                uiPointer.anchor.set(1, 0.5);
+                var deltaXY = {x: xPos + uiPointer.width, y: yPos};
+                break;
+
+            default:
+                var deltaXY = {x: xPos, y: yPos};
+                break;
+        }
+
+        // Create tween
+        uiPointer.tween = MainGame.game.add.tween(uiPointer).to(deltaXY, 500, Phaser.Easing.Quadratic.InOut, autostart, 0, -1, true);
+        uiPointer.timer = MainGame.game.time.create(true);
+        uiPointer.timer.add(duration, function() {
+            callback();
+            uiPointer.tween.stop(true);
+            uiPointer.destroy();
+        });
+        if (autostart) uiPointer.timer.start();
+
+        return uiPointer;
+    },
+
+    start: function(uiPointer) {
+        uiPointer.tween.start();
+        uiPointer.timer.start();
+    },
+
+    pause: function(uiPointer) {
+        uiPointer.tween.pause();
+        uiPointer.timer.pause();
+    },
+
+    stop: function(uiPointer) {
+        uiPointer.tween.stop(false);
+        uiPointer.timer.stop(true);
+    }
+};

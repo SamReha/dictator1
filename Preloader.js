@@ -165,6 +165,13 @@ var Preloader={
         g.load.spritesheet('green',  colorDir + 'green.png');
         g.load.spritesheet('purple', colorDir + 'purple.png');
 
+        //// load pointer sprites
+        var pointerDir = uiDir + 'pointers/';
+        g.load.image('pointer_up',    pointerDir + 'pointer_up.png');
+        g.load.image('pointer_down',  pointerDir + 'pointer_down.png');
+        g.load.image('pointer_left',  pointerDir + 'pointer_left.png');
+        g.load.image('pointer_right', pointerDir + 'pointer_right.png');
+
         //// load unit spritesheets
         var unitDir = imageDir + 'units/';
         g.load.spritesheet('army_idle',            unitDir + 'army_idle.png', 256, 222, 5);

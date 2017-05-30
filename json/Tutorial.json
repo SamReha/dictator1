@@ -38,7 +38,7 @@
 	{
 		"name":"OpenBuildMenu",
 		"cond":"Tutorial.hasOpenedBuildMenu()",
-		"init":"",
+		"init":"MainGame.hud.coalitionFlag.visible = false;MainGame.hud.statsPanel.visible = false;MainGame.hud.funPanel.visible = false;MainGame.hud.moneyPanel.visible = false",
 		"event":[
 			{	
 				"description":"One of your most important responsibilities in Tian is ordering the construction of new buildings.", 
@@ -181,6 +181,56 @@
 	},
 
 	{
+		"name":"ShowFunPanel",
+		"cond":"Tut.shownFunPanel",
+		"init":"MenuController.closeAllMenus();MainGame.hud.funPanel.visible = true;Tutorial.showFunPanel()",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"			
+			}
+		}
+	},
+
+	{
+		"name":"ExplainFunPanel",
+		"cond":"Tut.readAboutFun",
+		"init":"Tut.readAboutFun = false",
+		"event":[
+			{
+				"description":"As you manage the working class, their opinion of you will change. Freedom represents their ability to resist you. Unrest represents their resentment of you.",
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Keep these stats in check, or risk open rebellion.",
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["Tut.readAboutFun = true;e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"			
+			}
+		}
+	},
+
+	{
 		"name":"buildingOutput",
 		"cond":"Tutorial.lumberYardHasWorkers()",
 		"init":"MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
@@ -213,12 +263,44 @@
 	},
 
 	{
+		"name":"MoneyPanel",
+		"cond":"Tut.readAboutMoney",
+		"init":"MenuController.closeAllMenus();MainGame.hud.moneyPanel.visible = true",
+		"event":[
+			{
+				"description":"Good work - your economy is now making money!", 
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Financial data is displayed in the top left.", 
+				"buttonTexts":["OK"]
+			}
+
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["Tutorial.showMoneyPanel();e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Assign at least one worker to a lumberyard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""
+			}
+		}
+	},
+
+	{
 		"name":"housing",
 		"cond":"Tutorial.builtNewHouse()",
 		"init":"MenuController.closeAllMenus()",
 		"event":[
 			{
-				"description":"Great work! The final type of building is a residence. New citizens enter Tian each year, and they'll need some place to live.", 
+				"description":"The final type of building is a residence. New citizens enter Tian each year, and they'll need some place to live.", 
 				"buttonTexts":["Continue"]
 			},
 			{
@@ -244,28 +326,12 @@
 	},
 
 	{
-		"name":"bigAssTextChain",
-		"cond":"Tutorial.ministerViewIsOpen()",
-		"init":"",
+		"name":"ReadAboutMinisters",
+		"cond":"Tut.readAboutMinisters",
+		"init":"MainGame.hud.coalitionFlag.visible = true",
 		"event":[
 			{
 				"description":"Good work! Your new residence will be complete in two years.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"You must maintain control of the working class to stay in power. The working class generates Freedom and Unrest based on their current living conditions and their opinion of you.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"Access to education, food, and roads will increase Freedom. Hunger, poor living conditions, and unemployment will increase Unrest.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"Your population’s Freedom and Unrest are displayed at the top of the screen.", 
-				"buttonTexts":["Continue"]
-			},
-			{
-				"description":"Remember: the less freedom your people have, the more unhappy they can become before triggering a Popular Revolution.", 
 				"buttonTexts":["Continue"]
 			},
 			{
@@ -281,7 +347,7 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Click on one of the open portraits in the Ministry panel to hire a minister.", 
+				"description":"Your active Ministers are displayed on the left side of the screen.", 
 				"buttonTexts":["OK"]
 			}
 		],
@@ -290,15 +356,56 @@
 			["e.gotoPage(2)"],
 			["e.gotoPage(3)"],
 			["e.gotoPage(4)"],
-			["e.gotoPage(5)"],
-			["e.gotoPage(6)"],
-			["e.gotoPage(7)"],
-			["e.gotoPage(8)"],
-			["e.suicide()"]
+			["Tut.readAboutMinisters = true;e.suicide()"]
 		],
 		"reminder":{
 			"model":{
 				"description":"Hire a Minister.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""
+			}
+		}
+	},
+
+	{
+		"name":"ShowMinisterPanel",
+		"cond":"Tut.sawMinisterPanel",
+		"init":"MenuController.closeAllMenus();Tutorial.showMinisterPanel()",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"OpenMinisterView",
+		"cond":"Tutorial.ministerViewIsOpen()",
+		"init":"",
+		"event":[
+			{	
+				"description":"Click on an empty portrait in the Ministry Panel to hire a new Minister.", 
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Build a new residence (Mansion, Suburb or Apartment)",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -362,6 +469,51 @@
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
 				"check":""			
+			}
+		}
+	},
+
+	{
+		"name":"ReadAboutStats",
+		"cond":"Tut.readAboutStats",
+		"init":"MainGame.hud.statsPanel.visible = true",
+		"event":[
+			{	
+				"description":"On the right side of the screen, the Stats Panel lists off basic details about your citizens. Click on a piece of data to get more information.", 
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["Tut.readAboutStats = true;e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Build a new residence (Mansion, Suburb or Apartment)",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""			
+			}
+		}
+	},
+
+	{
+		"name":"ShowStatsPanel",
+		"cond":"Tut.sawStatsPanel",
+		"init":"MenuController.closeAllMenus();Tutorial.closePeopleView();Tutorial.showStatsPanel()",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
 			}
 		}
 	},

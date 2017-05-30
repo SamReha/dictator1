@@ -71,6 +71,8 @@ var Tutorial = {
 
 	runEvent: function(event, handler) {
 		console.assert(event.length === handler.length);
+		if (event.length === 0) return;
+
 		var e = Event.createNew();
 
 		// generate model & controller
@@ -161,7 +163,7 @@ var Tutorial = {
 	},
 
 	openedSchoolBuildingDetail: function() {
-		console.log('openSchoolBuildingDetail');
+		//console.log('openSchoolBuildingDetail');
 		if (!MenuController.menuOpen) return false;
 		if (MenuController.leftMenusOpen.length !== 1) return false;
 
@@ -187,6 +189,10 @@ var Tutorial = {
 		return school.people === 0;
 	},
 
+	showFunPanel: function() {
+		UIPointer.createNew(MainGame.game.width/2, 64, UIPointer.UP, 2000, function() { Tut.shownFunPanel = true; }, true);
+	},
+
 	// Checks to see whether the player has put staff into their factory
 	lumberYardHasWorkers: function() {
 		var lumberyards = MainGame.board.findBuilding(null, null, 'production', null);
@@ -200,10 +206,18 @@ var Tutorial = {
 		return false;
 	},
 
+	showMoneyPanel: function() {
+		UIPointer.createNew(144, 64, UIPointer.UP, 2000, function() { Tut.readAboutMoney = true; }, true);
+	},
+
 	builtNewHouse: function() {
 		var numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length;
 
 		return Tut.numHouses < numHouses;
+	},
+
+	showMinisterPanel: function() {
+		UIPointer.createNew(175, 475, UIPointer.LEFT, 2000, function() { Tut.sawMinisterPanel = true; }, true);
 	},
 
 	ministerViewIsOpen: function() {
@@ -216,6 +230,10 @@ var Tutorial = {
 
 	hasMinister: function() {
 		return MainGame.population.highList().length > 0;
+	},
+
+	showStatsPanel: function() {
+		UIPointer.createNew(MainGame.game.width - 175, 475, UIPointer.RIGHT, 2000, function() { Tut.sawStatsPanel = true; }, true);
 	},
 
 	// Hacky, but it'll make sure the people view is closed until we can put it in a folder menu
