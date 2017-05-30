@@ -160,7 +160,7 @@ var Tutorial = {
 	setPointerOnRoadPlacement: function(bool) {
 		if (bool) {
 			Tut.roadPlacementPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
-			MainGame.board.at(114).addChild(Tut.schoolPointer);
+			MainGame.board.at(158).addChild(Tut.roadPlacementPointer);
 		} else if (Tut.roadPlacementPointer) {
 			Tut.roadPlacementPointer.stop();
 		}
@@ -184,10 +184,34 @@ var Tutorial = {
 		}
 	},
 
+	setPointerOnMinistryPanel: function(bool) {
+		if (bool) {
+			Tut.ministryPanelPointer = UIPointer.createNew(175, 475, UIPointer.LEFT, -1, null, true);
+		} else if (Tut.ministryPanelPointer) {
+			Tut.ministryPanelPointer.stop();
+		}
+	},
+
+	showFunPanel: function() {
+		UIPointer.createNew(MainGame.game.width/2, 64, UIPointer.UP, 2000, function() { Tut.shownFunPanel = true; }, true);
+	},
+
+	showMoneyPanel: function() {
+		UIPointer.createNew(144, 64, UIPointer.UP, 2000, function() { Tut.readAboutMoney = true; }, true);
+	},
+
+	showStatsPanel: function() {
+		UIPointer.createNew(MainGame.game.width - 175, 475, UIPointer.RIGHT, 2000, function() { Tut.sawStatsPanel = true; }, true);
+	},
+
 	//// Sequence checks!
 	// Checks to see if the build menu has been opened
 	hasOpenedBuildMenu: function() {
 		return MainGame.global.buildMenuOpened;
+	},
+
+	boughtRoad: function() {
+		return Tutorial.activeTut.name === 'Roads' && MainGame.global.boughtRoad;
 	},
 
 	// Checks to see whether the player has built a road between any home and any lumberyard
@@ -233,10 +257,6 @@ var Tutorial = {
 		return school.people === 0;
 	},
 
-	showFunPanel: function() {
-		UIPointer.createNew(MainGame.game.width/2, 64, UIPointer.UP, 2000, function() { Tut.shownFunPanel = true; }, true);
-	},
-
 	// Checks to see whether the player has put staff into their factory
 	lumberYardHasWorkers: function() {
 		var lumberyards = MainGame.board.findBuilding(null, null, 'production', null);
@@ -250,18 +270,15 @@ var Tutorial = {
 		return false;
 	},
 
-	showMoneyPanel: function() {
-		UIPointer.createNew(144, 64, UIPointer.UP, 2000, function() { Tut.readAboutMoney = true; }, true);
+	// Checks to see if the build menu has been opened
+	buildMenuIsOpen: function() {
+		return MainGame.global.buildMenuIsOpen;
 	},
 
 	builtNewHouse: function() {
 		var numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length;
 
 		return Tut.numHouses < numHouses;
-	},
-
-	showMinisterPanel: function() {
-		UIPointer.createNew(175, 475, UIPointer.LEFT, 2000, function() { Tut.sawMinisterPanel = true; }, true);
 	},
 
 	ministerViewIsOpen: function() {
@@ -274,10 +291,6 @@ var Tutorial = {
 
 	hasMinister: function() {
 		return MainGame.population.highList().length > 0;
-	},
-
-	showStatsPanel: function() {
-		UIPointer.createNew(MainGame.game.width - 175, 475, UIPointer.RIGHT, 2000, function() { Tut.sawStatsPanel = true; }, true);
 	},
 
 	// Hacky, but it'll make sure the people view is closed until we can put it in a folder menu

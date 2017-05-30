@@ -148,6 +148,7 @@ var Hud = {
             // Hide build menu
             menu.visible=false;
             mask.visible=false;
+            MainGame.global.buildMenuIsOpen = false;
     
             // Create a building placer
             var buildingPlacer = BuildingPlacer.createNew(buildingType, menu, mask);
@@ -226,6 +227,7 @@ var BuildingPlacer = {
         if (MainGame.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
             menu.visible = true;
             mask.visible = true;
+            MainGame.global.buildMenuIsOpen = true;
             game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)).play();
             self.cancelBuild();
         }

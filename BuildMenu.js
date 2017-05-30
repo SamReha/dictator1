@@ -6,6 +6,7 @@ var BuildMenu = {
 
 	createNew: function(highData) {
 		MainGame.global.buildMenuOpened = true;
+		MainGame.global.buildMenuIsOpen = true;
 
 		var hudInputPriority = 110;
 
@@ -19,7 +20,8 @@ var BuildMenu = {
 		// setup the mask
 		/* global DUiMask */
 		buildMenu.uiMask=DUiMask.createNew();
-		buildMenu.uiMask.setController(100, function(){
+		buildMenu.uiMask.setController(100, function() {
+			MainGame.global.buildMenuIsOpen = false;
 			buildMenu.uiMask.destroy();
 			buildMenu.sfx.play();
 			buildMenu.destroy();
@@ -151,6 +153,7 @@ var BuildMenu = {
 		var buyRoadBtn = MainGame.game.make.button((buildMenu.width*7/8), (buildMenu.height/4), 'buy_button', function(){
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyRoadBtn, 'road');
 			buyRoadBtn.toolTip.hide();
+			MainGame.global.boughtRoad = true;
 		},
 		buildMenu, 0, 1, 2, 2);
 		buyRoadBtn.anchor.x = 0.5;  // Anchor in center
