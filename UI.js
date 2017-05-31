@@ -369,7 +369,7 @@ var StatsPanel = {
 
         // Social Elite
         statsPanel.socialEliteGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 2, 'social_elite_icon', function(){
-            //PeopleView.createNew();
+            Binder.createNew(Binder.global, 3);
             statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
 
@@ -382,7 +382,7 @@ var StatsPanel = {
 
         // Working Class
         statsPanel.workingClassGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 3, 'working_class_icon', function(){
-            //PeopleView.createNew();
+            Binder.createNew(Binder.global, 4);
             statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
 
