@@ -8,7 +8,8 @@ var BDOverView = {
         }
 
         var overview = MainGame.game.make.group();
-        overview.index = buildingIndex;
+        // overview.index = buildingIndex;
+        overview.bdInfo = bdInfo;
 
         overview.page = Page.createNew();
         overview.page.anchor.setTo(.5,.5);
@@ -44,21 +45,52 @@ var BDOverView = {
             overview.occupantsText = TextLinkButton.createNew(-overview.width*4/15,-overview.height*10/45,
                 (bdInfo.residential?'Residents':'Workers'), BDController.header2,function(){
                     overview.parent.parent.changeTabs(1);
-                },overview);
+                },overview,3);
         }
         overview.addChild(overview.occupantsText);
         overview.occupantsIcons = [];
-        for(var i = 0; i < bdInfo.building.maxPeople; ++i){
-            overview.occupantsIcons.push(MainGame.game.make.sprite(-overview.width*1/3,-overview.height*2/15,'person_icon'));
-            overview.occupantsIcons[i].anchor.setTo(.5,.5);
+        overview.rightSide = null;
 
-            if(i < bdInfo.building.people)
-                overview.occupantsIcons[i].tint = 0x20a020;
-            else
-                overview.occupantsIcons[i].tint = 0x777777;
-            
+        pickupFunction = function(i,overview,bdInfo){return function(spriteBase){
+            if(overview.rightSide===null){
+                overview.rightSide = Clipboard.createNew('transfer',{
+                    bdInfo:bdInfo,
+                    person:(MainGame.population.at(spriteBase.personIndex)),
+                    tag:(bdInfo.residential?'occupant':'occupant_'+i)
+                });
+            }
+            else{
+                if(!bdInfo.residential)
+                    TransferClipboard.setUpListView(overview.rightSide.page,bdInfo,MainGame.population.at(spriteBase.personIndex),'occupant_'+i);
+                else 
+                    TransferClipboard.setUpListView(overview.rightSide.page,bdInfo,MainGame.population.at(spriteBase.personIndex),'occupant');
+            }
+        };}
+        dropFunction = function(i,overview,bdInfo){return function(spriteBase,targetSprite){
+            MainGame.population.firePersonAt(MainGame.population.at(spriteBase.personIndex),spriteBase.buildingIndex);
+            MainGame.population.hirePersonAt(MainGame.population.at(spriteBase.personIndex),targetSprite.parent.buildingIndex);
+            var openSlot = targetSprite.parent.occupantIcons[MainGame.board.at(targetSprite.parent.buildingIndex).getBuilding().people-1];
+            spriteBase.dragSprite.tween = MainGame.game.make.tween(spriteBase.dragSprite).to({x:openSlot.world.x,y:openSlot.world.y},100,Phaser.Easing.Quadratic.InOut,true);
+            spriteBase.dragSprite.tween.onComplete.add(function(){
+                BDOverView.refreshPage(overview);
+                TransferClipboard.setUpListView(overview.rightSide.page,bdInfo,MainGame.population.at(spriteBase.personIndex),(bdInfo.residential?'occupant':'occupant_'+i))
+                spriteBase.dragSprite.destroy();
+            },spriteBase.dragSprite);
+        };}
+
+        var occupants = (bdInfo.residential?MainGame.population.getHouseMap()[bdInfo.index]:MainGame.population.getWorkMap()[bdInfo.index]);
+        for(var i = 0; i < bdInfo.building.maxPeople; ++i){
+            overview.occupantsIcons.push(DragableSprite.createNew(-overview.width*1/3,-overview.height*2/15,'worker_icon','worker_icon_empty',
+                pickupFunction(i,overview,bdInfo),dropFunction(i,overview,bdInfo),
+                'occupant_'+i));
+            overview.occupantsIcons[i].buildingIndex = bdInfo.index;
+            overview.occupantsIcons[i].anchor.setTo(.5,.5);
             overview.occupantsIcons[i].x += overview.occupantsIcons[i].width * i*.6;
             overview.addChild(overview.occupantsIcons[i]);
+            if(i >= bdInfo.building.people)
+                overview.occupantsIcons[i].spriteFront.visible = false;
+            else
+                overview.occupantsIcons[i].personIndex = occupants[i];
         }
         var availibilityString = bdInfo.building.people + '/' + bdInfo.building.maxPeople + ' ' + bdInfo.availableNoun + 's taken';
         overview.availabilityText = MainGame.game.make.text(overview.width*1/5,-overview.height*10/45, availibilityString, BDController.body1); // Example: 3 jobs available, or No beds available
@@ -73,21 +105,41 @@ var BDOverView = {
             overview.statsText = TextLinkButton.createNew(-overview.width*1/6,-overview.height*1/45,
                 (bdInfo.residential?'Living Conditions':'Building Output'), BDController.header2,function(){
                     overview.parent.parent.changeTabs(2);
-                },overview);
+                },overview,3);
         }
         overview.addChild(overview.statsText);
         if(bdInfo.residential){
-            overview.shelterText = MainGame.game.make.text(-overview.width*19/45,overview.height*2/45,"Shelter: ",BDController.body1);
-            overview.healthText = MainGame.game.make.text(-overview.width*19/45,overview.height*1/9,"Health: ",BDController.body1);
-            overview.cultureText = MainGame.game.make.text(-overview.width*19/45,overview.height*8/45,"Culture: ",BDController.body1);
-            overview.freedomText = MainGame.game.make.text(-overview.width*19/45,overview.height*11/45,"Freedom: ",BDController.body1);
-            overview.unrestText = MainGame.game.make.text(-overview.width*19/45,overview.height*14/45,"Unrest: ",BDController.body1);
+            overview.shelterText = TextLinkButton.createNew(-overview.width*19/45,overview.height*2/45,"Shelter:",BDController.body1,function(){
+                var binder = overview.parent.parent;
+                binder.changeTabs(2);
+                BDController.setupOutputList(binder.page,bdInfo,0,'shelter');
+            },overview,2);
+            overview.healthText = TextLinkButton.createNew(-overview.width*19/45,overview.height*1/9,"Health:",BDController.body1,function(){
+                var binder = overview.parent.parent;
+                binder.changeTabs(2);
+                BDController.setupOutputList(binder.page,bdInfo,0,'health');
+            },overview,2);
+            overview.cultureText = TextLinkButton.createNew(-overview.width*19/45,overview.height*8/45,"Culture:",BDController.body1,function(){
+                var binder = overview.parent.parent;
+                binder.changeTabs(2);
+                BDController.setupOutputList(binder.page,bdInfo,0,'culture');
+            },overview,2);
+            overview.freedomText = TextLinkButton.createNew(-overview.width*19/45,overview.height*11/45,"Freedom:",BDController.body1,function(){
+                var binder = overview.parent.parent;
+                binder.changeTabs(2);
+                BDController.setupOutputList(binder.page,bdInfo,0,'freedom');
+            },overview,2);
+            overview.unrestText = TextLinkButton.createNew(-overview.width*19/45,overview.height*14/45,"Unrest:",BDController.body1,function(){
+                var binder = overview.parent.parent;
+                binder.changeTabs(2);
+                BDController.setupOutputList(binder.page,bdInfo,0,'unrest');
+            },overview,2);
 
-            overview.shelterText.anchor.setTo(0,.5);    overview.addChild(overview.shelterText);
-            overview.healthText.anchor.setTo(0,.5);     overview.addChild(overview.healthText);
-            overview.cultureText.anchor.setTo(0,.5);    overview.addChild(overview.cultureText);
-            overview.freedomText.anchor.setTo(0,.5);    overview.addChild(overview.freedomText);
-            overview.unrestText.anchor.setTo(0,.5);     overview.addChild(overview.unrestText);
+            overview.shelterText.text.anchor.setTo(0,.5);   overview.shelterText.underline.anchor.setTo(0,.5);  overview.addChild(overview.shelterText);
+            overview.healthText.text.anchor.setTo(0,.5);    overview.healthText.underline.anchor.setTo(0,.5);   overview.addChild(overview.healthText);
+            overview.cultureText.text.anchor.setTo(0,.5);   overview.cultureText.underline.anchor.setTo(0,.5);  overview.addChild(overview.cultureText);
+            overview.freedomText.text.anchor.setTo(0,.5);   overview.freedomText.underline.anchor.setTo(0,.5);  overview.addChild(overview.freedomText);
+            overview.unrestText.text.anchor.setTo(0,.5);    overview.unrestText.underline.anchor.setTo(0,.5);   overview.addChild(overview.unrestText);
 
             overview.shelterIcons = []; overview.healthIcons = []; overview.cultureIcons = []; overview.freedomIcons = []; overview.unrestIcons = [];
             for(var i = 0; i < 10; ++i){
@@ -106,23 +158,23 @@ var BDOverView = {
                 if(Math.round(bdInfo.building.shelter/5)*5 >= (i+1)*10)
                     overview.shelterIcons[i].tint = 0x20a020;
                 else
-                    overview.shelterIcons[i].tint = 0x777777;
+                    overview.shelterIcons[i].tint = 0x3a3a3a;
                 if(Math.round(bdInfo.building.health/5)*5 >= (i+1)*10)
                     overview.healthIcons[i].tint = 0x20a020;
                 else
-                    overview.healthIcons[i].tint = 0x777777;
+                    overview.healthIcons[i].tint = 0x3a3a3a;
                 if(Math.round(bdInfo.building.culture/5)*5 >= (i+1)*10)
                     overview.cultureIcons[i].tint = 0x20a020;
                 else
-                    overview.cultureIcons[i].tint = 0x777777;
+                    overview.cultureIcons[i].tint = 0x3a3a3a;
                 if(Math.round(Math.abs(bdInfo.building.aoeFreedom)/5)*5 >= (i+1)*10)
                     overview.freedomIcons[i].tint = (bdInfo.building.aoeFreedom>0?0x20a020:0xa02020);
                 else
-                    overview.freedomIcons[i].tint = 0x777777;
+                    overview.freedomIcons[i].tint = 0x3a3a3a;
                 if(Math.round(Math.abs(bdInfo.building.aoeUnrest)/5)*5 >= (i+1)*10)
                     overview.unrestIcons[i].tint = (bdInfo.building.aoeUnrest>0?0x20a020:0xa02020);
                 else
-                    overview.unrestIcons[i].tint = 0x777777;
+                    overview.unrestIcons[i].tint = 0x3a3a3a;
 
                 overview.shelterIcons[i].x += overview.shelterIcons[i].width * i*1.1;
                 overview.healthIcons[i].x += overview.healthIcons[i].width * i*1.1;
@@ -155,7 +207,7 @@ var BDOverView = {
                         if(j < bdInfo.building.people)
                             overview.outputs[i].effectIcons[j].tint = 0x20a020;
                         else
-                            overview.outputs[i].effectIcons[j].tint = 0x777777;
+                            overview.outputs[i].effectIcons[j].tint = 0x3a3a3a;
                         overview.outputs[i].effectIcons[j].x += overview.outputs[i].effectIcons[j].width * j*1.1;
                         overview.addChild(overview.outputs[i].effectIcons[j]);
                     }
@@ -178,7 +230,7 @@ var BDOverView = {
                             if(currentOutput >= (j+1)*10)
                                 overview.outputs[i].effectIcons[j].tint = (currentOutput > 0?0x20a020:0xa02020);
                             else
-                                overview.outputs[i].effectIcons[j].tint = 0x777777;
+                                overview.outputs[i].effectIcons[j].tint = 0x3a3a3a;
 
                             overview.outputs[i].effectIcons[j].x += overview.outputs[i].effectIcons[j].width * j*1.1;
                             overview.addChild(overview.outputs[i].effectIcons[j]);
@@ -187,14 +239,15 @@ var BDOverView = {
                 }
             }
         }
-
-        overview.demolishButton = TextButton.createNew(0, overview.height*2/5, 'small_generic_button',
-            function() { BDController.demolishBuilding(overview, bdInfo); },
-            overview, 0, 2, 1, 2, 'Demolish -₸10', BDController.buttonStyle);
-        overview.demolishButton.input.priorityID = 102;
-        overview.demolishButton.x -= overview.demolishButton.width/2;
-        overview.demolishButton.y -= overview.demolishButton.height/2;
-        overview.addChild(overview.demolishButton);
+        if(bdInfo.building.name !== 'palace'){
+            overview.demolishButton = TextButton.createNew(0, overview.height*2/5, 'small_generic_button',
+                function() { BDController.demolishBuilding(overview, bdInfo); },
+                overview, 0, 2, 1, 2, 'Demolish -₸10', BDController.buttonStyle);
+            overview.demolishButton.input.priorityID = 102;
+            overview.demolishButton.x -= overview.demolishButton.width/2;
+            overview.demolishButton.y -= overview.demolishButton.height/2;
+            overview.addChild(overview.demolishButton);
+        }
 
         overview.openSfx = MainGame.game.make.audio('paper_click_' + Math.ceil(Math.random()*8)); // Assume we have 8 paper click sounds
         overview.openSfx.play();
@@ -204,6 +257,17 @@ var BDOverView = {
 
         return overview;
     },
+
+    refreshPage: function(overview){
+        overview.availabilityText.text = overview.bdInfo.building.people + '/' + overview.bdInfo.building.maxPeople + ' ' + overview.bdInfo.availableNoun + 's taken';
+
+        for(var i = 0; i < overview.bdInfo.building.maxPeople; ++i){
+            if(i >= overview.bdInfo.building.people)
+                overview.occupantsIcons[i].spriteFront.visible = false;
+            else 
+                overview.occupantsIcons[i].spriteFront.visible = true;
+        }
+    }
 };
 
 var BDOccupants = {
@@ -317,7 +381,7 @@ var BDOccupants = {
 };
 
 var BDOutput = {
-    createNew: function(buildingIndex, bdInfo) {
+    createNew: function(buildingIndex, bdInfo, outputIndex) {
         if(!bdInfo && (buildingIndex || buildingIndex === 0)){
             var bdInfo = BDController.getInfo(buildingIndex);
         } else if(!bdInfo){
@@ -359,22 +423,50 @@ var BDOutput = {
         output.add_remove_sfx = MainGame.game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         output.demolishSfx = MainGame.game.make.audio('building_placement_' + Math.ceil(Math.random()*5)); // Assume we have 5 building sounds
 
-        output.outputButtons = ["Shelter", "Health", "Culture", "Freedom", "Unrest"];
-        for(var i = 0; i < output.outputButtons.length; ++i){
-        }
+        if(bdInfo.residential){
+            output.outputTypes = ["shelter", "health", "culture", "freedom", "unrest"];
+        } else {
+            var buildingOutput = bdInfo.building.effects;
+            output.outputTypes = [];
+            for(var i = 0; i < buildingOutput.length; ++i){
 
+                if(buildingOutput[i].type !== null)
+                    output.outputTypes.push(buildingOutput[i].type);
+            }
+        }
+        output.outputButtons = [];
+
+        function newOutput(typeIndex){return function(){BDController.setupOutputList(output, bdInfo, 0, output.outputTypes[typeIndex]);};}
+        for(var i = 0; i < output.outputTypes.length; ++i){
+            output.outputButtons.push(TextLinkButton.createNew(-output.width*1/3,-output.height*3/16,
+                output.outputTypes[i].charAt(0).toUpperCase()+output.outputTypes[i].slice(1), BDController.body1,
+                    (newOutput(i)),
+                output,2));
+
+            output.outputButtons[i].y += output.height*(2*i)/16;
+            output.addChild(output.outputButtons[i]);
+        }
+        var bar = MainGame.game.make.graphics(0,0);
+        bar.lineStyle(5,0x000000,.5);
+        bar.moveTo(0,0);
+        bar.lineTo(0,output.height*2/3);
+        output.bar = MainGame.game.make.sprite(-output.width*1/5,-output.height*4/15,bar.generateTexture());
+        output.addChild(output.bar);
+
+        output.listTitle = MainGame.game.make.text(-output.width*1/10,-output.height*4/15,(outputIndex!==null?output.outputTypes[outputIndex]:output.outputTypes[0]),BDController.header2);
+        output.addChild(output.listTitle);
         // ListView
         output.outputListView = DListView.createNew(
             {},                  // don't need textures
             {l:15, t:40},        // margin inside the list view
-            {w:output.width, h:22},       // size of an item
+            {w:output.width*9/20, h:output.height*3/20},       // size of an item
             function(index){  }, // forwards the callback
             false,               // not horizontal
             110                  // priority ID
         );
-        BDController.setupOutputList(output, bdInfo, 0);
-        output.outputListView.x = -output.width/2 + BDController.horizontalBorderWidth;
-        output.outputListView.y = -120;
+        BDController.setupOutputList(output, bdInfo, 0, output.outputTypes[0]);
+        output.outputListView.x = -output.width*1/4;
+        output.outputListView.y = -output.height*1/4;
         output.addChild(output.outputListView);
 
         return output;
@@ -470,7 +562,7 @@ var BDController = {
         var buildingInfo = {};
         buildingInfo.building = MainGame.board.at(buildingIndex).getBuilding();
 
-        if (buildingInfo.building.subtype === 'housing') {
+        if (buildingInfo.building.subtype === 'housing' || buildingInfo.building.subtype === 'palace') {
             buildingInfo.availableNoun = 'Room';
             buildingInfo.addPersonString = 'Add Resident';
             buildingInfo.removePersonString = 'Evict Resident';
@@ -506,7 +598,7 @@ var BDController = {
                 // BDController.updateState(view, bdInfo.building);
             }
 
-            var currentPage = Math.ceil(bdInfo.building.people / view.itemsPerPage)
+            var currentPage = Math.ceil(bdInfo.building.people / view.itemsPerPage);
             var maxPage = Math.ceil(bdInfo.building.maxPeople / view.itemsPerPage);
             BDController.setupOccupantList(view, bdInfo, Math.max(currentPage-1,0));
             view.pageIndicator.setModel(Math.max(currentPage-1,0), maxPage); // current, max
@@ -579,7 +671,7 @@ var BDController = {
     },
 
     // Forms a sprite that represents an entry in the listview
-    makeEntry: function(citizen, residential, plainText) {
+    makeOccupantEntry: function(citizen, residential, plainText) {
         var entrySprite = MainGame.game.make.sprite(0, 0);
         var entryString;
 
@@ -680,41 +772,90 @@ var BDController = {
         for (var i = startIndex; i < endIndex; i++) {
             if(i >= occupants.length){
                 if(bdInfo.residential)
-                    view.occupantListView.add(BDController.makeEntry("< Room Available >",false,true));
+                    view.occupantListView.add(BDController.makeOccupantEntry("< Room Available >",false,true));
                 else
-                    view.occupantListView.add(BDController.makeEntry("< Job Available >",false,true));
+                    view.occupantListView.add(BDController.makeOccupantEntry("< Job Available >",false,true));
             } else {
                 var citizen = MainGame.population.at(occupants[i]);
-                view.occupantListView.add(BDController.makeEntry(citizen, bdInfo.residential,false));
+                view.occupantListView.add(BDController.makeOccupantEntry(citizen, bdInfo.residential,false));
             }               
         }
+    },
+
+    makeOutputEntry: function(bdInfo, outputBuilding, outputType){
+        var entrySprite = MainGame.game.make.sprite(0,0);
+        var building = MainGame.board.at(outputBuilding.index).getBuilding();
+        var buildingImage = MainGame.game.make.sprite(0,0,building.name);
+        entrySprite.addChild(buildingImage);
+        buildingImage.scale.setTo(.4,.4);
+        var buildingText = MainGame.game.make.text(buildingImage.width*16/15,0,building.playerLabel,BDController.body1);
+        entrySprite.addChild(buildingText);
+
+        // if(bdInfo.residential){
+        //     var maxOutput = Math.round(Math.abs(outputBuilding.effect.outputTable[bdInfo.building.maxPeople])/5)*5;
+        //     var currentStat = Math.round(building[outputType]/5)*5;
+        //     var currentOutput = Math.round(Math.abs(outputBuilding.effect.outputTable[bdInfo.building.people])/5)*5;
+        // } else {
+        //     var maxOutput = Math.round(Math.abs(outputBuilding.effect.outputTable[building.maxPeople])/5)*5;
+        //     var currentOutput = Math.round(Math.abs(outputBuilding.effect.outputTable[building.people])/5)*5;
+        // }
+        
+        // var valueSprites = [];
+        // for(){
+
+        // }
+
+        return entrySprite;
     },
 
     setupOutputList: function(view, bdInfo, pageIndex, outputType){
         view.outputListView.removeAll();
 
+        view.listTitle.text = outputType.charAt(0).toUpperCase()+outputType.slice(1)+":";
+        var outputBuildings = [];
+
         if (bdInfo.residential) {
             var allBuildingIndexes = MainGame.board.findBuilding(null, null, null, outputType);
 
-            var outputBuildings = [];
-            for (var index=0;index<allBuildingIndexes.length;++index) {
-                var buildingData = MainGame.board.at(allBuildingIndexes[index]).building;
+            for (var i=0; i<allBuildingIndexes.length; ++i) {
+                var buildingData = MainGame.board.at(allBuildingIndexes[i]).getBuilding();
+                if(buildingData.startingTurn > Global.turn)
+                    continue;
                 
                 // If the distance between the two buildings is <= the range of the eduBuilding, accumulate culture
                 var effectList = buildingData.effects;
-                for (var effectIndex=0;effectIndex<effectList.length;++effectIndex) {
+                for (var effectIndex = 0; effectIndex < effectList.length; ++effectIndex) {
                     var thisEffect = effectList[effectIndex];
-                    if (thisEffect.type != type) continue;
-                    if (MainGame.board.distanceOf(homeIndex, allBuildingIndexes[index]) <= thisEffect.range) {
-                        
-                        var buildingName = buildingData.name;
-                        var outPut = thisEffect.outputTable[buildingData.people];
+                    if (thisEffect.type !== outputType) continue;
+                    if (MainGame.board.distanceOf(bdInfo.index, allBuildingIndexes[i]) <= thisEffect.range) {
+                        outputBuildings.push({});
+                        outputBuildings[outputBuildings.length-1].index = allBuildingIndexes[i];
+                        outputBuildings[outputBuildings.length-1].effect = thisEffect;
                     }
                 }
             }
         } else {
+            var allBuildingIndexes = MainGame.board.findBuilding(null, null, 'housing', null);
 
+            var effect = bdInfo.building.effects;
+            for(var i = 0; i < effect.length; ++i){
+                if(effect[i].type === outputType){
+                    effect = effect[i];
+                    break;
+                }
+            }
+
+            for(var i = 0; i < allBuildingIndexes.length; ++i){
+                if(MainGame.board.distanceOf(bdInfo.index,allBuildingIndexes[i]) <= effect.range){
+                    outputBuildings.push({});
+                    outputBuildings[outputBuildings.length-1].index = allBuildingIndexes[i];
+                    outputBuildings[outputBuildings.length-1].effect = effect;
+                }
+            }
         }
+
+        for(var i = 0; i < outputBuildings.length; ++i)
+            view.outputListView.add(BDController.makeOutputEntry(bdInfo, outputBuildings[i], outputType));
     },
 
     demolishBuilding: function(view, bdInfo) {
@@ -744,8 +885,8 @@ var BDController = {
             view.demolishSfx.play();
             view.demolishButton.freezeFrames = true;
             //view.destroy();
-            MenuController.uiMask.destroy();
-            MenuController.closeSfx.play();
+            // MenuController.uiMask.destroy();
+            // MenuController.closeSfx.play();
             MenuController.closeAllMenus();
             MainGame.board.controller.detailView = null;
         }
@@ -753,8 +894,117 @@ var BDController = {
 };
 
 
-var transferClipboard = {
-    createNew: function(bdInfo){
+var TransferClipboard = {
+    createNew: function(bdInfo, person, tag){
+        var clipboard = MainGame.game.make.group();
 
-    }, 
+        clipboard.page = Page.createNew();
+        clipboard.page.anchor.setTo(.5,.5);
+        clipboard.addChild(clipboard.page);
+
+        clipboard.title = MainGame.game.make.text(0,-clipboard.height*11/30,'Transfer '+(bdInfo.residential?'Resident':'Worker'),BDController.header1);
+        clipboard.title.anchor.setTo(.5,.5);
+        clipboard.addChild(clipboard.title);
+        clipboard.name = MainGame.game.make.text(0,-clipboard.height*3/10,'Transfering '+person.name,BDController.body1);
+        clipboard.name.anchor.setTo(.5,.5);
+        clipboard.addChild(clipboard.name);
+
+        clipboard.listView = DListView.createNew(
+            {},                  // don't need textures
+            {l:15, t:20},        // margin inside the list view
+            {w:clipboard.width*9/10, h:clipboard.height*1/5},       // size of an item
+            function(index){  }, // forwards the callback
+            false,               // not horizontal
+            110                  // priority ID
+        );
+        TransferClipboard.setUpListView(clipboard,bdInfo,person,tag);
+        clipboard.listView.x = -clipboard.width*1/2;
+        clipboard.listView.y = -clipboard.height*3/10;
+        clipboard.addChild(clipboard.listView);
+
+        return clipboard;
+    },
+
+    makeEntry: function(itemSize, bdInfo, buildingIndex,tag){
+        var entrySprite = MainGame.game.make.sprite(0,0);
+        entrySprite.buildingIndex = buildingIndex;
+
+        var back = MainGame.game.make.graphics();
+        back.lineStyle(0);
+        back.beginFill(0x000000,1);
+        back.drawRect(0,0,itemSize.w,itemSize.h);
+        back.endFill();
+        entrySprite.backInput = MainGame.game.make.sprite(0,0,back.generateTexture());
+        entrySprite.addChild(entrySprite.backInput);
+
+        entrySprite.backInput.inputEnabled = true;
+        entrySprite.backInput.input.priorityID = 160;
+        entrySprite.backInput.tag = tag;
+        entrySprite.backInput.alpha = 0;
+        entrySprite.backInput.events.onInputUp.add(function(){entrySprite.backInput.alpha = .25;});
+        entrySprite.backInput.events.onInputDown.add(function(){entrySprite.backInput.alpha = .5;});
+        entrySprite.backInput.events.onInputOver.add(function(){entrySprite.backInput.alpha = .25;});
+        entrySprite.backInput.events.onInputOut.add(function(){entrySprite.backInput.alpha = 0;});
+
+        var building = MainGame.board.at(buildingIndex).getBuilding();
+        var buildingImage = MainGame.game.make.sprite(0,0,building.name);
+        entrySprite.addChild(buildingImage);
+        buildingImage.scale.setTo(.4,.4);
+
+        var buildingText = MainGame.game.make.text(buildingImage.width,buildingImage.height*1/5,building.playerLabel,BDController.body1);
+        entrySprite.addChild(buildingText);
+        buildingText.anchor.setTo(0,.5);
+
+        entrySprite.occupantIcons = [];
+        for(var i = 0; i < building.maxPeople; ++i){
+            entrySprite.occupantIcons.push(MainGame.game.make.sprite(buildingImage.width*17/15,buildingImage.height*3/4,'worker_icon_empty'));
+            entrySprite.occupantIcons[i].anchor.setTo(.5,.5);
+            entrySprite.occupantIcons[i].x += entrySprite.occupantIcons[i].width*i*.6;
+            entrySprite.addChild(entrySprite.occupantIcons[i]);
+
+            if(i < building.people){
+                entrySprite.occupantIcons[i].filled = MainGame.game.make.sprite(0,0,'worker_icon');
+                entrySprite.occupantIcons[i].filled.anchor.setTo(.5,.5);
+                entrySprite.occupantIcons[i].addChild(entrySprite.occupantIcons[i].filled);
+            }
+        }
+
+        return entrySprite;
+    },
+
+    setUpListView: function(clipboard, bdInfo, person, tag){
+        clipboard.name.text = 'Transfering '+person.name;
+
+        clipboard.listView.removeAll();
+        var transferBuildings = [];
+
+        if(bdInfo.residential){
+            var allBuildingIndexes = MainGame.board.findBuilding(null,null,'housing',null);
+            for(var i = 0; i < allBuildingIndexes.length; ++i){
+                if(allBuildingIndexes[i] === bdInfo.index)
+                    continue;
+                var bld = MainGame.board.at(allBuildingIndexes[i]).getBuilding();
+                if(bld.people < bld.maxPeople && bld.startingTurn <= Global.turn)
+                    transferBuildings.push(allBuildingIndexes[i]);
+            }
+        } else{
+            var bureauBuildings = MainGame.board.findBuilding(null,Person.Bureaucrat,null,null);
+            var commerceBuildings = MainGame.board.findBuilding(null,Person.Merchant,null,null);
+            var militaryBuildings = MainGame.board.findBuilding(null,Person.Military,null,null);
+            var allBuildingIndexes = bureauBuildings.concat(commerceBuildings).concat(militaryBuildings);
+
+            for(var i = 0; i < allBuildingIndexes.length; ++i){
+                if(allBuildingIndexes[i] === bdInfo.index)
+                    continue;
+                if(MainGame.board.hasRoadConnect(person.home,allBuildingIndexes[i])){
+                    var bld = MainGame.board.at(allBuildingIndexes[i]).getBuilding();
+                    if(bld.people < bld.maxPeople && bld.startingTurn <= Global.turn)
+                        transferBuildings.push(allBuildingIndexes[i]);
+                }
+            }
+        }
+
+        for(var i = 0; i < transferBuildings.length; ++i)
+            clipboard.listView.add(TransferClipboard.makeEntry(clipboard.listView.itemSize, bdInfo,transferBuildings[i],tag));
+    },
 };

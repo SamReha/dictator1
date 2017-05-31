@@ -57,7 +57,7 @@
   },
   "palace":{
     "faction": "Infrastucture",
-    "subtype": "housing",
+    "subtype": "palace",
     "playerLabel": "Your Palace",
     "cost": 0,
     "health": 100,
@@ -190,7 +190,7 @@
   },
   "market":{
     "faction": "Commerce",
-    "subtype": "whiteCollar",
+    "subtype": "blueCollar",
     "playerLabel": "Market",
     "cost": 10,
     "maxPeople": 4,
@@ -241,6 +241,14 @@
         "range": 2
       }
     ]
+  },
+  "bank":{
+    "faction": "Commerce",
+    "subtype": "whiteCollar",
+    "playerLabel": "Bank",
+    "cost": 30,
+    "maxPeople": 5,
+    "effects": [{"type": null}]
   },
   "factory":{
     "faction": "Commerce",

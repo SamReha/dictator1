@@ -201,6 +201,10 @@ var Binder = {
 				binder.tabs[tabIndex+i].input.priorityID = 100 - i;
 			}
 		}
+		if(binder.page.rightSide!==null&&binder.page.rightSide!==undefined){
+			MenuController.closeCurMenu('right');
+			binder.page.rightSide = null;
+		}
 
 		if(binder.type === Binder.building)
 			var bdInfo = binder.page.bdInfo;
@@ -221,18 +225,18 @@ var Binder = {
 				break;
 			case 2:
 				//repalce PeopleView with new population view
-				binder.page = (binder.type===Binder.global?TestPage.createNew():BDOutput.createNew(binder.bdIndex,bdInfo));
+				binder.page = (binder.type===Binder.global?PopulationMenu.createNew():BDOutput.createNew(binder.bdIndex,bdInfo,null));
 				// binder.page = TestPage.createNew();
 				break;
 			case 3:
 				//replace PeopleView with new social elite view
-				binder.page = (binder.type===Binder.global?TestPage.createNew():BDMisc.createNew(binder.bdIndex,bdInfo));
+				binder.page = (binder.type===Binder.global?SocialEliteMenu.createNew():BDMisc.createNew(binder.bdIndex,bdInfo));
 				// binder.page = TestPage.createNew();
 				break;
 			case 4:
 				//replace PeopleView with new working class view
 				//binder.page = PeopleView.createNew();
-				binder.page = TestPage.createNew();
+				binder.page = WorkingClassMenu.createNew();
 				break;
 			default:
 				binder.page = (binder.type===Binder.global?YearView.createNew():BDOverView.createNew(binder.bdIndex,bdInfo));
@@ -256,14 +260,14 @@ var Clipboard = {
 	building: "buildingList",
 	account: "privateAccount", 
 
-	createNew: function(type) {
+	createNew: function(type,cbInfo) {
 		var clipboard = MainGame.game.add.sprite(0,0,'clipboard_menu_texture');
 		clipboard.anchor.setTo(.5,.5);
 		clipboard.x = MainGame.game.width*3/4; clipboard.y = MainGame.game.height/2;
 
 		switch(type){
 			case Clipboard.transfer:
-				clipboard.page = transferClipboard.createNew();
+				clipboard.page = TransferClipboard.createNew(cbInfo.bdInfo,cbInfo.person,cbInfo.tag);
 				break;
 			case Clipboard.worker:
 				clipboard.page = TestPage.createNew();
@@ -333,6 +337,7 @@ var MenuController = {
 				curMenu = this.midMenusOpen.pop();
 				this.exitSlideTopOrBot(curMenu,1);
 				this.midMenusOpen.push(curMenu);
+				curMenu.active = false;
 			}
 			if(curMenuType.includes("left")){
 				this.currentMenu.push(curMenuType);
@@ -340,8 +345,10 @@ var MenuController = {
 				curMenu = this.leftMenusOpen.pop();
 				if(side === "right")
 					this.shiftSlideToSide(curMenu,-1);
-				else
+				else{
 					this.exitSlideToSide(curMenu,-1);
+					curMenu.active = false;
+				}
 				this.leftMenusOpen.push(curMenu);
 			}
 			if(curMenuType.includes("right")){
@@ -350,8 +357,10 @@ var MenuController = {
 				curMenu = this.rightMenusOpen.pop();
 				if(side === "left")
 					this.shiftSlideToSide(curMenu,1);
-				else
+				else{
 					this.exitSlideToSide(curMenu,1);
+					curMenu.active = false;
+				}
 				this.rightMenusOpen.push(curMenu);
 			}
 		}
@@ -366,6 +375,7 @@ var MenuController = {
 				this.currentMenu.push("left");
 			}
 			this.leftMenusOpen.push(menu);
+			menu.active = true;
 		} else if(side === "right"){
 			if(curMenuType === "left" || curMenuType === "leftright"){
 				this.enterFallFromAbove(menu,1);
@@ -376,10 +386,12 @@ var MenuController = {
 				this.currentMenu.push("right");
 			}
 			this.rightMenusOpen.push(menu);
+			menu.active = true;
 		} else{
 			this.currentMenu.push("mid");
 			this.enterFallFromAbove(menu,0);
 			this.midMenusOpen.push(menu);
+			menu.active = true;
 		}
 	},
 
@@ -389,10 +401,27 @@ var MenuController = {
 		var curMenu = null;
 
 		if(curMenuType === "leftright"){
-			if(side.includes("left"))
+			if(side.includes("left")){
 				this.exitSlideTopOrBot(this.leftMenusOpen.pop(),-1);
-			if(side.includes("right"))
+				curMenuType = curMenuType.replace("left","");
+			}
+			if(side.includes("right")){
 				this.exitSlideTopOrBot(this.rightMenusOpen.pop(),-1);
+				curMenuType = curMenuType.replace("right","");
+			}
+			if(curMenuType==="left"){
+				this.currentMenu.push(curMenuType);
+				curMenu = this.leftMenusOpen.pop();
+				this.shiftSlideToSide(curMenu,0);
+				this.leftMenusOpen.push(curMenu);
+				return;
+			}else if(curMenuType==="right"){
+				this.currentMenu.push(curMenuType);
+				curMenu = this.rightMenusOpen.pop();
+				this.shiftSlideToSide(curMenu,0);
+				this.rightMenusOpen.push(curMenu);
+				return;
+			}
 		}else{
 			if(side === "left")
 				this.exitSlideToSide(this.leftMenusOpen.pop(),-1);
@@ -402,7 +431,7 @@ var MenuController = {
 				this.exitSlideTopOrBot(this.midMenusOpen.pop(),-1);
 		}
 
-		if(currentMenu.length > 0){
+		if(this.currentMenu.length > 0){
 			curMenuType = this.currentMenu.pop();
 			this.currentMenu.push(curMenuType);
 
@@ -447,7 +476,7 @@ var MenuController = {
 
 	enterFallFromAbove: function(menu, side){
 		var targetAlpha = menu.alpha; menu.alpha = 0;
-		var targetY = menu.y; menu.y = MainGame.game.height / 4; menu.x = MainGame.game.width*(side+2)/4;
+		var targetY = menu.y; menu.y = MainGame.game.height / 4; menu.x = MainGame.game.width*(side<0?5:(side>0?13:9))/18;
 		var targetScale = {x:menu.scale.x,y:menu.scale.y}; menu.scale.setTo(2,2);
 
 		var entrance1 = MainGame.game.add.tween(menu).to({alpha:targetAlpha},250,Phaser.Easing.Cubic.In,true);
@@ -474,7 +503,7 @@ var MenuController = {
 	},
 
 	shiftSlideToSide: function(menu, side){
-		var targetX = MainGame.game.width*(side+2)/4;
+		var targetX = MainGame.game.width*(side<0?5:(side>0?13:9))/18;
 
 		var shift = MainGame.game.add.tween(menu).to({x:targetX},500,Phaser.Easing.Quadratic.InOut,true);
 	},
@@ -511,7 +540,7 @@ var TextButton = {
 };
 
 var TextLinkButton = {
-	createNew: function(x, y, text, textStyle, callback, callbackContext){
+	createNew: function(x, y, text, textStyle, callback, callbackContext, lineSize){
 		var button = MainGame.game.make.group();
 		button.x = x; button.y = y;
 
@@ -520,7 +549,7 @@ var TextLinkButton = {
 		button.addChild(button.text);
 
 		var underline = MainGame.game.make.graphics(0,0);
-		underline.lineStyle(2,0xffffff,1);
+		underline.lineStyle((lineSize!==null?lineSize:2),0xffffff,1);
 		underline.moveTo(0,0);
 		underline.lineTo(button.text.width,0);
 
@@ -529,6 +558,7 @@ var TextLinkButton = {
 		button.addChild(button.underline);
 		button.underline.y = button.text.height*7/20;
 		button.underline.tint = 0x000000;
+		button.underline.alpha = .5;
 
 		var back = MainGame.game.make.graphics(0,0);
 		back.beginFill(0x000000,0);
@@ -543,8 +573,8 @@ var TextLinkButton = {
 		button.back.events.onInputUp.add(function(){button.underline.tint=0x000000;});
 		button.back.events.onInputUp.add(callback);
 		button.back.events.onInputDown.add(function(){button.underline.tint=0xffffff});
-		button.back.events.onInputOver.add(function(){button.underline.tint=0x999999});
-		button.back.events.onInputOut.add(function(){button.underline.tint=0x000000});
+		button.back.events.onInputOver.add(function(){button.underline.alpha=1});
+		button.back.events.onInputOut.add(function(){button.underline.alpha=.5});
 
 		return button;
 	}

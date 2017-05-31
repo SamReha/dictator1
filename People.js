@@ -421,8 +421,8 @@ var Population={
         if(bld.subtype==="housing"){
             if(bld.addPerson()){
                 person.home=tileIndex;
-                // person.health=bld.health;
-                // person.shelter=bld.shelter;
+                if(person.type===Person.Hi)
+                    person.removeSalary();
                 return true;
             }
             return false;
@@ -430,6 +430,8 @@ var Population={
         else{
             if(bld.addPerson()){
                 person.workplace=tileIndex;
+                if(person.type===Person.Hi)
+                    person.removeSalary();
                 return true;
             }
             return false;

@@ -335,7 +335,7 @@ var StatsPanel = {
 
         // Population
         statsPanel.popGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 1, 'population_icon', function(){
-            PeopleView.createNew();
+            Binder.createNew(Binder.global,2);
             statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
 

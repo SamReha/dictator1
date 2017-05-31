@@ -8,7 +8,7 @@ var updatePopulation = function(nextTurn, updatingHomes) {
 	if (updatingHomes) {
 		for(var houseIndex=0;houseIndex<houseList.length;++houseIndex){
 			var h=MainGame.board.at(houseList[houseIndex]).getBuilding();
-			if(h.name==="palace"){continue;}
+			// if(h.name==="palace"){continue;}
 			updateHome(houseList[houseIndex]);
 		}
 	}
@@ -47,7 +47,7 @@ var updateHomesNearOutput = function(tileIndex,range) {
 	/*global MainGame*/
 	var homes = MainGame.board.findBuilding(null,null,"housing",null);
 	for(var houseIndex=0;houseIndex<homes.length;++houseIndex){
-		if(MainGame.board.distanceOf(tileIndex,homes[houseIndex]) <= range && MainGame.board.at(homes[houseIndex]).building.name!=="palace"){
+		if(MainGame.board.distanceOf(tileIndex,homes[houseIndex]) <= range){
 			updateHome(homes[houseIndex]);
 		}
 	}

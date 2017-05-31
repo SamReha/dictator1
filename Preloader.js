@@ -8,14 +8,14 @@ var Preloader={
         g.load.image('apartment',       buildingDir + 'apartment.png');
         g.load.image('armyBase',        buildingDir + 'armyBase.png');
         g.load.image('cinema',          buildingDir + 'cinema.png');
-        g.load.image('construction',     buildingDir + 'construction.png');
+        g.load.image('construction',    buildingDir + 'construction.png');
         g.load.image('farm',            buildingDir + 'farm.png');
         g.load.image('factory',         buildingDir + 'factory.png');
         g.load.image('hospital',        buildingDir + 'hospital.png');
         g.load.image('lumberYard',      buildingDir + 'factory.png');
         g.load.image('mansion',         buildingDir + 'mansion.png');
         g.load.image('market',          buildingDir + 'market.png');
-        g.load.image('opiumDen',         buildingDir + 'opiumDen.png');
+        g.load.image('opiumDen',        buildingDir + 'opiumDen.png');
         g.load.image('palace',          buildingDir + 'palace.png');
         g.load.image('park',            buildingDir + 'park.png');
         g.load.image('police',          buildingDir + 'police.png');
@@ -31,12 +31,14 @@ var Preloader={
         // Building Detail Icons
         var detailIconDir = buildingDir + 'detail_icons/';
         g.load.image('apartment_detail',    detailIconDir + 'apartment.png');
-        g.load.image('farm_detail',         detailIconDir + 'farm.jpg');
         g.load.image('armyBase_detail',     detailIconDir + 'armyBase.jpg');
+        g.load.image('farm_detail',         detailIconDir + 'farm.jpg');
         g.load.image('factory_detail',      detailIconDir + 'factory.jpg');
+        g.load.image('hospital_detail',     detailIconDir + 'hospital.png');
         g.load.image('lumberYard_detail',   detailIconDir + 'factory.jpg');
         g.load.image('mansion_detail',      detailIconDir + 'mansion.png');
         g.load.image('palace_detail',       detailIconDir + 'palace.png');
+        g.load.image('prison_detail',       detailIconDir + 'prison.png');
         g.load.image('road_detail',         detailIconDir + 'road.jpg');
         g.load.image('school_detail',       detailIconDir + 'school.png');
         g.load.image('shantyTown_detail',   detailIconDir + 'shantyTown.png');
@@ -100,6 +102,10 @@ var Preloader={
         g.load.image('global_binder_texture',           uiDir + 'global_binder_texture.png');
         g.load.image('building_binder_texture',         uiDir + 'building_binder_texture.png');
         g.load.image('binder_menu_ring',                uiDir + 'binder_menu_ring.png');
+        g.load.image('full_symbol',                     uiDir + 'full_symbol.png');
+        g.load.image('half_symbol',                     uiDir + 'half_symbol.png');
+        g.load.image('horizontal_border',               uiDir + 'horizontal_border.png');
+        g.load.image('vertical_border',                 uiDir + 'vertical_border.png');
         
         // load particle sprites
         var particleDir = uiDir + 'particles/'
@@ -128,6 +134,8 @@ var Preloader={
         g.load.spritesheet('yellowMinusButton',         buttonDir + 'yellow_minus_button.png', 48, 48, 3);
         g.load.spritesheet('yellowPlusButton',          buttonDir + 'yellow_plus_button.png', 48, 48, 3);
         g.load.spritesheet('pencil_circle_button',      buttonDir + 'pencil_circle_button.png', 120, 48, 3);
+        g.load.spritesheet('photographBorder',          buttonDir + 'photographBorder.png', 56, 66, 3);
+        g.load.spritesheet('frameBorder',               buttonDir + 'frameBorder.png', 66, 66, 3);
         for(var i = 1; i <= 5; ++i){
             g.load.spritesheet('binder_tab_'+i,         buttonDir + 'binder_tab_'+i+'.png',35,100,3);
         }
@@ -144,15 +152,22 @@ var Preloader={
         g.load.spritesheet('year_icon',         iconDir + 'year_icon.png', 46, 46, 3);
         g.load.spritesheet('swiss_icon',        iconDir + 'swiss_account_icon.png', 46, 46, 3);
         g.load.image('construction_icon',       iconDir + 'construction_icon.png');
-        g.load.image('person_icon',             iconDir + 'person_icon.png');
         g.load.image('exclamation_01',          iconDir + 'exclamation_01.png');
         g.load.image('exclamation_02',          iconDir + 'exclamation_02.png');
-        g.load.image('culture_output_full',     iconDir + 'culture_output_full.png')
-        g.load.image('freedom_output_full',     iconDir + 'freedom_output_full.png')
-        g.load.image('health_output_full',      iconDir + 'health_output_full.png')
-        g.load.image('money_output_full',       iconDir + 'money_output_full.png')
-        g.load.image('shelter_output_full',     iconDir + 'shelter_output_full.png')
-        g.load.image('unrest_output_full',      iconDir + 'unrest_output_full.png')
+        g.load.image('culture_output_full',     iconDir + 'culture_output_full.png');
+        g.load.image('culture_output_half',     iconDir + 'culture_output_half.png');
+        g.load.image('freedom_output_full',     iconDir + 'freedom_output_full.png');
+        g.load.image('freedom_output_half',     iconDir + 'freedom_output_half.png');
+        g.load.image('health_output_full',      iconDir + 'health_output_full.png');
+        g.load.image('health_output_half',      iconDir + 'health_output_half.png');
+        g.load.image('money_output_full',       iconDir + 'money_output_full.png');
+        g.load.image('money_output_half',       iconDir + 'money_output_half.png');
+        g.load.image('shelter_output_full',     iconDir + 'shelter_output_full.png');
+        g.load.image('shelter_output_half',     iconDir + 'shelter_output_half.png');
+        g.load.image('unrest_output_full',      iconDir + 'unrest_output_full.png');
+        g.load.image('unrest_output_half',      iconDir + 'unrest_output_half.png');
+        g.load.image('worker_icon',             iconDir + 'worker_icon_test.png');
+        g.load.image('worker_icon_empty',       iconDir + 'worker_icon_empty.png');
 
         for(var i = 1; i <= 4; ++i){
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');

@@ -194,7 +194,7 @@ var Board = {
         // returns all the *indice* of the terrain type
         board.findTerrain=function(type){return Board.findTerrain(board,type)};
         // Returns the INDEXES of all the buildings matching type(nullable)/subtype(nullable)
-        board.findBuilding=function(name,type,subtype,effect){return Board.findBuilding(board,name,type,subtype,effect)};
+        board.findBuilding=function(name,faction,subtype,effect){return Board.findBuilding(board,name,faction,subtype,effect)};
         // Returns the tile indexes of all units currently on the board, filtered by type (set type === null if you just want all units)
         board.findUnits = function(type) { return Board.findUnits(board, type); };
         // build new shanty town next to a random road tile and return index
@@ -392,14 +392,14 @@ var Board = {
         return res;
     },
 
-    findBuilding: function(b,name,type,subtype,effect){
+    findBuilding: function(b,name,faction,subtype,effect){
         var res=[];
         var N=b.tileCount();
         for(var i=0;i<N;i++) {
             if (b.at(i).hasBuilding() === false) continue;
 
             var bld = b.at(i).getBuilding();
-            if((bld.type===type || !type) && (bld.subtype===subtype || !subtype) && 
+            if((bld.faction===faction || !faction) && (bld.subtype===subtype || !subtype) && 
                 (bld.name===name || !name)){
                 if (!effect) {
                     res.push(i);

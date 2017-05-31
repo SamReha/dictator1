@@ -57,10 +57,10 @@ var TileBriefView = {
 
     setUpOccupancyDisplay: function(view, occupantCount, maxSize) {
         var occupancyDisplay = MainGame.game.make.sprite(0, view.height/2);
-        var occupantWidth = MainGame.game.make.sprite(0, 0, 'person_icon').width;
+        var occupantWidth = MainGame.game.make.sprite(0, 0, 'worker_icon').width;
 
         for (var i = 0; i < maxSize; i++) {
-            occupant = MainGame.game.make.sprite(0, 0, 'person_icon');
+            occupant = MainGame.game.make.sprite(0, 0, 'worker_icon');
             occupant.x = occupant.width*0.5*i;
 
             // Tint it to show occupancy
