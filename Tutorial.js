@@ -295,6 +295,6 @@ var Tutorial = {
 
 	// Hacky, but it'll make sure the people view is closed until we can put it in a folder menu
 	closePeopleView: function() {
-		MainGame.global.pv.closeSelf();
+		//MainGame.global.pv.closeSelf();
 	},
 };

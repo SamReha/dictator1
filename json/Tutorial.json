@@ -385,7 +385,7 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Your active Ministers are displayed on the left side of the screen. Click on an empty portrait in the Ministry Panel to hire a new Minister.", 
+				"description":"Your active ministers are listed at the top of the menu. Click on one of the empty portraits to open their menu.", 
 				"buttonTexts":["OK"]
 			}
 		],
@@ -434,7 +434,7 @@
 		"init":"Tutorial.setPointerOnMinistryPanel(false)",
 		"event":[
 			{
-				"description":"Social Elite are listed on the left-hand side of the menu. Click on one of their portraits to bring up their contract and choose to hire them.", 
+				"description":"Social Elite are listed on the bottom half of the menu. Click on one of their portraits to bring up their contract and choose to hire them.", 
 				"buttonTexts":["OK"]
 			}
 		],

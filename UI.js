@@ -686,7 +686,9 @@ var ToolTip = {
 
     hide: function(toolTip) {
         toolTip.visible = false;
-        toolTip.timer.removeAll();
+        if (toolTip.timer) {
+            toolTip.timer.removeAll();
+        }
     }
 };
 

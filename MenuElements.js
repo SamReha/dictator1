@@ -460,8 +460,11 @@ var MenuController = {
 	closeAllMenus: function(){
 		MenuController.uiMask.destroy();
 		
-		for(var i = 0; i < this.leftMenusOpen.length; ++i)
+		for(var i = 0; i < this.leftMenusOpen.length; ++i) {
+			//console.log(this.leftMenusOpen[i]);
+			if (this.leftMenusOpen[i].page.ministerData) MainGame.global.ministerViewIsOpen = false;
 			this.leftMenusOpen[i].destroy();
+		}
 		for(var i = 0; i < this.rightMenusOpen.length; ++i)
 			this.rightMenusOpen[i].destroy();
 		for(var i = 0; i < this.midMenusOpen.length; ++i)
