@@ -257,7 +257,7 @@ var Clipboard = {
 	worker: "workerList",
 	elite: "eliteList",
 	minister: "ministerList",
-	building: "buildingList",
+	contract: "contractView",
 	account: "privateAccount", 
 
 	createNew: function(type,cbInfo) {
@@ -278,8 +278,8 @@ var Clipboard = {
 			case Clipboard.minister:
 				clipboard.page = TestPage.createNew();
 				break;
-			case Clipboard.building:
-				clipboard.page = TestPage.createNew();
+			case Clipboard.contract:
+				clipboard.page = ContractClipboard.createNew(cbInfo);
 				break;
 			case Clipboard.account:
 				clipboard.page = PrivateAccountView.createNew();

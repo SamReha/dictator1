@@ -159,8 +159,8 @@ var SocialEliteMenu = {
 		return seMenu;
 	},
 
-	onPersonSelected: function(view,index){
-
+	onPersonSelected: function(person){
+		Clipboard.createNew(Clipboard.contract,{personDataRef:person});
 	},
 
 	makeEntry: function(person1,person2,listView){
@@ -177,6 +177,7 @@ var SocialEliteMenu = {
 		entrySprite.back1.input.priorityID=120;
 		entrySprite.addChild(entrySprite.back1);
         entrySprite.back1.events.onInputUp.add(function(){entrySprite.back1.alpha = .25;});
+        entrySprite.back1.events.onInputUp.add(function(){SocialEliteMenu.onPersonSelected(person1)});
         entrySprite.back1.events.onInputDown.add(function(){entrySprite.back1.alpha = .5;});
         entrySprite.back1.events.onInputOver.add(function(){entrySprite.back1.alpha = .25;});
         entrySprite.back1.events.onInputOut.add(function(){entrySprite.back1.alpha = 0;});
@@ -205,6 +206,7 @@ var SocialEliteMenu = {
 			entrySprite.back2.input.priorityID=120;
 			entrySprite.addChild(entrySprite.back2);
 	        entrySprite.back2.events.onInputUp.add(function(){entrySprite.back2.alpha = .25;});
+        	entrySprite.back2.events.onInputUp.add(function(){SocialEliteMenu.onPersonSelected(person2)});
 	        entrySprite.back2.events.onInputDown.add(function(){entrySprite.back2.alpha = .5;});
 	        entrySprite.back2.events.onInputOver.add(function(){entrySprite.back2.alpha = .25;});
 	        entrySprite.back2.events.onInputOut.add(function(){entrySprite.back2.alpha = 0;});

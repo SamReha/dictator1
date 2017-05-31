@@ -145,7 +145,6 @@ var CoalitionFlag = {
 	},
 
 	showMinisterContract: function(minister) {
-		var pView = PeopleView.createNew();
-		pView.showContractView(minister);
+		Clipboard.createNew(Clipboard.contract,{personDataRef:minister});
 	},
 };

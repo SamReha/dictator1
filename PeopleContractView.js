@@ -14,22 +14,22 @@ var PeopleContractView={
 		v.newPayLevel=(personDataRef.payLevel?personDataRef.payLevel:0);
 
 		// ----Portrait, Name, Title, and Stats----
-		v.port = MainGame.game.make.sprite((v.width/8), (v.height/9), personDataRef.getPortTexString());
+		v.port = MainGame.game.make.sprite((-v.width*3/8), (-v.height*7/18), personDataRef.getPortTexString());
 		v.port.anchor.setTo(0.5,0.5);
 		v.port.scale.setTo(1.5,1.5);
 		v.addChild(v.port);
 
-		v.nameLabel=MainGame.game.make.text((v.width/4),(v.height/10),personDataRef.name,PeopleContractView.contractStyle);
+		v.nameLabel=MainGame.game.make.text((-v.width*1/4),(-v.height*2/5),personDataRef.name,PeopleContractView.contractStyle);
 		v.nameLabel.anchor.setTo(0,0.5);
 		v.addChild(v.nameLabel);
 
-		v.roleLabel=MainGame.game.make.text((v.width/4),(v.height/7),"",PeopleContractView.contractStyle);
+		v.roleLabel=MainGame.game.make.text((-v.width*1/4),(-v.height*5/14),"",PeopleContractView.contractStyle);
 		// set in updateSelf
 		v.roleLabel.anchor.setTo(0,0.5);
 		v.addChild(v.roleLabel);
 
 		// ----Current Payment----
-		v.currentPayLabel=MainGame.game.make.text((v.width*1/16), (v.height*13/48), "",PeopleContractView.contractStyle);
+		v.currentPayLabel=MainGame.game.make.text((-v.width*7/16), (-v.height*11/48), "",PeopleContractView.contractStyle);
 		v.currentPayLabel.anchor.setTo(0,0.5);
 		v.currentPay=MainGame.game.make.text(0, 0, "",PeopleContractView.contractStyle);
 		v.currentPay.anchor.setTo(0.5,0.5);
@@ -41,7 +41,7 @@ var PeopleContractView={
 		v.currentPayLabel.addChild(v.currentPayName);
 
 		// ----Expected Payment----
-		v.expectedPayLabel=MainGame.game.make.text((v.width*1/16), (v.height*13/30), "Ministers with a similar amount of Influence\n  are expected to be paid ________ annually.",PeopleContractView.contractStyle);
+		v.expectedPayLabel=MainGame.game.make.text((-v.width*7/16), (-v.height*1/15), "Ministers with a similar amount of Influence\n  are expected to be paid ________ annually.",PeopleContractView.contractStyle);
 		v.expectedPayLabel.anchor.setTo(0,0.5);
 		v.addChild(v.expectedPayLabel);
 		v.expectedPay=MainGame.game.make.text((v.expectedPayLabel.width*2/3), (v.expectedPayLabel.height*5/24), "",PeopleContractView.contractStyle);
@@ -50,7 +50,7 @@ var PeopleContractView={
 		v.expectedPayLabel.addChild(v.expectedPay);
 
 		// ----Set New Payment----
-		v.newPayLabel=MainGame.game.make.text((v.width*1/16),(v.height*27/48),"Set their new salary:       ________",PeopleContractView.contractStyle);
+		v.newPayLabel=MainGame.game.make.text((-v.width*7/16),(v.height*1/16),"Set their new salary:       ________",PeopleContractView.contractStyle);
 		v.addChild(v.newPayLabel);
 
 		v.decButton=MainGame.game.make.button((v.newPayLabel.width*13/20),(v.newPayLabel.height*3/8),'redMinusButton',function(){
@@ -78,7 +78,7 @@ var PeopleContractView={
 			v.incButton.visible=false;
 
 		// ----Text Alerting Player to Important Information----
-		v.playerAlertLabel=MainGame.game.make.text((v.width*1/16),(v.height*3/4),"",PeopleContractView.contractStyle);
+		v.playerAlertLabel=MainGame.game.make.text((-v.width*7/16),(v.height*1/4),"",PeopleContractView.contractStyle);
 		v.playerAlertLabel.anchor.setTo(0,0.5);
 		v.playerAlert1=MainGame.game.make.text(0,0,"",PeopleContractView.contractStyle);
 		v.playerAlert1.anchor.setTo(0.5,0.5);
@@ -90,7 +90,7 @@ var PeopleContractView={
 		v.playerAlertLabel.addChild(v.playerAlert2);
 
 		// ----Hire/Renew, Fire, and Cancel Buttons
-		v.fireButton=MainGame.game.make.button((v.width*1/5),(v.height*8/9),'small_generic_button',function(){
+		v.fireButton=MainGame.game.make.button((-v.width*3/10),(v.height*7/18),'small_generic_button',function(){
 			PeopleContractView.onWorkChanged(v,true);
 		},v.fireButton,0,1,0,0);
 		v.fireButton.anchor.setTo(0.5,0.5);
@@ -102,7 +102,7 @@ var PeopleContractView={
 		v.fireButton.addChild(v.fireText);
 		// set visible in updateSelf
 
-		v.cancelButton=MainGame.game.add.button((v.width*1/2),(v.height*8/9),'small_generic_button',function(){
+		v.cancelButton=MainGame.game.add.button(0,(v.height*7/18),'small_generic_button',function(){
 			v.cancelButton.freezeFrames=true;
 			v.parent.hideContractView();
 		},v,0,1,0,2);
@@ -116,7 +116,7 @@ var PeopleContractView={
 		v.cancelText.anchor.y=0.5;
 		v.cancelButton.addChild(v.cancelText);
 
-		v.hireButton=MainGame.game.make.button((v.width*4/5),(v.height*8/9),'small_generic_button',function(){
+		v.hireButton=MainGame.game.make.button((v.width*3/10),(v.height*7/18),'small_generic_button',function(){
 			PeopleContractView.onWorkChanged(v,false);
 		},v.hireButton,0,1,0,0);
 		v.hireButton.anchor.setTo(0.5,0.5);
