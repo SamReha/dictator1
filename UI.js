@@ -368,7 +368,7 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.popGroup);
 
         // Social Elite
-        statsPanel.socialEliteGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 2, 'social_elite_icon', function(){
+        statsPanel.socialEliteGroup = MainGame.game.make.button(this.horizontalPad + statsPanel.width*1/5, (this.unitHeight + this.verticalPad) * 2, 'social_elite_icon', function(){
             Binder.createNew(Binder.global, 3);
             statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
@@ -381,7 +381,7 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.socialEliteGroup);
 
         // Working Class
-        statsPanel.workingClassGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 3, 'working_class_icon', function(){
+        statsPanel.workingClassGroup = MainGame.game.make.button(this.horizontalPad + statsPanel.width*1/5, (this.unitHeight + this.verticalPad) * 3, 'working_class_icon', function(){
             Binder.createNew(Binder.global, 4);
             statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
         }, 0, 1, 0, 2);
@@ -395,7 +395,7 @@ var StatsPanel = {
 
         // Homelessness
         statsPanel.homelessGroup = MainGame.game.make.sprite(0,0, 'homeless_icon');
-        statsPanel.homelessGroup.x = this.horizontalPad;
+        statsPanel.homelessGroup.x = this.horizontalPad + statsPanel.width*1/5;
         statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 4;
 
         ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x, statsPanel.y + statsPanel.homelessGroup.y + 12);
@@ -407,7 +407,7 @@ var StatsPanel = {
 
         // Unemployment
         statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0, 'unemployed_icon');
-        statsPanel.unemploymentGroup.x = this.horizontalPad;
+        statsPanel.unemploymentGroup.x = this.horizontalPad + statsPanel.width*1/5;
         statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 5;
         
         ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
@@ -416,6 +416,22 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
         statsPanel.unemploymentGroup.addChild(statsPanel.unemploymentGroup.textLabel);
         statsPanel.addChild(statsPanel.unemploymentGroup);
+
+        var branch = MainGame.game.make.graphics();
+        branch.lineStyle(2,0xffffff,1);
+        branch.moveTo(statsPanel.popGroup.x+statsPanel.popGroup.width/5,statsPanel.popGroup.y);
+        branch.lineTo(statsPanel.popGroup.x+statsPanel.popGroup.width/5,statsPanel.unemploymentGroup.y-statsPanel.unemploymentGroup.height/2);
+        branch.moveTo(statsPanel.popGroup.x+statsPanel.popGroup.width/5,statsPanel.socialEliteGroup.y-statsPanel.socialEliteGroup.height/2);
+        branch.lineTo(statsPanel.socialEliteGroup.x-statsPanel.width/20,statsPanel.socialEliteGroup.y-statsPanel.socialEliteGroup.height/2);
+        branch.moveTo(statsPanel.popGroup.x+statsPanel.popGroup.width/5,statsPanel.workingClassGroup.y-statsPanel.workingClassGroup.height/2);
+        branch.lineTo(statsPanel.workingClassGroup.x-statsPanel.width/20,statsPanel.workingClassGroup.y-statsPanel.workingClassGroup.height/2);
+        branch.moveTo(statsPanel.popGroup.x+statsPanel.popGroup.width/5,statsPanel.homelessGroup.y-statsPanel.homelessGroup.height/2);
+        branch.lineTo(statsPanel.homelessGroup.x-statsPanel.width/20,statsPanel.homelessGroup.y-statsPanel.homelessGroup.height/2);
+        branch.moveTo(statsPanel.popGroup.x+statsPanel.popGroup.width/5,statsPanel.unemploymentGroup.y-statsPanel.unemploymentGroup.height/2);
+        branch.lineTo(statsPanel.unemploymentGroup.x-statsPanel.width/20,statsPanel.unemploymentGroup.y-statsPanel.unemploymentGroup.height/2);
+
+        statsPanel.branch = MainGame.game.make.sprite(statsPanel.popGroup.x+statsPanel.popGroup.width/5,statsPanel.popGroup.y+statsPanel.popGroup.height,branch.generateTexture());
+        statsPanel.addChild(statsPanel.branch);
 
         // Set update loop
         var timer = MainGame.game.time.create(false);
