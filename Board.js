@@ -34,11 +34,23 @@ var Tile = {
         tile.unit = null;
         tile.index = index; // For convenience
 
+        // Flag that checks if a tile should be able to be interacted with
+        tile.interactable = true;
+
+        // Use alert if something is going wrong in a tile
+        tile.alert = MainGame.game.make.sprite(0, 0, 'exclamation_01');
+        //tile.alert.anchor.set(0.5, 0.5);
+        tile.tileGroup.addChild(tile.alert);
+        tile.alert.visible = false;
+
         /* global Building*/
         tile.building = Building.createNew(data.building);
         tile.tileGroup.addChild(tile.building);
 
         // Class funcs
+        //// Alert Layer
+        tile.setAlert = function(bool) { tile.alert.visible = bool; };
+
         //// Terrain Layer
         tile.getTerrain = function() { return tile.terrain; };
         tile.getTerrainType = function() { return tile.terrain.key; };
@@ -99,8 +111,7 @@ var Tile = {
             MainGame.population.fire(tile.index);
         }
 
-        /*global updatePopulation*/
-        updatePopulation(false,false);
+        MainGame.population.update(false);
 
         tile.tileGroup.removeChild(tile.building);
         tile.building = Building.createNew(null);
@@ -208,17 +219,25 @@ var Board = {
         // let camera move by (x,y)
         board.cameraMoveBy=function(x,y){return Board.cameraMoveBy(board,x,y)};
 
+        // Disable interaction on a single tile
+        board.disableInteraction = function(i) { return Board.disableInteraction(board, i); };
+
+        // Disable interaction on all tiles except for the given index
+        board.limitInteractionTo = function(i) { return Board.limitInteractionTo(board, i); };
+
+        // Enable interaction on all tiles
+        board.enableInteraction = function() { return Board.enableInteraction(board); };
+
         // init tiles
         var tileData=data.tiles;
         var N=board.gridWidth*board.gridHeight;
         for(var i=0;i<N;i++){
             // create the tile group from JSON. json MUST be a string!
-            var oneTile=Tile.fromJSON(JSON.stringify(tileData[i]));
+            var oneTile=Tile.fromJSON(JSON.stringify(tileData[i]), i);
             oneTile.name="tile"+i;
             var rect=board.rectOf(i, 1.0);
             oneTile.x=rect.x;
             oneTile.y=rect.y;
-            oneTile.index = i;
             board.addChild(oneTile);
         }
 
@@ -576,5 +595,27 @@ var Board = {
         // console.log("new xy is:",b.x,b.y);
         
         // MainGame.mapSelector.positionBuildingDetail(b);
+    },
+
+    // Disable interaction on a single tile
+    disableInteraction: function(board, i) {
+        console.assert(typeof(i) === "number" && i >= 0 && i < board.tileCount(), "i must be an index.");
+        board.at(i).interactable = false;
+    },
+
+    // Disable interaction on all tiles except for the given index
+    limitInteractionTo: function(board, i) {
+        console.assert(typeof(i) === "number" && i >= 0 && i < board.tileCount(), "i must be an index.");
+
+        for (var index = 0; index < board.tileCount(); index++) {
+            board.at(index).interactable = (i === index);
+        }
+    },
+
+    // Enable interaction on all tiles
+    enableInteraction: function(board) {
+        for (var index = 0; index < board.tileCount(); index++) {
+            board.at(index).interactable = true;
+        }
     },
 };

@@ -281,6 +281,8 @@ var BDOccupants = {
 
         var occupants = MainGame.game.make.group();
 
+        occupants.index = buildingIndex;
+
         occupants.page = Page.createNew();
         occupants.page.anchor.setTo(.5,.5);
         occupants.addChild(occupants.page);
@@ -608,8 +610,6 @@ var BDController = {
             view.add_remove_sfx.play();
             view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
-            /*global updatePopulation*/
-            updatePopulation(false, false);
             Global.updateMoneyPerTurn();
         }else{
             // Play an error sound
@@ -660,8 +660,6 @@ var BDController = {
             view.add_remove_sfx.play();
             view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
 
-            /*global updatePopulation*/
-            updatePopulation(false,false);
             Global.updateMoneyPerTurn();
         } else {
             // Play an error sound
@@ -689,7 +687,7 @@ var BDController = {
                         case 'farm':
                             entryString += 'Farmer';
                             break;
-                        case 'lumberYard':
+                        case 'factory':
                             entryString += 'Factory Worker';
                             break;
                         case 'armyBase':
@@ -871,8 +869,6 @@ var BDController = {
                 MainGame.population.fire(bdInfo.index);
             }
 
-            /*global updatePopulation*/
-            updatePopulation(false,false);
             Global.updateMoneyPerTurn();
 
             // Remove the building at view.index

@@ -4,7 +4,7 @@
 		"cond":"Tut.intro",
 		"init":"",
 		"event":[
-			{	
+			{
 				"description":"Congratulations! The year is 1950, and you have been appointed as the supreme leader of the Republic of Tian.", 
 				"buttonTexts":["Continue"]
 			},
@@ -30,7 +30,7 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":"Tut.intro"			
+				"check":"Tut.intro"
 			}
 		}
 	},
@@ -38,9 +38,9 @@
 	{
 		"name":"OpenBuildMenu",
 		"cond":"Tutorial.hasOpenedBuildMenu()",
-		"init":"",
+		"init":"MainGame.hud.coalitionFlag.visible = false;MainGame.hud.statsPanel.visible = false;MainGame.hud.funPanel.visible = false;MainGame.hud.moneyPanel.visible = false",
 		"event":[
-			{	
+			{
 				"description":"One of your most important responsibilities in Tian is ordering the construction of new buildings.", 
 				"buttonTexts":["Continue"]
 			},
@@ -51,7 +51,7 @@
 		],
 		"handler":[
 			["e.gotoPage(1)"],
-			["Tut.roads=true;e.suicide()"]
+			["Tutorial.setPointerOnBuild(true);Tut.roads=true;e.suicide()"]
 		],
 		"reminder":{
 			"model":{
@@ -61,15 +61,15 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":"Tut.roads"			
+				"check":"Tut.roads"
 			}
 		}
 	},
 
 	{
 		"name":"Roads",
-		"cond":"Tutorial.roadsBuilt()",
-		"init":"MainGame.board.cameraCenterOn(142)",
+		"cond":"Tutorial.boughtRoad()",
+		"init":"Tutorial.setPointerOnBuild(false);Tutorial.setPointerOnBuyRoad(true);MainGame.board.cameraCenterOn(142)",
 		"event":[
 			{
 				"description":"The most basic kind of building is a Road. Working class citizens need roads to connect their homes to their places of work.",
@@ -92,28 +92,47 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":"Tut.roads"			
+				"check":"Tut.roads"
 			}
 		}
 	},
 
 	{
-		"name":"FireTeacher",
-		"cond":"Tutorial.firedTeacher()",
-		"init":"MainGame.board.cameraCenterOn(112)",
+		"name":"PlacingRoads",
+		"cond":"Tutorial.roadsBuilt()",
+		"init":"Tutorial.setPointerOnBuyRoad(false);Tutorial.setPointerOnRoadPlacement(true)",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"OpenTeacherMenu",
+		"cond":"Tutorial.openedSchoolBuildingDetail()",
+		"init":"Tutorial.setPointerOnRoadPlacement(false);Tutorial.setPointerOnSchool(true);MainGame.board.limitInteractionTo(128);MainGame.board.cameraCenterOn(128)",
 		"event":[
 			{
 				"description":"Now that you have connected your Lumberyard to your road network, you will need an unemployed citizen to staff it.",
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Click on your school to open its menu. Fire the teacher to create an unemployed citizen.",
+				"description":"Let's reassign a worker. Click on the nearby school to open its menu.",
 				"buttonTexts":["OK"]
 			}
 		],
 		"handler":[
 			["e.gotoPage(1)"],
-			["Tut.roads=true;e.suicide()"]
+			["e.suicide()"]
 		],
 		"reminder":{
 			"model":{
@@ -123,7 +142,109 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":"Tut.roads"			
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name": "OpenGreenTab",
+		"cond": "Tutorial.openedGreenTab()",
+		"init": "",
+		"event": [
+			{
+				"description":"Click on the green tab to see this building's workers.",
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler": [
+			["e.suicide()"]
+		],
+		"reminder": {
+			"model": {
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller": {
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"FireTeacher",
+		"cond":"Tutorial.firedTeacher()",
+		"init":"",
+		"event":[
+			{
+				"description":"Press the 'Fire Worker' button to remove the worker.",
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"ShowFunPanel",
+		"cond":"Tut.shownFunPanel",
+		"init":"Tutorial.setPointerOnSchool(false);MainGame.board.enableInteraction();MenuController.closeAllMenus();MainGame.hud.funPanel.visible = true;Tutorial.showFunPanel()",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"ExplainFunPanel",
+		"cond":"Tut.readAboutFun",
+		"init":"Tut.readAboutFun = false",
+		"event":[
+			{
+				"description":"As you manage the working class, their opinion of you will change. Freedom represents their ability to resist you. Unrest represents their resentment of you.",
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Keep these stats in check, or risk open rebellion.",
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["Tut.readAboutFun = true;e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
 			}
 		}
 	},
@@ -131,7 +252,7 @@
 	{
 		"name":"buildingOutput",
 		"cond":"Tutorial.lumberYardHasWorkers()",
-		"init":"MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
+		"init":"Tutorial.setPointerOnFactory(true);MainGame.board.limitInteractionTo(159);MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
 		"event":[
 			{
 				"description":"Lumberyards generate money each year based on how many employees they have.", 
@@ -155,28 +276,60 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":""			
+				"check":""
+			}
+		}
+	},
+
+	{
+		"name":"MoneyPanel",
+		"cond":"Tut.readAboutMoney",
+		"init":"Tutorial.setPointerOnFactory(false);MainGame.board.enableInteraction();MenuController.closeAllMenus();MainGame.hud.moneyPanel.visible = true",
+		"event":[
+			{
+				"description":"Good work - your economy is now making money!", 
+				"buttonTexts":["Continue"]
+			},
+			{
+				"description":"Financial data is displayed in the top left.", 
+				"buttonTexts":["OK"]
+			}
+
+		],
+		"handler":[
+			["e.gotoPage(1)"],
+			["Tutorial.showMoneyPanel();e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Assign at least one worker to a lumberyard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""
 			}
 		}
 	},
 
 	{
 		"name":"housing",
-		"cond":"Tutorial.builtNewHouse()",
-		"init":"Tut.numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length;MenuController.closeAllMenus()",
+		"cond":"Tutorial.buildMenuIsOpen()",
+		"init":"MenuController.closeAllMenus()",
 		"event":[
-			{	
-				"description":"Great work! The final type of building is a residence. New citizens enter Tian each year, and they'll need some place to live.", 
+			{
+				"description":"The final type of building is a residence. New citizens enter Tian each year, and they'll need some place to live.", 
 				"buttonTexts":["Continue"]
 			},
-			{	
+			{
 				"description":"Open the Build Menu again. Select either an Apartment, Suburb or Mansion and place it on any open tile.", 
 				"buttonTexts":["OK"]
 			}
 		],
 		"handler":[
 			["e.gotoPage(1)"],
-			["e.suicide()"]
+			["Tutorial.setPointerOnBuild(true);e.suicide()"]
 		],
 		"reminder":{
 			"model":{
@@ -186,30 +339,37 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":""			
+				"check":""
 			}
 		}
 	},
 
 	{
-		"name":"bigAssTextChain",
-		"cond":"Tutorial.ministerViewIsOpen()",
-		"init":"",
+		"name":"OpenBuildMenuHousing",
+		"cond":"Tutorial.builtNewHouse()",
+		"init":"Tutorial.setPointerOnBuild(false)",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"ReadAboutMinisters",
+		"cond":"Tut.readAboutMinisters",
+		"init":"MainGame.hud.coalitionFlag.visible = true",
 		"event":[
-			{	
-				"description":"You must maintain control of the working class to stay in power. The working class generates Freedom and Unrest based on their current living conditions and their opinion of you.", 
-				"buttonTexts":["Continue"]
-			},
-			{	
-				"description":"Access to education, food and roads will increase Freedom. Hunger, poor living conditions and unemployment will increase Unrest.", 
-				"buttonTexts":["Continue"]
-			},
-			{	
-				"description":"Your population’s Freedom and Unrest are displayed at the top of the screen.", 
-				"buttonTexts":["Continue"]
-			},
 			{
-				"description":"Remember: the less freedom your people have, the more unhappy they can become before triggering a Popular Revolution.", 
+				"description":"Good work! Your new residence will be complete in two years.", 
 				"buttonTexts":["Continue"]
 			},
 			{
@@ -225,7 +385,7 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Click on one of the open portraits in the Ministry panel to hire a minister.", 
+				"description":"Your active Ministers are displayed on the left side of the screen. Click on an empty portrait in the Ministry Panel to hire a new Minister.", 
 				"buttonTexts":["OK"]
 			}
 		],
@@ -234,10 +394,7 @@
 			["e.gotoPage(2)"],
 			["e.gotoPage(3)"],
 			["e.gotoPage(4)"],
-			["e.gotoPage(5)"],
-			["e.gotoPage(6)"],
-			["e.gotoPage(7)"],
-			["e.suicide()"]
+			["Tut.readAboutMinisters = true;e.suicide()"]
 		],
 		"reminder":{
 			"model":{
@@ -247,7 +404,26 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":""			
+				"check":""
+			}
+		}
+	},
+
+	{
+		"name":"ShowMinisterPanel",
+		"cond":"MainGame.global.ministerViewIsOpen",
+		"init":"Tutorial.setPointerOnMinistryPanel(true)",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
 			}
 		}
 	},
@@ -255,9 +431,9 @@
 	{
 		"name":"OpenMinisterView",
 		"cond":"Tutorial.contractIsOpen()",
-		"init":"",
+		"init":"Tutorial.setPointerOnMinistryPanel(false)",
 		"event":[
-			{	
+			{
 				"description":"Social Elite are listed on the left-hand side of the menu. Click on one of their portraits to bring up their contract and choose to hire them.", 
 				"buttonTexts":["OK"]
 			}
@@ -273,7 +449,7 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":""			
+				"check":""
 			}
 		}
 	},
@@ -283,11 +459,11 @@
 		"cond":"Tutorial.hasMinister()",
 		"init":"",
 		"event":[
-			{	
+			{
 				"description":"From the Contract Menu, you can configure a minister's paygrade, and make final decisions about hiring or firing them from your ministry.", 
 				"buttonTexts":["Continue"]
 			},
-			{	
+			{
 				"description":"Click 'Hire' to hire this minister.", 
 				"buttonTexts":["OK"]
 			}
@@ -304,7 +480,52 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":""			
+				"check":""
+			}
+		}
+	},
+
+	{
+		"name":"ReadAboutStats",
+		"cond":"Tut.readAboutStats",
+		"init":"MainGame.hud.statsPanel.visible = true",
+		"event":[
+			{	
+				"description":"On the right side of the screen, the Stats Panel lists off basic details about your citizens. Click on a piece of data to get more information.", 
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["Tut.readAboutStats = true;e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Build a new residence (Mansion, Suburb or Apartment)",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""
+			}
+		}
+	},
+
+	{
+		"name":"ShowStatsPanel",
+		"cond":"Tut.sawStatsPanel",
+		"init":"MenuController.closeAllMenus();Tutorial.closePeopleView();Tutorial.showStatsPanel()",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
 			}
 		}
 	},
@@ -314,7 +535,7 @@
 		"cond":"false",
 		"init":"MenuController.closeAllMenus();Tutorial.closePeopleView();MainGame.board.cameraCenterOn(82)",
 		"event":[
-			{	
+			{
 				"description":"Congratulations! You now know the basics of how to rule your country. Click the End Turn button in the lower right corner to advance to the next year.", 
 				"buttonTexts":["Play"]
 			}
@@ -330,7 +551,7 @@
 			},
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
-				"check":""			
+				"check":""
 			}
 		}
 	}

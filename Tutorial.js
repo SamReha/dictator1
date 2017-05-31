@@ -10,6 +10,7 @@ var Tutorial = {
 	initialized: false,
 	tuts: [],	
 	activeTut: null,
+	activeIndex: 0,
 
 	// generate the tutorials
 	generate: function() {
@@ -21,6 +22,7 @@ var Tutorial = {
 
 		// lazy init
 		if (!this.initialized) {
+			Tut.numHouses = MainGame.board.findBuilding(null, null, 'housing', null).length;
 			this.tuts = MainGame.game.cache.getJSON('Tutorial');
 			console.assert(this.tuts.length);
 			//console.log("Parsed Tutorials, total: ", this.tuts.length);
@@ -32,28 +34,16 @@ var Tutorial = {
 			this.initialized = true;
 		}
 
-		// now this.tuts is good.
-		for (var i = 0; i < this.tuts.length; i++) {
-			// tut is the last one
-			var tut = this.tuts[i];
-			//console.log(tut);
+		var tut = this.tuts[this.activeIndex];
+		// now let's execute the tut
+		// init
+		this._executeInit_(tut.init);
 
-			// check tut.cond
-			if (!this._checkCond_(tut.cond)) {
-				// now let's execute the tut
-				// init
-				this._executeInit_(tut.init);
+		// tuts -> runningTuts
+		this.activeTut = tut;
 
-				// tuts -> runningTuts
-				this.activeTut = tut;
-
-				// run tutorial			
-				this.runEvent(tut.event, tut.handler);
-
-				// Only run the very first incomplete tutorial
-				break;
-			}
-		}
+		// run tutorial			
+		this.runEvent(tut.event, tut.handler);
 	},
 
 	_checkCond_: function(condString) {
@@ -67,36 +57,22 @@ var Tutorial = {
 
 	loopingCheck: function() {
 		if (this.activeTut && this._checkCond_(this.activeTut.cond)) {
-			//console.log(this._checkCond_(this.activeTut.cond));
-			this.activeTut = null;
+			// Update active tutorial
+			this.activeIndex++;
+			this.activeTut = this.tuts[this.activeIndex];
 
-			// Find the next tut
-			for (var i = 0; i < this.tuts.length; i++) {
-				// tut is the last one
-				var tut = this.tuts[i];
-				//console.log(tut);
+			// init
+			this._executeInit_(this.activeTut.init);
 
-				// check tut.cond
-				if (!this._checkCond_(tut.cond)) {
-					// now let's execute the tut
-					// init
-					this._executeInit_(tut.init);
-
-					// tuts -> runningTuts
-					this.activeTut = tut;
-
-					// run tutorial			
-					this.runEvent(tut.event, tut.handler);
-
-					// Only run the very first incomplete tutorial
-					break;
-				}
-			}
+			// run tutorial			
+			this.runEvent(this.activeTut.event, this.activeTut.handler);
 		}
 	},
 
 	runEvent: function(event, handler) {
 		console.assert(event.length === handler.length);
+		if (event.length === 0) return;
+
 		var e = Event.createNew();
 
 		// generate model & controller
@@ -159,15 +135,83 @@ var Tutorial = {
 		if (f()) {
 			//tut.reminderButton.reminderView.suicide(); TODO: get this working
 			//tut.reminderButton.suicide();
-			this.activeTut = null;
-			Tutorial.generate();
+			// this.activeTut = null;
+			// Tutorial.generate();
 		}
+	},
+
+	//// Special Functions
+	setPointerOnBuild: function(bool) {
+		if (bool) {
+			Tut.buildButtonPointer = UIPointer.createNew(72, MainGame.game.height-80, UIPointer.DOWN, -1, null, true);
+		} else if (Tut.buildButtonPointer) {
+			Tut.buildButtonPointer.stop();
+		}
+	},
+
+	setPointerOnBuyRoad: function(bool) {
+		if (bool) {
+			Tut.buyRoadPointer = UIPointer.createNew(975, 125, UIPointer.DOWN, -1, null, true);
+		} else if (Tut.buyRoadPointer) {
+			Tut.buyRoadPointer.stop();
+		}
+	},
+
+	setPointerOnRoadPlacement: function(bool) {
+		if (bool) {
+			Tut.roadPlacementPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
+			MainGame.board.at(158).addChild(Tut.roadPlacementPointer);
+		} else if (Tut.roadPlacementPointer) {
+			Tut.roadPlacementPointer.stop();
+		}
+	},
+
+	setPointerOnSchool: function(bool) {
+		if (bool) {
+			Tut.schoolPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
+			MainGame.board.at(128).addChild(Tut.schoolPointer);
+		} else if (Tut.schoolPointer) {
+			Tut.schoolPointer.stop();
+		}
+	},
+
+	setPointerOnFactory: function(bool) {
+		if (bool) {
+			Tut.factoryPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
+			MainGame.board.at(159).addChild(Tut.factoryPointer);
+		} else if (Tut.factoryPointer) {
+			Tut.factoryPointer.stop();
+		}
+	},
+
+	setPointerOnMinistryPanel: function(bool) {
+		if (bool) {
+			Tut.ministryPanelPointer = UIPointer.createNew(175, 475, UIPointer.LEFT, -1, null, true);
+		} else if (Tut.ministryPanelPointer) {
+			Tut.ministryPanelPointer.stop();
+		}
+	},
+
+	showFunPanel: function() {
+		UIPointer.createNew(MainGame.game.width/2, 64, UIPointer.UP, 2000, function() { Tut.shownFunPanel = true; }, true);
+	},
+
+	showMoneyPanel: function() {
+		UIPointer.createNew(144, 64, UIPointer.UP, 2000, function() { Tut.readAboutMoney = true; }, true);
+	},
+
+	showStatsPanel: function() {
+		UIPointer.createNew(MainGame.game.width - 175, 475, UIPointer.RIGHT, 2000, function() { Tut.sawStatsPanel = true; }, true);
 	},
 
 	//// Sequence checks!
 	// Checks to see if the build menu has been opened
 	hasOpenedBuildMenu: function() {
 		return MainGame.global.buildMenuOpened;
+	},
+
+	boughtRoad: function() {
+		return Tutorial.activeTut.name === 'Roads' && MainGame.global.boughtRoad;
 	},
 
 	// Checks to see whether the player has built a road between any home and any lumberyard
@@ -186,9 +230,29 @@ var Tutorial = {
 		return false;
 	},
 
+	openedSchoolBuildingDetail: function() {
+		//console.log('openSchoolBuildingDetail');
+		if (!MenuController.menuOpen) return false;
+		if (MenuController.leftMenusOpen.length !== 1) return false;
+
+		if (MenuController.leftMenusOpen[0].page.index === 128) {
+			return true;
+		} else return false;
+	},
+
+	openedGreenTab: function() {
+		if (!MenuController.menuOpen) return false;
+
+		// console.log(MenuController.leftMenusOpen[0]);
+
+		if (MenuController.leftMenusOpen[0].page.index === 128 && MenuController.leftMenusOpen[0].activeTab === 1) {
+			return true;
+		} else return false;
+	},
+
 	// Checks to see whether the player has fired the teacher
 	firedTeacher: function() {
-		var school = MainGame.board.at(112).getBuilding();
+		var school = MainGame.board.at(128).getBuilding();
 		
 		return school.people === 0;
 	},
@@ -204,6 +268,11 @@ var Tutorial = {
 		}
 		
 		return false;
+	},
+
+	// Checks to see if the build menu has been opened
+	buildMenuIsOpen: function() {
+		return MainGame.global.buildMenuIsOpen;
 	},
 
 	builtNewHouse: function() {

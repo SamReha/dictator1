@@ -72,7 +72,7 @@ var Person={
     },
 
     // Class func: Implementation
-    update: function(p, board,nextTurn){
+    update: function(p, board,nextTurn) {
         p.updateStats(board,nextTurn);
         if (p.type === Person.Low) {
             p.updateFreeUn(board);
@@ -156,11 +156,15 @@ var Person={
                 p.setMidClass();
             }
         }else if(p.health < 50 || p.shelter < 50 || p.culture < 50) {
-            console.log("demotion: "+p.name+" "+p.health+" "+p.culture+" "+p.shelter);
-            if(p.type === Person.Hi){
-                p.unSetHighClass();
+            // console.log("demotion: "+p.name+" "+p.health+" "+p.culture+" "+p.shelter);
+            // if(p.type === Person.Hi){
+            //     p.unSetHighClass();
+            // }
+
+            // Deliberatly exclude Ministers (We process them in BetweenTurnEvents)
+            if (p.type !== Person.Hi) {
+                p.setLowClass();
             }
-            p.setLowClass();
         }else{
             p.baseInfluence = Math.floor(((p.health-50)+(p.shelter-50)+(p.culture-50))/3);
             p.accruedInfluence+=(p.type===Person.Mid?1:2);
@@ -230,6 +234,8 @@ var Person={
         p.loyalty = null;
         p.type = Person.Mid;
         p.removeSalary();
+
+        MainGame.hud.coalitionFlag.updateSelf();
     },
 
     addSalary: function(p){
@@ -391,6 +397,8 @@ var Population={
                     pop.people[hl[0]].home=tileIndex;
                     if(pop.people[hl[0]].type===Person.Hi)
                         pop.people[hl[0]].addSalary();
+
+                    updateHomes(false);
                     return true;
                 }
             }
@@ -404,6 +412,8 @@ var Population={
                             pop.people[hl[i]].workplace=tileIndex;
                             if(pop.people[hl[i]].type===Person.Hi)
                                 pop.people[hl[i]].removeSalary();
+
+                            updateHomes(false);
                             return true;
                         }
                     }
@@ -421,8 +431,7 @@ var Population={
         if(bld.subtype==="housing"){
             if(bld.addPerson()){
                 person.home=tileIndex;
-                if(person.type===Person.Hi)
-                    person.removeSalary();
+                updateHomes(false);
                 return true;
             }
             return false;
@@ -430,8 +439,7 @@ var Population={
         else{
             if(bld.addPerson()){
                 person.workplace=tileIndex;
-                if(person.type===Person.Hi)
-                    person.removeSalary();
+                updateHomes(false);
                 return true;
             }
             return false;
@@ -450,6 +458,8 @@ var Population={
                 if (pop.people[housed[i]].home === tileIndex) {
                     bld.removePerson();
                     pop.people[housed[i]].home = null;
+
+                    updateHomes(false);
                     return true;
                 }
             }
@@ -460,6 +470,8 @@ var Population={
                 if(pop.people[employed[j]].workplace===tileIndex){
                     bld.removePerson();
                     pop.people[employed[j]].workplace=null;
+
+                    updateHomes(false);
                     return true;
                 }
             }
@@ -475,6 +487,7 @@ var Population={
             if (person.home === tileIndex) {
                 bld.removePerson();
                 person.home = null;
+                updateHomes(false);
                 return true;
             }
             return false;
@@ -482,6 +495,7 @@ var Population={
             if(person.workplace===tileIndex){
                 bld.removePerson();
                 person.workplace=null;
+                updateHomes(false);
                 return true;
             }
             return false;

@@ -124,7 +124,7 @@
         {"terrain": "grass","building": {"name": "farm", "startingTurn": 1,"people": 5}},
         {"terrain": "grass","building": {"name": "road", "startingTurn": 1,"people": 0}},
         {"terrain": "grass","building": null},
-        {"terrain": "grass","building": {"name": "school", "startingTurn": 1,"people": 1}},
+        {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "mountain","building": null},
@@ -141,7 +141,7 @@
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": {"name": "road", "startingTurn": 1,"people": 0}},
         {"terrain": "grass","building": {"name": "road", "startingTurn": 1,"people": 0}},
-        {"terrain": "grass","building": null},
+        {"terrain": "grass","building": {"name": "school", "startingTurn": 1,"people": 1}},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
@@ -174,7 +174,7 @@
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
-        {"terrain": "grass","building": {"name": "lumberYard", "startingTurn": 1,"people": 0}},
+        {"terrain": "grass","building": {"name": "factory", "startingTurn": 1,"people": 0}},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
@@ -210,7 +210,7 @@
         {"type": 0, "workplace": 109,"home": 142,"education": 20},
         {"type": 0, "workplace": 109,"home": 142,"education": 20},
         {"type": 0, "workplace": 109,"home": 142,"education": 20},
-        {"type": 0, "workplace": 112,"home": 142,"education": 20},
+        {"type": 0, "workplace": 128,"home": 142,"education": 20},
         {"type": 0, "workplace": 141,"home": 142,"education": 20}
     ]
 }

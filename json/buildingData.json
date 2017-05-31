@@ -268,19 +268,6 @@
       }
     ]
   },
-  "lumberYard": {
-    "faction": "Commerce",
-    "subtype": "production",
-    "playerLabel": "Lumber Yard",
-    "cost": 30,
-    "maxPeople": 7,
-    "effects": [
-      {
-        "type": "money",
-        "outputTable": [0, 3, 6, 9, 12, 15, 18, 21]
-      }
-    ]
-  },
   "police":{
     "faction": "Military",
     "subtype": "military",

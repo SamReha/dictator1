@@ -6,7 +6,7 @@
   "tiles": [
     {"terrain":"coast","res":null,"building":null},
     {"terrain":"desert","res":null,"building":null},
-    {"terrain":"grass","res":"forest","building":{"name":"lumberYard","level":1,"startingTurn":0,"people":0}},
+    {"terrain":"grass","res":"forest","building":{"name":"factory","level":1,"startingTurn":0,"people":0}},
     
     {"terrain":"mountain","res":null,"building":null},
     {"terrain":"water","res":null,"building":null},
