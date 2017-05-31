@@ -394,11 +394,10 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.workingClassGroup);
 
         // Homelessness
-        statsPanel.homelessGroup = MainGame.game.make.sprite(0,0, 'homeless_icon');
-        statsPanel.homelessGroup.x = this.horizontalPad;
+        statsPanel.homelessGroup = MainGame.game.make.sprite(this.horizontalPad,0, 'homeless_icon');
         statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 4;
 
-        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x, statsPanel.y + statsPanel.homelessGroup.y + 12);
+        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x + statsPanel.width/5, statsPanel.y + statsPanel.homelessGroup.y + 12);
         statsPanel.homelessGroup.toolTip.x -= statsPanel.homelessGroup.toolTip.width;
 
         statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
@@ -406,11 +405,10 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.homelessGroup);
 
         // Unemployment
-        statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0, 'unemployed_icon');
-        statsPanel.unemploymentGroup.x = this.horizontalPad;
+        statsPanel.unemploymentGroup = MainGame.game.make.sprite(this.horizontalPad,0, 'unemployed_icon');
         statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 5;
         
-        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
+        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x + statsPanel.width/5, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
         statsPanel.unemploymentGroup.toolTip.x -= statsPanel.unemploymentGroup.toolTip.width;
 
         statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
@@ -661,10 +659,18 @@ var ToolTip = {
     show: function(toolTip) {
         MainGame.game.world.bringToTop(toolTip);
         toolTip.visible = true;
+        toolTip.alpha = 0;
+
+        toolTip.timer = MainGame.game.time.create(true);
+        toolTip.timer.add(500, function() {
+            toolTip.tween = MainGame.game.add.tween(toolTip).to({alpha:1.0}, 250, Phaser.Easing.Linear.None, true);
+        });
+        toolTip.timer.start();
     },
 
     hide: function(toolTip) {
         toolTip.visible = false;
+        toolTip.timer.removeAll();
     }
 };
 
