@@ -595,7 +595,7 @@ var BDController = {
                         case 'farm':
                             entryString += 'Farmer';
                             break;
-                        case 'lumberYard':
+                        case 'factory':
                             entryString += 'Factory Worker';
                             break;
                         case 'armyBase':

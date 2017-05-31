@@ -173,7 +173,7 @@
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
-        {"terrain": "grass","building": {"name": "lumberYard","level": 1, "startingTurn": 1,"people": 0}},
+        {"terrain": "grass","building": {"name": "factory","level": 1, "startingTurn": 1,"people": 0}},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},

@@ -174,7 +174,7 @@
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
-        {"terrain": "grass","building": {"name": "lumberYard", "startingTurn": 1,"people": 0}},
+        {"terrain": "grass","building": {"name": "factory", "startingTurn": 1,"people": 0}},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},
         {"terrain": "grass","building": null},

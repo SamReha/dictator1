@@ -210,7 +210,7 @@ var BuildMenu = {
 
 		// FACTORY / LUMBERYARD
 		var buyFactoryBtn = MainGame.game.make.button((buildMenu.width/12), 5*(buildMenu.height/12), 'buy_button', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFactoryBtn, 'lumberYard');
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFactoryBtn, 'factory');
 			buyFactoryBtn.toolTip.hide();
 		},
 		buildMenu, 0, 1, 2, 2);

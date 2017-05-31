@@ -77,9 +77,10 @@ var Hud = {
         hud.btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'endturn_button',
             function() {
                 /*global MainGame*/
-                MainGame.nextTurn();
                 hud.btnNextTurn.sfx.play();
                 hud.btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
+
+                MainGame.nextTurn();
             }, MainGame, 1, 0, 2, 2);
         hud.btnNextTurn.name = 'endturn_button';
         hud.btnNextTurn.input.priorityID = hudInputPriority;
@@ -158,6 +159,7 @@ var Hud = {
     // Determines whether to end turn button is active or inactive
     setEndTurnActive: function(hud, active) {
         hud.btnNextTurnMask.visible = !active;
+        hud.btnNextTurn.frame = 0; // Make sure we don't get stuck in the down state
     },
 };
 
@@ -365,10 +367,36 @@ var StatsPanel = {
         statsPanel.popGroup.addChild(statsPanel.popGroup.textLabel);
         statsPanel.addChild(statsPanel.popGroup);
 
+        // Social Elite
+        statsPanel.socialEliteGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 2, 'social_elite_icon', function(){
+            //PeopleView.createNew();
+            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
+        }, 0, 1, 0, 2);
+
+        ToolTip.addTipTo(statsPanel.socialEliteGroup, 2, 'Social Elite', statsPanel.x, statsPanel.y + statsPanel.socialEliteGroup.y + 12);
+        statsPanel.socialEliteGroup.toolTip.x -= statsPanel.socialEliteGroup.toolTip.width;
+
+        statsPanel.socialEliteGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
+        statsPanel.socialEliteGroup.addChild(statsPanel.socialEliteGroup.textLabel);
+        statsPanel.addChild(statsPanel.socialEliteGroup);
+
+        // Working Class
+        statsPanel.workingClassGroup = MainGame.game.make.button(this.horizontalPad, (this.unitHeight + this.verticalPad) * 3, 'working_class_icon', function(){
+            //PeopleView.createNew();
+            statsPanel.sfxArray[Math.floor(Math.random()*statsPanel.sfxArray.length)].play();
+        }, 0, 1, 0, 2);
+
+        ToolTip.addTipTo(statsPanel.workingClassGroup, 2, 'Working Class', statsPanel.x, statsPanel.y + statsPanel.workingClassGroup.y + 12);
+        statsPanel.workingClassGroup.toolTip.x -= statsPanel.workingClassGroup.toolTip.width;
+
+        statsPanel.workingClassGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
+        statsPanel.workingClassGroup.addChild(statsPanel.workingClassGroup.textLabel);
+        statsPanel.addChild(statsPanel.workingClassGroup);
+
         // Homelessness
         statsPanel.homelessGroup = MainGame.game.make.sprite(0,0, 'homeless_icon');
         statsPanel.homelessGroup.x = this.horizontalPad;
-        statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 2;
+        statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 4;
 
         ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x, statsPanel.y + statsPanel.homelessGroup.y + 12);
         statsPanel.homelessGroup.toolTip.x -= statsPanel.homelessGroup.toolTip.width;
@@ -380,7 +408,7 @@ var StatsPanel = {
         // Unemployment
         statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0, 'unemployed_icon');
         statsPanel.unemploymentGroup.x = this.horizontalPad;
-        statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 3;
+        statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 5;
         
         ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
         statsPanel.unemploymentGroup.toolTip.x -= statsPanel.unemploymentGroup.toolTip.width;
@@ -395,12 +423,16 @@ var StatsPanel = {
             var globalStats = MainGame.global;
 
             var newPop = MainGame.population.count() + ' ';
+            var newElite = MainGame.population.highList().length + MainGame.population.midList().length + ' ';
+            var newWorkingClass = MainGame.population.lowList().length;
             var newHomeless = MainGame.population.findNotHoused().length + ' ';
             var newUnemployment = MainGame.population.findNotEmployed().length + ' ';
             var newYear = 1949 + globalStats.turn + ' ';
 
             statsPanel.yearGroup.textLabel.text = newYear;
             statsPanel.popGroup.textLabel.text = newPop;
+            statsPanel.socialEliteGroup.textLabel.text = newElite;
+            statsPanel.workingClassGroup.textLabel.text = newWorkingClass;
             statsPanel.homelessGroup.textLabel.text = newHomeless;
             statsPanel.unemploymentGroup.textLabel.text = newUnemployment;
         }, statsPanel);

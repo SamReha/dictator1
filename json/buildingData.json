@@ -242,28 +242,10 @@
       }
     ]
   },
-  "factory":{
-    "faction": "Commerce",
-    "subtype": "blueCollar",
-    "playerLabel": "Factory",
-    "cost": 50,
-    "maxPeople": 7,
-    "effects": [
-      {
-        "type": "money",
-        "outputTable": [0, 4, 8, 12, 16, 20, 24, 28]
-      },
-      {
-        "type": "unrest",
-        "outputTable": [0, 2, 4, 6, 8, 10, 12, 14],
-        "range": 2
-      }
-    ]
-  },
-  "lumberYard": {
+  "factory": {
     "faction": "Commerce",
     "subtype": "production",
-    "playerLabel": "Lumber Yard",
+    "playerLabel": "Factory",
     "cost": 30,
     "maxPeople": 7,
     "effects": [
