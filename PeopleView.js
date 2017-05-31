@@ -273,7 +273,7 @@ var PeopleView = {
 		// People Right View
 		pv.right=PeopleRightView.createNew(lowData);
 		pv.right.x=450;
-		pv.addChild(pv.right);
+		//pv.addChild(pv.right);
 		// People Left View
 		pv.left=PeopleLeftView.createNew(buDataRef,merDataRef,milDataRef);
 		pv.addChild(pv.left);

@@ -38,7 +38,7 @@
 	{
 		"name":"OpenBuildMenu",
 		"cond":"Tutorial.hasOpenedBuildMenu()",
-		"init":"MainGame.hud.coalitionFlag.visible = false;MainGame.hud.statsPanel.visible = false;MainGame.hud.funPanel.visible = false;MainGame.hud.moneyPanel.visible = false",
+		"init":"MainGame.board.disableAllInteraction();MainGame.hud.coalitionFlag.visible = false;MainGame.hud.statsPanel.visible = false;MainGame.hud.funPanel.visible = false;MainGame.hud.moneyPanel.visible = false",
 		"event":[
 			{
 				"description":"One of your most important responsibilities in Tian is ordering the construction of new buildings.", 
@@ -202,7 +202,7 @@
 	{
 		"name":"ShowFunPanel",
 		"cond":"Tut.shownFunPanel",
-		"init":"Tutorial.setPointerOnSchool(false);MainGame.board.enableInteraction();MenuController.closeAllMenus();MainGame.hud.funPanel.visible = true;Tutorial.showFunPanel()",
+		"init":"Tutorial.setPointerOnSchool(false);MenuController.closeAllMenus();MainGame.hud.funPanel.visible = true;Tutorial.showFunPanel()",
 		"event":[],
 		"handler":[],
 		"reminder":{
@@ -284,7 +284,7 @@
 	{
 		"name":"MoneyPanel",
 		"cond":"Tut.readAboutMoney",
-		"init":"Tutorial.setPointerOnFactory(false);MainGame.board.enableInteraction();MenuController.closeAllMenus();MainGame.hud.moneyPanel.visible = true",
+		"init":"Tutorial.setPointerOnFactory(false);MenuController.closeAllMenus();MainGame.hud.moneyPanel.visible = true",
 		"event":[
 			{
 				"description":"Good work - your economy is now making money!", 
@@ -316,7 +316,7 @@
 	{
 		"name":"housing",
 		"cond":"Tutorial.buildMenuIsOpen()",
-		"init":"MenuController.closeAllMenus()",
+		"init":"MenuController.closeAllMenus();MainGame.board.enableInteraction()",
 		"event":[
 			{
 				"description":"The final type of building is a residence. New citizens enter Tian each year, and they'll need some place to live.", 

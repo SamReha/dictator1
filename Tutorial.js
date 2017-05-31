@@ -217,7 +217,7 @@ var Tutorial = {
 	// Checks to see whether the player has built a road between any home and any lumberyard
 	roadsBuilt: function() {
 		var homes = MainGame.board.findBuilding(null, null, 'housing', null);
-		var lumberyards = MainGame.board.findBuilding(null, null, 'production', null);
+		var lumberyards = MainGame.board.findBuilding(null, 'Commerce', null, null);
 
 		for (var i = 0; i < homes.length; i++) {
 			for (var k = 0; k < lumberyards.length; k++) {
@@ -235,7 +235,9 @@ var Tutorial = {
 		if (!MenuController.menuOpen) return false;
 		if (MenuController.leftMenusOpen.length !== 1) return false;
 
-		if (MenuController.leftMenusOpen[0].page.index === 128) {
+		console.log(MenuController);
+
+		if (MenuController.leftMenusOpen[0].bdIndex === 128) {
 			return true;
 		} else return false;
 	},
@@ -243,9 +245,7 @@ var Tutorial = {
 	openedGreenTab: function() {
 		if (!MenuController.menuOpen) return false;
 
-		// console.log(MenuController.leftMenusOpen[0]);
-
-		if (MenuController.leftMenusOpen[0].page.index === 128 && MenuController.leftMenusOpen[0].activeTab === 1) {
+		if (MenuController.leftMenusOpen[0].bdIndex === 128 && MenuController.leftMenusOpen[0].activeTab === 1) {
 			return true;
 		} else return false;
 	},
@@ -259,7 +259,7 @@ var Tutorial = {
 
 	// Checks to see whether the player has put staff into their factory
 	lumberYardHasWorkers: function() {
-		var lumberyards = MainGame.board.findBuilding(null, null, 'production', null);
+		var lumberyards = MainGame.board.findBuilding(null, 'Commerce', null, null);
 
 		for (var i = 0; i < lumberyards.length; i++) {
 			var lumberyard = MainGame.board.at(lumberyards[i]).building;
