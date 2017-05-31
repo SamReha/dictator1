@@ -134,7 +134,9 @@ var CoalitionFlag = {
 					break;
 			}
 
-			var sprite = MainGame.game.make.button(0, 0, textureString, function() {PeopleView.createNew();}, 2, 1, 0, 2);
+			var sprite = MainGame.game.make.button(0, 0, textureString, function() {
+				Binder.createNew(Binder.global,3);
+			}, 2, 1, 0, 2);
 			sprite.scale.setTo(this.scale);
 			
 			ToolTip.addTipTo(sprite, 1, toolTipText, (sprite.x + sprite.width)*this.scale, 0);
