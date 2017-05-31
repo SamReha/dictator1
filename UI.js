@@ -394,7 +394,8 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.workingClassGroup);
 
         // Homelessness
-        statsPanel.homelessGroup = MainGame.game.make.sprite(this.horizontalPad,0, 'homeless_icon');
+        statsPanel.homelessGroup = MainGame.game.make.sprite(0,0, 'homeless_icon');
+        statsPanel.homelessGroup.x = this.horizontalPad + statsPanel.width*1/5;
         statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 4;
 
         ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x + statsPanel.width/5, statsPanel.y + statsPanel.homelessGroup.y + 12);
@@ -405,7 +406,8 @@ var StatsPanel = {
         statsPanel.addChild(statsPanel.homelessGroup);
 
         // Unemployment
-        statsPanel.unemploymentGroup = MainGame.game.make.sprite(this.horizontalPad,0, 'unemployed_icon');
+        statsPanel.unemploymentGroup = MainGame.game.make.sprite(0,0, 'unemployed_icon');
+        statsPanel.unemploymentGroup.x = this.horizontalPad + statsPanel.width*1/5;
         statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 5;
         
         ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x + statsPanel.width/5, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
@@ -686,9 +688,7 @@ var ToolTip = {
 
     hide: function(toolTip) {
         toolTip.visible = false;
-        if (toolTip.timer) {
-            toolTip.timer.removeAll();
-        }
+        toolTip.timer.removeAll();
     }
 };
 

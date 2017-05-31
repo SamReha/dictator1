@@ -55,7 +55,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"description":"Use Roads to connect workers to the Factory.",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -76,7 +76,7 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Buy a Road, and use it to connect your Apartment to your Lumberyard (use WASD or Arrow Keys to scroll the map).",
+				"description":"Buy a Road, and use it to connect your Apartment to your Factory (use WASD or Arrow Keys to scroll the map).",
 				"buttonTexts":["OK"]
 			}
 		],
@@ -86,7 +86,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"description":"Use Roads to connect workers to the Factory.",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -105,7 +105,7 @@
 		"handler":[],
 		"reminder":{
 			"model":{
-				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"description":"Use Roads to connect workers to the Factory.",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -122,7 +122,7 @@
 		"init":"Tutorial.setPointerOnRoadPlacement(false);Tutorial.setPointerOnSchool(true);MainGame.board.limitInteractionTo(128);MainGame.board.cameraCenterOn(128)",
 		"event":[
 			{
-				"description":"Now that you have connected your Lumberyard to your road network, you will need an unemployed citizen to staff it.",
+				"description":"Now that you have connected your Factory to your road network, you will need an unemployed citizen to staff it.",
 				"buttonTexts":["Continue"]
 			},
 			{
@@ -136,7 +136,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"description":"Use Roads to connect workers to the Factory.",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -162,7 +162,7 @@
 		],
 		"reminder": {
 			"model": {
-				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"description":"",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -188,7 +188,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"description":"",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -238,7 +238,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"description":"",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -255,11 +255,11 @@
 		"init":"Tutorial.setPointerOnFactory(true);MainGame.board.limitInteractionTo(159);MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
 		"event":[
 			{
-				"description":"Lumberyards generate money each year based on how many employees they have.", 
+				"description":"Factories generate money each year based on how many employees they have.", 
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Click on your Lumberyard to open its menu. Hire your unemployed teacher as a worker to start making money.", 
+				"description":"Click on your Factory to open its menu. Hire your unemployed teacher as a worker to start making money.", 
 				"buttonTexts":["OK"]
 			}
 
@@ -270,7 +270,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"Assign at least one worker to a lumberyard.",
+				"description":"Assign at least one worker to a Factory.",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -302,7 +302,7 @@
 		],
 		"reminder":{
 			"model":{
-				"description":"Assign at least one worker to a lumberyard.",
+				"description":"",
 				"startAt":-1,
 				"remaining":1
 			},
@@ -352,7 +352,7 @@
 		"handler":[],
 		"reminder":{
 			"model":{
-				"description":"Use Roads to connect workers to the Lumber Yard.",
+				"description":"",
 				"startAt":-1,
 				"remaining":1
 			},
