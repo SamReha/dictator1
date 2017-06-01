@@ -467,6 +467,7 @@ var RiotThermometer = {
     createNew: function(x, y) {
         var thermometer = MainGame.game.make.sprite(x, y, 'thermometer_bulb');
         thermometer.visible = false;
+        thermometer.fillAmount = 0;
 
         thermometer.tube = MainGame.game.make.sprite(thermometer.width, 0, 'thermometer_tube');
         thermometer.tube.fluid = MainGame.game.make.sprite(0, 20, 'red');
@@ -498,7 +499,8 @@ var RiotThermometer = {
         // Only bother updating if I am visible.
         if (thermometer.visible) {
             var fillAmount = (MainGame.global.thermometerFill/100) * thermometer.tube.width; // thermometerFill is percent fill of thermometer
-            MainGame.game.add.tween(thermometer.tube.fluid).to({width: fillAmount}, 200).start();
+            if(thermometer.fillAmount !== fillAmount)
+                MainGame.game.add.tween(thermometer.tube.fluid).to({width: fillAmount}, 200,Phaser.Easing.Quadratic.InOut,true);
         }
     },
 
