@@ -317,5 +317,10 @@ var BoardController={
 			add(function(){BoardController.onKeyboardEvent(bc,"down","RightARrow")});
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onUp.
 			add(function(){BoardController.onKeyboardEvent(bc,"up","RightARrow")});
+
+        // MainGame.game.input.keyboard.addKey(Phaser.Keyboard.Z).onUp.
+        //     add(function(){
+        //         MainGame.hud.
+        //     });
 	},
 };

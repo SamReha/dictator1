@@ -83,6 +83,7 @@ var BDOverView = {
             overview.occupantsIcons.push(DragableSprite.createNew(-overview.width*1/3,-overview.height*2/15,'worker_icon','worker_icon_empty',
                 pickupFunction(i,overview,bdInfo),dropFunction(i,overview,bdInfo),
                 'occupant_'+i));
+            overview.occupantsIcons[i].spriteFront.tint = 0x20a020;
             overview.occupantsIcons[i].buildingIndex = bdInfo.index;
             overview.occupantsIcons[i].anchor.setTo(.5,.5);
             overview.occupantsIcons[i].x += overview.occupantsIcons[i].width * i*.6;
@@ -872,7 +873,7 @@ var BDController = {
             Global.updateMoneyPerTurn();
 
             // Remove the building at view.index
-            MainGame.board.at(view.index).removeBuilding();
+            MainGame.board.at(bdInfo.index).removeBuilding();
 
             // Bill the player
             Global.money -= 10;
@@ -961,6 +962,7 @@ var TransferClipboard = {
             if(i < building.people){
                 entrySprite.occupantIcons[i].filled = MainGame.game.make.sprite(0,0,'worker_icon');
                 entrySprite.occupantIcons[i].filled.anchor.setTo(.5,.5);
+                entrySprite.occupantIcons[i].filled.tint = 0x20a020;
                 entrySprite.occupantIcons[i].addChild(entrySprite.occupantIcons[i].filled);
             }
         }
