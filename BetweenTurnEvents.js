@@ -11,7 +11,13 @@ var showNewBuildings = function(callback) {
 
         // Figure out our pretty data - like a custom message and image.
         var buildingName = MainGame.board.at(list[listIndex]).getBuilding().playerLabel;
-        var message = 'A ' + buildingName + ' has been constructed!';
+
+        var article = 'A';
+        if (['A', 'E', 'I', 'O', 'U'].includes(buildingName[0])) {
+            article = 'An';
+        }
+
+        var message = article + ' ' + buildingName + ' has been constructed!';
 
         // Tween to the tile
         MainGame.board.cameraCenterOn(list[listIndex]);

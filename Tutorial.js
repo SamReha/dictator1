@@ -159,7 +159,7 @@ var Tutorial = {
 
 	setPointerOnRoadPlacement: function(bool) {
 		if (bool) {
-			Tut.roadPlacementPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
+			Tut.roadPlacementPointer = UIPointer.createNew(128, 60, UIPointer.DOWN, -1, null, true);
 			MainGame.board.at(158).addChild(Tut.roadPlacementPointer);
 		} else if (Tut.roadPlacementPointer) {
 			Tut.roadPlacementPointer.stop();
@@ -291,10 +291,5 @@ var Tutorial = {
 
 	hasMinister: function() {
 		return MainGame.population.highList().length > 0;
-	},
-
-	// Hacky, but it'll make sure the people view is closed until we can put it in a folder menu
-	closePeopleView: function() {
-		//MainGame.global.pv.closeSelf();
 	},
 };

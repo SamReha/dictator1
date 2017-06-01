@@ -514,7 +514,7 @@
 	{
 		"name":"ShowStatsPanel",
 		"cond":"Tut.sawStatsPanel",
-		"init":"MenuController.closeAllMenus();Tutorial.closePeopleView();Tutorial.showStatsPanel()",
+		"init":"MenuController.closeAllMenus();Tutorial.showStatsPanel()",
 		"event":[],
 		"handler":[],
 		"reminder":{
@@ -533,7 +533,7 @@
 	{
 		"name":"tutorialEnd",
 		"cond":"false",
-		"init":"MenuController.closeAllMenus();Tutorial.closePeopleView();MainGame.board.cameraCenterOn(82)",
+		"init":"MenuController.closeAllMenus();MainGame.board.cameraCenterOn(82)",
 		"event":[
 			{
 				"description":"Congratulations! You now know the basics of how to rule your country. Click the End Turn button in the lower right corner to advance to the next year.", 

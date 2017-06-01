@@ -30,7 +30,7 @@
   "suburb": {
     "faction": "Infrastucture",
     "subtype": "housing",
-    "playerLabel": "Suburbs",
+    "playerLabel": "Suburb",
     "cost": 10,
     "health": 0,
     "culture": 0,
