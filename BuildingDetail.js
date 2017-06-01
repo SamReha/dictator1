@@ -859,33 +859,65 @@ var BDController = {
 
     demolishBuilding: function(view, bdInfo) {
         if (Global.money >= 10) {
-            if (bdInfo.residential) {
-                var occupants = MainGame.population.getHouseMap()[bdInfo.index];
-            } else {
-                var occupants = MainGame.population.getWorkMap()[bdInfo.index];
-            }
+            var e = Event.createNew();
+            e.setModel([
+                            {
+                                portrait: 'exclamation_01', 
+                                description: 'Are you sure you want to spend ₸10 to demolish this building?', 
+                                buttonTexts: ['YES', 'NO']
+                            }
+                        ]);
 
-            // Evict all residents
-            for (var i in occupants) {
-                MainGame.population.fire(bdInfo.index);
-            }
+            e.setController([
+                [function() {
+                    e.suicide();
+                    if (bdInfo.residential) {
+                        var occupants = MainGame.population.getHouseMap()[bdInfo.index];
+                    } else {
+                        var occupants = MainGame.population.getWorkMap()[bdInfo.index];
+                    }
 
-            Global.updateMoneyPerTurn();
+                    // Evict all residents
+                    for (var i in occupants) {
+                        MainGame.population.fire(bdInfo.index);
+                    }
 
-            // Remove the building at view.index
-            MainGame.board.at(bdInfo.index).removeBuilding();
+                    Global.updateMoneyPerTurn();
 
-            // Bill the player
-            Global.money -= 10;
+                    // Remove the building at view.index
+                    MainGame.board.at(bdInfo.index).removeBuilding();
 
-            // Close the Detail View
-            view.demolishSfx.play();
-            view.demolishButton.freezeFrames = true;
-            //view.destroy();
-            // MenuController.uiMask.destroy();
-            // MenuController.closeSfx.play();
-            MenuController.closeAllMenus();
-            MainGame.board.controller.detailView = null;
+                    // Bill the player
+                    Global.money -= 10;
+
+                    // Close the Detail View
+                    view.demolishSfx.play();
+                    view.demolishButton.freezeFrames = true;
+                    //view.destroy();
+                    // MenuController.uiMask.destroy();
+                    // MenuController.closeSfx.play();
+                    MenuController.closeAllMenus();
+                    MainGame.board.controller.detailView = null;
+                },
+                function() {
+                    e.suicide();
+                }]
+            ]);
+        } else {
+            var e = Event.createNew();
+            e.setModel([
+                            {
+                                portrait: 'exclamation_01', 
+                                description: 'You must have ₸10 to demolish a building.', 
+                                buttonTexts: ['OK']
+                            }
+                        ]);
+
+            e.setController([
+                [function() {
+                    e.suicide();
+                }]
+            ]);
         }
     },
 };

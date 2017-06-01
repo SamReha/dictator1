@@ -39,7 +39,7 @@ var Tile = {
 
         // Use alert if something is going wrong in a tile
         tile.alert = MainGame.game.make.sprite(0, 0, 'exclamation_01');
-        //tile.alert.anchor.set(0.5, 0.5);
+        //ToolTip.addTipTo(tile.alert, )
         tile.tileGroup.addChild(tile.alert);
         tile.alert.visible = false;
 
