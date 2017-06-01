@@ -192,6 +192,14 @@ var Tutorial = {
 		}
 	},
 
+	setPointerOnStatsPanel: function(bool) {
+		if (bool) {
+			Tut.statsPanelPointer = UIPointer.createNew(MainGame.game.width - 175, 475, UIPointer.RIGHT, -1, null, true);
+		} else if (Tut.statsPanelPointer) {
+			Tut.statsPanelPointer.stop();
+		}
+	},
+
 	showFunPanel: function() {
 		UIPointer.createNew(MainGame.game.width/2, 64, UIPointer.UP, 2000, function() { Tut.shownFunPanel = true; }, true);
 	},

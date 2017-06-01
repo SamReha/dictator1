@@ -513,8 +513,27 @@
 
 	{
 		"name":"ShowStatsPanel",
-		"cond":"Tut.sawStatsPanel",
-		"init":"MenuController.closeAllMenus();Tutorial.showStatsPanel()",
+		"cond":"MainGame.global.statsBinderIsOpen",
+		"init":"MenuController.closeAllMenus();Tutorial.setPointerOnStatsPanel(true)",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"LookingAtStatsBinder",
+		"cond":"MainGame.global.statsBinderIsOpen === false",
+		"init":"Tutorial.setPointerOnStatsPanel(false)",
 		"event":[],
 		"handler":[],
 		"reminder":{
