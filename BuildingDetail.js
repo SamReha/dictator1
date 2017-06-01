@@ -109,127 +109,119 @@ var BDOverView = {
                 },overview,3);
         }
         overview.addChild(overview.statsText);
+
+        textLinkFunction = function(array,i){return function(){
+            var binder = overview.parent.parent;
+            binder.changeTabs(2);
+            BDController.setupOutputList(binder.page,bdInfo,0,array[i]);
+        };}
+
         if(bdInfo.residential){
             var stats = ['shelter','health','culture','freedom','unrest'];
-            textLinkFunction = function(i){return function(){
-                var binder = overview.parent.parent;
-                binder.changeTabs(2);
-                BDController.setupOutputList(binder.page,bdInfo,0,stats[i]);
-            };}
 
             for(var i = 0; i < stats.length; ++i){
                 overview[(stats[i]+"Text")] = TextLinkButton.createNew(-overview.width*19/45,overview.height*(2+3*i)/45,stats[i].charAt(0).toUpperCase()+stats[i].slice(1)+":",BDController.body1,
-                    (textLinkFunction(i))
+                    (textLinkFunction(stats,i))
                 ,overview,2);
-
                 overview[stats[i]+"Text"].text.anchor.setTo(0,.5);  overview[stats[i]+"Text"].underline.anchor.setTo(0,.5); overview.addChild(overview[stats[i]+"Text"]);
 
                 overview[stats[i]+"Backs"] = [];
-                overview[stats[i]+"Icons"] = [];
+                overview[stats[i]+"Full"] = [];
+                overview[stats[i]+"Half"] = [];
                 for(var j = 0; j < 10; ++j){
                     overview[stats[i]+"Backs"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,stats[i]+'_output_full'));
-                    overview[stats[i]+"Backs"][j].anchor.setTo(.5,.5);  overview[stats[i]+"Back"][j].scale.setTo(.45,.45);
+                    overview[stats[i]+"Backs"][j].anchor.setTo(.5,.5);  overview[stats[i]+"Backs"][j].scale.setTo(.45,.45);
+                    overview[stats[i]+"Backs"][j].tint = 0x3a3a3a;
+                    overview[stats[i]+"Backs"][j].x += overview[stats[i]+"Backs"][j].width * (j*11/10);
+                    overview.addChild(overview[stats[i]+"Backs"][j]);
 
-                    var curStat = bdInfo.building[(stats[i]==='freedom'||stats[i]==='unrest'?"aoe":"")+stats[i]];
-                    if(Math.round(curStat/5)*5 >= (i+1)*10)
-                        
+                    overview[stats[i]+"Full"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,stats[i]+'_output_full'));
+                    overview[stats[i]+"Full"][j].anchor.setTo(.5,.5);  overview[stats[i]+"Full"][j].scale.setTo(.45,.45);
+                    overview[stats[i]+"Full"][j].tint = 0x20a020;
+                    overview[stats[i]+"Full"][j].x += overview[stats[i]+"Full"][j].width * (j*11/10);
+                    overview.addChild(overview[stats[i]+"Full"][j]);
+
+                    overview[stats[i]+"Half"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,stats[i]+'_output_half'));
+                    overview[stats[i]+"Half"][j].anchor.setTo(.5,.5);  overview[stats[i]+"Half"][j].scale.setTo(.45,.45);
+                    overview[stats[i]+"Half"][j].tint = 0x20a020;
+                    overview[stats[i]+"Half"][j].x += overview[stats[i]+"Half"][j].width * (j*11/10);
+                    overview.addChild(overview[stats[i]+"Half"][j]);
+
+                    var curStat = bdInfo.building[(stats[i]==='freedom'?"aoeFreedom":(stats[i]==='unrest'?"aoeUnrest":stats[i]))];
+                    if(Math.round(curStat/5)*5 >= (j+1)*10){
+                        overview[stats[i]+"Full"][j].visible = true;
+                        overview[stats[i]+"Half"][j].visible = false;
+                    } else if(Math.round(curStat/5)*5 >= (j*10)+5) {
+                        overview[stats[i]+"Full"][j].visible = false;
+                        overview[stats[i]+"Half"][j].visible = true;
+                    } else {
+                        overview[stats[i]+"Full"][j].visible = false;
+                        overview[stats[i]+"Half"][j].visible = false;
+                    }
                 }
             }
-
-            overview.shelterIcons = []; overview.healthIcons = []; overview.cultureIcons = []; overview.freedomIcons = []; overview.unrestIcons = [];
-            for(var i = 0; i < 10; ++i){
-                overview.shelterIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*2/45,'shelter_output_full'));
-                overview.healthIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*1/9,'health_output_full'));
-                overview.cultureIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*8/45,'culture_output_full'));
-                overview.freedomIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*11/45,'freedom_output_full'));
-                overview.unrestIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*14/45,'unrest_output_full'));
-
-                overview.shelterIcons[i].anchor.setTo(.5,.5); overview.shelterIcons[i].scale.setTo(.45,.45);
-                overview.healthIcons[i].anchor.setTo(.5,.5); overview.healthIcons[i].scale.setTo(.45,.45);
-                overview.cultureIcons[i].anchor.setTo(.5,.5); overview.cultureIcons[i].scale.setTo(.45,.45);
-                overview.freedomIcons[i].anchor.setTo(.5,.5); overview.freedomIcons[i].scale.setTo(.45,.45);
-                overview.unrestIcons[i].anchor.setTo(.5,.5); overview.unrestIcons[i].scale.setTo(.45,.45);
-
-                if(Math.round(bdInfo.building.shelter/5)*5 >= (i+1)*10)
-                    overview.shelterIcons[i].tint = 0x20a020;
-                else
-                    overview.shelterIcons[i].tint = 0x3a3a3a;
-                if(Math.round(bdInfo.building.health/5)*5 >= (i+1)*10)
-                    overview.healthIcons[i].tint = 0x20a020;
-                else
-                    overview.healthIcons[i].tint = 0x3a3a3a;
-                if(Math.round(bdInfo.building.culture/5)*5 >= (i+1)*10)
-                    overview.cultureIcons[i].tint = 0x20a020;
-                else
-                    overview.cultureIcons[i].tint = 0x3a3a3a;
-                if(Math.round(Math.abs(bdInfo.building.aoeFreedom)/5)*5 >= (i+1)*10)
-                    overview.freedomIcons[i].tint = (bdInfo.building.aoeFreedom>0?0x20a020:0xa02020);
-                else
-                    overview.freedomIcons[i].tint = 0x3a3a3a;
-                if(Math.round(Math.abs(bdInfo.building.aoeUnrest)/5)*5 >= (i+1)*10)
-                    overview.unrestIcons[i].tint = (bdInfo.building.aoeUnrest>0?0x20a020:0xa02020);
-                else
-                    overview.unrestIcons[i].tint = 0x3a3a3a;
-
-                overview.shelterIcons[i].x += overview.shelterIcons[i].width * i*1.1;
-                overview.healthIcons[i].x += overview.healthIcons[i].width * i*1.1;
-                overview.cultureIcons[i].x += overview.cultureIcons[i].width * i*1.1;
-                overview.freedomIcons[i].x += overview.freedomIcons[i].width * i*1.1;
-                overview.unrestIcons[i].x += overview.unrestIcons[i].width * i*1.1;
-
-                overview.addChild(overview.shelterIcons[i]);
-                overview.addChild(overview.healthIcons[i]);
-                overview.addChild(overview.cultureIcons[i]);
-                overview.addChild(overview.freedomIcons[i]);
-                overview.addChild(overview.unrestIcons[i]);
-            }
         } else{
-            overview.outputs = [];
-
+            var outputs = [];
             for(var i = 0; i < bdInfo.building.effects.length; ++ i){
-                if(bdInfo.building.effects[i].type === "money"){
-                    overview.outputs.push({});
+                outputs.push(bdInfo.building.effects[i].type);
+                if(overview[i] === null)
+                    continue;
 
-                    var effect = bdInfo.building.effects[i];
-                    overview.outputs[i].effectText = MainGame.game.make.text(-overview.width*19/45,overview.height*(2+3*i)/45,effect.type.charAt(0).toUpperCase()+effect.type.slice(1),BDController.body1);
-                    overview.outputs[i].effectText.anchor.setTo(0,.5);     overview.addChild(overview.outputs[i].effectText);
+                var effect = bdInfo.building.effects[i];
+                overview[(outputs[i]+"Text")] = TextLinkButton.createNew(-overview.width*19/45,overview.height*(2+3*i)/45,outputs[i].charAt(0).toUpperCase()+outputs[i].slice(1)+":",BDController.body1,
+                    (textLinkFunction(outputs,i))
+                ,overview,2);
+                overview[outputs[i]+"Text"].text.anchor.setTo(0,.5);  overview[outputs[i]+"Text"].underline.anchor.setTo(0,.5); overview.addChild(overview[outputs[i]+"Text"]);
 
-                    overview.outputs[i].effectIcons = [];
+                overview[outputs[i]+"Backs"] = [];
+                overview[outputs[i]+"Full"] = [];
+                overview[outputs[i]+"Half"] = [];
+                if(outputs[i] === "money"){
                     for(var j = 0; j < bdInfo.building.maxPeople; ++j){
-                        overview.outputs[i].effectIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,effect.type+'_output_full'));
-                        overview.outputs[i].effectIcons[j].anchor.setTo(.5,.5);     overview.outputs[i].effectIcons[j].scale.setTo(.45,.45);
-                        
+                        overview[outputs[i]+"Backs"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,outputs[i]+'_output_full'));
+                        overview[outputs[i]+"Full"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,outputs[i]+'_output_full'));
                         if(j < bdInfo.building.people)
-                            overview.outputs[i].effectIcons[j].tint = 0x20a020;
+                            overview[outputs[i]+"Full"][j].visible = true;
                         else
-                            overview.outputs[i].effectIcons[j].tint = 0x3a3a3a;
-                        overview.outputs[i].effectIcons[j].x += overview.outputs[i].effectIcons[j].width * j*1.1;
-                        overview.addChild(overview.outputs[i].effectIcons[j]);
+                            overview[outputs[i]+"Full"][j].visible = false;
                     }
-                } else if(bdInfo.building.effects[i].type !== null){
-                    overview.outputs.push({});
-
-                    var effect = bdInfo.building.effects[i];
-                    overview.outputs[i].effectText = MainGame.game.make.text(-overview.width*19/45,overview.height*(2+3*i)/45,effect.type.charAt(0).toUpperCase()+effect.type.slice(1),BDController.body1);
-                    overview.outputs[i].effectText.anchor.setTo(0,.5);     overview.addChild(overview.outputs[i].effectText);
-
+                } else {
                     var maxOutput = Math.round(Math.abs(effect.outputTable[bdInfo.building.maxPeople])/5)*5;
-                    var currentOutput = Math.round(Math.abs(effect.outputTable[bdInfo.building.people])/5)*5
-
-                    overview.outputs[i].effectIcons = [];
+                    var currentOutput = Math.round(Math.abs(effect.outputTable[bdInfo.building.people])/5)*5;
+                    
                     for(var j = 0; j < Math.ceil(maxOutput/10); ++j){
-                        overview.outputs[i].effectIcons.push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,effect.type+'_output_full'));
-                        overview.outputs[i].effectIcons[j].anchor.setTo(.5,.5);     overview.outputs[i].effectIcons[j].scale.setTo(.45,.45);
-
-                        if((j+1)*10 <= maxOutput){
-                            if(currentOutput >= (j+1)*10)
-                                overview.outputs[i].effectIcons[j].tint = (currentOutput > 0?0x20a020:0xa02020);
-                            else
-                                overview.outputs[i].effectIcons[j].tint = 0x3a3a3a;
-
-                            overview.outputs[i].effectIcons[j].x += overview.outputs[i].effectIcons[j].width * j*1.1;
-                            overview.addChild(overview.outputs[i].effectIcons[j]);
+                        overview[outputs[i]+"Backs"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,outputs[i]+'_output_full'));
+                        overview[outputs[i]+"Full"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,outputs[i]+'_output_full'));
+                        overview[outputs[i]+"Half"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,outputs[i]+'_output_full'));
+                    
+                        if(currentOutput >= (j+1)*10){
+                            overview[outputs[i]+"Full"][j].visible = true;
+                            overview[outputs[i]+"Half"][j].visible = false;
+                        } else if(currentOutput >= (j*10)+5){
+                            overview[outputs[i]+"Full"][j].visible = false;
+                            overview[outputs[i]+"Half"][j].visible = true;
+                        } else {
+                            overview[outputs[i]+"Full"][j].visible = false;
+                            overview[outputs[i]+"Half"][j].visible = false;
                         }
+                    }
+                }
+                for(var j = 0; j < overview[outputs[i]+"Backs"].length; ++j){
+                    overview[outputs[i]+"Backs"][j].anchor.setTo(.5,.5);   overview[outputs[i]+"Backs"][j].scale.setTo(.45,.45);
+                    overview[outputs[i]+"Backs"][j].tint = 0x3a3a3a;
+                    overview[outputs[i]+"Backs"][j].x += overview[outputs[i]+"Backs"][j].width * (j*11/10);
+                    overview.addChild(overview[outputs[i]+"Backs"][j]);
+
+                    overview[outputs[i]+"Full"][j].anchor.setTo(.5,.5);    overview[outputs[i]+"Full"][j].scale.setTo(.45,.45);
+                    overview[outputs[i]+"Full"][j].tint = (effect.outputTable[bdInfo.building.people] > 0?0x20a020:0xa02020);
+                    overview[outputs[i]+"Full"][j].x += overview[outputs[i]+"Full"][j].width * (j*11/10);
+                    overview.addChild(overview[outputs[i]+"Full"][j]);
+
+                    if(outputs[i] !== 'money'){
+                        overview[outputs[i]+"Half"][j].anchor.setTo(.5,.5);    overview[outputs[i]+"Half"][j].scale.setTo(.45,.45);
+                        overview[outputs[i]+"Half"][j].tint = (effect.outputTable[bdInfo.building.people] > 0?0x20a020:0xa02020);
+                        overview[outputs[i]+"Half"][j].x += overview[outputs[i]+"Half"][j].width * (j*11/10);
+                        overview.addChild(overview[outputs[i]+"Half"][j]);
                     }
                 }
             }
@@ -264,11 +256,54 @@ var BDOverView = {
         }
 
         if(overview.bdInfo.residential){
-
+            var stats = ['shelter','health','culture','freedom','unrest'];
+            for(var i = 0; i < stats.length; ++i){
+                for(var j = 0; j < 10; ++j){
+                    var curStat = overview.bdInfo.building[(stats[i]==='freedom'?"aoeFreedom":(stats[i]==='unrest'?"aoeUnrest":stats[i]))];
+                    if(Math.round(curStat/5)*5 >= (j+1)*10){
+                        overview[stats[i]+"Full"][j].visible = true;
+                        overview[stats[i]+"Half"][j].visible = false;
+                    } else if(Math.round(curStat/5)*5 >= (j*10)+5) {
+                        overview[stats[i]+"Full"][j].visible = false;
+                        overview[stats[i]+"Half"][j].visible = true;
+                    } else {
+                        overview[stats[i]+"Full"][j].visible = false;
+                        overview[stats[i]+"Half"][j].visible = false;
+                    }
+                }
+            }
         }else{
-            for(var i = 0; i < overview.outputs.length; ++i){
-                for(var j = 0; j < overview.outputs[i].effectIcons.length; ++j){
-
+            var outputs = [];
+            for(var i = 0; i < overview.bdInfo.building.effects.length; ++ i){
+                outputs.push(overview.bdInfo.building.effects[i].type);
+                if(overview[i] === null)
+                    continue;
+            }
+            for(var i = 0; i < overview.bdInfo.building.effects.length; ++i){
+                var effect = overview.bdInfo.building.effects[i];
+                if(outputs[i] === "money"){
+                    for(var j = 0; j < overview.bdInfo.building.maxPeople; ++j){
+                        if(j < overview.bdInfo.building.people)
+                            overview[outputs[i]+"Full"][j].visible = true;
+                        else
+                            overview[outputs[i]+"Full"][j].visible = false;
+                    }
+                }else{
+                    var maxOutput = Math.round(Math.abs(effect.outputTable[overview.bdInfo.building.maxPeople])/5)*5;
+                    var currentOutput = Math.round(Math.abs(effect.outputTable[overview.bdInfo.building.people])/5)*5;
+                    
+                    for(var j = 0; j < Math.ceil(maxOutput/10); ++j){
+                        if(currentOutput >= (j+1)*10){
+                            overview[outputs[i]+"Full"][j].visible = true;
+                            overview[outputs[i]+"Half"][j].visible = false;
+                        } else if(currentOutput >= (j*10)+5){
+                            overview[outputs[i]+"Full"][j].visible = false;
+                            overview[outputs[i]+"Half"][j].visible = true;
+                        } else {
+                            overview[outputs[i]+"Full"][j].visible = false;
+                            overview[outputs[i]+"Half"][j].visible = false;
+                        }
+                    }
                 }
             }
         }
