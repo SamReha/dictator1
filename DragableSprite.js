@@ -44,7 +44,7 @@ var DragableSprite = {
 	onDragStart: function(back, pickupFunction, dropFunction){
 		return function(){
 			back.spriteFront.visible = false;
-			MainGame.game.input.onUp.add((DragableSprite.onDragStop(back,dropFunction)), back.spriteFront);
+			MainGame.game.input.onUp.addOnce((DragableSprite.onDragStop(back, dropFunction)), back.spriteFront);
 
 			back.dragSprite = MainGame.game.add.sprite(back.world.x,back.world.y,back.spriteFront.key);
 			back.dragSprite.anchor.setTo(.5,.5);
@@ -66,9 +66,11 @@ var DragableSprite = {
 	onDragStop: function(back, dropFunction){
 		return function(){
 			back.dragSprite.timer.stop(false);
-			MainGame.game.input.onUp.removeAll();
+			//console.log(back.dragSprite.target);
+			//MainGame.game.input.onUp.remove((DragableSprite.onDragStop(back, dropFunction)), back.spriteFront);
+			//MainGame.game.input.onUp.add(function() { console.log(MainGame.game.input.activePointer.targetObject); });
 
-			if(back.dragSprite.dropable && back.dragSprite.target!==null){
+			if(back.dragSprite.dropable && back.dragSprite.target!==null && back.dragSprite.target !== back){
 				dropFunction(back,back.dragSprite.target);
 			}
 			else{

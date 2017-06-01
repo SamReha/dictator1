@@ -398,7 +398,7 @@ var StatsPanel = {
         statsPanel.homelessGroup.x = this.horizontalPad + statsPanel.width*1/5;
         statsPanel.homelessGroup.y = (this.unitHeight + this.verticalPad) * 4;
 
-        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x, statsPanel.y + statsPanel.homelessGroup.y + 12);
+        ToolTip.addTipTo(statsPanel.homelessGroup, 2, 'Homeless Citizens', statsPanel.x + statsPanel.width/5, statsPanel.y + statsPanel.homelessGroup.y + 12);
         statsPanel.homelessGroup.toolTip.x -= statsPanel.homelessGroup.toolTip.width;
 
         statsPanel.homelessGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
@@ -410,7 +410,7 @@ var StatsPanel = {
         statsPanel.unemploymentGroup.x = this.horizontalPad + statsPanel.width*1/5;
         statsPanel.unemploymentGroup.y = (this.unitHeight + this.verticalPad) * 5;
         
-        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
+        ToolTip.addTipTo(statsPanel.unemploymentGroup, 2, 'Jobless Citizens', statsPanel.x + statsPanel.width/5, statsPanel.y + statsPanel.unemploymentGroup.y + 12);
         statsPanel.unemploymentGroup.toolTip.x -= statsPanel.unemploymentGroup.toolTip.width;
 
         statsPanel.unemploymentGroup.textLabel = MainGame.game.make.text(48 + this.horizontalPad, this.verticalTextOffset, '0 ', this.textStyle);
@@ -467,6 +467,7 @@ var RiotThermometer = {
     createNew: function(x, y) {
         var thermometer = MainGame.game.make.sprite(x, y, 'thermometer_bulb');
         thermometer.visible = false;
+        thermometer.fillAmount = 0;
 
         thermometer.tube = MainGame.game.make.sprite(thermometer.width, 0, 'thermometer_tube');
         thermometer.tube.fluid = MainGame.game.make.sprite(0, 20, 'red');
@@ -498,7 +499,8 @@ var RiotThermometer = {
         // Only bother updating if I am visible.
         if (thermometer.visible) {
             var fillAmount = (MainGame.global.thermometerFill/100) * thermometer.tube.width; // thermometerFill is percent fill of thermometer
-            MainGame.game.add.tween(thermometer.tube.fluid).to({width: fillAmount}, 200).start();
+            if(thermometer.fillAmount !== fillAmount)
+                MainGame.game.add.tween(thermometer.tube.fluid).to({width: fillAmount}, 200,Phaser.Easing.Quadratic.InOut,true);
         }
     },
 
@@ -677,10 +679,20 @@ var ToolTip = {
     show: function(toolTip) {
         MainGame.game.world.bringToTop(toolTip);
         toolTip.visible = true;
+        toolTip.alpha = 0;
+
+        toolTip.timer = MainGame.game.time.create(true);
+        toolTip.timer.add(500, function() {
+            toolTip.tween = MainGame.game.add.tween(toolTip).to({alpha:1.0}, 250, Phaser.Easing.Linear.None, true);
+        });
+        toolTip.timer.start();
     },
 
     hide: function(toolTip) {
         toolTip.visible = false;
+        if (toolTip.timer) {
+            toolTip.timer.removeAll();
+        }
     }
 };
 

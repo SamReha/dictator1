@@ -104,11 +104,12 @@ var PeopleContractView={
 
 		v.cancelButton=MainGame.game.add.button(0,(v.height*7/18),'small_generic_button',function(){
 			v.cancelButton.freezeFrames=true;
-			v.parent.hideContractView();
+			//v.parent.hideContractView();
+			MenuController.closeCurMenu('right');
 		},v,0,1,0,2);
 		v.cancelButton.anchor.setTo(0.5,0.5);
 		v.cancelButton.input.priorityID=121;
-		v.cancelButton.name="This is a cancle butto";
+		v.cancelButton.name="This is a cancel button";
 		v.addChild(v.cancelButton);
 
 		v.cancelText=MainGame.game.make.text(0,0,"Close",PeopleContractView.styleButton);

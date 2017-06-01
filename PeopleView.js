@@ -235,7 +235,6 @@ var PeopleLeftView={
 var PeopleView = {
 	// TODO: please see the required format of lowData, buDataRef, etc.
 	createNew: function(lowData, buDataRef, merDataRef, milDataRef){
-		MainGame.global.ministerViewIsOpen = true;
 		var pv = MainGame.game.add.sprite(0,0,'peopleViewBg');
 
 		// TODO: setup the actual position
@@ -307,7 +306,6 @@ var PeopleView = {
 		}
 	},
 	closeSelf: function(peopleView) {
-		MainGame.global.ministerViewIsOpen = false;
 		peopleView.uiMask.destroy();
 		peopleView.sfx.play();
 		peopleView.destroy();
