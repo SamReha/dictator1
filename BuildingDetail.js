@@ -109,37 +109,31 @@ var BDOverView = {
         }
         overview.addChild(overview.statsText);
         if(bdInfo.residential){
-            overview.shelterText = TextLinkButton.createNew(-overview.width*19/45,overview.height*2/45,"Shelter:",BDController.body1,function(){
+            var stats = ['shelter','health','culture','freedom','unrest'];
+            textLinkFunction = function(i){return function(){
                 var binder = overview.parent.parent;
                 binder.changeTabs(2);
-                BDController.setupOutputList(binder.page,bdInfo,0,'shelter');
-            },overview,2);
-            overview.healthText = TextLinkButton.createNew(-overview.width*19/45,overview.height*1/9,"Health:",BDController.body1,function(){
-                var binder = overview.parent.parent;
-                binder.changeTabs(2);
-                BDController.setupOutputList(binder.page,bdInfo,0,'health');
-            },overview,2);
-            overview.cultureText = TextLinkButton.createNew(-overview.width*19/45,overview.height*8/45,"Culture:",BDController.body1,function(){
-                var binder = overview.parent.parent;
-                binder.changeTabs(2);
-                BDController.setupOutputList(binder.page,bdInfo,0,'culture');
-            },overview,2);
-            overview.freedomText = TextLinkButton.createNew(-overview.width*19/45,overview.height*11/45,"Freedom:",BDController.body1,function(){
-                var binder = overview.parent.parent;
-                binder.changeTabs(2);
-                BDController.setupOutputList(binder.page,bdInfo,0,'freedom');
-            },overview,2);
-            overview.unrestText = TextLinkButton.createNew(-overview.width*19/45,overview.height*14/45,"Unrest:",BDController.body1,function(){
-                var binder = overview.parent.parent;
-                binder.changeTabs(2);
-                BDController.setupOutputList(binder.page,bdInfo,0,'unrest');
-            },overview,2);
+                BDController.setupOutputList(binder.page,bdInfo,0,stats[i]);
+            };}
 
-            overview.shelterText.text.anchor.setTo(0,.5);   overview.shelterText.underline.anchor.setTo(0,.5);  overview.addChild(overview.shelterText);
-            overview.healthText.text.anchor.setTo(0,.5);    overview.healthText.underline.anchor.setTo(0,.5);   overview.addChild(overview.healthText);
-            overview.cultureText.text.anchor.setTo(0,.5);   overview.cultureText.underline.anchor.setTo(0,.5);  overview.addChild(overview.cultureText);
-            overview.freedomText.text.anchor.setTo(0,.5);   overview.freedomText.underline.anchor.setTo(0,.5);  overview.addChild(overview.freedomText);
-            overview.unrestText.text.anchor.setTo(0,.5);    overview.unrestText.underline.anchor.setTo(0,.5);   overview.addChild(overview.unrestText);
+            for(var i = 0; i < stats.length; ++i){
+                overview[(stats[i]+"Text")] = TextLinkButton.createNew(-overview.width*19/45,overview.height*(2+3*i)/45,stats[i].charAt(0).toUpperCase()+stats[i].slice(1)+":",BDController.body1,
+                    (textLinkFunction(i))
+                ,overview,2);
+
+                overview[stats[i]+"Text"].text.anchor.setTo(0,.5);  overview[stats[i]+"Text"].underline.anchor.setTo(0,.5); overview.addChild(overview[stats[i]+"Text"]);
+
+                overview[stats[i]+"Backs"] = [];
+                overview[stats[i]+"Icons"] = [];
+                for(var j = 0; j < 10; ++j){
+                    overview[stats[i]+"Backs"].push(MainGame.game.make.sprite(-overview.width*1/5,overview.height*(2+3*i)/45,stats[i]+'_output_full'));
+                    overview[stats[i]+"Backs"][j].anchor.setTo(.5,.5);  overview[stats[i]+"Back"][j].scale.setTo(.45,.45);
+
+                    var curStat = bdInfo.building[(stats[i]==='freedom'||stats[i]==='unrest'?"aoe":"")+stats[i]];
+                    if(Math.round(curStat/5)*5 >= (i+1)*10)
+                        
+                }
+            }
 
             overview.shelterIcons = []; overview.healthIcons = []; overview.cultureIcons = []; overview.freedomIcons = []; overview.unrestIcons = [];
             for(var i = 0; i < 10; ++i){
@@ -266,6 +260,16 @@ var BDOverView = {
                 overview.occupantsIcons[i].spriteFront.visible = false;
             else 
                 overview.occupantsIcons[i].spriteFront.visible = true;
+        }
+
+        if(overview.bdInfo.residential){
+
+        }else{
+            for(var i = 0; i < overview.outputs.length; ++i){
+                for(var j = 0; j < overview.outputs[i].effectIcons.length; ++j){
+
+                }
+            }
         }
     }
 };
