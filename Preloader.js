@@ -100,6 +100,9 @@ var Preloader={
         g.load.image('thermometer_bulb',                uiDir + 'thermometer_bulb.png');
         g.load.image('thermometer_tube',                uiDir + 'thermometer_tube.png');
         g.load.image('page_texture',                    uiDir + 'page_texture.png');
+        g.load.image('rebellion_pressure_back',         uiDir + 'rebellion_pressure_back.png');
+        g.load.image('rebellion_pressure_front',        uiDir + 'rebellion_pressure_front.png');
+        g.load.image('rebellion_pressure_needle',       uiDir + 'rebellion_pressure_needle.png');
         g.load.image('single_folder_texture',           uiDir + 'single_folder_texture.png');
         g.load.image('double_folder_texture',           uiDir + 'double_folder_texture.png');
         g.load.image('folder_tab_texture',              uiDir + 'folder_tab_texture.png');
