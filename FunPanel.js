@@ -67,7 +67,7 @@ var FunPanel = {
 
     createNew: function() {
         var funPanel = MainGame.game.make.sprite(0, 0, 'fun_panel_backpanel');
-        funPanel.anchor.set(0.5, 0.5);
+        funPanel.anchor.set(0.5, 0);
         funPanel.x = MainGame.game.width / 2;
         funPanel.inputEnabled = true;
         funPanel.input.priorityID = 1;
