@@ -100,7 +100,7 @@
 	{
 		"name":"PlacingRoads",
 		"cond":"Tutorial.roadsBuilt()",
-		"init":"Tutorial.setPointerOnBuyRoad(false);Tutorial.setPointerOnRoadPlacement(true)",
+		"init":"Tutorial.setPointerOnBuyRoad(false);Tutorial.setPointerOnRoadPlacement(true);MainGame.board.limitInteractionTo(158)",
 		"event":[],
 		"handler":[],
 		"reminder":{

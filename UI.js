@@ -223,6 +223,7 @@ var BuildingPlacer = {
             var terrainType = tile.terrain.key;
             // If the terrain is impassable, or a building already exists
             self.canBuild = !(terrainType === 'mountain' || terrainType === 'water' || tile.hasBuilding());
+            if (!tile.interactable) self.canBuild = false;
         } else self.canBuild = false;
 
         // Check for build cancel
