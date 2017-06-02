@@ -1,8 +1,9 @@
 /* A subcomponent of the FunPanel that displays when there is a risk of riot. */
-var RiotThermometer = {
+var PressureGauge = {
     drainRate: 10,
     red: 0xff0000,
     barOpacity: .80,
+    maxDelta: 35, // Out of 100
 
     createNew: function(x, y) {
         var pressureGauge = MainGame.game.make.sprite(x, y, 'rebellion_pressure_back');
@@ -21,15 +22,8 @@ var RiotThermometer = {
         pressureGauge.delta = 0;      // Percent change per turn
 
         // Class functions
-        pressureGauge.updateData = function() { RiotThermometer.updateData(pressureGauge); };
-        pressureGauge.setVisibility = function() { RiotThermometer.setVisibility(pressureGauge); };
-
-        // Set update loop
-        // var timer = MainGame.game.time.create(false);
-        // timer.loop(500, function() {
-        //     pressureGauge.updateData();
-        // }, pressureGauge);
-        // timer.start();
+        pressureGauge.updateData = function() { PressureGauge.updateData(pressureGauge); };
+        pressureGauge.setVisibility = function() { PressureGauge.setVisibility(pressureGauge); };
 
         return pressureGauge;
     },
@@ -109,11 +103,6 @@ var FunPanel = {
         ToolTip.addTipTo(funPanel.unrestSprite, 2, 'Total Unrest', funPanel.x + funPanel.unrestSprite.x, 48);
         funPanel.addChild(funPanel.unrestSprite);
 
-        // Riot Thermometer
-        funPanel.pressureGauge = RiotThermometer.createNew(0, 65);
-        funPanel.pressureGauge.x = -funPanel.pressureGauge.width/2;
-        funPanel.addChild(funPanel.pressureGauge);
-
         // Particles!
         //  Emitters have a center point and a width/height, which extends from their center point to the left/right and up/down
         funPanel.steam = MainGame.game.add.emitter(funPanel.x, funPanel.y+funPanel.meter.height, funPanel.meter.height);
@@ -133,6 +122,14 @@ var FunPanel = {
         //  The 5000 value is the lifespan of each particle before it's killed
         funPanel.steam.start(false, 800, 10);
         funPanel.steam.on = false;
+
+        //funPanel.scale.set(1.25, 1.25);
+
+        // Riot Thermometer
+        funPanel.pressureGauge = PressureGauge.createNew(0, 63);
+        funPanel.pressureGauge.x = -funPanel.pressureGauge.width/2;
+        // funPanel.pressureGauge = PressureGauge.createNew(funPanel.width/2 + 10, 0);
+        funPanel.addChild(funPanel.pressureGauge);
 
         // Class functions
         funPanel.updateData = function() { FunPanel.updateData(funPanel); };
@@ -162,10 +159,11 @@ var FunPanel = {
         MainGame.game.add.tween(funPanel.unrestBar).to({width: -globalStats.unrest/100 * funPanel.meter.width}, 200).start();
 
         // Is it getting steamy up in here?
+        var pressureGaugeFillPercent = MainGame.global.thermometerFill/100;
         funPanel.steam.frequency = 110 - funPanel.pressureGauge.delta;
-        funPanel.steam.width = (funPanel.pressureGauge.delta/100 * funPanel.meter.width) * 0.9 + (funPanel.meter.width * 0.1);
-        funPanel.steam.x = MainGame.game.width/2 - funPanel.meter.width/2 + funPanel.freedomBar.width - (funPanel.pressureGauge.delta/100 * funPanel.meter.width)/2;
-        funPanel.steam.on = MainGame.global.thermometerFill > 0;
+        funPanel.steam.width = (pressureGaugeFillPercent * funPanel.meter.width) * 0.9 + (funPanel.meter.width * 0.1);
+        funPanel.steam.x = MainGame.game.width/2 - funPanel.meter.width/2 + funPanel.freedomBar.width - (pressureGaugeFillPercent * funPanel.meter.width)/2;
+        funPanel.steam.on = pressureGaugeFillPercent > 0;
 
         funPanel.pressureGauge.updateData();
     },

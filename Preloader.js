@@ -235,6 +235,10 @@ var Preloader={
         g.load.audio('message_close', sfxDir + 'messages/message_close_SFX.wav');
         g.load.audio('money_earned',  sfxDir + 'money_earned/money_earned_SFX.wav');
 
+        //// load boils
+        var boilDir = sfxDir + 'boils/';
+        g.load.audio('boiling',  boilDir + 'boiling.wav');
+
         //// load riot sfx
         var riotDir = sfxDir + 'rioters/';
         g.load.audio('rioter_spawn',  riotDir + 'spawn_rioters/spawn_rioters_SFX.wav');

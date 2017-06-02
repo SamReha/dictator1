@@ -37,15 +37,24 @@ var Tile = {
         // Flag that checks if a tile should be able to be interacted with
         tile.interactable = true;
 
-        // Use alert if something is going wrong in a tile
-        tile.alert = MainGame.game.make.sprite(0, 0, 'exclamation_01');
-        //ToolTip.addTipTo(tile.alert, )
-        tile.tileGroup.addChild(tile.alert);
-        tile.alert.visible = false;
-
         /* global Building*/
         tile.building = Building.createNew(data.building);
         tile.tileGroup.addChild(tile.building);
+
+        // Use alert if something is going wrong in a tile
+        tile.alert = MainGame.game.make.sprite(0, 0, 'exclamation_01');
+        tile.alert.inputEnabled = true;
+        tile.alert.input.priorityID = 10;
+        tile.alert.toolTip = ToolTip.createNew('A Minister will be\ndemoted next turn!');
+        tile.alert.toolTip.x = 10;
+        tile.alert.toolTip.y = 35;
+        tile.alert.toolTip.scale.set(1.5, 1.5);
+        tile.alert.events.onInputOver.add(function() {tile.alert.toolTip.show();}, null);
+        tile.alert.events.onInputOut.add(function() {tile.alert.toolTip.hide();}, null);
+        tile.alert.addChild(tile.alert.toolTip);
+        tile.tileGroup.addChild(tile.alert);
+        tile.tileGroup.bringToTop(tile.alert);
+        tile.alert.visible = false;
 
         // Class funcs
         //// Alert Layer
@@ -95,6 +104,7 @@ var Tile = {
         // Apply the new building to the tile
         tile.building = building;
         tile.tileGroup.addChild(building);
+        tile.tileGroup.bringToTop(tile.alert);
     },
 
     removeBuilding: function(tile) {
