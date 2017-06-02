@@ -20,7 +20,7 @@
 		"handler":[
 			["e.gotoPage(1)"],
 			["e.gotoPage(2)"],
-			["Tut.intro=true;e.suicide();Tutorial.generate();MainGame.hud.setEndTurnActive(false)", "e.suicide()"]
+			["Tut.intro=true;e.suicide();Tutorial.generate();MainGame.hud.setEndTurnActive(false)", "Tut.isComplete = true;e.suicide()"]
 		],
 		"reminder":{
 			"model":{
@@ -579,7 +579,7 @@
 			}
 		],
 		"handler":[
-			["MainGame.hud.setEndTurnActive(true);Tutorial.checkTimer.stop();e.suicide()"]
+			["MainGame.hud.setEndTurnActive(true);Tutorial.checkTimer.stop();Tut.isComplete = true;e.suicide()"]
 		],
 		"reminder":{
 			"model":{

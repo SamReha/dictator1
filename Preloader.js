@@ -23,7 +23,7 @@ var Preloader={
         g.load.image('radioStation', buildingDir + 'radioStation.png');
         g.load.image('road',         buildingDir + 'road.png');
         g.load.image('rubble',       buildingDir + 'rubble.png');
-        g.load.image('school',       buildingDir + 'school.png');
+        g.load.image('library',      buildingDir + 'library.png');
         g.load.image('shantyTown',   buildingDir + 'shantyTown.png');
         g.load.image('suburb',       buildingDir + 'suburb.png');
         g.load.image('university',   buildingDir + 'university.png');
@@ -45,7 +45,7 @@ var Preloader={
         g.load.image('police_detail',       detailIconDir + 'police.png');
         g.load.image('radioStation_detail', detailIconDir + 'radioStation.png');
         g.load.image('road_detail',         detailIconDir + 'road.jpg');
-        g.load.image('school_detail',       detailIconDir + 'school.png');
+        g.load.image('library_detail',       detailIconDir + 'library.png');
         g.load.image('shantyTown_detail',   detailIconDir + 'shantyTown.png');
         g.load.image('suburb_detail',       detailIconDir + 'suburb.png');
         g.load.image('university_detail',   detailIconDir + 'university.png');

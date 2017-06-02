@@ -144,30 +144,75 @@ var BuildMenu = {
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFarmBtn, 'farm');
 			buyFarmBtn.toolTip.hide();
 		},
-		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Farm\n\nEach employed farmer generates Health for nearby homes.');
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Farm\n\nEach employed farmer increases Health in nearby homes.');
 		buildMenu.buttons['farm'] = buyFarmBtn;
 		defaultGroup.addChild(buyFarmBtn);
 
 		// SCHOOL
-		var buySchoolBtn = BuildMenu.makePurchaseButton(buyFarmBtn.x + buyFarmBtn.width*1.65, 6*(buildMenu.height/12), 'school', function() {
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'school');
+		var buySchoolBtn = BuildMenu.makePurchaseButton(buyFarmBtn.x + buyFarmBtn.width*1.65, 6*(buildMenu.height/12), 'library', function() {
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buySchoolBtn, 'library');
 			buySchoolBtn.toolTip.hide();
 		},
-		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'School\n\nCitizens enjoy living in neighborhoods with good schools\nEach employed teacher generates Culture.\nEach employed teacher generates Freedom.');
-		buildMenu.buttons['school'] = buySchoolBtn;
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Library\n\nEach employed worker increases Culture in nearby homes.\nEach employed worker increases Freedom in nearby homes.');
+		buildMenu.buttons['library'] = buySchoolBtn;
 		defaultGroup.addChild(buySchoolBtn);
 
-		// PARK
-		var buyParkBtn = BuildMenu.makePurchaseButton(buyFarmBtn.x, buyFarmBtn.y + buyFarmBtn.height*1.65, 'park', function() {
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyParkBtn, 'park');
-			buyParkBtn.toolTip.hide();
+		// // PARK
+		// var buyParkBtn = BuildMenu.makePurchaseButton(buyFarmBtn.x, buyFarmBtn.y + buyFarmBtn.height*1.65, 'park', function() {
+		// 	Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyParkBtn, 'park');
+		// 	buyParkBtn.toolTip.hide();
+		// },
+		// buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Park\n\nBeautifies your country.\nEach employed worker lowers Unrest.');
+		// buildMenu.buttons['park'] = buyParkBtn;
+		// defaultGroup.addChild(buyParkBtn);
+
+		// HOSPITAL
+		var buyHospitalBtn = BuildMenu.makePurchaseButton(buyFarmBtn.x, buyFarmBtn.y + buyFarmBtn.height*1.65, 'hospital', function() {
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyHospitalBtn, 'hospital');
+			buyHospitalBtn.toolTip.hide();
 		},
-		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Park\n\nBeautifies your country.\nEach employed worker lowers Unrest.');
-		buildMenu.buttons['park'] = buyParkBtn;
-		defaultGroup.addChild(buyParkBtn);
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Hospital\n\nEach employed worker greatly increases Health in nearby homes.\nEach employed worker reduces Unrest in nearby homes.');
+		buildMenu.buttons['hospital'] = buyHospitalBtn;
+		defaultGroup.addChild(buyHospitalBtn);
+
+		// University
+		var buyUniversityBtn = BuildMenu.makePurchaseButton(buyFarmBtn.x + buyFarmBtn.width*1.65, buyFarmBtn.y + buyFarmBtn.height*1.65, 'university', function() {
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyUniversityBtn, 'university');
+			buyUniversityBtn.toolTip.hide();
+		},
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'University\n\nEach employed worker greatly increases Culture in nearby homes.\nEach employed worker greatly increases Freedom in nearby homes.');
+		buildMenu.buttons['university'] = buyUniversityBtn;
+		defaultGroup.addChild(buyUniversityBtn);
+
+		// Market
+		var buyMarketBtn = BuildMenu.makePurchaseButton(340, 6*(buildMenu.height/12), 'market', function() {
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyMarketBtn, 'market');
+			buyMarketBtn.toolTip.hide();
+		},
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Market\n\nEach employed worker generates money per year.\nEach employed worker increases Health in nearby homes.');
+		buildMenu.buttons['market'] = buyMarketBtn;
+		defaultGroup.addChild(buyMarketBtn);
+
+		// Cinema
+		var buyCinemaBtn = BuildMenu.makePurchaseButton(buyMarketBtn.x + buyMarketBtn.width*1.65, buyMarketBtn.y, 'cinema', function() {
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyCinemaBtn, 'cinema');
+			buyCinemaBtn.toolTip.hide();
+		},
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Cinema\n\nEach employed worker generates money per year.\nEach employed worker increases Freedom in nearby homes.');
+		buildMenu.buttons['cinema'] = buyCinemaBtn;
+		defaultGroup.addChild(buyCinemaBtn);
+
+		// Bank
+		var buyBankBtn = BuildMenu.makePurchaseButton(buyMarketBtn.x, buyMarketBtn.y + buyMarketBtn.height*1.65, 'bank', function() {
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyBankBtn, 'bank');
+			buyBankBtn.toolTip.hide();
+		},
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Bank');
+		buildMenu.buttons['bank'] = buyBankBtn;
+		defaultGroup.addChild(buyBankBtn);
 
 		// FACTORY
-		var buyFactoryBtn = BuildMenu.makePurchaseButton(340, 6*(buildMenu.height/12), 'factory', function() {
+		var buyFactoryBtn = BuildMenu.makePurchaseButton(buyMarketBtn.x + buyMarketBtn.width*1.65, buyMarketBtn.y + buyMarketBtn.height*1.65, 'factory', function() {
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyFactoryBtn, 'factory');
 			buyFactoryBtn.toolTip.hide();
 		},
@@ -175,8 +220,17 @@ var BuildMenu = {
 		buildMenu.buttons['factory'] = buyFactoryBtn;
 		defaultGroup.addChild(buyFactoryBtn);
 
+		// RADIO STATION
+		var buyRadioBtn = BuildMenu.makePurchaseButton(625, 6*(buildMenu.height/12), 'radioStation', function() {
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyRadioBtn, 'radioStation');
+			buyRadioBtn.toolTip.hide();
+		},
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Radio Station\n\nEach employed worker increases Culture and reduces Unrest in nearby homes.');
+		buildMenu.buttons['radioStation'] = buyRadioBtn;
+		defaultGroup.addChild(buyRadioBtn);
+
 		// ARMYBASE
-		var buyArmyBaseBtn = BuildMenu.makePurchaseButton(625, 6*(buildMenu.height/12), 'armyBase', function() {
+		var buyArmyBaseBtn = BuildMenu.makePurchaseButton(buyRadioBtn.x + buyRadioBtn.width*1.65, buyRadioBtn.y, 'armyBase', function() {
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyArmyBaseBtn, 'armyBase');
 			buyArmyBaseBtn.toolTip.hide();
 		},
@@ -184,14 +238,14 @@ var BuildMenu = {
 		buildMenu.buttons['armyBase'] = buyArmyBaseBtn;
 		defaultGroup.addChild(buyArmyBaseBtn);
 
-		// Police Station
-		var buyPoliceStationBtn = BuildMenu.makePurchaseButton(buyArmyBaseBtn.x + buyArmyBaseBtn.width*1.65, 6*(buildMenu.height/12), 'police', function(){
-			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyPoliceStationBtn, 'police');
-			buyPoliceStationBtn.toolTip.hide();
+		// PRISON
+		var buyPrisonBtn = BuildMenu.makePurchaseButton(buyRadioBtn.x, buyRadioBtn.y + buyRadioBtn.height*1.65, 'prison', function(){
+			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyPrisonBtn, 'prison');
+			buyPrisonBtn.toolTip.hide();
 		},
-		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Police Station\n\nEach employed police officer reduces Freedom.');
-		buildMenu.buttons['police'] = buyPoliceStationBtn;
-		defaultGroup.addChild(buyPoliceStationBtn);
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Prison\n\nEach employed worker reduces Freedom in nearby homes.\nCan house up to five inmates.');
+		buildMenu.buttons['prison'] = buyPrisonBtn;
+		defaultGroup.addChild(buyPrisonBtn);
 
 		/*global Person*/
 		var bureaucrats = MainGame.population.typeRoleList(Person.Hi, Person.Bureaucrat).length;
@@ -234,7 +288,7 @@ var BuildMenu = {
 
 		// Special tutorial logic
 		// If we are in the tutorial...
-		if (Tutorial.activeTut.name !== 'tutorialEnd') {
+		if (!Tut.isComplete) {
 			if (Tutorial.activeTut.name === 'Roads' || Tutorial.activeTut.name === 'OpenBuildMenu') {
 				buildMenu.disableButton('apartment');
 				buildMenu.disableButton('suburb');
