@@ -177,7 +177,7 @@ var Preloader={
         g.load.spritesheet('unemployed_icon',    iconDir + 'unemployed_icon.png', 46, 46, 3);
         g.load.spritesheet('working_class_icon', iconDir + 'working_class_icon.png', 46, 46, 3);
         g.load.spritesheet('year_icon',          iconDir + 'year_icon.png', 46, 46, 3);
-        
+        g.load.spritesheet('red_binder_icon',    iconDir + 'red_binder_icon.png', 46, 46, 3);
 
         for(var i = 1; i <= 4; ++i){
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');
