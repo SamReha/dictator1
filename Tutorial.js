@@ -151,7 +151,7 @@ var Tutorial = {
 
 	setPointerOnBuyRoad: function(bool) {
 		if (bool) {
-			Tut.buyRoadPointer = UIPointer.createNew(975, 125, UIPointer.DOWN, -1, null, true);
+			Tut.buyRoadPointer = UIPointer.createNew(1020, 175, UIPointer.DOWN, -1, null, true);
 		} else if (Tut.buyRoadPointer) {
 			Tut.buyRoadPointer.stop();
 		}
@@ -181,6 +181,14 @@ var Tutorial = {
 			MainGame.board.at(159).addChild(Tut.factoryPointer);
 		} else if (Tut.factoryPointer) {
 			Tut.factoryPointer.stop();
+		}
+	},
+
+	setPointerOnResidences: function(bool) {
+		if (bool) {
+			Tut.buySuburbPointer = UIPointer.createNew(725, 175, UIPointer.DOWN, -1, null, true);
+		} else if (Tut.buySuburbPointer) {
+			Tut.buySuburbPointer.stop();
 		}
 	},
 
@@ -243,7 +251,7 @@ var Tutorial = {
 		if (!MenuController.menuOpen) return false;
 		if (MenuController.leftMenusOpen.length !== 1) return false;
 
-		console.log(MenuController);
+		//console.log(MenuController);
 
 		if (MenuController.leftMenusOpen[0].bdIndex === 128) {
 			return true;

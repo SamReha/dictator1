@@ -346,8 +346,27 @@
 
 	{
 		"name":"OpenBuildMenuHousing",
+		"cond":"MainGame.global.buildMenuIsOpen === false",
+		"init":"Tutorial.setPointerOnBuild(false);Tutorial.setPointerOnResidences(true)",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"PlacingHouse",
 		"cond":"Tutorial.builtNewHouse()",
-		"init":"Tutorial.setPointerOnBuild(false)",
+		"init":"Tutorial.setPointerOnResidences(false)",
 		"event":[],
 		"handler":[],
 		"reminder":{

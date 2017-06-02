@@ -79,6 +79,7 @@ var Preloader={
         g.load.image('building_detail_backpanel',       uiDir + 'building_detail_backpanel.png');
         g.load.image('buildMenuBg',                     uiDir + 'buildMenuBg.png');
         g.load.image('buildMenuCover1',                 uiDir + 'buildMenuCover1.png');
+        g.load.image('buildMenuCoverAlpha1',            uiDir + 'buildMenuCoverAlpha1.png');
         g.load.image('buildMenuCover2',                 uiDir + 'buildMenuCover2.png');
         g.load.image('coalition_backpanel',             uiDir + 'coalition_backpanel.png');
         g.load.image('stats_panel_backpanel',           uiDir + 'stats_panel_backpanel.png');
@@ -124,7 +125,7 @@ var Preloader={
         g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
         g.load.image('endturn_button_mask',             buttonDir + 'endturn_button_mask.png');
         g.load.spritesheet('closeButton',               buttonDir + 'close_button.png', 48, 48, 3);
-        g.load.spritesheet('buy_button',                buttonDir + 'buy_button.png', 120, 48, 3);
+        g.load.spritesheet('buy_button',                buttonDir + 'buy_button.png', 90, 78, 3);
         g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',        buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button',      buttonDir + 'large_generic_button.png', 240, 96, 3);
@@ -244,6 +245,11 @@ var Preloader={
         g.load.audio('soldiers_attack', soldierDir + 'combat_soldiers/combat_soldiers_SFX.wav');
         g.load.audio('soldiers_move',   soldierDir + 'move_soldiers/move_soldiers_SFX.wav');
         g.load.audio('soldiers_death',  riotDir + 'dying_rioters/dying_rioters_SFX.wav');  // Need to get this one from Matt!!
+
+        //// load pencil sfx
+        for (var i = 1; i <= 10; i++) {
+            g.load.audio('pencil_circle_light_' + i, sfxDir + 'pencil_circle/pencil_circle_light_' + i + '.wav');
+        }
 
         for (var i = 1; i <= 14; i++) {
             g.load.audio('cloth_click_' + i, sfxDir + 'clicks/cloth_click/cloth_click_' + i + '_SFX.wav');
