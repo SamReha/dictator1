@@ -119,7 +119,7 @@
 	{
 		"name":"OpenTeacherMenu",
 		"cond":"Tutorial.openedSchoolBuildingDetail()",
-		"init":"Tutorial.setPointerOnRoadPlacement(false);Tutorial.setPointerOnSchool(true);MainGame.board.limitInteractionTo(128);MainGame.board.cameraCenterOn(128)",
+		"init":"Tutorial.setPointerOnRoadPlacement(false);Tutorial.setPointerOnSchool(true);MainGame.board.limitInteractionTo(128);MainGame.board.enableInteractionOn(141);MainGame.board.cameraCenterOn(128)",
 		"event":[
 			{
 				"description":"Now that you have connected your Factory to your road network, you will need an unemployed citizen to staff it.",
@@ -149,7 +149,7 @@
 
 	{
 		"name": "OpenGreenTab",
-		"cond": "Tutorial.openedGreenTab()",
+		"cond": "(Tutorial.openedGreenTab() || Tutorial.firedTeacher())",
 		"init": "",
 		"event": [
 			{
@@ -252,7 +252,7 @@
 	{
 		"name":"buildingOutput",
 		"cond":"Tutorial.lumberYardHasWorkers()",
-		"init":"Tutorial.setPointerOnFactory(true);MainGame.board.limitInteractionTo(159);MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
+		"init":"Tutorial.setPointerOnFactory(true);MainGame.board.limitInteractionTo(159);MainGame.board.enableInteractionOn(141);MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
 		"event":[
 			{
 				"description":"Factories generate money each year based on how many employees they have.", 

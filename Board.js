@@ -565,6 +565,9 @@ var Board = {
         // Disable interaction on all tiles except for the given index
         board.limitInteractionTo = function(i) { return Board.limitInteractionTo(board, i); };
 
+        // Enable interaction for the given index
+        board.enableInteractionOn = function(i) { return Board.enableInteractionOn(board, i); };
+
         // Disable interaction on all tiles
         board.disableAllInteraction = function() { return Board.disableAllInteraction(board); };
 
@@ -953,6 +956,12 @@ var Board = {
         for (var index = 0; index < board.tileCount(); index++) {
             board.at(index).interactable = (i === index);
         }
+    },
+
+    // Enable interaction for the given index
+    enableInteractionOn: function(board, i) {
+        console.assert(typeof(i) === "number" && i >= 0 && i < board.tileCount(), "i must be an index.");
+        board.at(i).interactable = true;
     },
 
     // Disable interaction on all tiles
