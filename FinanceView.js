@@ -6,7 +6,7 @@ var FinanceView = {
         var financeView = MainGame.game.make.group();
 
         financeView.page = Page.createNew();
-        financeView.page.anchor.setTo(.5,.5);
+        //financeView.page.anchor.setTo(.5,.5);
         financeView.addChild(financeView.page);
 
         financeView.expenditures = [];

@@ -12,7 +12,7 @@ var BDOverView = {
         overview.bdInfo = bdInfo;
 
         overview.page = Page.createNew();
-        overview.page.anchor.setTo(.5,.5);
+        //overview.page.anchor.setTo(.5,.5);
         overview.addChild(overview.page);
 
         overview.icon = MainGame.game.make.sprite(0, 0, bdInfo.building.detailIconTexture);
@@ -56,7 +56,8 @@ var BDOverView = {
                 overview.rightSide = Clipboard.createNew('transfer',{
                     bdInfo:bdInfo,
                     person:(MainGame.population.at(spriteBase.personIndex)),
-                    tag:(bdInfo.residential?'occupant':'occupant_'+i)
+                    tag:(bdInfo.residential?'occupant':'occupant_'+i),
+                    side:'right'
                 });
             }
             else{
@@ -65,6 +66,12 @@ var BDOverView = {
                 else 
                     TransferClipboard.setUpListView(overview.rightSide.page,bdInfo,MainGame.population.at(spriteBase.personIndex),'occupant');
             }
+        };}
+        tintFunction = function(){return function(spriteBase,targetSprite,check){
+            if(targetSprite===spriteBase)
+                spriteBase.bottom.tint = (check?0x20a020:0xffffff);
+            else
+                targetSprite.parent.occupantIcons[MainGame.board.at(targetSprite.parent.buildingIndex).getBuilding().people].bottom.tint=(check?0x20a020:0xffffff);
         };}
         dropFunction = function(i,overview,bdInfo){return function(spriteBase,targetSprite){
             MainGame.population.firePersonAt(MainGame.population.at(spriteBase.personIndex),spriteBase.buildingIndex);
@@ -77,22 +84,35 @@ var BDOverView = {
                 spriteBase.dragSprite.destroy();
             },spriteBase.dragSprite);
         };}
-
+        //MainGame.game.input.onDown.add(function(){console.log(MainGame.game.input.activePointer.targetObject.sprite);console.log(MainGame.game.input.activePointer);});
+        overview.dragables = MainGame.game.make.group();
+        overview.dragables.scale.setTo(.6,.6);
+        overview.dragables.x-=overview.width*1/6;   overview.dragables.y-=overview.height*1/24;
+        overview.addChild(overview.dragables);
         var occupants = (bdInfo.residential?MainGame.population.getHouseMap()[bdInfo.index]:MainGame.population.getWorkMap()[bdInfo.index]);
         for(var i = 0; i < bdInfo.building.maxPeople; ++i){
-            overview.occupantsIcons.push(DragableSprite.createNew(-overview.width*1/3,-overview.height*2/15,'worker_icon','worker_icon_empty',
-                pickupFunction(i,overview,bdInfo),dropFunction(i,overview,bdInfo),
+            overview.occupantsIcons.push(DragableSprite.createNew(-overview.width*1/3,-overview.height*2/15,'dragable_'+(bdInfo.residential?'resident':'worker')+'_icon','occupantHolder',
+                pickupFunction(i,overview,bdInfo),dropFunction(i,overview,bdInfo),tintFunction(),
                 'occupant_'+i));
-            overview.occupantsIcons[i].spriteFront.tint = 0x20a020;
             overview.occupantsIcons[i].buildingIndex = bdInfo.index;
             overview.occupantsIcons[i].anchor.setTo(.5,.5);
-            overview.occupantsIcons[i].x += overview.occupantsIcons[i].width * i*.6;
-            overview.addChild(overview.occupantsIcons[i]);
+            overview.occupantsIcons[i].x += overview.occupantsIcons[i].width * i*.95;
+            overview.dragables.addChild(overview.occupantsIcons[i]);
+            var bottom = MainGame.game.make.graphics();
+            bottom.lineStyle(0);
+            bottom.beginFill(0x8b8b8b,1);
+            bottom.drawRect(0,0,overview.occupantsIcons[i].width,overview.occupantsIcons[i].height);
+            bottom.endFill();
+            overview.occupantsIcons[i].bottom = MainGame.game.make.sprite(overview.occupantsIcons[i].x,overview.occupantsIcons[i].y,bottom.generateTexture());
+            overview.occupantsIcons[i].bottom.anchor.setTo(.5,.5);
+            overview.dragables.addChild(overview.occupantsIcons[i].bottom);
+            overview.occupantsIcons[i].bringToTop();
             if(i >= bdInfo.building.people)
                 overview.occupantsIcons[i].spriteFront.visible = false;
             else
                 overview.occupantsIcons[i].personIndex = occupants[i];
         }
+
         var availibilityString = bdInfo.building.people + '/' + bdInfo.building.maxPeople + ' ' + bdInfo.availableNoun + 's taken';
         overview.availabilityText = MainGame.game.make.text(overview.width*1/5,-overview.height*10/45, availibilityString, BDController.body1); // Example: 3 jobs available, or No beds available
         overview.availabilityText.anchor.setTo(.5,.5);
@@ -248,11 +268,14 @@ var BDOverView = {
     refreshPage: function(overview){
         overview.availabilityText.text = overview.bdInfo.building.people + '/' + overview.bdInfo.building.maxPeople + ' ' + overview.bdInfo.availableNoun + 's taken';
 
+        var occupants = (overview.bdInfo.residential?MainGame.population.getHouseMap()[overview.bdInfo.index]:MainGame.population.getWorkMap()[overview.bdInfo.index]);
         for(var i = 0; i < overview.bdInfo.building.maxPeople; ++i){
             if(i >= overview.bdInfo.building.people)
                 overview.occupantsIcons[i].spriteFront.visible = false;
-            else 
+            else{
+                overview.occupantsIcons[i].personIndex = occupants[i];
                 overview.occupantsIcons[i].spriteFront.visible = true;
+            }
         }
 
         if(overview.bdInfo.residential){
@@ -324,7 +347,7 @@ var BDOccupants = {
         occupants.index = buildingIndex;
 
         occupants.page = Page.createNew();
-        occupants.page.anchor.setTo(.5,.5);
+        //occupants.page.anchor.setTo(.5,.5);
         occupants.addChild(occupants.page);
 
         occupants.icon = MainGame.game.make.sprite(0, 0, bdInfo.building.detailIconTexture);
@@ -359,7 +382,7 @@ var BDOccupants = {
         background.beginFill(0x000000, 0.66);
         background.drawRect(backgroundX, backgroundY, backgroundWitdh, backgroundHeight);
         background.endFill();
-        occupants.addChild(background);
+        occupants.addChild(MainGame.game.make.sprite(0,0,background.generateTexture()));
 
         // DPageIndicator: N pages
         occupants.itemsPerPage = 5;
@@ -434,7 +457,7 @@ var BDOutput = {
         var output = MainGame.game.make.group();
 
         output.page = Page.createNew();
-        output.page.anchor.setTo(.5,.5);
+        //output.page.anchor.setTo(.5,.5);
         output.addChild(output.page);
 
         output.icon = MainGame.game.make.sprite(0, 0, bdInfo.building.detailIconTexture);
@@ -527,7 +550,7 @@ var BDMisc = {
         var misc = MainGame.game.make.group();
 
         misc.page = Page.createNew();
-        misc.page.anchor.setTo(.5,.5);
+        //misc.page.anchor.setTo(.5,.5);
         misc.addChild(misc.page);
 
         misc.icon = MainGame.game.make.sprite(0, 0, bdInfo.building.detailIconTexture);
@@ -595,8 +618,9 @@ var BDController = {
     header1: { font: "32px myKaiti", fill:"black", shadowBlur: 1, shadowColor: "rgba(0,0,0,.85)", shadowOffsetX: 1, shadowOffsetY: 1 },
     header2: { font: "28px myKaiti", fill:"black", shadowBlur: 0, shadowColor: "rgba(0,0,0,.55)", shadowOffsetX: 1, shadowOffsetY: 1 },
     body1:   { font: "20px myKaiti", fill:"black"},
+    body2:   { font: "20px myKaiti", fill:"black", boundsAlignH: 'left'},
     nameStyle: { font:"32px myKaiti", fill:"black", shadowBlur: 2, shadowColor: "rgba(0,0,0,1)", shadowOffsetX: 1, shadowOffsetY: 1 },
-    buttonStyle: { font:"20px myKaiti", fill:"white"},
+    buttonStyle: {font:"20px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
     descriptionStyle: { font:"22px myKaiti", fill:"black", wordWrap: true, wordWrapWidth: 353, shadowBlur: 1, shadowColor: "rgba(0,0,0,0.85)", shadowOffsetX: 1, shadowOffsetY: 1 },
     listStyle: { font:"20px myKaiti", fill:"white", wordWrap: true, wordWrapWidth: 353, shadowBlur: 1, shadowColor: "rgba(0,0,0,0.85)", shadowOffsetX: 2, shadowOffsetY: 2 },
 
@@ -935,7 +959,7 @@ var TransferClipboard = {
         var clipboard = MainGame.game.make.group();
 
         clipboard.page = Page.createNew();
-        clipboard.page.anchor.setTo(.5,.5);
+        //clipboard.page.anchor.setTo(.5,.5);
         clipboard.addChild(clipboard.page);
 
         clipboard.title = MainGame.game.make.text(0,-clipboard.height*11/30,'Transfer '+(bdInfo.residential?'Resident':'Worker'),BDController.header1);
@@ -991,17 +1015,30 @@ var TransferClipboard = {
         entrySprite.addChild(buildingText);
         buildingText.anchor.setTo(0,.5);
 
+        entrySprite.dragables = MainGame.game.make.group();
+        entrySprite.dragables.scale.setTo(.6,.6);
+        entrySprite.dragables.x+=entrySprite.width*3/2;    entrySprite.dragables.y+=entrySprite.height*1/2;
+        entrySprite.addChild(entrySprite.dragables);
         entrySprite.occupantIcons = [];
         for(var i = 0; i < building.maxPeople; ++i){
-            entrySprite.occupantIcons.push(MainGame.game.make.sprite(buildingImage.width*17/15,buildingImage.height*3/4,'worker_icon_empty'));
+            entrySprite.occupantIcons.push(MainGame.game.make.sprite(buildingImage.width*17/15,buildingImage.height*3/4,'occupantHolder'));
             entrySprite.occupantIcons[i].anchor.setTo(.5,.5);
-            entrySprite.occupantIcons[i].x += entrySprite.occupantIcons[i].width*i*.6;
-            entrySprite.addChild(entrySprite.occupantIcons[i]);
+            entrySprite.occupantIcons[i].x += entrySprite.occupantIcons[i].width*i*.95;
+            entrySprite.dragables.addChild(entrySprite.occupantIcons[i]);
+
+            var bottom = MainGame.game.make.graphics();
+            bottom.lineStyle(0);
+            bottom.beginFill(0x8b8b8b,1);
+            bottom.drawRect(0,0,entrySprite.occupantIcons[i].width,entrySprite.occupantIcons[i].height);
+            bottom.endFill();
+            entrySprite.occupantIcons[i].bottom = MainGame.game.make.sprite(entrySprite.occupantIcons[i].x,entrySprite.occupantIcons[i].y,bottom.generateTexture());
+            entrySprite.occupantIcons[i].bottom.anchor.setTo(.5,.5);
+            entrySprite.dragables.addChild(entrySprite.occupantIcons[i].bottom);
+            entrySprite.occupantIcons[i].bringToTop();
 
             if(i < building.people){
-                entrySprite.occupantIcons[i].filled = MainGame.game.make.sprite(0,0,'worker_icon');
+                entrySprite.occupantIcons[i].filled = MainGame.game.make.sprite(0,0,'dragable_'+(bdInfo.residential?'resident':'worker')+'_icon');
                 entrySprite.occupantIcons[i].filled.anchor.setTo(.5,.5);
-                entrySprite.occupantIcons[i].filled.tint = 0x20a020;
                 entrySprite.occupantIcons[i].addChild(entrySprite.occupantIcons[i].filled);
             }
         }

@@ -497,6 +497,9 @@ var Population={
                 person.workplace=null;
                 updateHomes(false);
                 return true;
+            }else{
+                console.log(person.workplace+" "+tileIndex);
+                console.log(person);
             }
             return false;
         }

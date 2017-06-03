@@ -17,7 +17,7 @@ var PrivateAccountView = {
         var accountView = MainGame.game.make.group();
 
         accountView.page = Page.createNew();
-        accountView.page.anchor.set(0.5, 0.5);
+        //accountView.page.anchor.set(0.5, 0.5);
         accountView.addChild(accountView.page);
 
         accountView.sfxArray = [

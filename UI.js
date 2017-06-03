@@ -31,48 +31,6 @@ var Hud = {
         hud.coalitionFlag = coalitionFlag;
         hud.addChild(hud.coalitionFlag);
 
-        // Menu test buttons
-        // hud.singleFolderButton = MainGame.game.make.button(0,moneyPanel.height,'small_generic_button',
-        //     function(){
-        //         /*global SingleFolder*/
-        //         SingleFolder.createNew();
-        //     }, MainGame, 1, 0, 2, 2);
-        // hud.singleFolderButton.input.priorityID = hudInputPriority;
-        // hud.addChild(hud.singleFolderButton);
-
-        // hud.doubleFolderButton = MainGame.game.make.button(0,hud.singleFolderButton.y + hud.singleFolderButton.height,'small_generic_button',
-        //     function(){
-        //         /*global DoubleFolder*/
-        //         DoubleFolder.createNew();
-        //     }, MainGame, 1, 0, 2, 2);
-        // hud.doubleFolderButton.input.priorityID = hudInputPriority;
-        // hud.addChild(hud.doubleFolderButton);
-
-        // hud.globalBinderButton = MainGame.game.make.button(0,hud.doubleFolderButton.y + hud.doubleFolderButton.height,'small_generic_button',
-        //     function(){
-        //         /*global Binder*/
-        //         Binder.createNew(Binder.global,0);
-        //     }, MainGame, 1, 0, 2, 2);
-        // hud.globalBinderButton.input.priorityID = hudInputPriority;
-        // hud.addChild(hud.globalBinderButton);
-
-        // hud.buildingBinderButton = MainGame.game.make.button(0,hud.globalBinderButton.y + hud.globalBinderButton.height,'small_generic_button',
-        //     function(){
-        //         /*global Binder*/
-        //         Binder.createNew(Binder.building,0,MainGame.board.findBuilding("school",null,null,null)[0]);
-        //     }, MainGame, 1, 0, 2, 2);
-        // hud.buildingBinderButton.input.priorityID = hudInputPriority;
-        // hud.addChild(hud.buildingBinderButton);
-
-        // hud.clipboardBinderButton = MainGame.game.make.button(0,hud.buildingBinderButton.y + hud.buildingBinderButton.height,'small_generic_button',
-        //     function(){
-        //         /*global Clipboard*/
-        //         Clipboard.createNew();
-        //     }, MainGame, 1, 0, 2, 2);
-        // hud.clipboardBinderButton.input.priorityID = hudInputPriority;
-        // hud.addChild(hud.clipboardBinderButton);
-
-
         // "Next Turn" button
         hud.btnNextTurn = MainGame.game.make.button(MainGame.game.width, MainGame.game.height, 'endturn_button',
             function() {

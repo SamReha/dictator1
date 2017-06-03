@@ -1,15 +1,15 @@
 var DragableSprite = {
-	createNew: function(x,y,dragSpriteName,emptySpriteName,pickupFunction,dropFunction,dropTag){
+	createNew: function(x,y,dragSpriteName,emptySpriteName,pickupFunction,dropFunction,tintFunction,dropTag){
 		var spriteBack = MainGame.game.make.sprite(x,y,emptySpriteName);
 		spriteBack.anchor.setTo(.5,.5);
 		spriteBack.inputEnabled = true;
 		spriteBack.input.priorityID = 150;
 		spriteBack.tag = dropTag;
+		spriteBack.tintFunction = tintFunction;
 
 		spriteBack.spriteFront = MainGame.game.make.sprite(0,0,dragSpriteName);
 		spriteBack.spriteFront.anchor.setTo(.5,.5);
 		spriteBack.addChild(spriteBack.spriteFront);
-		spriteBack.spriteFront.tag = dropTag;
 
 		spriteBack.spriteFront.inputEnabled = true;
 		spriteBack.spriteFront.input.priorityID = 160;
@@ -19,25 +19,33 @@ var DragableSprite = {
 		return spriteBack;
 	},
 
-	updateSelf: function(self){
-		self.x = MainGame.game.input.x;
-		self.y = MainGame.game.input.y;
+	updateSelf: function(back){
+		back.dragSprite.x = MainGame.game.input.x;
+		back.dragSprite.y = MainGame.game.input.y;
 
 		var target = MainGame.game.input.activePointer.targetObject;
 		if(target){
-			if(target.sprite.tag === self.tag){
-				self.dropable = true;
-				self.target = target.sprite;
-				self.tint = 0x30a030;
+			if(target.sprite.tag === back.dragSprite.tag){
+				back.dragSprite.dropable = true;
+				if(back.dragSprite.target!==null)
+					back.tintFunction(back,back.dragSprite.target,false);
+				back.dragSprite.target = target.sprite;
+				back.tintFunction(back,back.dragSprite.target,true);
 			} else {
-				self.dropable = false;
-				self.target = null;
-				self.tint = 0xffffff;
+				back.dragSprite.dropable = false;
+				if(back.dragSprite.target!==null){
+					if(back.dragSprite.target.tag === back.dragSprite.tag)
+						back.tintFunction(back,back.dragSprite.target,false);
+				}
+				back.dragSprite.target = null;
 			}
 		} else {
-			self.dropable = false;
-			self.target = null;
-			self.tint = 0xffffff;
+			back.dragSprite.dropable = false;
+			if(back.dragSprite.target!==null){
+				if(back.dragSprite.target.tag === back.dragSprite.tag)
+					back.tintFunction(back,back.dragSprite.target,false);
+			}
+			back.dragSprite.target = null;
 		}
 	},
 
@@ -50,7 +58,7 @@ var DragableSprite = {
 			back.dragSprite.anchor.setTo(.5,.5);
 			back.dragSprite.deltaTime = 10;
 			back.dragSprite.timer = MainGame.game.time.create(false);
-			back.dragSprite.timer.loop(back.dragSprite.deltaTime, function(){DragableSprite.updateSelf(back.dragSprite);}, back.dragSprite);
+			back.dragSprite.timer.loop(back.dragSprite.deltaTime, function(){DragableSprite.updateSelf(back);}, back.dragSprite);
 			back.dragSprite.timer.start();
 
 			back.dragSprite.tag = back.tag;
@@ -65,11 +73,12 @@ var DragableSprite = {
 
 	onDragStop: function(back, dropFunction){
 		return function(){
+			if(back.dragSprite.target!==null)
+				back.tintFunction(back,back.dragSprite.target,false);
 			back.dragSprite.timer.stop(false);
 			//console.log(back.dragSprite.target);
 			//MainGame.game.input.onUp.remove((DragableSprite.onDragStop(back, dropFunction)), back.spriteFront);
 			//MainGame.game.input.onUp.add(function() { console.log(MainGame.game.input.activePointer.targetObject); });
-
 			if(back.dragSprite.dropable && back.dragSprite.target!==null && back.dragSprite.target !== back){
 				dropFunction(back,back.dragSprite.target);
 			}

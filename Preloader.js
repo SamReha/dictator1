@@ -167,6 +167,13 @@ var Preloader={
         g.load.image('unrest_output_half',      iconDir + 'unrest_output_half.png');
         g.load.image('worker_icon',             iconDir + 'worker_icon_test.png');
         g.load.image('worker_icon_empty',       iconDir + 'worker_icon_empty.png');
+        g.load.image('socialElitePin',          iconDir + 'socialElitePin.png');
+        g.load.image('socialElitePinLarge',     iconDir + 'socialElitePinLarge.png');
+        g.load.image('ministerPin',             iconDir + 'ministerPin.png');
+        g.load.image('ministerPinLarge',        iconDir + 'ministerPinLarge.png');
+        g.load.image('occupantHolder',          iconDir + 'occupantHolder.png');
+        g.load.image('dragable_resident_icon',  iconDir + 'dragable_resident_icon.png');
+        g.load.image('dragable_worker_icon',    iconDir + 'dragable_worker_icon.png');
 
         g.load.spritesheet('homeless_icon',      iconDir + 'homeless_icon.png', 46, 46, 3);
         g.load.spritesheet('money_icon',         iconDir + 'money_icon.png', 46, 46, 3);

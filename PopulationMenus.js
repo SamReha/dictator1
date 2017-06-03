@@ -3,7 +3,7 @@ var PopulationMenu ={
 		var popMenu = MainGame.game.make.group();
 
 		popMenu.page = Page.createNew();
-		popMenu.page.anchor.setTo(.5,.5);
+		//popMenu.page.anchor.setTo(.5,.5);
 		popMenu.addChild(popMenu.page);
 
 		popMenu.title = MainGame.game.make.text(0,-popMenu.height*11/28,"Total Population",PopMenuController.header1);
@@ -14,6 +14,8 @@ var PopulationMenu ={
 		popMenu.topBar.anchor.setTo(.5,.5);
 		popMenu.topBar.scale.setTo(.6,.6);
 		popMenu.addChild(popMenu.topBar);
+
+		popMenu.rightSide = null;
 
 		popMenu.seTitle = TextLinkButton.createNew(-popMenu.width*3/7,-popMenu.height*2/7,"Social Elite",PopMenuController.header2,function(){
 			var binder = popMenu.parent.parent;
@@ -92,7 +94,7 @@ var SocialEliteMenu = {
 		MainGame.global.ministerViewIsOpen = true;
 
 		seMenu.page = Page.createNew();
-		seMenu.page.anchor.setTo(.5,.5);
+		//seMenu.page.anchor.setTo(.5,.5);
 		seMenu.addChild(seMenu.page);
 
 		seMenu.title = MainGame.game.make.text(0,-seMenu.height*11/28,"Social Elite",PopMenuController.header1);
@@ -103,6 +105,8 @@ var SocialEliteMenu = {
 		seMenu.topBar.anchor.setTo(.5,.5);
 		seMenu.topBar.scale.setTo(.6,.6);
 		seMenu.addChild(seMenu.topBar);
+
+		seMenu.rightSide = null;
 
 		seMenu.ministerTitle = MainGame.game.make.text(-seMenu.width*3/7,-seMenu.height*2/7,"Ministers",PopMenuController.header2);
 		seMenu.ministerTitle.anchor.setTo(0,.5);
@@ -160,8 +164,11 @@ var SocialEliteMenu = {
 		return seMenu;
 	},
 
-	onPersonSelected: function(person){
-		Clipboard.createNew(Clipboard.contract,{personDataRef:person});
+	onPersonSelected: function(view, person){
+		if(person.type === Person.Hi)
+			DoubleFolder.createNew(person,false);
+		else
+			PopMenuController.openDossier(view,person);
 	},
 
 	makeEntry: function(person1,person2,listView){
@@ -179,7 +186,7 @@ var SocialEliteMenu = {
 		entrySprite.addChild(entrySprite.back1);
         entrySprite.back1.events.onInputUp.add(function(){entrySprite.back1.alpha = .25;});
         if(person1!=="")
-        	entrySprite.back1.events.onInputUp.add(function(){SocialEliteMenu.onPersonSelected(person1)});
+        	entrySprite.back1.events.onInputUp.add(function(){SocialEliteMenu.onPersonSelected(listView.parent, person1)});
         entrySprite.back1.events.onInputDown.add(function(){entrySprite.back1.alpha = .5;});
         entrySprite.back1.events.onInputOver.add(function(){entrySprite.back1.alpha = .25;});
         entrySprite.back1.events.onInputOut.add(function(){entrySprite.back1.alpha = 0;});
@@ -209,7 +216,7 @@ var SocialEliteMenu = {
 			entrySprite.addChild(entrySprite.back2);
 	        entrySprite.back2.events.onInputUp.add(function(){entrySprite.back2.alpha = .25;});
         	if(person2!=="")
-        		entrySprite.back2.events.onInputUp.add(function(){SocialEliteMenu.onPersonSelected(person2)});
+        		entrySprite.back2.events.onInputUp.add(function(){SocialEliteMenu.onPersonSelected(listView.parent, person2)});
 	        entrySprite.back2.events.onInputDown.add(function(){entrySprite.back2.alpha = .5;});
 	        entrySprite.back2.events.onInputOver.add(function(){entrySprite.back2.alpha = .25;});
 	        entrySprite.back2.events.onInputOut.add(function(){entrySprite.back2.alpha = 0;});
@@ -249,7 +256,7 @@ var WorkingClassMenu ={
 		var wcMenu = MainGame.game.make.group();
 
 		wcMenu.page = Page.createNew();
-		wcMenu.page.anchor.setTo(.5,.5);
+		//wcMenu.page.anchor.setTo(.5,.5);
 		wcMenu.addChild(wcMenu.page);
 
 		wcMenu.title = MainGame.game.make.text(0,-wcMenu.height*11/28,"Working Class",PopMenuController.header1);
@@ -260,6 +267,8 @@ var WorkingClassMenu ={
 		wcMenu.topBar.anchor.setTo(.5,.5);
 		wcMenu.topBar.scale.setTo(.6,.6);
 		wcMenu.addChild(wcMenu.topBar);
+
+		wcMenu.rightSide = null;
 
 		wcMenu.wcTitle = MainGame.game.make.text(-wcMenu.width*3/7,-wcMenu.height*2/7,"Workers",PopMenuController.header2);
 		wcMenu.wcTitle.anchor.setTo(0,.5);
@@ -292,8 +301,8 @@ var WorkingClassMenu ={
 		return wcMenu;
 	},
 
-	onPersonSelected: function(view,index){
-
+	onPersonSelected: function(view,person){
+		PopMenuController.openDossier(view,person);
 	},
 
 	makeEntry: function(person1,person2,listView){
@@ -310,6 +319,7 @@ var WorkingClassMenu ={
 		entrySprite.back1.input.priorityID=120;
 		entrySprite.addChild(entrySprite.back1);
         entrySprite.back1.events.onInputUp.add(function(){entrySprite.back1.alpha = .25;});
+        entrySprite.back1.events.onInputUp.add(function(){WorkingClassMenu.onPersonSelected(listView.parent,person1);});
         entrySprite.back1.events.onInputDown.add(function(){entrySprite.back1.alpha = .5;});
         entrySprite.back1.events.onInputOver.add(function(){entrySprite.back1.alpha = .25;});
         entrySprite.back1.events.onInputOut.add(function(){entrySprite.back1.alpha = 0;});
@@ -325,6 +335,7 @@ var WorkingClassMenu ={
 			entrySprite.back2.input.priorityID=120;
 			entrySprite.addChild(entrySprite.back2);
 	        entrySprite.back2.events.onInputUp.add(function(){entrySprite.back2.alpha = .25;});
+        	entrySprite.back2.events.onInputUp.add(function(){WorkingClassMenu.onPersonSelected(listView.parent,person2);});
 	        entrySprite.back2.events.onInputDown.add(function(){entrySprite.back2.alpha = .5;});
 	        entrySprite.back2.events.onInputOver.add(function(){entrySprite.back2.alpha = .25;});
 	        entrySprite.back2.events.onInputOut.add(function(){entrySprite.back2.alpha = 0;});
@@ -352,4 +363,13 @@ var PopMenuController ={
     body1:   { font: "20px myKaiti", fill:"black"},
     body2:   { font: "20px myKaiti", fill:"black", boundsAlignH: 'left'},
     listText:{ font: "20px myKaiti", fill:"black", shadowBlur: 0, shadowColor: "rgba(0,0,0,.9)", shadowOffsetX: 1, shadowOffsetY: 1 },
+    buttonStyle: {font:"20px myKaiti", fill:"BurlyWood", shadowColor:"black", shadowOffsetX:2, shadowOffsetY:2},
+
+    openDossier: function(menu,person){
+    	if(menu.rightSide===null)
+    		menu.rightSide = SingleFolder.createNew(person,false);
+    	else if(menu.rightSide.person !== person)
+    		menu.rightSide.swapPages(person);
+	},
+
 };

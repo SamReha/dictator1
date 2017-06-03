@@ -6,7 +6,7 @@ var YearView = {
         var yearView = MainGame.game.make.group();
 
         yearView.page = Page.createNew();
-        yearView.page.anchor.setTo(.5,.5);
+        //yearView.page.anchor.setTo(.5,.5);
         yearView.addChild(yearView.page);
 
         //yearView.position.set(MainGame.game.width/2, MainGame.game.height/2);

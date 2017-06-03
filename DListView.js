@@ -58,9 +58,9 @@ var DListView={
 		if(!view.isHorizontal){
 			itemSprite.y=index*view.itemSize.h;
 		}else{
-			itemSprite.anchor.setTo(0.5,0.5);
+			//itemSprite.anchor.setTo(0.5,0.5);
 			itemSprite.x=index*view.itemSize.w+(view.itemSize.w/2);
-			itemSprite.y=view.itemSize.h/2;
+			//itemSprite.y=view.itemSize.h/2;
 		}
 	},
 	setState: function(view, state){
