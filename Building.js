@@ -10,6 +10,7 @@ var Building = {
             console.log("[Building] OK.");
         }
     },
+
     createNew: function(data){
         //console.log("[Building] createNew, the building's textureKey must be name.");
 
@@ -48,6 +49,7 @@ var Building = {
 
         b.integrity = 10;
 
+        b.anchor.set(0.5, 0.5);
 
         // Class funcs
         b.isEmpty=function(){return b.name===null};
@@ -90,5 +92,12 @@ var Building = {
         }else if(b.startingTurn>turn){
             b.counterIcon.loadTexture("counter_icon"+(b.startingTurn-MainGame.global.turn));
         }
+    },
+
+    // Static Method - safely gets the data of a given building
+    getData: function(name) {
+        Building.loadBuildingData();
+
+        return Building.buildingData[name];
     },
 };

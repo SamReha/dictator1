@@ -17,6 +17,7 @@ var Global={
     boughtRoad: false,         // Has the player at least attempted to buy a road yet?
     ministerViewIsOpen: false, // Flag that shows whether or not the minister view is open
     contractIsOpen: false,     // Flag that shows whether or not a contract is open
+    statsBinderIsOpen: false,  // Is the binder that holds global stats / money stats open?
     isBuilding: false,         // Is the player trying to build a building?
 
     nextTurn: function() {
@@ -150,6 +151,10 @@ var Global={
         MainGame.music.stop();
         MainGame.game.state.restart();
         MainGame.global.money = Global.startingMoney;
+        MainGame.global.freedom = 0;
+        MainGame.global.unrest = 0;
+        MainGame.global.thermometerFill = 0;
+        MainGame.global.thermometerDelta = 0;
     },
 };
 

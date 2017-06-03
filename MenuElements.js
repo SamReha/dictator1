@@ -143,6 +143,10 @@ var Binder = {
 	building: "buildingDetail",
 
 	createNew: function(type,activeTab,bdIndex) {
+		if (type === Binder.global) {
+			MainGame.global.statsBinderIsOpen = true;
+		}
+
 		var binder = MainGame.game.add.sprite(0,0,(type===Binder.global?'global_binder_texture':'building_binder_texture'));
 		binder.anchor.setTo(.5,.5);
 		binder.inputEnabled = true;	binder.input.priorityID = 5;
@@ -531,6 +535,10 @@ var MenuController = {
 
 	closeAllMenus: function(){
 		MenuController.uiMask.destroy();
+
+		if (MainGame.global.statsBinderIsOpen === true) {
+			MainGame.global.statsBinderIsOpen = false;
+		}
 		
 		for(var i = 0; i < this.leftMenusOpen.length; ++i) {
 			//console.log(this.leftMenusOpen[i]);

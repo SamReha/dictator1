@@ -151,7 +151,7 @@ var Tutorial = {
 
 	setPointerOnBuyRoad: function(bool) {
 		if (bool) {
-			Tut.buyRoadPointer = UIPointer.createNew(975, 125, UIPointer.DOWN, -1, null, true);
+			Tut.buyRoadPointer = UIPointer.createNew(1020, 175, UIPointer.DOWN, -1, null, true);
 		} else if (Tut.buyRoadPointer) {
 			Tut.buyRoadPointer.stop();
 		}
@@ -159,7 +159,7 @@ var Tutorial = {
 
 	setPointerOnRoadPlacement: function(bool) {
 		if (bool) {
-			Tut.roadPlacementPointer = UIPointer.createNew(128, 20, UIPointer.DOWN, -1, null, true);
+			Tut.roadPlacementPointer = UIPointer.createNew(128, 60, UIPointer.DOWN, -1, null, true);
 			MainGame.board.at(158).addChild(Tut.roadPlacementPointer);
 		} else if (Tut.roadPlacementPointer) {
 			Tut.roadPlacementPointer.stop();
@@ -184,11 +184,27 @@ var Tutorial = {
 		}
 	},
 
+	setPointerOnResidences: function(bool) {
+		if (bool) {
+			Tut.buySuburbPointer = UIPointer.createNew(725, 175, UIPointer.DOWN, -1, null, true);
+		} else if (Tut.buySuburbPointer) {
+			Tut.buySuburbPointer.stop();
+		}
+	},
+
 	setPointerOnMinistryPanel: function(bool) {
 		if (bool) {
 			Tut.ministryPanelPointer = UIPointer.createNew(175, 475, UIPointer.LEFT, -1, null, true);
 		} else if (Tut.ministryPanelPointer) {
 			Tut.ministryPanelPointer.stop();
+		}
+	},
+
+	setPointerOnStatsPanel: function(bool) {
+		if (bool) {
+			Tut.statsPanelPointer = UIPointer.createNew(MainGame.game.width - 175, 475, UIPointer.RIGHT, -1, null, true);
+		} else if (Tut.statsPanelPointer) {
+			Tut.statsPanelPointer.stop();
 		}
 	},
 
@@ -235,7 +251,7 @@ var Tutorial = {
 		if (!MenuController.menuOpen) return false;
 		if (MenuController.leftMenusOpen.length !== 1) return false;
 
-		console.log(MenuController);
+		//console.log(MenuController);
 
 		if (MenuController.leftMenusOpen[0].bdIndex === 128) {
 			return true;
@@ -291,10 +307,5 @@ var Tutorial = {
 
 	hasMinister: function() {
 		return MainGame.population.highList().length > 0;
-	},
-
-	// Hacky, but it'll make sure the people view is closed until we can put it in a folder menu
-	closePeopleView: function() {
-		//MainGame.global.pv.closeSelf();
 	},
 };

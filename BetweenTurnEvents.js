@@ -11,7 +11,13 @@ var showNewBuildings = function(callback) {
 
         // Figure out our pretty data - like a custom message and image.
         var buildingName = MainGame.board.at(list[listIndex]).getBuilding().playerLabel;
-        var message = 'A ' + buildingName + ' has been constructed!';
+
+        var article = 'A';
+        if (['A', 'E', 'I', 'O', 'U'].includes(buildingName[0])) {
+            article = 'An';
+        }
+
+        var message = article + ' ' + buildingName + ' has been constructed!';
 
         // Tween to the tile
         MainGame.board.cameraCenterOn(list[listIndex]);
@@ -101,55 +107,66 @@ var showThermometerUpdate = function(callback) {
     Global.thermometerFill = Phaser.Math.clamp(Global.thermometerFill + Global.thermometerDelta, 0, 100);
 
     // Check if unit spawn
-    if (Global.thermometerFill >= 100) {
-        Global.thermometerFill = 50;
+    if (Global.thermometerFill === 100) {
+        // Force the panel to update
+        MainGame.hud.funPanel.updateData();
 
-        // Compute angriest citizen
-        var workingClass = MainGame.population.lowList();
-        workingClass.sort(function(a, b) {
-            return b.unrest - a.unrest;
-        });
-        var citizenToRiot = workingClass[0];
-    
-        var didSpawn = Unit.spawnUnitAt(Unit.Riot, citizenToRiot.home);
+        // Wait a bit
+        var timer = MainGame.game.time.create(true);
+        timer.add(1000, function() {
+            MainGame.game.make.audio('boiling').play();
+            
+            // Lower the thermometer and spawn a unit
+            Global.thermometerFill = 50;
 
-        if (didSpawn) {
-            // Tween to the tile
-            MainGame.board.cameraCenterOn(citizenToRiot.home);
+            // Compute angriest citizen
+            var workingClass = MainGame.population.lowList();
+            workingClass.sort(function(a, b) {
+                return b.unrest - a.unrest;
+            });
+            var citizenToRiot = workingClass[0];
+        
+            var didSpawn = Unit.spawnUnitAt(Unit.Riot, citizenToRiot.home);
 
-            // Remove them from their home
-            MainGame.board.at(citizenToRiot.home).getBuilding().removePerson();
-            citizenToRiot.home = null;
+            if (didSpawn) {
+                // Tween to the tile
+                MainGame.board.cameraCenterOn(citizenToRiot.home);
 
-            // Remove them from their workplace
-            var workIndex = citizenToRiot.workplace;
-            if (workIndex !== null) {
-                var workPlace = MainGame.board.at(workIndex).getBuilding();
-                workPlace.removePerson();
-                citizenToRiot.work = null;
+                // Remove them from their home
+                MainGame.board.at(citizenToRiot.home).getBuilding().removePerson();
+                citizenToRiot.home = null;
+
+                // Remove them from their workplace
+                var workIndex = citizenToRiot.workplace;
+                if (workIndex !== null) {
+                    var workPlace = MainGame.board.at(workIndex).getBuilding();
+                    workPlace.removePerson();
+                    citizenToRiot.work = null;
+                }
+
+                // Wait a bit, then spawn the event.
+                var timer = MainGame.game.time.create(true);
+                timer.add(2100, function() {
+                    var e = Event.createNew();
+                    e.setModel([
+                                    {
+                                        portrait: 'exclamation_01', 
+                                        description: 'A citizen has begun rioting!', 
+                                        buttonTexts: ["Continue"]
+                                    }
+                                ]);
+
+                    e.setController([
+                        [function() {
+                            e.suicide();
+                            callback();
+                        }]
+                    ]);
+                }, null);
+                timer.start();
             }
-
-            // Wait a bit, then spawn the event.
-            var timer = MainGame.game.time.create(true);
-            timer.add(2100, function() {
-                var e = Event.createNew();
-                e.setModel([
-                                {
-                                    portrait: 'exclamation_01', 
-                                    description: 'A citizen has begun rioting!', 
-                                    buttonTexts: ["Continue"]
-                                }
-                            ]);
-
-                e.setController([
-                    [function() {
-                        e.suicide();
-                        callback();
-                    }]
-                ]);
-            }, null);
-            timer.start();
-        }
+        }, null);
+        timer.start();
     } else {
         // Else, no spawn occured, so we should just move on
         callback();

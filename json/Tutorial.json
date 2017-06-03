@@ -20,7 +20,7 @@
 		"handler":[
 			["e.gotoPage(1)"],
 			["e.gotoPage(2)"],
-			["Tut.intro=true;e.suicide();Tutorial.generate();MainGame.hud.setEndTurnActive(false)", "e.suicide()"]
+			["Tut.intro=true;e.suicide();Tutorial.generate();MainGame.hud.setEndTurnActive(false)", "Tut.isComplete = true;e.suicide()"]
 		],
 		"reminder":{
 			"model":{
@@ -100,7 +100,7 @@
 	{
 		"name":"PlacingRoads",
 		"cond":"Tutorial.roadsBuilt()",
-		"init":"Tutorial.setPointerOnBuyRoad(false);Tutorial.setPointerOnRoadPlacement(true)",
+		"init":"Tutorial.setPointerOnBuyRoad(false);Tutorial.setPointerOnRoadPlacement(true);MainGame.board.limitInteractionTo(158)",
 		"event":[],
 		"handler":[],
 		"reminder":{
@@ -126,7 +126,7 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Let's reassign a worker. Click on the nearby school to open its menu.",
+				"description":"Let's reassign a worker. Click on the nearby library to open its menu.",
 				"buttonTexts":["OK"]
 			}
 		],
@@ -346,8 +346,27 @@
 
 	{
 		"name":"OpenBuildMenuHousing",
+		"cond":"MainGame.global.buildMenuIsOpen === false",
+		"init":"Tutorial.setPointerOnBuild(false);Tutorial.setPointerOnResidences(true)",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"PlacingHouse",
 		"cond":"Tutorial.builtNewHouse()",
-		"init":"Tutorial.setPointerOnBuild(false)",
+		"init":"Tutorial.setPointerOnResidences(false)",
 		"event":[],
 		"handler":[],
 		"reminder":{
@@ -513,8 +532,27 @@
 
 	{
 		"name":"ShowStatsPanel",
-		"cond":"Tut.sawStatsPanel",
-		"init":"MenuController.closeAllMenus();Tutorial.closePeopleView();Tutorial.showStatsPanel()",
+		"cond":"MainGame.global.statsBinderIsOpen",
+		"init":"MenuController.closeAllMenus();Tutorial.setPointerOnStatsPanel(true)",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
+			}
+		}
+	},
+
+	{
+		"name":"LookingAtStatsBinder",
+		"cond":"MainGame.global.statsBinderIsOpen === false",
+		"init":"Tutorial.setPointerOnStatsPanel(false)",
 		"event":[],
 		"handler":[],
 		"reminder":{
@@ -533,7 +571,7 @@
 	{
 		"name":"tutorialEnd",
 		"cond":"false",
-		"init":"MenuController.closeAllMenus();Tutorial.closePeopleView();MainGame.board.cameraCenterOn(82)",
+		"init":"MenuController.closeAllMenus();MainGame.board.cameraCenterOn(82)",
 		"event":[
 			{
 				"description":"Congratulations! You now know the basics of how to rule your country. Click the End Turn button in the lower right corner to advance to the next year.", 
@@ -541,7 +579,7 @@
 			}
 		],
 		"handler":[
-			["MainGame.hud.setEndTurnActive(true);Tutorial.checkTimer.stop();e.suicide()"]
+			["MainGame.hud.setEndTurnActive(true);Tutorial.checkTimer.stop();Tut.isComplete = true;e.suicide()"]
 		],
 		"reminder":{
 			"model":{

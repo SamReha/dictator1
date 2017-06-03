@@ -738,69 +738,7 @@ var BDController = {
         var entryString;
 
         if (residential) {
-            if (citizen.type === Person.Low) {
-                entryString = citizen.name + ' (';
-                if (citizen.workplace === null) {
-                    entryString += 'Unemployed';
-                } else {
-                    var workplace = MainGame.board.at(citizen.workplace).building;
-                    switch (workplace.name) {
-                        case 'school':
-                            entryString += 'School Teacher';
-                            break;
-                        case 'farm':
-                            entryString += 'Farmer';
-                            break;
-                        case 'factory':
-                            entryString += 'Factory Worker';
-                            break;
-                        case 'armyBase':
-                            entryString += 'Soldier';
-                            break;
-                        default:
-                            entryString += 'MISSING JOBNAME';
-
-                    }
-                }
-
-                entryString += ')';
-            } else if (citizen.type === Person.Mid) {
-                entryString = citizen.name + ' (';
-
-                switch (citizen.role) {
-                    case Person.Bureaucrat:
-                        entryString += 'Elite Bureaucrat';
-                        break;
-                    case Person.Military:
-                        entryString += 'Elite Military Officer';
-                        break;
-                    case Person.Merchant:
-                        entryString += 'Elite Financier';
-                        break;
-                    default:
-                        entryString += 'MISSING ROLE NAME';
-                }
-
-                entryString += ')';
-            } else if (citizen.type === Person.Hi) {
-                entryString = citizen.name + ' (';
-
-                switch (citizen.role) {
-                    case Person.Bureaucrat:
-                        entryString += 'Minster of Bureaucracy';
-                        break;
-                    case Person.Military:
-                        entryString += 'Minister of the Military';
-                        break;
-                    case Person.Merchant:
-                        entryString += 'Minister of Finance';
-                        break;
-                    default:
-                        entryString += 'MISSING ROLE NAME';
-                }
-
-                entryString += ')';
-            }
+            entryString = citizen.name + ' (' + citizen.getJobTitle() + ')';
         } else if(!plainText) {
             // Else, it's a workplace
             entryString = citizen.name + ' (';
@@ -922,33 +860,65 @@ var BDController = {
 
     demolishBuilding: function(view, bdInfo) {
         if (Global.money >= 10) {
-            if (bdInfo.residential) {
-                var occupants = MainGame.population.getHouseMap()[bdInfo.index];
-            } else {
-                var occupants = MainGame.population.getWorkMap()[bdInfo.index];
-            }
+            var e = Event.createNew();
+            e.setModel([
+                            {
+                                portrait: 'exclamation_01', 
+                                description: 'Are you sure you want to spend ₸10 to demolish this building?', 
+                                buttonTexts: ['YES', 'NO']
+                            }
+                        ]);
 
-            // Evict all residents
-            for (var i in occupants) {
-                MainGame.population.fire(bdInfo.index);
-            }
+            e.setController([
+                [function() {
+                    e.suicide();
+                    if (bdInfo.residential) {
+                        var occupants = MainGame.population.getHouseMap()[bdInfo.index];
+                    } else {
+                        var occupants = MainGame.population.getWorkMap()[bdInfo.index];
+                    }
 
-            Global.updateMoneyPerTurn();
+                    // Evict all residents
+                    for (var i in occupants) {
+                        MainGame.population.fire(bdInfo.index);
+                    }
 
-            // Remove the building at view.index
-            MainGame.board.at(bdInfo.index).removeBuilding();
+                    Global.updateMoneyPerTurn();
 
-            // Bill the player
-            Global.money -= 10;
+                    // Remove the building at view.index
+                    MainGame.board.at(bdInfo.index).removeBuilding();
 
-            // Close the Detail View
-            view.demolishSfx.play();
-            view.demolishButton.freezeFrames = true;
-            //view.destroy();
-            // MenuController.uiMask.destroy();
-            // MenuController.closeSfx.play();
-            MenuController.closeAllMenus();
-            MainGame.board.controller.detailView = null;
+                    // Bill the player
+                    Global.money -= 10;
+
+                    // Close the Detail View
+                    view.demolishSfx.play();
+                    view.demolishButton.freezeFrames = true;
+                    //view.destroy();
+                    // MenuController.uiMask.destroy();
+                    // MenuController.closeSfx.play();
+                    MenuController.closeAllMenus();
+                    MainGame.board.controller.detailView = null;
+                },
+                function() {
+                    e.suicide();
+                }]
+            ]);
+        } else {
+            var e = Event.createNew();
+            e.setModel([
+                            {
+                                portrait: 'exclamation_01', 
+                                description: 'You must have ₸10 to demolish a building.', 
+                                buttonTexts: ['OK']
+                            }
+                        ]);
+
+            e.setController([
+                [function() {
+                    e.suicide();
+                }]
+            ]);
         }
     },
 };

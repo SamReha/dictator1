@@ -23,7 +23,7 @@ var Preloader={
         g.load.image('radioStation', buildingDir + 'radioStation.png');
         g.load.image('road',         buildingDir + 'road.png');
         g.load.image('rubble',       buildingDir + 'rubble.png');
-        g.load.image('school',       buildingDir + 'school.png');
+        g.load.image('library',      buildingDir + 'library.png');
         g.load.image('shantyTown',   buildingDir + 'shantyTown.png');
         g.load.image('suburb',       buildingDir + 'suburb.png');
         g.load.image('university',   buildingDir + 'university.png');
@@ -45,11 +45,40 @@ var Preloader={
         g.load.image('police_detail',       detailIconDir + 'police.png');
         g.load.image('radioStation_detail', detailIconDir + 'radioStation.png');
         g.load.image('road_detail',         detailIconDir + 'road.jpg');
-        g.load.image('school_detail',       detailIconDir + 'school.png');
+        g.load.image('library_detail',      detailIconDir + 'library.png');
         g.load.image('shantyTown_detail',   detailIconDir + 'shantyTown.png');
         g.load.image('suburb_detail',       detailIconDir + 'suburb.png');
         g.load.image('university_detail',   detailIconDir + 'university.png');
         g.load.image('detail_icon_frame',   detailIconDir + 'detail_icon_frame.png');
+
+        // Roads
+        var roadDir = buildingDir + 'roads/';
+        g.load.image('road_000000',     roadDir + 'road_000000.png');
+        g.load.image('road_000001',     roadDir + 'road_000001.png');
+        g.load.image('road_010001',     roadDir + 'road_010001.png');
+        g.load.image('road_010010',     roadDir + 'road_010010.png');
+        g.load.image('road_011000',     roadDir + 'road_011000.png');
+        g.load.image('road_011010',     roadDir + 'road_011010.png');
+        g.load.image('road_011011',     roadDir + 'road_011011.png');
+        g.load.image('road_100000',     roadDir + 'road_100000.png');
+        g.load.image('road_100100',     roadDir + 'road_100100.png');
+        g.load.image('road_101000',     roadDir + 'road_101000.png');
+        g.load.image('road_101010',     roadDir + 'road_101010.png');
+        g.load.image('road_110000',     roadDir + 'road_110000.png');
+        g.load.image('road_110001',     roadDir + 'road_110001.png');
+        g.load.image('road_110010',     roadDir + 'road_110010.png');
+        g.load.image('road_110100',     roadDir + 'road_110100.png');
+        g.load.image('road_110101',     roadDir + 'road_110101.png');
+        g.load.image('road_110110',     roadDir + 'road_110110.png');
+        g.load.image('road_110111',     roadDir + 'road_110111.png');
+        g.load.image('road_111000',     roadDir + 'road_111000.png');
+        g.load.image('road_111001',     roadDir + 'road_111001.png');
+        g.load.image('road_111010',     roadDir + 'road_111010.png');
+        g.load.image('road_111011',     roadDir + 'road_111011.png');
+        g.load.image('road_111100',     roadDir + 'road_111100.png');
+        g.load.image('road_111111',     roadDir + 'road_111111.png');
+        g.load.image('road_dirt_diag',  roadDir + 'road_dirt_diag.png');
+        g.load.image('road_dirt_horiz', roadDir + 'road_dirt_horiz.png');
 
         // Terrain
         var resourceDir = imageDir + 'terrains/';
@@ -79,6 +108,7 @@ var Preloader={
         g.load.image('building_detail_backpanel',       uiDir + 'building_detail_backpanel.png');
         g.load.image('buildMenuBg',                     uiDir + 'buildMenuBg.png');
         g.load.image('buildMenuCover1',                 uiDir + 'buildMenuCover1.png');
+        g.load.image('buildMenuCoverAlpha1',            uiDir + 'buildMenuCoverAlpha1.png');
         g.load.image('buildMenuCover2',                 uiDir + 'buildMenuCover2.png');
         g.load.image('coalition_backpanel',             uiDir + 'coalition_backpanel.png');
         g.load.image('stats_panel_backpanel',           uiDir + 'stats_panel_backpanel.png');
@@ -99,6 +129,9 @@ var Preloader={
         g.load.image('thermometer_bulb',                uiDir + 'thermometer_bulb.png');
         g.load.image('thermometer_tube',                uiDir + 'thermometer_tube.png');
         g.load.image('page_texture',                    uiDir + 'page_texture.png');
+        g.load.image('rebellion_pressure_back',         uiDir + 'rebellion_pressure_back.png');
+        g.load.image('rebellion_pressure_front',        uiDir + 'rebellion_pressure_front.png');
+        g.load.image('rebellion_pressure_needle',       uiDir + 'rebellion_pressure_needle.png');
         g.load.image('single_folder_texture',           uiDir + 'single_folder_texture.png');
         g.load.image('double_folder_texture',           uiDir + 'double_folder_texture.png');
         g.load.image('folder_tab_texture',              uiDir + 'folder_tab_texture.png');
@@ -124,7 +157,7 @@ var Preloader={
         g.load.spritesheet('endturn_button',            buttonDir + 'endturn_button.png', 144, 80, 3);
         g.load.image('endturn_button_mask',             buttonDir + 'endturn_button_mask.png');
         g.load.spritesheet('closeButton',               buttonDir + 'close_button.png', 48, 48, 3);
-        g.load.spritesheet('buy_button',                buttonDir + 'buy_button.png', 120, 48, 3);
+        g.load.spritesheet('buy_button',                buttonDir + 'buy_button.png', 90, 78, 3);
         g.load.spritesheet('small_generic_button',      buttonDir + 'small_generic_button.png', 120, 48, 3);
         g.load.spritesheet('med_generic_button',        buttonDir + 'med_generic_button.png', 144, 80, 3);
         g.load.spritesheet('large_generic_button',      buttonDir + 'large_generic_button.png', 240, 96, 3);
@@ -183,7 +216,7 @@ var Preloader={
         g.load.spritesheet('unemployed_icon',    iconDir + 'unemployed_icon.png', 46, 46, 3);
         g.load.spritesheet('working_class_icon', iconDir + 'working_class_icon.png', 46, 46, 3);
         g.load.spritesheet('year_icon',          iconDir + 'year_icon.png', 46, 46, 3);
-        
+        g.load.spritesheet('red_binder_icon',    iconDir + 'red_binder_icon.png', 46, 46, 3);
 
         for(var i = 1; i <= 4; ++i){
             g.load.spritesheet('counter_icon'+i,iconDir + 'counter_icon'+i+'.png');
@@ -238,6 +271,10 @@ var Preloader={
         g.load.audio('message_close', sfxDir + 'messages/message_close_SFX.wav');
         g.load.audio('money_earned',  sfxDir + 'money_earned/money_earned_SFX.wav');
 
+        //// load boils
+        var boilDir = sfxDir + 'boils/';
+        g.load.audio('boiling',  boilDir + 'boiling.wav');
+
         //// load riot sfx
         var riotDir = sfxDir + 'rioters/';
         g.load.audio('rioter_spawn',  riotDir + 'spawn_rioters/spawn_rioters_SFX.wav');
@@ -251,6 +288,11 @@ var Preloader={
         g.load.audio('soldiers_attack', soldierDir + 'combat_soldiers/combat_soldiers_SFX.wav');
         g.load.audio('soldiers_move',   soldierDir + 'move_soldiers/move_soldiers_SFX.wav');
         g.load.audio('soldiers_death',  riotDir + 'dying_rioters/dying_rioters_SFX.wav');  // Need to get this one from Matt!!
+
+        //// load pencil sfx
+        for (var i = 1; i <= 10; i++) {
+            g.load.audio('pencil_circle_light_' + i, sfxDir + 'pencil_circle/pencil_circle_light_' + i + '.wav');
+        }
 
         for (var i = 1; i <= 14; i++) {
             g.load.audio('cloth_click_' + i, sfxDir + 'clicks/cloth_click/cloth_click_' + i + '_SFX.wav');
