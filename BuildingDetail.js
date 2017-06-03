@@ -432,7 +432,6 @@ var BDOutput = {
             var buildingOutput = bdInfo.building.effects;
             output.outputTypes = [];
             for(var i = 0; i < buildingOutput.length; ++i){
-
                 if(buildingOutput[i].type !== null)
                     output.outputTypes.push(buildingOutput[i].type);
             }
@@ -456,22 +455,23 @@ var BDOutput = {
         output.bar = MainGame.game.make.sprite(-output.width*1/5,-output.height*4/15,bar.generateTexture());
         output.addChild(output.bar);
 
-        output.listTitle = MainGame.game.make.text(-output.width*1/10,-output.height*4/15,(outputIndex!==null?output.outputTypes[outputIndex]:output.outputTypes[0]),BDController.header2);
-        output.addChild(output.listTitle);
-        // ListView
-        output.outputListView = DListView.createNew(
-            {},                  // don't need textures
-            {l:15, t:40},        // margin inside the list view
-            {w:output.width*9/20, h:output.height*3/20},       // size of an item
-            function(index){  }, // forwards the callback
-            false,               // not horizontal
-            110                  // priority ID
-        );
-        BDController.setupOutputList(output, bdInfo, 0, output.outputTypes[0]);
-        output.outputListView.x = -output.width*1/4;
-        output.outputListView.y = -output.height*1/4;
-        output.addChild(output.outputListView);
-
+        if(output.outputTypes.length > 0){
+            output.listTitle = MainGame.game.make.text(-output.width*1/10,-output.height*4/15,(outputIndex!==null?output.outputTypes[outputIndex]:output.outputTypes[0]),BDController.header2);
+            output.addChild(output.listTitle);
+            // ListView
+            output.outputListView = DListView.createNew(
+                {},                  // don't need textures
+                {l:15, t:40},        // margin inside the list view
+                {w:output.width*9/20, h:output.height*3/20},       // size of an item
+                function(index){  }, // forwards the callback
+                false,               // not horizontal
+                110                  // priority ID
+            );
+            BDController.setupOutputList(output, bdInfo, 0, output.outputTypes[0]);
+            output.outputListView.x = -output.width*1/4;
+            output.outputListView.y = -output.height*1/4;
+            output.addChild(output.outputListView);
+        }
         return output;
     },
 };
@@ -501,11 +501,11 @@ var BDMisc = {
         misc.icon.y = (-misc.height*7/15 + misc.iconFrame.height/2);
         misc.addChild(misc.icon);
 
-        output.buildingName = MainGame.game.make.text(0, 0, bdInfo.building.playerLabel + ' ', BDController.header1);
-        output.buildingName.anchor.setTo(.5,.5);
-        output.addChild(output.buildingName);
-        output.buildingName.x = output.width*1/15;
-        output.buildingName.y = output.icon.y - output.buildingName.height/2;
+        misc.buildingName = MainGame.game.make.text(0, 0, bdInfo.building.playerLabel + ' ', BDController.header1);
+        misc.buildingName.anchor.setTo(.5,.5);
+        misc.addChild(misc.buildingName);
+        misc.buildingName.x = misc.width*1/15;
+        misc.buildingName.y = misc.icon.y - misc.buildingName.height/2;
 
         if(bdInfo.building.name==='armyBase')
             var miscPage = "Deployment";
@@ -513,31 +513,31 @@ var BDMisc = {
             var miscPage = "Patients";
         else if(bdInfo.building.name==='prison')
             var miscPage = "Inmates"
-        output.pageName = MainGame.game.make.text(0, 0, miscPage, BDController.header2);
-        output.pageName.anchor.setTo(.5,.5);
-        output.addChild(output.pageName);
-        output.pageName.x = output.width*1/15;
-        output.pageName.y = output.icon.y + output.pageName.height/2;
+        misc.pageName = MainGame.game.make.text(0, 0, miscPage, BDController.header2);
+        misc.pageName.anchor.setTo(.5,.5);
+        misc.addChild(misc.pageName);
+        misc.pageName.x = misc.width*1/15;
+        misc.pageName.y = misc.icon.y + misc.pageName.height/2;
         
         if (bdInfo.building.name === 'armyBase') {
             var position = {
                 x: 0,
-                y: -view.width/2 + this.verticalBorderWidth,
+                y: -misc.width/2 + BDController.verticalBorderWidth,
             };
-            view.deployButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
-                view.deploySoldiers(buildingIndex);
-            }, null, 0, 2, 1, 2, 'Deploy Soldiers', this.buttonStyle);
-            view.deployButton.input.priorityID = 102;
-            view.deployButton.visible = !bdInfo.building.squadDeployed;
+            misc.deployButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
+                misc.deploySoldiers(buildingIndex);
+            }, null, 0, 2, 1, 2, 'Deploy Soldiers', BDController.buttonStyle);
+            misc.deployButton.input.priorityID = 102;
+            misc.deployButton.visible = !bdInfo.building.squadDeployed;
 
-            view.recallButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
-                view.recallSoldiers(buildingIndex);
-            }, null, 0, 2, 1, 2, 'Recall Soldiers', this.buttonStyle);
-            view.recallButton.input.priorityID = 102;
-            view.recallButton.visible = bdInfo.building.squadDeployed;
+            misc.recallButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
+                misc.recallSoldiers(buildingIndex);
+            }, null, 0, 2, 1, 2, 'Recall Soldiers', BDController.buttonStyle);
+            misc.recallButton.input.priorityID = 102;
+            misc.recallButton.visible = bdInfo.building.squadDeployed;
 
-            view.addChild(view.recallButton);
-            view.addChild(view.deployButton);
+            misc.addChild(misc.recallButton);
+            misc.addChild(misc.deployButton);
         }
 
         misc.openSfx = MainGame.game.make.audio('paper_click_' + Math.ceil(Math.random()*8)); // Assume we have 8 paper click sounds
