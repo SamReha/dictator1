@@ -126,7 +126,7 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Let's reassign a worker. Click on the nearby school to open its menu.",
+				"description":"Let's reassign a worker. Click on the nearby library to open its menu.",
 				"buttonTexts":["OK"]
 			}
 		],

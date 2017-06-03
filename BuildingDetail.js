@@ -675,69 +675,7 @@ var BDController = {
         var entryString;
 
         if (residential) {
-            if (citizen.type === Person.Low) {
-                entryString = citizen.name + ' (';
-                if (citizen.workplace === null) {
-                    entryString += 'Unemployed';
-                } else {
-                    var workplace = MainGame.board.at(citizen.workplace).building;
-                    switch (workplace.name) {
-                        case 'school':
-                            entryString += 'School Teacher';
-                            break;
-                        case 'farm':
-                            entryString += 'Farmer';
-                            break;
-                        case 'factory':
-                            entryString += 'Factory Worker';
-                            break;
-                        case 'armyBase':
-                            entryString += 'Soldier';
-                            break;
-                        default:
-                            entryString += 'MISSING JOBNAME';
-
-                    }
-                }
-
-                entryString += ')';
-            } else if (citizen.type === Person.Mid) {
-                entryString = citizen.name + ' (';
-
-                switch (citizen.role) {
-                    case Person.Bureaucrat:
-                        entryString += 'Elite Bureaucrat';
-                        break;
-                    case Person.Military:
-                        entryString += 'Elite Military Officer';
-                        break;
-                    case Person.Merchant:
-                        entryString += 'Elite Financier';
-                        break;
-                    default:
-                        entryString += 'MISSING ROLE NAME';
-                }
-
-                entryString += ')';
-            } else if (citizen.type === Person.Hi) {
-                entryString = citizen.name + ' (';
-
-                switch (citizen.role) {
-                    case Person.Bureaucrat:
-                        entryString += 'Minster of Bureaucracy';
-                        break;
-                    case Person.Military:
-                        entryString += 'Minister of the Military';
-                        break;
-                    case Person.Merchant:
-                        entryString += 'Minister of Finance';
-                        break;
-                    default:
-                        entryString += 'MISSING ROLE NAME';
-                }
-
-                entryString += ')';
-            }
+            entryString = citizen.name + ' (' + citizen.getJobTitle() + ')';
         } else if(!plainText) {
             // Else, it's a workplace
             entryString = citizen.name + ' (';

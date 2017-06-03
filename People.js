@@ -66,7 +66,8 @@ var Person={
         p.setHighClass = function() { return Person.setHighClass(p); };
         p.unSetHighClass = function() { return Person.unSetHighClass(p); };
         p.addSalary = function() { return Person.addSalary(p);  };
-        p.removeSalary = function() { return Person.removeSalary(p);    };
+        p.removeSalary = function() { return Person.removeSalary(p); };
+        p.getJobTitle = function() { return Person.getJobTitle(p); };
 
         return p;
     },
@@ -256,6 +257,62 @@ var Person={
                 if(effects[count].type==="money"){
                     MainGame.board.at(p.home).getBuilding().effects.splice(count,1);
                 }
+            }
+        }
+    },
+
+    getJobTitle: function(p) {
+        if (p.type === Person.Low) {
+            if (p.workplace === null) return 'Unemployed';
+
+            var workplace = MainGame.board.at(p.workplace).building;
+            switch (workplace.name) {
+                case 'library':
+                    return 'Librarian';
+                case 'farm':
+                    return 'Farmer';
+                case 'hospital':
+                    return 'Doctor';
+                case 'university':
+                    return 'Professor';
+                case 'market':
+                    return 'Merchant';
+                case 'cinema':
+                    return 'Usher';
+                case 'bank':
+                    return 'Banker';
+                case 'factory':
+                    return 'Factory Worker';
+                case 'radioStation':
+                    return 'Propagandist';
+                case 'armyBase':
+                    return 'Soldier';
+                case 'prison':
+                    return 'Prison Guard';
+                default:
+                    return 'MISSING JOBNAME';
+            }
+        } else if (p.type === Person.Mid) {
+            switch (citizen.role) {
+                case Person.Bureaucrat:
+                    return 'Elite Bureaucrat';
+                case Person.Military:
+                    return 'Elite Military Officer';
+                case Person.Merchant:
+                    return 'Elite Financier';
+                default:
+                    return 'MISSING ROLE NAME';
+            }
+        } else if (p.type === Person.Hi) {
+            switch (citizen.role) {
+                case Person.Bureaucrat:
+                    return 'Minster of Bureaucracy';
+                case Person.Military:
+                    return 'Minister of the Military';
+                case Person.Merchant:
+                    return 'Minister of Finance';
+                default:
+                    return 'MISSING ROLE NAME';
             }
         }
     },
