@@ -61,6 +61,11 @@ var MainGame={
         /*global Board*/
         MainGame.board=Board.fromJSON(JSON.stringify(stage));
 
+        // Make sure board initializes with good road states
+        for (var i = 0; i < MainGame.board.tileCount(); i++) {
+            MainGame.board.at(i).updateRoadConnections();
+        }
+
         /*global Population*/
         MainGame.population=Population.createNew(stage.population);
 

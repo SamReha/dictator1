@@ -45,11 +45,40 @@ var Preloader={
         g.load.image('police_detail',       detailIconDir + 'police.png');
         g.load.image('radioStation_detail', detailIconDir + 'radioStation.png');
         g.load.image('road_detail',         detailIconDir + 'road.jpg');
-        g.load.image('library_detail',       detailIconDir + 'library.png');
+        g.load.image('library_detail',      detailIconDir + 'library.png');
         g.load.image('shantyTown_detail',   detailIconDir + 'shantyTown.png');
         g.load.image('suburb_detail',       detailIconDir + 'suburb.png');
         g.load.image('university_detail',   detailIconDir + 'university.png');
         g.load.image('detail_icon_frame',   detailIconDir + 'detail_icon_frame.png');
+
+        // Roads
+        var roadDir = buildingDir + 'roads/';
+        g.load.image('road_000000',     roadDir + 'road_000000.png');
+        g.load.image('road_000001',     roadDir + 'road_000001.png');
+        g.load.image('road_010001',     roadDir + 'road_010001.png');
+        g.load.image('road_010010',     roadDir + 'road_010010.png');
+        g.load.image('road_011000',     roadDir + 'road_011000.png');
+        g.load.image('road_011010',     roadDir + 'road_011010.png');
+        g.load.image('road_011011',     roadDir + 'road_011011.png');
+        g.load.image('road_100000',     roadDir + 'road_100000.png');
+        g.load.image('road_100100',     roadDir + 'road_100100.png');
+        g.load.image('road_101000',     roadDir + 'road_101000.png');
+        g.load.image('road_101010',     roadDir + 'road_101010.png');
+        g.load.image('road_110000',     roadDir + 'road_110000.png');
+        g.load.image('road_110001',     roadDir + 'road_110001.png');
+        g.load.image('road_110010',     roadDir + 'road_110010.png');
+        g.load.image('road_110100',     roadDir + 'road_110100.png');
+        g.load.image('road_110101',     roadDir + 'road_110101.png');
+        g.load.image('road_110110',     roadDir + 'road_110110.png');
+        g.load.image('road_110111',     roadDir + 'road_110111.png');
+        g.load.image('road_111000',     roadDir + 'road_111000.png');
+        g.load.image('road_111001',     roadDir + 'road_111001.png');
+        g.load.image('road_111010',     roadDir + 'road_111010.png');
+        g.load.image('road_111011',     roadDir + 'road_111011.png');
+        g.load.image('road_111100',     roadDir + 'road_111100.png');
+        g.load.image('road_111111',     roadDir + 'road_111111.png');
+        g.load.image('road_dirt_diag',  roadDir + 'road_dirt_diag.png');
+        g.load.image('road_dirt_horiz', roadDir + 'road_dirt_horiz.png');
 
         // Terrain
         var resourceDir = imageDir + 'terrains/';

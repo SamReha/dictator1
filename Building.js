@@ -49,6 +49,7 @@ var Building = {
 
         b.integrity = 10;
 
+        b.anchor.set(0.5, 0.5);
 
         // Class funcs
         b.isEmpty=function(){return b.name===null};

@@ -262,20 +262,24 @@ var BuildingPlacer = {
                 newBuilding.loadTexture('construction',0,false);
                 newBuilding.tint = newTint;
                 
-                newBuilding.constructionIcon = MainGame.game.make.sprite(0,0,"construction_icon");
-                newBuilding.constructionIcon.anchor.setTo(1,0);
-                newBuilding.constructionIcon.x=192;
+                newBuilding.constructionIcon = MainGame.game.make.sprite(18, -tile.terrain.height/2, "construction_icon");
+                newBuilding.constructionIcon.anchor.setTo(0,0);
                 newBuilding.addChild(newBuilding.constructionIcon);
 
-                newBuilding.counterIcon = MainGame.game.make.sprite(0,0,"counter_icon"+(newBuilding.startingTurn- MainGame.global.turn));
-                newBuilding.counterIcon.anchor.setTo(1,1);
-                newBuilding.counterIcon.x=192;
-                newBuilding.counterIcon.y=newBuilding.constructionIcon.height*2;
+                newBuilding.counterIcon = MainGame.game.make.sprite(18, newBuilding.constructionIcon.y + newBuilding.constructionIcon.height, "counter_icon"+(newBuilding.startingTurn- MainGame.global.turn));
+                newBuilding.counterIcon.anchor.setTo(0, 0);
                 newBuilding.addChild(newBuilding.counterIcon);
             }
 
             // Set the tile's building to that object
             tile.setBuilding(newBuilding);
+
+            // For the building's tile and all neighboring tiles, update road connections
+            tile.updateRoadConnections();
+            var neighborhood = MainGame.board.allAdjacent(tile.index, 1);
+            for (var i = 0; i < neighborhood.length; i++) {
+                MainGame.board.at(neighborhood[i]).updateRoadConnections();
+            }
             
             // Bill the player
             MainGame.global.money -= newBuilding.cost;

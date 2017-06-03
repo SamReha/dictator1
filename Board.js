@@ -37,8 +37,45 @@ var Tile = {
         // Flag that checks if a tile should be able to be interacted with
         tile.interactable = true;
 
+        // Dirt roads!
+        tile.roads = [];
+        tile.roads[0] = MainGame.game.make.sprite(tile.terrain.width/2, tile.terrain.height/2, 'road_dirt_horiz');
+        tile.roads[0].anchor.set(0.5, 0.5);
+        tile.roads[0].visible = false;
+        tile.tileGroup.addChild(tile.roads[0]);
+
+        tile.roads[1] = MainGame.game.make.sprite(tile.terrain.width/2, tile.terrain.height/2, 'road_dirt_diag');
+        tile.roads[1].anchor.set(0.5, 0.5);
+        tile.roads[1].visible = false;
+        tile.tileGroup.addChild(tile.roads[1]);
+
+        tile.roads[2] = MainGame.game.make.sprite(tile.terrain.width/2, tile.terrain.height/2, 'road_dirt_diag');
+        tile.roads[2].anchor.set(0.5, 0.5);
+        tile.roads[2].scale.set(1, -1);
+        tile.roads[2].visible = false;
+        tile.tileGroup.addChild(tile.roads[2]);
+
+        tile.roads[3] = MainGame.game.make.sprite(tile.terrain.width/2, tile.terrain.height/2, 'road_dirt_horiz');
+        tile.roads[3].anchor.set(0.5, 0.5);
+        tile.roads[3].scale.set(1, -1);
+        tile.roads[3].visible = false;
+        tile.tileGroup.addChild(tile.roads[3]);
+
+        tile.roads[4] = MainGame.game.make.sprite(tile.terrain.width/2, tile.terrain.height/2, 'road_dirt_diag');
+        tile.roads[4].anchor.set(0.5, 0.5);
+        tile.roads[4].scale.set(-1, -1);
+        tile.roads[4].visible = false;
+        tile.tileGroup.addChild(tile.roads[4]);
+
+        tile.roads[5] = MainGame.game.make.sprite(tile.terrain.width/2, tile.terrain.height/2, 'road_dirt_diag');
+        tile.roads[5].anchor.set(0.5, 0.5);
+        tile.roads[5].scale.set(-1, 1);
+        tile.roads[5].visible = false;
+        tile.tileGroup.addChild(tile.roads[5]);
+
         /* global Building*/
         tile.building = Building.createNew(data.building);
+        tile.building.position.set(tile.terrain.width/2, tile.terrain.height/2);
         tile.tileGroup.addChild(tile.building);
 
         // Use alert if something is going wrong in a tile
@@ -55,6 +92,9 @@ var Tile = {
         tile.tileGroup.addChild(tile.alert);
         tile.tileGroup.bringToTop(tile.alert);
         tile.alert.visible = false;
+
+        // tile.debugText = MainGame.game.make.text(50, 50, tile.index);
+        // tile.addChild(tile.debugText);
 
         // Class funcs
         //// Alert Layer
@@ -80,6 +120,10 @@ var Tile = {
         // Assigns a unit to this tile. Remove a unit by passing null.
         tile.setUnit = function(newUnit) { Tile.setUnit(tile, newUnit); };
 
+        tile.getRoadCode = function() { return Tile.getRoadCode(tile); };
+        tile.getRoadCodeTypeRestricted = function() { return Tile.getRoadCodeTypeRestricted(tile); };
+        tile.updateRoadConnections = function() { Tile.updateRoadConnections(tile); };
+
         return tile;
     },
 
@@ -103,6 +147,7 @@ var Tile = {
 
         // Apply the new building to the tile
         tile.building = building;
+        tile.building.position.set(tile.terrain.width/2, tile.terrain.height/2);
         tile.tileGroup.addChild(building);
         tile.tileGroup.bringToTop(tile.alert);
     },
@@ -163,6 +208,291 @@ var Tile = {
             tile.tileGroup.addChild(tile.unit);
         }
     },
+
+    getRoadCode: function(tile) {
+        var neighbors = [
+            MainGame.board.adjacent(tile.index, 0),
+            MainGame.board.adjacent(tile.index, 2),
+            MainGame.board.adjacent(tile.index, 4),
+            MainGame.board.adjacent(tile.index, 6),
+            MainGame.board.adjacent(tile.index, 8),
+            MainGame.board.adjacent(tile.index, 10),
+        ];
+
+        var roadCode = '';
+        for (var i = 0; i < neighbors.length; i++) {
+            if (neighbors[i] === null) {
+                roadCode += '0';
+            } else {
+                roadCode += (MainGame.board.at(neighbors[i]).hasBuilding() ? '1' : '0');
+            }
+        }
+
+        return roadCode;
+    },
+
+    getRoadCodeTypeRestricted: function(tile) {
+        if (tile.getBuilding().name === 'palace') return '000000';
+        var neighbors = [
+            MainGame.board.adjacent(tile.index, 0),
+            MainGame.board.adjacent(tile.index, 2),
+            MainGame.board.adjacent(tile.index, 4),
+            MainGame.board.adjacent(tile.index, 6),
+            MainGame.board.adjacent(tile.index, 8),
+            MainGame.board.adjacent(tile.index, 10),
+        ];
+
+        var roadCode = '';
+        for (var i = 0; i < neighbors.length; i++) {
+            if (neighbors[i] === null) {
+                roadCode += '0';
+            } else {
+                var neighor = MainGame.board.at(neighbors[i]);
+
+                if (tile.getBuilding().subtype === 'housing') {
+                    if (neighor.getBuilding().subtype !== 'housing' && neighor.getBuilding().name !== 'palace') {
+                        roadCode += (neighor.hasBuilding() ? '1' : '0');
+                    } else roadCode += '0';
+                } else {
+                    if (neighor.getBuilding().subtype === 'housing' || neighor.getBuilding().name === 'road') {
+                        roadCode += (neighor.hasBuilding() ? '1' : '0');
+                    } else roadCode += '0';
+                }
+            }
+        }
+
+        return roadCode;
+    },
+
+    updateRoadConnections: function(tile) {
+        if (!tile.hasBuilding()) return;
+
+        if (tile.building.name === 'road') {
+            var roadCode = tile.getRoadCode();
+            var vertFlip = false;
+            var horizFlip = false;
+
+            //console.log(tile.index, roadCode);
+
+            // Manually figure out which strings requires flips...
+            switch (roadCode) {
+                // 000001 flips
+                case '010000':
+                    roadCode = '000001';
+                    vertFlip = true;
+                    break;
+                case '001000':
+                    roadCode = '000001';
+                    vertFlip = true;
+                    horizFlip = true;
+                    break;
+                case '000010':
+                    roadCode = '000001';
+                    horizFlip = true;
+                    break;
+                // 010001 flips
+                case '001010':
+                    roadCode = '010001';
+                    horizFlip = true;
+                    break;
+                // 010010 flips
+                case '001001':
+                    roadCode = '010010';
+                    horizFlip = true;
+                    break;
+                // 011000 flips
+                case '000011':
+                    roadCode = '011000';
+                    vertFlip = true;
+                    break;
+                // 011010 flips
+                case '001011':
+                    roadCode = '011010';
+                    vertFlip = true;
+                    break;
+                case '011001':
+                    roadCode = '011010';
+                    horizFlip = true;
+                    break;
+                case '010011':
+                    roadCode = '011010';
+                    horizFlip = true;
+                    vertFlip = true;
+                    break;
+                // 100000 flips
+                case '000100':
+                    roadCode = '100000';
+                    horizFlip = true;
+                    break;
+                // 101000 flips
+                case '010100':
+                    roadCode = '101000';
+                    horizFlip = true;
+                    break;
+                case '100010':
+                    roadCode = '101000';
+                    vertFlip = true;
+                    break;
+                case '000101':
+                    roadCode = '101000';
+                    vertFlip = true;
+                    horizFlip = true;
+                    break;
+                // 101010 flips
+                case '010101':
+                    roadCode = '101010';
+                    horizFlip = true;
+                    break;
+                // 110000 flips
+                case '001100':
+                    roadCode = '110000';
+                    horizFlip = true;
+                    break;
+                case '100001':
+                    roadCode = '110000';
+                    vertFlip = true;
+                    break;
+                case '000110':
+                    roadCode = '110000';
+                    horizFlip = true;
+                    vertFlip = true;
+                    break;
+                // 110001 flips
+                case '001110':
+                    roadCode = '110001';
+                    horizFlip = true;
+                    break;
+                // 110010 flips
+                case '001101':
+                    roadCode = '110010';
+                    horizFlip = true;
+                    break;
+                case '101001':
+                    roadCode = '110010';
+                    vertFlip = true;
+                    break;
+                case '010110':
+                    roadCode = '110010';
+                    vertFlip = true;
+                    horizFlip = true;
+                    break;
+                // 110100 flips
+                case '101100':
+                    roadCode = '110100';
+                    horizFlip = true;
+                    break;
+                case '100101':
+                    roadCode = '110100';
+                    vertFlip = true;
+                    break;
+                case '100110':
+                    roadCode = '110100';
+                    vertFlip = true;
+                    horizFlip = true;
+                    break;
+                // 110101 flips
+                case '101110':
+                    roadCode = '110101';
+                    horizFlip = true;
+                    break;
+                // 110110 flips
+                case '101101':
+                    roadCode = '110110';
+                    vertFlip = true;
+                    break;
+                // 110111 flips
+                case '101111':
+                    roadCode = '110111';
+                    horizFlip = true;
+                    break;
+                case '111101':
+                    roadCode = '110111';
+                    vertFlip = true;
+                    break;
+                case '111110':
+                    roadCode = '110111';
+                    vertFlip = true;
+                    horizFlip = true;
+                    break;
+                // 111000 flips
+                case '011100':
+                    roadCode = '111000';
+                    horizFlip = true;
+                    break;
+                case '100011':
+                    roadCode = '111000';
+                    vertFlip = true;
+                    break;
+                case '000111':
+                    roadCode = '111000';
+                    vertFlip = true;
+                    horizFlip = true;
+                    break;
+                // 111001 flips
+                case '110011':
+                    roadCode = '111001';
+                    vertFlip = true;
+                    break;
+                case '011110':
+                    roadCode = '111001';
+                    horizFlip = true;
+                    break;
+                case '001111':
+                    roadCode = '111001';
+                    horizFlip = true;
+                    vertFlip = true;
+                    break;
+                // 111010 flips
+                case '011101':
+                    roadCode = '111010';
+                    horizFlip = true;
+                    break;
+                case '101011':
+                    roadCode = '111010';
+                    vertFlip = true;
+                    break;
+                case '010111':
+                    roadCode = '111010';
+                    vertFlip = true;
+                    horizFlip = true;
+                    break;
+                // 111011 flips
+                case '011111':
+                    roadCode = '111011';
+                    horizFlip = true;
+                    break;
+                // 111100 flips
+                case '100111':
+                    roadCode = '111100';
+                    vertFlip = true;
+                    break;
+                default:
+                    break;
+            }
+
+            //console.log(tile.index, roadCode);
+
+            // Update texture
+            tile.getBuilding().loadTexture('road_' + roadCode, 0);
+
+            // Apply rotation (if any)
+            if (vertFlip) {
+                tile.getBuilding().scale.x = -1;
+            } else tile.getBuilding().scale.x = 1;
+            if (horizFlip) {
+                tile.getBuilding().scale.y = -1;
+            } else tile.getBuilding().scale.y = 1;
+        } else {
+            var roadCode = tile.getRoadCodeTypeRestricted();
+            for (var i = 0; i < roadCode.length; i++) {
+                if (roadCode[i] === '1') {
+                    tile.roads[i].visible = true;
+                } else {
+                    tile.roads[i].visible = false;
+                }
+            }
+        }
+    }
 };
 
 // Board as turnSystem
