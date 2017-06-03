@@ -87,6 +87,11 @@ var Dossier ={
 			dossier.minPin.visible = false;
 
 		} else if(dossier.person.type===Person.Mid){
+			if(dossier.portBack.key !== 'photographBorder'){
+				dossier.portBack.loadTexture('photographBorder');
+				dossier.portFront.anchor.y = 20/33;
+			}
+
 			if(!dossier.sePin.visible && !dossier.minPin.visible){
 				dossier.sePin.visible = true;
 				var targetScaleX = view.stamp.scale.x;	var targetScaleY = view.stamp.scale.y;	var targetAlpha = view.stamp.alpha;
@@ -102,6 +107,9 @@ var Dossier ={
 				tween.onComplete.add(function(){dossier.minPin.visible = false;dossier.minPin.alpha=1;});
 			}
 		} else if(dossier.person.type===Person.Hi) {
+			if(dossier.portBack.key !== 'frameBorder')
+				MainGame.game.time.events.add(400,function(){if(dossier.person.type===Person.Hi){dossier.portBack.loadTexture('frameBorder');dossier.portFront.anchor.y=.5;}});
+
 			if(dossier.sePin.visible && !dossier.minPin.visible){
 				dossier.minPin.visible = true;
 				//console.log(dossier.minPin);
