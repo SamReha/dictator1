@@ -328,6 +328,7 @@ var MenuController = {
         	});
 
         	this.closeSfx = game.make.audio('message_close');
+			this.currentMenu.push(null);
 
         	this.menuOpen = true;
 
@@ -368,11 +369,11 @@ var MenuController = {
 				this.rightMenusOpen.push(curMenu);
 			}
 		}
-
+		curMenuType = this.currentMenu.pop();
 		if(side === "left"){
 			if(curMenuType === "right" || curMenuType === "leftright"){
 				this.enterFallFromAbove(menu,-1);
-				this.currentMenu.pop();
+				// this.currentMenu.pop();
 				this.currentMenu.push("leftright");
 			}else{
 				this.enterFallFromAbove(menu,0);
@@ -383,7 +384,7 @@ var MenuController = {
 		} else if(side === "right"){
 			if(curMenuType === "left" || curMenuType === "leftright"){
 				this.enterFallFromAbove(menu,1);
-				this.currentMenu.pop();
+				// this.currentMenu.pop();
 				this.currentMenu.push("leftright");
 			}else{
 				this.enterFallFromAbove(menu,0);
