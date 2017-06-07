@@ -4,29 +4,33 @@ var Preloader={
 
         // Builings
         var buildingDir = imageDir + 'buildings/';
-        g.load.image('airport',      buildingDir + 'airport.png');
-        g.load.image('apartment',    buildingDir + 'apartment.png');
-        g.load.image('armyBase',     buildingDir + 'armyBase.png');
-        g.load.image('bank',         buildingDir + 'bank.png');
-        g.load.image('cinema',       buildingDir + 'cinema.png');
-        g.load.image('construction', buildingDir + 'construction.png');
-        g.load.image('factory',      buildingDir + 'factory.png');
-        g.load.image('farm',         buildingDir + 'farm.png');
-        g.load.image('hospital',     buildingDir + 'hospital.png');
-        g.load.image('mansion',      buildingDir + 'mansion.png');
-        g.load.image('market',       buildingDir + 'market.png');
-        g.load.image('opiumDen',     buildingDir + 'opiumDen.png');
-        g.load.image('palace',       buildingDir + 'palace.png');
-        g.load.image('park',         buildingDir + 'park.png');
-        g.load.image('police',       buildingDir + 'police.png');
-        g.load.image('prison',       buildingDir + 'prison.png');
-        g.load.image('radioStation', buildingDir + 'radioStation.png');
-        g.load.image('road',         buildingDir + 'road.png');
-        g.load.image('rubble',       buildingDir + 'rubble.png');
-        g.load.image('library',      buildingDir + 'library.png');
-        g.load.image('shantyTown',   buildingDir + 'shantyTown.png');
-        g.load.image('suburb',       buildingDir + 'suburb.png');
-        g.load.image('university',   buildingDir + 'university.png');
+        g.load.image('airport',         buildingDir + 'airport.png');
+        g.load.image('apartment',       buildingDir + 'apartment.png');
+        g.load.image('armyBase',        buildingDir + 'armyBase.png');
+        g.load.image('bank',            buildingDir + 'bank.png');
+        g.load.image('cinema',          buildingDir + 'cinema.png');
+        g.load.image('construction',    buildingDir + 'construction.png');
+        g.load.image('factory',         buildingDir + 'factory.png');
+        g.load.image('farm',            buildingDir + 'farm.png');
+        g.load.image('hospital',        buildingDir + 'hospital.png');
+        g.load.image('mansion',         buildingDir + 'mansion.png');
+        g.load.image('market',          buildingDir + 'market.png');
+        g.load.image('opiumDen',        buildingDir + 'opiumDen.png');
+        g.load.image('palace',          buildingDir + 'palace.png');
+        g.load.image('palace0',         buildingDir + 'palace0.png');
+        g.load.image('palace1',         buildingDir + 'palace1.png');
+        g.load.image('palace2',         buildingDir + 'palace2.png');
+        g.load.image('palaceT',         buildingDir + 'palaceT.png');
+        g.load.image('park',            buildingDir + 'park.png');
+        g.load.image('police',          buildingDir + 'police.png');
+        g.load.image('prison',          buildingDir + 'prison.png');
+        g.load.image('radioStation',    buildingDir + 'radioStation.png');
+        g.load.image('road',            buildingDir + 'road.png');
+        g.load.image('rubble',          buildingDir + 'rubble.png');
+        g.load.image('library',         buildingDir + 'library.png');
+        g.load.image('shantyTown',      buildingDir + 'shantyTown.png');
+        g.load.image('suburb',          buildingDir + 'suburb.png');
+        g.load.image('university',      buildingDir + 'university.png');
 
         // Building Detail Icons
         var detailIconDir = buildingDir + 'detail_icons/';
@@ -242,14 +246,15 @@ var Preloader={
 
         // load json files
         var jsonDir = 'json/';
-        g.load.json('stage1',         jsonDir + 'stage1.json');
-        g.load.json('stage2',         jsonDir + 'stage2.json');
-        g.load.json('stageMain',      jsonDir + 'stageMain.json');
-        g.load.json('buildingData',   jsonDir + 'buildingData.json');
-        g.load.json('names',          jsonDir + 'Names.json');
-        g.load.json('CoalitionQuest', jsonDir + 'CoalitionQuest.json');
-        g.load.json('Tutorial',       jsonDir + 'Tutorial.json');
-        g.load.json('unitData',       jsonDir + 'unitData.json');
+        g.load.json('stage1',           jsonDir + 'stage1.json');
+        g.load.json('stage2',           jsonDir + 'stage2.json');
+        g.load.json('stageMain',        jsonDir + 'stageMain.json');
+        g.load.json('stageTrailer',     jsonDir + 'stageTrailer.json');
+        g.load.json('buildingData',     jsonDir + 'buildingData.json');
+        g.load.json('names',            jsonDir + 'Names.json');
+        g.load.json('CoalitionQuest',   jsonDir + 'CoalitionQuest.json');
+        g.load.json('Tutorial',         jsonDir + 'Tutorial.json');
+        g.load.json('unitData',         jsonDir + 'unitData.json');
 
         // Load audio assets (should probably be using FMOD for this)
         var audioDir = 'sounds/';

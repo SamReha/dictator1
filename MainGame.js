@@ -56,7 +56,8 @@ var MainGame={
         //MainGame.music.loopFull(1.0);
         
         // create board
-        var stage=MainGame.game.cache.getJSON('stageMain');
+        // var stage=MainGame.game.cache.getJSON('stageMain');
+        var stage=MainGame.game.cache.getJSON('stageTrailer');
 
         /*global Board*/
         MainGame.board=Board.fromJSON(JSON.stringify(stage));
@@ -75,6 +76,7 @@ var MainGame={
         /*global updateHomes*/
         updateHomes(false);
         Global.updateYearViewData();
+        TrailerScript.init();
         //MainGame.global.updateFreedomUnrest();
 
         /*global Tutorial*/

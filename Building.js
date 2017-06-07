@@ -27,14 +27,15 @@ var Building = {
             /*global MainGame*/
             b=MainGame.game.make.sprite(0,0,data.name);
 
-            // copy name,startingTurn,people
-            for(var key in data){
-                b[key]=data[key];
-            }
             // copy props in buildingData.json[name]
             var b_data=Building.buildingData[data.name];
             for(var key2 in b_data){
                 b[key2]=b_data[key2];
+            }
+
+            // copy name,startingTurn,people
+            for(var key in data){
+                b[key]=data[key];
             }
 
             // Set detail icon texture string

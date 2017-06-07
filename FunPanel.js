@@ -65,6 +65,8 @@ var FunPanel = {
         funPanel.x = MainGame.game.width / 2;
         funPanel.inputEnabled = true;
         funPanel.input.priorityID = 1;
+        funPanel.oldFreedom = 0;
+        funPanel.oldUnrest = 0;
 
         // Meter
         funPanel.meter = MainGame.game.make.sprite(0, 5, 'freedomUnrestMeter');
@@ -150,20 +152,25 @@ var FunPanel = {
         var newFreedom = globalStats.freedom;
         var newUnrest = globalStats.unrest;
 
-        // Update tooltips
-        funPanel.freeSprite.toolTip.updateData('Total Freedom: ' + newFreedom + '%');
-        funPanel.unrestSprite.toolTip.updateData('Total Unrest: ' + newUnrest + '%');
+        if((newFreedom !== funPanel.oldFreedom || newUnrest !== funPanel.oldUnrest) && newFreedom !== NaN && newUnrest !== NaN){
+            // Update tooltips
+            funPanel.freeSprite.toolTip.updateData('Total Freedom: ' + newFreedom + '%');
+            funPanel.unrestSprite.toolTip.updateData('Total Unrest: ' + newUnrest + '%');
 
-        // Update magic bars
-        MainGame.game.add.tween(funPanel.freedomBar).to({width: globalStats.freedom/100 * funPanel.meter.width}, 200).start();
-        MainGame.game.add.tween(funPanel.unrestBar).to({width: -globalStats.unrest/100 * funPanel.meter.width}, 200).start();
+            // Update magic bars
+            MainGame.game.add.tween(funPanel.freedomBar).to({width: globalStats.freedom/100 * funPanel.meter.width}, 200).start();
+            MainGame.game.add.tween(funPanel.unrestBar).to({width: -globalStats.unrest/100 * funPanel.meter.width}, 200).start();
 
-        // Is it getting steamy up in here?
-        var pressureGaugeFillPercent = MainGame.global.thermometerFill/100;
-        funPanel.steam.frequency = 110 - funPanel.pressureGauge.delta;
-        funPanel.steam.width = (pressureGaugeFillPercent * funPanel.meter.width) * 0.9 + (funPanel.meter.width * 0.1);
-        funPanel.steam.x = MainGame.game.width/2 - funPanel.meter.width/2 + funPanel.freedomBar.width - (pressureGaugeFillPercent * funPanel.meter.width)/2;
-        funPanel.steam.on = pressureGaugeFillPercent > 0;
+            // Is it getting steamy up in here?
+            var pressureGaugeFillPercent = MainGame.global.thermometerFill/100;
+            funPanel.steam.frequency = 110 - funPanel.pressureGauge.delta;
+            funPanel.steam.width = (pressureGaugeFillPercent * funPanel.meter.width) * 0.9 + (funPanel.meter.width * 0.1);
+            funPanel.steam.x = MainGame.game.width/2 - funPanel.meter.width/2 + funPanel.freedomBar.width - (pressureGaugeFillPercent * funPanel.meter.width)/2;
+            funPanel.steam.on = pressureGaugeFillPercent > 0;
+
+            funPanel.oldFreedom = newFreedom;
+            funPanel.oldUnrest = newUnrest;
+        }
 
         funPanel.pressureGauge.updateData();
     },

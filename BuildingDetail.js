@@ -610,8 +610,6 @@ var BDController = {
             // Play some funky music white boi
             view.add_remove_sfx.play();
             view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
-
-            Global.updateMoneyPerTurn();
         }else{
             // Play an error sound
             view.add_remove_sfx.play();
@@ -660,8 +658,6 @@ var BDController = {
             // Play some funky music white boi
             view.add_remove_sfx.play();
             view.add_remove_sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
-
-            Global.updateMoneyPerTurn();
         } else {
             // Play an error sound
             view.add_remove_sfx.play();

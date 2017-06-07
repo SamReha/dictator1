@@ -556,6 +556,8 @@ var Board = {
         board.cameraCenterOn=function(i){return Board.cameraCenterOn(board,i)};
         // let camera zoom itself as zoom
         board.cameraZoomAt=function(zoom){return Board.cameraZoomAt(board,zoom)};
+        // change camera zoom by certain amount
+        board.cameraZoomBy=function(deltaZoom){return Board.cameraZoomBy(board,deltaZoom)};
         // let camera move by (x,y)
         board.cameraMoveBy=function(x,y){return Board.cameraMoveBy(board,x,y)};
 
@@ -919,6 +921,34 @@ var Board = {
         }
         //console.log("cameraZoomAt: zoom is ", zoom);
 
+        /*global MainGame*/
+        // 1. get the anchor/pivot point
+        var screenCenter={x:MainGame.game.camera.x+MainGame.game.camera.width*0.5,
+            y:MainGame.game.camera.y+MainGame.game.camera.height*0.5};
+        var xy={x:screenCenter.x-b.x, y:screenCenter.y-b.y};
+        var anchor={x:xy.x/b.width, y:xy.y/b.height};
+        // console.log("anchor is",anchor);
+
+        // 2. scale
+        b.scale.set(zoom,zoom);
+        b.currentScale=zoom;
+
+        // 3. reset (x,y) according to the anchor point
+        var oldX=b.x;
+        var oldY=b.y;
+        b.x=MainGame.game.camera.width*0.5-anchor.x*b.width;
+        b.y=MainGame.game.camera.height*0.5-anchor.y*b.height;
+        b._offset.x+=oldX-b.x;
+        b._offset.y+=oldY-b.y;
+        // console.log("new xy is:",b.x,b.y);
+        
+        // MainGame.mapSelector.positionBuildingDetail(b);
+    },
+
+    // change camera zoom by certain amount
+    cameraZoomBy: function(b, deltaZoom){
+        b.currentZoomIndex = Board.defaultZoomIndex;
+        var zoom = b.currentScale + deltaZoom;
         /*global MainGame*/
         // 1. get the anchor/pivot point
         var screenCenter={x:MainGame.game.camera.x+MainGame.game.camera.width*0.5,

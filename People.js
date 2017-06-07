@@ -22,22 +22,22 @@ var Person={
         
         // Class vars
         p.type=data.type;               // must be one of Person.types
-        p.name=(data.name?data.name:Person.randomName());   // either given or randomized
-        p.portIndex = (data.portIndex !== undefined ? data.portIndex : null);     // nullable
+        p.name=(data.name!==undefined?data.name:Person.randomName());   // either given or randomized
+        p.portIndex = (data.portIndex!==undefined? data.portIndex : null);     // nullable
         p.workplace=data.workplace;     // nullable, index of the tile
         p.home=data.home;               // nullable, index of the tile
-        p.health=(data.health?data.health:0);           // int
-        p.culture=(data.culture?data.culture:0);        // int
-        p.shelter=(data.shelter?data.shelter:0);        // int
+        p.health=(data.health!==undefined?data.health:0);           // int
+        p.culture=(data.culture!==undefined?data.culture:0);        // int
+        p.shelter=(data.shelter!==undefined?data.shelter:0);        // int
         p.freedom=0;        // int
         p.unrest=0;         // int
         // Class vars (nullable)
-        p.baseInfluence=(data.baseInfluence?data.baseInfluence:null);
-        p.accruedInfluence=(data.accruedInfluence?data.accruedInfluence:null);
-        p.role=(data.role?data.role:null);
-        p.loyalty=(data.loyalty?data.loyalty:null);
-        p.payLevel=(data.payLevel?data.payLevel:null);
-        p.salary=(data.salary?data.salary:null);
+        p.baseInfluence=(data.baseInfluence!==undefined?data.baseInfluence:null);
+        p.accruedInfluence=(data.accruedInfluence!==undefined?data.accruedInfluence:null);
+        p.role=(data.role!==undefined?data.role:null);
+        p.loyalty=(data.loyalty!==undefined?data.loyalty:null);
+        p.payLevel=(data.payLevel!==undefined?data.payLevel:null);
+        p.salary=(data.salary!==undefined?data.salary:null);
 
         // Class funcs
         p.update = function(board,nextTurn) { return Person.update(p,board,nextTurn); };
@@ -456,6 +456,7 @@ var Population={
                         pop.people[hl[0]].addSalary();
 
                     updateHomes(false);
+                    Global.updateMoneyPerTurn();
                     return true;
                 }
             }
@@ -471,6 +472,7 @@ var Population={
                                 pop.people[hl[i]].removeSalary();
 
                             updateHomes(false);
+                            Global.updateMoneyPerTurn();
                             return true;
                         }
                     }
@@ -489,6 +491,7 @@ var Population={
             if(bld.addPerson()){
                 person.home=tileIndex;
                 updateHomes(false);
+                Global.updateMoneyPerTurn();
                 return true;
             }
             return false;
@@ -497,6 +500,7 @@ var Population={
             if(bld.addPerson()){
                 person.workplace=tileIndex;
                 updateHomes(false);
+                Global.updateMoneyPerTurn();
                 return true;
             }
             return false;
@@ -517,6 +521,7 @@ var Population={
                     pop.people[housed[i]].home = null;
 
                     updateHomes(false);
+                    Global.updateMoneyPerTurn();
                     return true;
                 }
             }
@@ -529,6 +534,7 @@ var Population={
                     pop.people[employed[j]].workplace=null;
 
                     updateHomes(false);
+                    Global.updateMoneyPerTurn();
                     return true;
                 }
             }
@@ -545,6 +551,7 @@ var Population={
                 bld.removePerson();
                 person.home = null;
                 updateHomes(false);
+                Global.updateMoneyPerTurn();
                 return true;
             }
             return false;
@@ -553,6 +560,7 @@ var Population={
                 bld.removePerson();
                 person.workplace=null;
                 updateHomes(false);
+                Global.updateMoneyPerTurn();
                 return true;
             }
             return false;
