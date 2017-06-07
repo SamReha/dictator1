@@ -1,5 +1,11 @@
 var TrailerScript ={
 	init: function(){
+		var hud = MainGame.hud;
+		hud.moneyPanel.visible = false;
+		hud.statsPanel.visible = false;
+		hud.funPanel.visible = false;
+		hud.coalitionFlag.visible = false;
+
 		MainGame.board.at(82).getBuilding().loadTexture('palace2');
 
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.ONE).onUp.
@@ -19,14 +25,14 @@ var TrailerScript ={
 	zoomOutFromPalace:function(){
 		var board = MainGame.board;
 		board.cameraZoomAt(Board.zoomLevelList.length-1);
-		board.cameraZoomBy(1.5);
+		board.cameraZoomBy(1.3);
 		board.cameraCenterOn(82);
 		var time = 0;
 		MainGame.game.time.events.add(1000,function(){
 			var loop = MainGame.game.time.events.loop(5,function(){
-				board.cameraZoomBy(-.003);
+				board.cameraZoomBy(-.005);
 				time += 5;
-				if(time >= 1000){	MainGame.game.time.events.remove(loop);	}
+				if(time >= 1500){	MainGame.game.time.events.remove(loop);	}
 			},this);
 		},this);
 	},
@@ -39,9 +45,9 @@ var TrailerScript ={
 		var time = 0;
 		MainGame.game.time.events.add(1000,function(){
 			var loop = MainGame.game.time.events.loop(5,function(){
-				board.cameraMoveBy(5,3);
+				board.cameraMoveBy(7,5);
 				time += 5;
-				if(time >= 2000){	MainGame.game.time.events.remove(loop);	}
+				if(time >= 1300){	MainGame.game.time.events.remove(loop);	}
 			},this);
 		},this);
 	},
