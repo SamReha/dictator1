@@ -87,7 +87,7 @@ var Hud = {
         hud.btnNextTurn.anchor.x = 1;
         hud.btnNextTurn.anchor.y = 1;
         hud.btnNextTurn.sfx = game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
-        hud.addChild(hud.btnNextTurn);
+        //hud.addChild(hud.btnNextTurn);
 
         hud.btnNextTurnMask = MainGame.game.make.sprite(hud.btnNextTurn.x, hud.btnNextTurn.y, 'endturn_button_mask');
         hud.btnNextTurnMask.inputEnabled = true;
@@ -100,7 +100,7 @@ var Hud = {
         // Group2: Build
         var buildGroup=MainGame.game.make.group();
         buildGroup.name="buildGroup";
-        hud.addChild(buildGroup);
+        //hud.addChild(buildGroup);
         //      "Build" button
         var buildBtn = MainGame.game.make.button(0, MainGame.game.world.height, 'build_button', 
             function(){
