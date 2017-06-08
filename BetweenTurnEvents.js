@@ -98,7 +98,7 @@ var showHomelessCamps = function(callback) {
 };
 
 var showThermometerUpdate = function(callback) {
-    updateHomes(true);
+    //updateHomes(true);
 
     // Get new delta (how much the thermometer will change by this turn)
     Global.thermometerDelta = Global.freedom + Global.unrest - 100;
@@ -112,8 +112,8 @@ var showThermometerUpdate = function(callback) {
         MainGame.hud.funPanel.updateData();
 
         // Wait a bit
-        var timer = MainGame.game.time.create(true);
-        timer.add(1000, function() {
+        //var timer = MainGame.game.time.create(true);
+        MainGame.game.time.events.add(1000, function() {
             MainGame.game.make.audio('boiling').play();
             
             // Lower the thermometer and spawn a unit
@@ -144,29 +144,31 @@ var showThermometerUpdate = function(callback) {
                     citizenToRiot.work = null;
                 }
 
-                // Wait a bit, then spawn the event.
-                var timer = MainGame.game.time.create(true);
-                timer.add(2100, function() {
-                    var e = Event.createNew();
-                    e.setModel([
-                                    {
-                                        portrait: 'exclamation_01', 
-                                        description: 'A citizen has begun rioting!', 
-                                        buttonTexts: ["Continue"]
-                                    }
-                                ]);
+                MainGame.population.people.splice(MainGame.population.people.indexOf(citizenToRiot),1);
 
-                    e.setController([
-                        [function() {
-                            e.suicide();
-                            callback();
-                        }]
-                    ]);
-                }, null);
-                timer.start();
+                // Wait a bit, then spawn the event.
+                // var timer = MainGame.game.time.create(true);
+                // MainGame.game.time.events.add(2100, function() {
+                //     var e = Event.createNew();
+                //     e.setModel([
+                //                     {
+                //                         portrait: 'exclamation_01', 
+                //                         description: 'A citizen has begun rioting!', 
+                //                         buttonTexts: ["Continue"]
+                //                     }
+                //                 ]);
+
+                //     e.setController([
+                //         [function() {
+                //             e.suicide();
+                //             callback();
+                //         }]
+                //     ]);
+                // }, null);
+                // timer.start();
             }
         }, null);
-        timer.start();
+        //timer.start();
     } else {
         // Else, no spawn occured, so we should just move on
         callback();

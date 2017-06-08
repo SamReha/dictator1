@@ -20,19 +20,21 @@ var TrailerScript ={
 			add(function(){TrailerScript.generateHomelessCamp();});
 		MainGame.game.input.keyboard.addKey(Phaser.Keyboard.SIX).onUp.
 			add(function(){TrailerScript.generateRiot();});
+
+		funBarIndex = null;
 	},
 
 	zoomOutFromPalace:function(){
 		var board = MainGame.board;
 		board.cameraZoomAt(Board.zoomLevelList.length-1);
-		board.cameraZoomBy(1.3);
+		board.cameraZoomBy(1.1);
 		board.cameraCenterOn(82);
 		var time = 0;
 		MainGame.game.time.events.add(1000,function(){
 			var loop = MainGame.game.time.events.loop(5,function(){
 				board.cameraZoomBy(-.005);
 				time += 5;
-				if(time >= 1500){	MainGame.game.time.events.remove(loop);	}
+				if(time >= 1200){	MainGame.game.time.events.remove(loop);	}
 			},this);
 		},this);
 	},
@@ -44,10 +46,10 @@ var TrailerScript ={
 		board.cameraCenterOn(46);
 		var time = 0;
 		MainGame.game.time.events.add(1000,function(){
-			var loop = MainGame.game.time.events.loop(5,function(){
-				board.cameraMoveBy(7,5);
-				time += 5;
-				if(time >= 1300){	MainGame.game.time.events.remove(loop);	}
+			var loop = MainGame.game.time.events.loop(10,function(){
+				board.cameraMoveBy(7,4);
+				time += 10;
+				if(time >= 2900){	MainGame.game.time.events.remove(loop);	}
 			},this);
 		},this);
 	},
@@ -59,7 +61,7 @@ var TrailerScript ={
 		var time = 0;
 		MainGame.game.time.events.add(1000,function(){
 			var loop = MainGame.game.time.events.loop(5,function(){
-				board.cameraZoomBy(.003);
+				board.cameraZoomBy(.004);
 				time += 5;
 				if(time >= 1000){	MainGame.game.time.events.remove(loop);	}
 			},this);
@@ -67,7 +69,17 @@ var TrailerScript ={
 	},
 
 	funBar: function(){
-
+		if(funBarIndex===null){
+			MainGame.hud.funPanel.visible = true;
+			Global.freedom = 50;
+			Global.unrest = 25;
+			funBarIndex = 0;
+		}else{
+			Global.freedom += 5;
+			Global.unrest += 10;
+			funBarIndex += 1;
+		}
+		showThermometerUpdate(function(){});
 	},
 
 	generateHomelessCamp: function(){

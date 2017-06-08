@@ -162,7 +162,7 @@ var FunPanel = {
             MainGame.game.add.tween(funPanel.unrestBar).to({width: -globalStats.unrest/100 * funPanel.meter.width}, 200).start();
 
             // Is it getting steamy up in here?
-            var pressureGaugeFillPercent = MainGame.global.thermometerFill/100;
+            var pressureGaugeFillPercent = MainGame.global.thermometerDelta/100;
             funPanel.steam.frequency = 110 - funPanel.pressureGauge.delta;
             funPanel.steam.width = (pressureGaugeFillPercent * funPanel.meter.width) * 0.9 + (funPanel.meter.width * 0.1);
             funPanel.steam.x = MainGame.game.width/2 - funPanel.meter.width/2 + funPanel.freedomBar.width - (pressureGaugeFillPercent * funPanel.meter.width)/2;
