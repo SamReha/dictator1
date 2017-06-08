@@ -177,21 +177,27 @@ var Tile = {
             tile.building.integrity -= damage;
             
             if (tile.building.integrity <= 0) {
-                tile.removeBuilding();
+                var tween = MainGame.game.add.tween(tile.unit).to({alpha:.4},600,Phaser.Easing.Quadratic.InOut,true);
+                tween.onComplete.add(function(){
+                    tile.removeBuilding();
 
-                console.log("[Tile] building destroyed");
+                    console.log("[Tile] building destroyed");
 
-                // Make a rubble
-                var newBuilding = Building.createNew({name:'rubble', startingTurn:-1, people:0});
-                tile.setBuilding(newBuilding);
+                    // Make a rubble
+                    var newBuilding = Building.createNew({name:'rubble', startingTurn:-1, people:0});
+                    tile.setBuilding(newBuilding);
 
-                // Play a demolished sound
-                MainGame.game.make.audio('building_placement_5').play();
+                    // Play a demolished sound
+                    MainGame.game.make.audio('building_placement_5').play();
 
-                // If we have a unit, make sure it gets sorted on top
-                if (tile.hasUnit()) {
-                    tile.tileGroup.bringToTop(tile.unit);
-                }
+                    // If we have a unit, make sure it gets sorted on top
+                    if (tile.hasUnit()) {
+                        tile.tileGroup.bringToTop(tile.unit);
+                    }
+                    MainGame.game.time.events.add(1000,function(){
+                        MainGame.game.add.tween(tile.unit).to({alpha:1},600,Phaser.Easing.Quadratic.InOut,true);
+                    })
+                });
             }
         }
     },
@@ -707,15 +713,15 @@ var Board = {
             var dy=Math.abs(p0.y-p1.y);
             if(p0.x%2===1){
                 if(p0.y<p1.y){
-                    return dx+dy-Math.ceil(dx/2);
+                    return dx+dy-Math.min(Math.ceil(dx/2),dy);
                 }else{
-                    return dx+dy-Math.floor(dx/2);
+                    return dx+dy-Math.min(Math.floor(dx/2),dy);
                 }
             }else{
                 if(p0.y>p1.y){
-                    return dx+dy-Math.ceil(dx/2);
+                    return dx+dy-Math.min(Math.ceil(dx/2),dy);
                 }else{
-                    return dx+dy-Math.floor(dx/2);
+                    return dx+dy-Math.min(Math.floor(dx/2),dy);
                 }
             }
         }
@@ -848,6 +854,12 @@ var Board = {
         var index = choices[Math.floor(Math.random()*choices.length)];
         /* global Building */
         board.at(index).setBuilding(Building.createNew({name:"shantyTown",startingTurn:MainGame.global.turn,people:0}));
+        board.at(index).updateRoadConnections();
+        var neighborhood = board.allAdjacent(index, 1);
+        for (var i = 0; i < neighborhood.length; i++) {
+            board.at(neighborhood[i]).updateRoadConnections();
+        }
+        
         /*global updateHome*/
         updateHome(index);
         return index;

@@ -120,11 +120,11 @@ var showThermometerUpdate = function(callback) {
             Global.thermometerFill = 50;
 
             // Compute angriest citizen
-            var workingClass = MainGame.population.lowList();
+            var workingClass = MainGame.population.getHouseMap();
             workingClass.sort(function(a, b) {
                 return b.unrest - a.unrest;
             });
-            var citizenToRiot = workingClass[0];
+            var citizenToRiot = MainGame.population.people[workingClass[116][0]];
         
             var didSpawn = Unit.spawnUnitAt(Unit.Riot, citizenToRiot.home);
 

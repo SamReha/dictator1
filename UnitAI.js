@@ -51,7 +51,7 @@ var UnitAI = {
 		var targetIndex = null;
 		if (unit.type === Unit.Army) {
 			if (unit.target !== null) {
-				targetIndex = unit.target;
+				targetIndex = unit.target.currentIndex;
 			} else {
 				// If an Army unit does not have a target, then it will patrol roads
 				// If it is not on a road, it will move toward the army base until it finds a road
@@ -84,7 +84,6 @@ var UnitAI = {
 		var adjacentTiles = MainGame.board.allAdjacent(unit.currentIndex, 1);
 		var choices = [];
 		for(var i = 0; i < adjacentTiles.length; ++i) {
-			if(adjacentTiles[i])
 			// Checking to see if the adjacent hex is the unit's target
 			// if so, then the unit will immediately attack it
 			if (adjacentTiles[i] === targetIndex) {
@@ -109,7 +108,10 @@ var UnitAI = {
 					UnitAI.mergeUnits(adjacentUnit,unit);
 					return null;
 				}
-			}else if(tile.getTerrainType() !== "water" && tile.getTerrainType() !== "mountain"){
+			}else if(tile.getTerrainType() === "water" || tile.getTerrainType() === "mountain"){
+				choices[i].weight = 999;
+			}
+			else{
 				choices[i].weight = MainGame.board.distanceOf(adjacentTiles[i],targetIndex)*100;
 				if(choices[i].building === "road" || choices[i].building === "rubble")
 					choices[i].weight -= Math.floor(Math.random()*50);
@@ -122,7 +124,6 @@ var UnitAI = {
 
 		// sort choices by their weighted values
 		choices.sort(function(a,b){return a.weight-b.weight;});
-
 		// targeting nearby building
 		if (unit.type === Unit.Riot) {
 			if(choices[0].building !== "road" && choices[0].building !== "rubble" && choices[0].building !== ""){

@@ -554,12 +554,12 @@ var BDMisc = {
 
     deploySoldiers: function(misc, buildingInfo) {
         if (buildingInfo.building.people > 0) {
-            MainGame.board.at(buildingInfo.index).getBuilding().squadDeployed = true;
+            buildingInfo.building.squadDeployed = true;
             misc.recallButton.visible = true;
             misc.deployButton.visible = false;
 
-            MainGame.board.at(buildingInfo.index).getBuilding().squad = Unit.spawnUnitAt(Unit.Army, buildingInfo.index);
-            MainGame.board.at(buildingInfo.index).getBuilding().squad.addPeople(MainGame.board.at(buildingInfo.index).getBuilding().people - 1);
+            buildingInfo.building.squad = Unit.spawnUnitAt(Unit.Army, buildingInfo.index);
+            buildingInfo.building.squad.addPeople(buildingInfo.building.people - 1);
         }
     },
 

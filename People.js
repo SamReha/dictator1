@@ -556,6 +556,7 @@ var Population={
             }
             return false;
         } else {
+            console.log(person.workplace);
             if(person.workplace===tileIndex){
                 bld.removePerson();
                 person.workplace=null;

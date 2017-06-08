@@ -61,6 +61,7 @@ var Unit = {
         unit.hasTarget = function() { return unit.target !== null; };
         unit.addPeople = function(people) { Unit.addPeople(unit, people); };
         unit.subtractPeople = function(people) { Unit.subtractPeople(unit, people); };
+        unit.takeDamage = function(people) { Unit.takeDamage(unit,people)};
         unit.kill = function() { Unit.kill(unit); };
 
         return unit;
@@ -152,19 +153,30 @@ var Unit = {
                 x: (newXY.x - currentXY.x)/MainGame.board.currentScale, // Unapply the board scale so that we get the right amount in pixels
                 y: (newXY.y - currentXY.y)/MainGame.board.currentScale
             };
-
-            var tween = MainGame.game.add.tween(unit).to(deltaXY, 1000, Phaser.Easing.Linear.None, true);
-            tween.onComplete.add(function() {
-                // Move to new tile
+            if(newIndex > unit.currentIndex){
                 newTile.setUnit(unit);
                 currentTile.setUnit(null);
                 unit.currentIndex = newIndex;
-                
+
                 // Unapply tweened movement
                 unit.x -= deltaXY.x;
                 unit.y -= deltaXY.y;
-            }, this);
-            
+
+                var tween = MainGame.game.add.tween(unit).to({x:0,y:0}, 1000, Phaser.Easing.Linear.None, true);
+            } else {
+                var tween = MainGame.game.add.tween(unit).to(deltaXY, 1000, Phaser.Easing.Linear.None, true);
+                tween.onComplete.add(function(){
+                newTile.setUnit(unit);
+                currentTile.setUnit(null);
+                unit.currentIndex = newIndex;
+
+                // Unapply tweened movement
+                unit.x -= deltaXY.x;
+                unit.y -= deltaXY.y;
+            },this);
+ 
+            }
+
         }
     },
 
@@ -184,6 +196,21 @@ var Unit = {
         if (unit.health <= 0){
             MainGame.board.at(unit.currentIndex).setUnit(null);
             unit.destroy();
+            return;
+        }
+
+        // update health marker
+        unit.counter.label.text = unit.health;
+
+        // update sprite
+        unit.frame = unit.health-1;
+    },
+
+    takeDamage: function(unit, people){
+        unit.health -= people;
+
+        if (unit.health <= 0){
+            unit.kill();
             return;
         }
 
