@@ -85,7 +85,7 @@ var Unit = {
                 existingUnit.addPeople(startingHealth);
                 console.log("[Unit] merged new rioter into existing riot");
                 existingUnit.spawnSfx.play();
-                return true; // Aaaaand we're done here. Don't need to actually create a unit
+                return existingUnit; // Aaaaand we're done here. Don't need to actually create a unit
             } else {
                 // Gotta find a new tile.
                 return Unit._recursiveSpawn(unitType, index, 1);
@@ -97,7 +97,7 @@ var Unit = {
             spawnTile.unit = Unit.createNew(Unit.unitData[unitType], index);
             spawnTile.addChild(spawnTile.unit);
 
-            return true; // Unit was successfully spawned
+            return spawnTile.unit; // Unit was successfully spawned
         }
     },
 
@@ -124,7 +124,7 @@ var Unit = {
         spawnTile.unit = Unit.createNew(Unit.unitData[unitType], spawnIndex);
         spawnTile.addChild(spawnTile.unit);
 
-        return true; // Unit was successfully spawned
+        return spawnTile.unit; // Unit was successfully spawned
     },
 
     /* Renamed nextTurn() to takeTurn() so that Units wouldn't be processed in Board's nextTurn() */

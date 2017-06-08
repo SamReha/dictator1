@@ -525,13 +525,13 @@ var BDMisc = {
                 y: -misc.width/2 + BDController.verticalBorderWidth,
             };
             misc.deployButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
-                misc.deploySoldiers(buildingIndex);
+                misc.deploySoldiers(bdInfo);
             }, null, 0, 2, 1, 2, 'Deploy Soldiers', BDController.buttonStyle);
             misc.deployButton.input.priorityID = 102;
             misc.deployButton.visible = !bdInfo.building.squadDeployed;
 
             misc.recallButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
-                misc.recallSoldiers(buildingIndex);
+                misc.recallSoldiers(bdInfo);
             }, null, 0, 2, 1, 2, 'Recall Soldiers', BDController.buttonStyle);
             misc.recallButton.input.priorityID = 102;
             misc.recallButton.visible = bdInfo.building.squadDeployed;
@@ -546,7 +546,27 @@ var BDMisc = {
         misc.add_remove_sfx = MainGame.game.make.audio('cloth_click_' + Math.ceil(Math.random()*14)); // Assume we have 14 cloth click sounds
         misc.demolishSfx = MainGame.game.make.audio('building_placement_' + Math.ceil(Math.random()*5)); // Assume we have 5 building sounds
 
+        misc.deploySoldiers = function(buildingInfo) { BDMisc.deploySoldiers(misc, buildingInfo); };
+        misc.recallSoldiers = function(buildingInfo) { BDMisc.recallSoldiers(misc, buildingInfo); };
+
         return misc;
+    },
+
+    deploySoldiers: function(misc, buildingInfo) {
+        if (buildingInfo.building.people > 0) {
+            MainGame.board.at(buildingInfo.index).getBuilding().squadDeployed = true;
+            misc.recallButton.visible = true;
+            misc.deployButton.visible = false;
+
+            MainGame.board.at(buildingInfo.index).getBuilding().squad = Unit.spawnUnitAt(Unit.Army, buildingInfo.index);
+            MainGame.board.at(buildingInfo.index).getBuilding().squad.addPeople(MainGame.board.at(buildingInfo.index).getBuilding().people - 1);
+        }
+    },
+
+    recallSoldiers: function(misc, buildingInfo) {
+        MainGame.board.at(buildingInfo.index).getBuilding().squadDeployed = true;
+        misc.recallButton.visible = false;
+        misc.deployButton.visible = true;
     },
 };
 
