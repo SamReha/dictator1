@@ -293,7 +293,7 @@ var Person={
                     return 'MISSING JOBNAME';
             }
         } else if (p.type === Person.Mid) {
-            switch (citizen.role) {
+            switch (p.role) {
                 case Person.Bureaucrat:
                     return 'Elite Bureaucrat';
                 case Person.Military:
@@ -304,7 +304,7 @@ var Person={
                     return 'MISSING ROLE NAME';
             }
         } else if (p.type === Person.Hi) {
-            switch (citizen.role) {
+            switch (p.role) {
                 case Person.Bureaucrat:
                     return 'Minster of Bureaucracy';
                 case Person.Military:

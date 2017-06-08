@@ -234,7 +234,7 @@ var BuildMenu = {
 			Hud.beginBuilding(buildMenu, buildMenu.uiMask, buyArmyBaseBtn, 'armyBase');
 			buyArmyBaseBtn.toolTip.hide();
 		},
-		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Army Base\n\nEach employed soldier can be deployed for a small fee.\nSoldiers automatically seek out and destroy Rioters.\nEach solder reduces Freedom when deployed.');
+		buildMenu, 1, 0, 2, 0, buildMenu.toolTipLayer, 'Army Base\n\nEach employed soldier can be deployed for a small fee.\nSoldiers automatically seek out and destroy Rioters.\nEach soldier reduces Freedom when deployed.');
 		buildMenu.buttons['armyBase'] = buyArmyBaseBtn;
 		defaultGroup.addChild(buyArmyBaseBtn);
 
