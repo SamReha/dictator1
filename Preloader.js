@@ -282,10 +282,10 @@ var Preloader={
 
         //// load soldier sfx
         var soldierDir = sfxDir + 'soldiers/';
-        g.load.audio('soldiers_spawn',  soldierDir + 'spawn_soldiers/spawn_soldiers_SFX.wav');
-        g.load.audio('soldiers_attack', soldierDir + 'combat_soldiers/combat_soldiers_SFX.wav');
-        g.load.audio('soldiers_move',   soldierDir + 'move_soldiers/move_soldiers_SFX.wav');
-        g.load.audio('soldiers_death',  riotDir + 'dying_rioters/dying_rioters_SFX.wav');  // Need to get this one from Matt!!
+        g.load.audio('soldier_spawn',  soldierDir + 'spawn_soldiers/spawn_soldiers_SFX.wav');
+        g.load.audio('soldier_attack', soldierDir + 'combat_soldiers/combat_soldiers_SFX.wav');
+        g.load.audio('soldier_move',   soldierDir + 'move_soldiers/move_soldiers_SFX.wav');
+        g.load.audio('soldier_death',  riotDir + 'dying_rioters/dying_rioters_SFX.wav');  // Need to get this one from Matt!!
 
         //// load pencil sfx
         for (var i = 1; i <= 10; i++) {
