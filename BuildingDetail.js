@@ -905,6 +905,14 @@ var BDController = {
 
                     Global.updateMoneyPerTurn();
 
+                    // Before we actually demolish the building, send a telemetry payload!
+                    Telemetry.send({
+                        type: 'building_demolished',
+                        buildingName: MainGame.board.at(bdInfo.index).getBuilding().name,
+                        buildingIndex: bdInfo.index,
+                        turn: MainGame.global.turn,
+                    });
+
                     // Remove the building at view.index
                     MainGame.board.at(bdInfo.index).removeBuilding();
 

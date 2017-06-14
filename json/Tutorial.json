@@ -250,7 +250,7 @@
 	},
 
 	{
-		"name":"buildingOutput",
+		"name":"ExplainBuildingOutput",
 		"cond":"Tutorial.lumberYardHasWorkers()",
 		"init":"Tutorial.setPointerOnFactory(true);MainGame.board.limitInteractionTo(159);MainGame.board.enableInteractionOn(141);MainGame.board.cameraCenterOn(159);MenuController.closeAllMenus()",
 		"event":[
@@ -282,7 +282,7 @@
 	},
 
 	{
-		"name":"MoneyPanel",
+		"name":"ShowMoneyPanel",
 		"cond":"Tut.readAboutMoney",
 		"init":"Tutorial.setPointerOnFactory(false);MenuController.closeAllMenus();MainGame.hud.moneyPanel.visible = true",
 		"event":[
@@ -314,7 +314,7 @@
 	},
 
 	{
-		"name":"housing",
+		"name":"ExplainHousing",
 		"cond":"Tutorial.buildMenuIsOpen()",
 		"init":"MenuController.closeAllMenus();MainGame.board.enableInteraction()",
 		"event":[
@@ -569,7 +569,7 @@
 	},
 
 	{
-		"name":"tutorialEnd",
+		"name":"TutorialEnd",
 		"cond":"false",
 		"init":"MenuController.closeAllMenus();MainGame.board.cameraCenterOn(82)",
 		"event":[

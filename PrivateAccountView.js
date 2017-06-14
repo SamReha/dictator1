@@ -215,6 +215,14 @@ var PrivateAccountView = {
     makeDeposit: function(amount) {
         MainGame.global.money -= amount;
         MainGame.global.privateMoney += amount;
+
+        // Send a telemetry payload!
+        Telemetry.send({
+            type: 'private_money_added',
+            amount: amount,
+            accountValue: MainGame.global.privateMoney,
+            turn: MainGame.global.turn,
+        });
     },
 
     // Guarantees that a withdrawal of the given amount can take place
