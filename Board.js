@@ -705,15 +705,15 @@ var Board = {
             var dy=Math.abs(p0.y-p1.y);
             if(p0.x%2===1){
                 if(p0.y<p1.y){
-                    return dx+dy-Math.ceil(dx/2);
+                    return dx+dy-Math.min(Math.ceil(dx/2),dy);
                 }else{
-                    return dx+dy-Math.floor(dx/2);
+                    return dx+dy-Math.min(Math.floor(dx/2),dy);
                 }
             }else{
                 if(p0.y>p1.y){
-                    return dx+dy-Math.ceil(dx/2);
+                    return dx+dy-Math.min(Math.ceil(dx/2),dy);
                 }else{
-                    return dx+dy-Math.floor(dx/2);
+                    return dx+dy-Math.min(Math.floor(dx/2),dy);
                 }
             }
         }
@@ -846,6 +846,7 @@ var Board = {
         var index = choices[Math.floor(Math.random()*choices.length)];
         /* global Building */
         board.at(index).setBuilding(Building.createNew({name:"shantyTown",startingTurn:MainGame.global.turn,people:0}));
+        board.at(index).updateRoadConnections();
         /*global updateHome*/
         updateHome(index);
         return index;

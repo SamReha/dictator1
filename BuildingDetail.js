@@ -588,6 +588,7 @@ var BDMisc = {
             };
             misc.deployButton = TextButton.createNew(position.x, position.y, 'small_generic_button', function() {
                 misc.deploySoldiers(bdInfo);
+                MenuController.closeAllMenus();
             }, null, 0, 2, 1, 2, 'Deploy Soldiers', BDController.buttonStyle);
             misc.deployButton.input.priorityID = 102;
             misc.deployButton.visible = !bdInfo.building.squadDeployed;

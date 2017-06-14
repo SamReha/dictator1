@@ -67,16 +67,15 @@ var showHomelessCamps = function(callback) {
         MainGame.board.cameraCenterOn(list[listIndex]);
 
         // Wait a bit, then spawn the event.
-        var timer = MainGame.game.time.create(true);
-        timer.add(500, function() {
+        MainGame.game.time.events.add(500, function() {
         var e = Event.createNew();
             e.setModel([
-                            {
-                                portrait: 'exclamation_01', 
-                                description: 'A homeless camp has formed due to a lack of available housing!', 
-                                buttonTexts: ["Continue"]
-                            }
-                        ]);
+                {
+                    portrait: 'exclamation_01', 
+                    description: 'A homeless camp has formed due to a lack of available housing!', 
+                    buttonTexts: ["Continue"]
+                }
+            ]);
 
             e.setController([
                 [function() {
@@ -85,7 +84,6 @@ var showHomelessCamps = function(callback) {
                 }]
             ]);
         }, null);
-        timer.start();
     };
 
     // Start by getting a list of all new buildings that will appear this turn.
@@ -112,8 +110,7 @@ var showThermometerUpdate = function(callback) {
         MainGame.hud.funPanel.updateData();
 
         // Wait a bit
-        var timer = MainGame.game.time.create(true);
-        timer.add(1000, function() {
+        MainGame.game.time.events.add(1000, function() {
             MainGame.game.make.audio('boiling').play();
             
             // Lower the thermometer and spawn a unit
@@ -144,17 +141,18 @@ var showThermometerUpdate = function(callback) {
                     citizenToRiot.work = null;
                 }
 
+                MainGame.population.people.splice(MainGame.population.people.indexOf(citizenToRiot),1);
+
                 // Wait a bit, then spawn the event.
-                var timer = MainGame.game.time.create(true);
-                timer.add(2100, function() {
+                MainGame.game.time.events.add(2100, function() {
                     var e = Event.createNew();
                     e.setModel([
-                                    {
-                                        portrait: 'exclamation_01', 
-                                        description: 'A citizen has begun rioting!', 
-                                        buttonTexts: ["Continue"]
-                                    }
-                                ]);
+                        {
+                            portrait: 'exclamation_01', 
+                            description: 'A citizen has begun rioting!', 
+                            buttonTexts: ["Continue"]
+                        }
+                    ]);
 
                     e.setController([
                         [function() {
@@ -163,10 +161,8 @@ var showThermometerUpdate = function(callback) {
                         }]
                     ]);
                 }, null);
-                timer.start();
             }
         }, null);
-        timer.start();
     } else {
         // Else, no spawn occured, so we should just move on
         callback();
@@ -188,11 +184,9 @@ var showUnitAction = function(callback) {
         unitList[index].takeTurn();
 
         // Wait a bit, then process the next unit.
-        var timer = MainGame.game.time.create(true);
-        timer.add(2100, function() {
+        MainGame.game.time.events.add(2100, function() {
             processUnitUpdates(unitList, ++index);
         }, null);
-        timer.start();
     }
 
     // Start by getting a list of all active units.
@@ -225,16 +219,15 @@ var showMinisterDemotions = function(callback) {
             minister.setLowClass();
 
             // Wait a bit, then spawn the event.
-            var timer = MainGame.game.time.create(true);
-            timer.add(500, function() {
+            MainGame.game.time.events.add(500, function() {
             var e = Event.createNew();
                 e.setModel([
-                                {
-                                    portrait: 'exclamation_01', 
-                                    description: minister.name + ' has been forced to resign as minister due to a decline in their living conditions!', 
-                                    buttonTexts: ["Continue"]
-                                }
-                            ]);
+                    {
+                        portrait: 'exclamation_01', 
+                        description: minister.name + ' has been forced to resign as minister due to a decline in their living conditions!', 
+                        buttonTexts: ["Continue"]
+                    }
+                ]);
 
                 e.setController([
                     [function() {
@@ -244,7 +237,6 @@ var showMinisterDemotions = function(callback) {
                     }]
                 ]);
             }, null);
-            timer.start();
         } else {
             // If the minister is fine, just move on to the next one:
             processMinisters(ministerList, ++index);
@@ -266,12 +258,12 @@ var concludeNextTurnSequence = function() {
 
     var e = Event.createNew();
     e.setModel([
-                    {
-                        portrait: 'exclamation_01', 
-                        description: 'The year is now ' + (1949 + MainGame.global.turn) + '.\nThe population has increased by ' + deltaPopulation + ' citizens.\n' + financialMessage, 
-                        buttonTexts: ["OK"]
-                    }
-                ]);
+        {
+            portrait: 'exclamation_01', 
+            description: 'The year is now ' + (1949 + MainGame.global.turn) + '.\nThe population has increased by ' + deltaPopulation + ' citizens.\n' + financialMessage, 
+            buttonTexts: ["OK"]
+        }
+    ]);
 
     e.setController([
         [function() {
