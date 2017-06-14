@@ -847,6 +847,10 @@ var Board = {
         /* global Building */
         board.at(index).setBuilding(Building.createNew({name:"shantyTown",startingTurn:MainGame.global.turn,people:0}));
         board.at(index).updateRoadConnections();
+        var neighborhood = MainGame.board.allAdjacent(index, 1);
+        for (var i = 0; i < neighborhood.length; i++) {
+            MainGame.board.at(neighborhood[i]).updateRoadConnections();
+        }
         /*global updateHome*/
         updateHome(index);
         return index;

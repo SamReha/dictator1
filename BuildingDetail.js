@@ -374,39 +374,40 @@ var BDOccupants = {
 
         // ListView Background
         var background = MainGame.game.make.graphics();
-        var backgroundX = (-occupants.width/2) + BDController.horizontalBorderWidth;
-        var backgroundY = -85;
-        var backgroundWitdh = occupants.width - (BDController.horizontalBorderWidth * 2);
-        var backgroundHeight = 125;
+        var backgroundWitdh = occupants.width*4/5;
+        var backgroundHeight = occupants.height*11/20;
         background.lineStyle(0);
         background.beginFill(0x000000, 0.66);
-        background.drawRect(backgroundX, backgroundY, backgroundWitdh, backgroundHeight);
+        background.drawRect(0, 0, backgroundWitdh, backgroundHeight);
         background.endFill();
-        occupants.addChild(MainGame.game.make.sprite(0,0,background.generateTexture()));
+        occupants.backFrame = MainGame.game.make.sprite(-occupants.width*1/26,occupants.height*1/40,background.generateTexture());
+        occupants.backFrame.anchor.setTo(.5,.5);
+        occupants.addChild(occupants.backFrame);
 
         // DPageIndicator: N pages
-        occupants.itemsPerPage = 5;
+        occupants.itemsPerPage = 10;
         var pageCount = Math.ceil(bdInfo.building.maxPeople / occupants.itemsPerPage);
-        occupants.pageIndicator = DPageIndicator.createNew((occupants.width*1/8),{x:(occupants.width*1/2),y:0}); //width, textPos
-        occupants.pageIndicator.setModel(0, pageCount); // current, max
-        occupants.pageIndicator.setController(function(index){ BDController.setupOccupantList(occupants, bdInfo, index); }, 111);
-        occupants.pageIndicator.x = -(occupants.width*1/2);
-        occupants.pageIndicator.y = (occupants.height*1/8);
-        occupants.pageIndicator.visible = (pageCount > 1);
-        occupants.addChild(occupants.pageIndicator);
+        // occupants.pageIndicator = DPageIndicator.createNew((occupants.width*1/8),{x:0,y:0}); //width, textPos
+        // occupants.pageIndicator.setModel(0, pageCount); // current, max
+        // occupants.pageIndicator.setController(function(index){ BDController.setupOccupantList(occupants, bdInfo, index); }, 111);
+        // occupants.pageIndicator.x = -(occupants.width*1/15);
+        // occupants.pageIndicator.y = (occupants.height*1/4);
+        // occupants.pageIndicator.visible = (pageCount > 1);
+        // occupants.addChild(occupants.pageIndicator);
 
         // ListView
         occupants.occupantListView = DListView.createNew(
             {},                  // don't need textures
-            {l:15, t:40},        // margin inside the list view
-            {w:400, h:22},       // size of an item
+            {l:0, t:0},        // margin inside the list view
+            {w:occupants.width*7/10, h:occupants.height*1/20},       // size of an item
             function(index){  }, // forwards the callback
             false,               // not horizontal
             110                  // priority ID
         );
         BDController.setupOccupantList(occupants, bdInfo, 0);
-        occupants.occupantListView.x = -occupants.width/2 + BDController.horizontalBorderWidth;
-        occupants.occupantListView.y = -120;
+        occupants.occupantListView.x = -occupants.width*2/5;
+        occupants.occupantListView.y = -occupants.height*9/40;
+        occupants.occupantListView.anchor.setTo(.5,.5);
         occupants.addChild(occupants.occupantListView);
 
         // Hire button
@@ -414,8 +415,8 @@ var BDOccupants = {
             function() {BDController.onHireButtonPressed(occupants, bdInfo)}, occupants, 0, 2, 1, 2, bdInfo.addPersonString, BDController.buttonStyle);
 
         occupants.addPersonButton.input.priorityID = 102;
-        occupants.addPersonButton.x = -occupants.width/4 - occupants.addPersonButton.width/2;
-        occupants.addPersonButton.y = occupants.height/2 - occupants.addPersonButton.height*2 - BDController.verticalBorderWidth - 5;
+        occupants.addPersonButton.x = -occupants.width*7/30 - occupants.addPersonButton.width/2;
+        occupants.addPersonButton.y = occupants.height*3/8 - occupants.addPersonButton.height/2;
         occupants.addChild(occupants.addPersonButton);
 
         if (bdInfo.building.people >= bdInfo.building.maxPeople) {
@@ -427,8 +428,8 @@ var BDOccupants = {
             function() {BDController.onFireButtonPressed(occupants, bdInfo)}, occupants, 0, 2, 1, 2, bdInfo.removePersonString, BDController.buttonStyle);
 
         occupants.removePersonButton.input.priorityID = 102;
-        occupants.removePersonButton.x = occupants.width/4 - occupants.removePersonButton.width/2;
-        occupants.removePersonButton.y = occupants.height/2 - occupants.removePersonButton.height*2 - BDController.verticalBorderWidth - 5;
+        occupants.removePersonButton.x = occupants.width*1/6 - occupants.removePersonButton.width/2;
+        occupants.removePersonButton.y = occupants.height*3/8 - occupants.removePersonButton.height/2;
         occupants.addChild(occupants.removePersonButton);
 
         if (bdInfo.building.people <= 0) {
