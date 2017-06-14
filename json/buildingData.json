@@ -319,7 +319,7 @@
     "subtype": "military",
     "playerLabel": "Prison",
     "cost": 25,
-    "maxPeople": 7,
+    "maxPeople": 3,
     "effects": [
       {
         "type": "freedom",

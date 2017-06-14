@@ -151,6 +151,7 @@ var Global={
         MainGame.music.stop();
         MainGame.game.state.restart();
         MainGame.global.money = Global.startingMoney;
+        MainGame.global.moneyPerTurn = 0;
         MainGame.global.freedom = 0;
         MainGame.global.unrest = 0;
         MainGame.global.thermometerFill = 0;
