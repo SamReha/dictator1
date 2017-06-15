@@ -41,8 +41,15 @@ var MainGame={
         // set global var
         /*global Global*/
         MainGame.global=Global;
+        // Start the turn timer
+        MainGame.global.turnTimer = g.time.create(false);
+        MainGame.global.turnTimer.start();
+        // Start the game timer
+        MainGame.global.gameTimer = g.time.create(false);
+        MainGame.global.gameTimer.start();
 
         console.log('[MainGame] init with (w,h)=('+g.width+','+g.height+')');
+        console.log('[MainGame] TELEMETRY IS ' + (Telemetry.live ? 'ACTIVE' : 'DEACTIVATED'));
     },
     
     // start the game
