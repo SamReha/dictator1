@@ -471,6 +471,27 @@ var MenuController = {
 		}
 	},
 
+	getCurMenu: function(){
+		var curMenuType = this.currentMenu.pop();
+		this.currentMenu.push(curMenuType);
+		var curMenu = []];
+
+		if(curMenuType.includes("left")){
+			curMenu.push(this.leftMenusOpen.pop());
+			this.leftMenusOpen.push(curMenu[curMenu.length-1]);
+		}
+		if(curMenuType.includes("right")){
+			curMenu.push(this.rightMenusOpen.pop());
+			this.rightMenusOpen.push(curMenu[curMenu.length-1]);
+		}
+		if(curMenuType === "mid"){
+			curMenu.push(this.midMenusOpen.pop());
+			this.midMenusOpen.push(curMenu[curMenu.length-1]);
+		}
+
+		return curMenu;
+	}
+
 	// side - string {left, right, leftright}
 	closeCurMenu: function(side){
 		var curMenuType = this.currentMenu.pop();
