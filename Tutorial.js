@@ -4,7 +4,13 @@
 
 // singleton
 
-var Tut = {};	// stores the Tut on-going data
+// stores the Tut on-going data
+var Tut = {
+	hiringMinisterIsOpen: false,
+	dossierOpen: false,
+	contractOpen: false,
+	statsBinderIsOpen: false,  // Is the binder that holds global stats / money stats open?
+};
 
 var Tutorial = {
 	initialized: false,
@@ -321,10 +327,6 @@ var Tutorial = {
 		return Tut.numHouses < numHouses;
 	},
 
-	ministerViewIsOpen: function() {
-		return MainGame.global.ministerViewIsOpen;
-	},
-
 	contractIsOpen: function() {
 		return MainGame.global.contractIsOpen;
 	},
@@ -332,4 +334,8 @@ var Tutorial = {
 	hasMinister: function() {
 		return MainGame.population.highList().length > 0;
 	},
+
+	// menusIsOpen: function(string) {
+	// 	console.log(MenuController.getCurMenu());
+	// },
 };

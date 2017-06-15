@@ -1,5 +1,6 @@
 var Dossier ={
-	createNew: function(person){
+	createNew: function(person) {
+		Tut.dossierOpen = true;
 		var dossier = MainGame.game.make.group();
 
 		dossier.page = Page.createNew();

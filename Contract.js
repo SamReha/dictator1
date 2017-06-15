@@ -16,6 +16,7 @@ var ContractClipboard={
 
 var Contract ={
 	createNew: function(person){
+		Tut.contractOpen = true;
 		var contract = MainGame.game.make.group();
 
 		contract.page = Page.createNew();

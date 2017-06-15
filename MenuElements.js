@@ -144,7 +144,7 @@ var Binder = {
 
 	createNew: function(type,activeTab,bdIndex) {
 		if (type === Binder.global) {
-			MainGame.global.statsBinderIsOpen = true;
+			Tut.statsBinderIsOpen = true;
 		}
 
 		var binder = MainGame.game.add.sprite(0,0,(type===Binder.global?'global_binder_texture':'building_binder_texture'));
@@ -328,6 +328,7 @@ var Clipboard = {
 				break;
 			case Clipboard.minister:
 				clipboard.page = HireMinisterClipboard.createNew();
+				Tut.hiringMinisterIsOpen = true;
 				openOn = 'left';
 				break;
 			case Clipboard.contract:
@@ -474,7 +475,7 @@ var MenuController = {
 	getCurMenu: function(){
 		var curMenuType = this.currentMenu.pop();
 		this.currentMenu.push(curMenuType);
-		var curMenu = []];
+		var curMenu = [];
 
 		if(curMenuType.includes("left")){
 			curMenu.push(this.leftMenusOpen.pop());
@@ -490,7 +491,7 @@ var MenuController = {
 		}
 
 		return curMenu;
-	}
+	},
 
 	// side - string {left, right, leftright}
 	closeCurMenu: function(side){
@@ -556,12 +557,12 @@ var MenuController = {
 	},
 
 	closeAllMenus: function(){
+		Tut.hiringMinisterIsOpen = false;
 		MenuController.uiMask.destroy();
 
-		if (MainGame.global.statsBinderIsOpen === true) {
-			MainGame.global.statsBinderIsOpen = false;
-		}
-		
+		Tut.statsBinderIsOpen = false;
+		Tut.contractOpen = false;
+
 		for(var i = 0; i < this.leftMenusOpen.length; ++i) {
 			//console.log(this.leftMenusOpen[i]);
 			if (this.leftMenusOpen[i].page.ministerData) MainGame.global.ministerViewIsOpen = false;

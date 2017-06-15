@@ -121,7 +121,7 @@ var CoalitionFlag = {
 	},
 };
 
-var HireMinisterClipboard ={
+var HireMinisterClipboard = {
     header1:	{ font: "32px myKaiti", fill:"black", shadowBlur: 1, shadowColor: "rgba(0,0,0,.85)", shadowOffsetX: 1, shadowOffsetY: 1 },
     header2:	{ font: "28px myKaiti", fill:"black", shadowBlur: 0, shadowColor: "rgba(0,0,0,.55)", shadowOffsetX: 1, shadowOffsetY: 1 },
     header3:	{ font: "22px myKaiti", fill:"black", shadowBlur: 0, shadowColor: "rgba(0,0,0,.55)", shadowOffsetX: 1, shadowOffsetY: 1 },
@@ -129,7 +129,7 @@ var HireMinisterClipboard ={
     body2:		{ font: "18px myKaiti", fill:"black", align: 'center'},
     listText:	{ font: "20px myKaiti", fill:"black", shadowBlur: 0, shadowColor: "rgba(0,0,0,.9)", shadowOffsetX: 1, shadowOffsetY: 1 },
 	
-	createNew: function(){
+	createNew: function() {
 		var clipboard = MainGame.game.make.group();
 
 		clipboard.page = Page.createNew();

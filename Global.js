@@ -18,9 +18,7 @@ var Global = {
     buildMenuOpened: false,    // Set to true the first time the player opens the build menu
     buildMenuIsOpen: false,    // Similar to buildMenuOpened, but tells whether the build menu is open in a given instant.
     boughtRoad: false,         // Has the player at least attempted to buy a road yet?
-    ministerViewIsOpen: false, // Flag that shows whether or not the minister view is open
     contractIsOpen: false,     // Flag that shows whether or not a contract is open
-    statsBinderIsOpen: false,  // Is the binder that holds global stats / money stats open?
     isBuilding: false,         // Is the player trying to build a building?
 
     nextTurn: function() {

@@ -404,7 +404,7 @@
 				"buttonTexts":["Continue"]
 			},
 			{
-				"description":"Your active ministers are listed at the top of the menu. Click on one of the empty portraits to open their menu.", 
+				"description":"Your ministry is listed on the left-hand side of the screen. Click on one of the empty portraits to open their menu.", 
 				"buttonTexts":["OK"]
 			}
 		],
@@ -430,7 +430,7 @@
 
 	{
 		"name":"ShowMinisterPanel",
-		"cond":"MainGame.global.ministerViewIsOpen",
+		"cond":"Tut.hiringMinisterIsOpen",
 		"init":"Tutorial.setPointerOnMinistryPanel(true)",
 		"event":[],
 		"handler":[],
@@ -449,11 +449,37 @@
 
 	{
 		"name":"OpenMinisterView",
-		"cond":"Tutorial.contractIsOpen()",
+		"cond":"Tut.dossierOpen",
 		"init":"Tutorial.setPointerOnMinistryPanel(false)",
 		"event":[
 			{
-				"description":"Social Elite are listed on the bottom half of the menu. Click on one of their portraits to bring up their contract and choose to hire them.", 
+				"description":"The citizens listed here are members of the Social Elite. Click on one of their portraits to bring up their dossier.", 
+				"buttonTexts":["OK"]
+			}
+		],
+		"handler":[
+			["e.suicide()"]
+		],
+		"reminder":{
+			"model":{
+				"description":"Build a new residence (Mansion, Suburb or Apartment)",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":""
+			}
+		}
+	},
+
+	{
+		"name":"OpenContract",
+		"cond":"Tut.contractOpen",
+		"init":"",
+		"event":[
+			{
+				"description":"Click on 'Minister Contract' to open a contract for this individual.", 
 				"buttonTexts":["OK"]
 			}
 		],
@@ -475,7 +501,7 @@
 
 	{
 		"name":"SignContract",
-		"cond":"Tutorial.hasMinister()",
+		"cond":"MainGame.population.highList().length > 0",
 		"init":"",
 		"event":[
 			{
@@ -500,6 +526,25 @@
 			"controller":{
 				"onClick":"console.log('You Clicked me!!!')",
 				"check":""
+			}
+		}
+	},
+
+	{
+		"name":"LookingAtContract",
+		"cond":"Tut.contractOpen === false",
+		"init":"",
+		"event":[],
+		"handler":[],
+		"reminder":{
+			"model":{
+				"description":"",
+				"startAt":-1,
+				"remaining":1
+			},
+			"controller":{
+				"onClick":"console.log('You Clicked me!!!')",
+				"check":"Tut.roads"
 			}
 		}
 	},
@@ -532,7 +577,7 @@
 
 	{
 		"name":"ShowStatsPanel",
-		"cond":"MainGame.global.statsBinderIsOpen",
+		"cond":"Tut.statsBinderIsOpen",
 		"init":"MenuController.closeAllMenus();Tutorial.setPointerOnStatsPanel(true)",
 		"event":[],
 		"handler":[],
@@ -551,7 +596,7 @@
 
 	{
 		"name":"LookingAtStatsBinder",
-		"cond":"MainGame.global.statsBinderIsOpen === false",
+		"cond":"Tut.statsBinderIsOpen === false",
 		"init":"Tutorial.setPointerOnStatsPanel(false)",
 		"event":[],
 		"handler":[],
