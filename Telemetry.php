@@ -51,6 +51,15 @@
             // Write the contents back to the file
             file_put_contents($file, $current);
         }
+    } else {
+        // If we got a bad payload, log it!
+        $file = 'telemetry_logs.txt';
+        // Open the file to get existing content
+        $current = file_get_contents($file);
+        // Append the new payload to the file as a string
+        $current .= "Got a bad payload: " . $payload_json . "\n\n";
+        // Write the contents back to the file
+        file_put_contents($file, $current);
     }
 
     // // If we're visiting the page, then show the contents of the debug file
