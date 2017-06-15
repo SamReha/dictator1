@@ -34,7 +34,11 @@ var Telemetry = {
         // Stamp payload with session ID
         payload.sessionID = Global.sessionID;
 
-        // TODO: Actually send payload to server
-        console.log(payload.type, payload);
+        // Send payload back to server
+        //console.log(payload.type, payload);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Telemetry.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(payload));
     },
 };
