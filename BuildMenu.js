@@ -293,7 +293,7 @@ var BuildMenu = {
 				buildMenu.disableButton('apartment');
 				buildMenu.disableButton('suburb');
 				buildMenu.disableButton('mansion');
-			} else if (Tutorial.activeTut.name === 'housing' || Tutorial.activeTut.name === 'OpenBuildMenuHousing' || Tutorial.activeTut.name === 'PlacingHouse') {
+			} else if (Tutorial.activeTut.name === 'ExplainHousing' || Tutorial.activeTut.name === 'OpenBuildMenuHousing' || Tutorial.activeTut.name === 'PlacingHouse') {
 				buildMenu.disableButton('road');
 			} else {
 				// If we're in the tutorial (but not on a phase that requires the build menu), lock down all options

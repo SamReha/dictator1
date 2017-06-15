@@ -141,6 +141,14 @@ var UnitAI = {
 			if(unit.health >= targetTile.getBuilding().integrity){
 				unit.target = null;
 				unit.isAttacking = false;
+
+				// Before we actually demolish the building, send a telemetry payload!
+                Telemetry.send({
+                    type: 'building_destroyed',
+                    buildingName: targetTile.getBuilding().name,
+                    buildingIndex: targetTile.index,
+                    turn: MainGame.global.turn,
+                });
 			}
 			targetTile.damageBuilding(unit.health);
 		} else if (unit.type === Unit.Army) {

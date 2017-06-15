@@ -1,5 +1,6 @@
 // singleton
-var Global={
+var Global = {
+    sessionID: guid(), // keep this value the same across game restarts!
     turn: 1,
     freedom: 0,
     unrest: 0,
@@ -10,6 +11,8 @@ var Global={
     thermometerFill: 0,
     thermometerDelta: 0,
     yearViewData: [],       // Year Entry follows format {year: xxxx, population: xxxx, employmentPercent: xx%, homelessPercent: xx%, publicFunds: ₸xxxx}
+    turnTimer: null,
+    gameTimer: null,
 
     // Internal Global States
     buildMenuOpened: false,    // Set to true the first time the player opens the build menu
@@ -21,6 +24,35 @@ var Global={
     isBuilding: false,         // Is the player trying to build a building?
 
     nextTurn: function() {
+        // Send the MOTHER OF ALL TELEMETRY PAYLOADS
+        var bureaucratMinister = MainGame.population.typeRoleList(Person.Hi, Person.Bureaucrat)[0];
+        var merchantMinister = MainGame.population.typeRoleList(Person.Hi, Person.Merchant)[0];
+        var militaryMinister = MainGame.population.typeRoleList(Person.Hi, Person.Military)[0];
+
+        Telemetry.send({
+            type: 'turn_completed',
+            turnTime: Global.turnTimer.seconds,
+            turn: Global.turn,
+            money: Global.money,
+            moneyPerTurn: Global.moneyPerTurn,
+            privateMoney: Global.privateMoney,
+            totalPopulation: MainGame.population.count(),
+            workingClassPopulation: MainGame.population.lowList().length,
+            bureaucratCount: MainGame.population.roleList(Person.Bureaucrat).length,
+            militaryCount: MainGame.population.roleList(Person.Military).length,
+            financeCount: MainGame.population.roleList(Person.Merchant).length,
+            bureaucratMinister: (bureaucratMinister === undefined ? '' : bureaucratMinister.name),
+            bureaucratPay: (bureaucratMinister === undefined ? 0 : bureaucratMinister.salary),
+            merchantMinister: (merchantMinister === undefined ? '' : merchantMinister.name),
+            merchantPay: (merchantMinister === undefined ? 0 : merchantMinister.salary),
+            militaryMinister: (militaryMinister === undefined ? '' : militaryMinister.name),
+            militaryPay: (militaryMinister === undefined ? 0 : militaryMinister.salary),
+            hasRiot: (MainGame.board.findUnits(Unit.Riot).length > 0),
+            freedom: Global.freedom,
+            unrest: Global.unrest,
+            pressure: Global.thermometerFill,
+        });
+
         MainGame.hud.setEndTurnActive(false);
         ++Global.turn;
 
@@ -51,6 +83,10 @@ var Global={
                 });
             });
         }
+
+        // Reset the turn timer
+        Global.turnTimer.stop();
+        Global.turnTimer.start();
     },
 
     toString: function(){
@@ -148,6 +184,39 @@ var Global={
     },
 
     restart: function() {
+        var bureaucratMinister = MainGame.population.typeRoleList(Person.Hi, Person.Bureaucrat)[0];
+        var merchantMinister = MainGame.population.typeRoleList(Person.Hi, Person.Merchant)[0];
+        var militaryMinister = MainGame.population.typeRoleList(Person.Hi, Person.Military)[0];
+
+        Telemetry.send({
+            type: 'game_restarted',
+            turnTime: Global.turnTimer.seconds,
+            gameTime: Global.gameTimer.seconds,
+            turn: Global.turn,
+            money: Global.money,
+            moneyPerTurn: Global.moneyPerTurn,
+            privateMoney: Global.privateMoney,
+            totalPopulation: MainGame.population.count(),
+            workingClassPopulation: MainGame.population.lowList().length,
+            bureaucratCount: MainGame.population.roleList(Person.Bureaucrat).length,
+            militaryCount: MainGame.population.roleList(Person.Military).length,
+            financeCount: MainGame.population.roleList(Person.Merchant).length,
+            bureaucratMinister: (bureaucratMinister === undefined ? '' : bureaucratMinister.name),
+            bureaucratPay: (bureaucratMinister === undefined ? 0 : bureaucratMinister.salary),
+            merchantMinister: (merchantMinister === undefined ? '' : merchantMinister.name),
+            merchantPay: (merchantMinister === undefined ? 0 : merchantMinister.salary),
+            militaryMinister: (militaryMinister === undefined ? '' : militaryMinister.name),
+            militaryPay: (militaryMinister === undefined ? 0 : militaryMinister.salary),
+            hasRiot: (MainGame.board.findUnits(Unit.Riot).length > 0),
+            freedom: Global.freedom,
+            unrest: Global.unrest,
+            pressure: Global.thermometerFill,
+        });
+
+        // Reset the game timer
+        Global.gameTimer.stop();
+        Global.gameTimer.start();
+
         MainGame.music.stop();
         MainGame.game.state.restart();
         MainGame.global.money = Global.startingMoney;
@@ -170,8 +239,48 @@ function getGameLoseWindow(message) {
                 ]);
 
     e.setController([
-        [function(){
+        [function() {
+            var bureaucratMinister = MainGame.population.typeRoleList(Person.Hi, Person.Bureaucrat)[0];
+            var merchantMinister = MainGame.population.typeRoleList(Person.Hi, Person.Merchant)[0];
+            var militaryMinister = MainGame.population.typeRoleList(Person.Hi, Person.Military)[0];
+
+            Telemetry.send({
+                type: 'game_lost',
+                message: message,
+                turnTime: Global.turnTimer.seconds,
+                gameTime: Global.gameTimer.seconds,
+                turn: Global.turn,
+                money: Global.money,
+                moneyPerTurn: Global.moneyPerTurn,
+                privateMoney: Global.privateMoney,
+                totalPopulation: MainGame.population.count(),
+                workingClassPopulation: MainGame.population.lowList().length,
+                bureaucratCount: MainGame.population.roleList(Person.Bureaucrat).length,
+                militaryCount: MainGame.population.roleList(Person.Military).length,
+                financeCount: MainGame.population.roleList(Person.Merchant).length,
+                bureaucratMinister: (bureaucratMinister === undefined ? '' : bureaucratMinister.name),
+                bureaucratPay: (bureaucratMinister === undefined ? 0 : bureaucratMinister.salary),
+                merchantMinister: (merchantMinister === undefined ? '' : merchantMinister.name),
+                merchantPay: (merchantMinister === undefined ? 0 : merchantMinister.salary),
+                militaryMinister: (militaryMinister === undefined ? '' : militaryMinister.name),
+                militaryPay: (militaryMinister === undefined ? 0 : militaryMinister.salary),
+                hasRiot: (MainGame.board.findUnits(Unit.Riot).length > 0),
+                freedom: Global.freedom,
+                unrest: Global.unrest,
+                pressure: Global.thermometerFill,
+            });
+
             Global.restart();
         }]
     ]);
+}
+
+// Generate a 'good-enough' GUID to be used as a session ID. Thanks https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }

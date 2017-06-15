@@ -254,6 +254,14 @@ var BuildingPlacer = {
             // self.input.priorityID = 100;
             // console.log(tile.events.onInputUp);
 
+            // Send a telemetry payload!
+            Telemetry.send({
+                type: 'building_added',
+                buildingName: newBuilding.name,
+                buildingIndex: tile.index,
+                turn: MainGame.global.turn,
+            });
+
             MainGame.board.controller.dontPan = true;
 
             menu.destroy();

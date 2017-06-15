@@ -213,7 +213,8 @@ var Person={
     },
 
     setHighClass: function(p) {
-        if(p.type === Person.Hi){
+        // If they're already high class, then we're renewing and just need to update pay
+        if(p.type === Person.Hi) {
             var effects = MainGame.board.at(p.home).getBuilding().effects;
             for(var count=0; count<effects.length; ++count){
                 if(effects[count].type==="money"){
@@ -222,16 +223,35 @@ var Person={
                 }
             }
         }else{
+            // Otherwise, they're being properly hired
             var minister = MainGame.population.typeRoleList(Person.Hi,p.role);
             if(minister.length > 0)
                 minister[0].unSetHighClass();
             p.type = Person.Hi;
             p.loyalty = 5;
             p.addSalary();
+
+            // Send a telemetry payload!
+            Telemetry.send({
+                type: 'minister_hired',
+                ministerName: p.name,
+                ministerPay: p.salary,
+                ministerFaction: p.role,
+                turn: MainGame.global.turn,
+            });
         }
     },
 
     unSetHighClass: function(p) {
+        // Send a telemetry payload!
+        Telemetry.send({
+            type: 'minister_hired',
+            ministerName: p.name,
+            ministerPay: p.salary,
+            ministerFaction: p.role,
+            turn: MainGame.global.turn,
+        });
+        
         p.loyalty = null;
         p.type = Person.Mid;
         p.removeSalary();
@@ -444,18 +464,28 @@ var Population={
     hire: function(pop,tileIndex){
         // console.log("work and house map:");
         /*global MainGame*/
-        var bld=MainGame.board.at(tileIndex).getBuilding();
+        var bld = MainGame.board.at(tileIndex).getBuilding();
         // console.assert(bld);
         // set home for person
-        if(bld.subtype==="housing"){
-            var hl=pop.findNotHoused();
-            if(hl.length>0){
-                if(bld.addPerson()){
-                    pop.people[hl[0]].home=tileIndex;
-                    if(pop.people[hl[0]].type===Person.Hi)
+        if (bld.subtype === "housing") {
+            var hl = pop.findNotHoused();
+            if (hl.length > 0) {
+                if (bld.addPerson()) {
+                    pop.people[hl[0]].home = tileIndex;
+                    if (pop.people[hl[0]].type === Person.Hi)
                         pop.people[hl[0]].addSalary();
 
                     updateHomes(false);
+
+                    // Finally, send a telemetry payload
+                    Telemetry.send({
+                        type: 'citizen_added_to_building',
+                        citizenName: pop.people[hl[0]].name,
+                        buildingName: bld.name,
+                        buildingIndex: tileIndex, 
+                        turn: MainGame.global.turn
+                    });
+
                     return true;
                 }
             }
@@ -471,6 +501,16 @@ var Population={
                                 pop.people[hl[i]].removeSalary();
 
                             updateHomes(false);
+
+                            // Finally, send a telemetry payload
+                            Telemetry.send({
+                                type: 'citizen_added_to_building',
+                                citizenName: pop.people[hl[0]].name,
+                                buildingName: bld.name,
+                                buildingIndex: tileIndex, 
+                                turn: MainGame.global.turn
+                            });
+
                             return true;
                         }
                     }
@@ -485,18 +525,38 @@ var Population={
         /*global MainGame*/
         var bld = MainGame.board.at(tileIndex).getBuilding();
         //set location for person
-        if(bld.subtype==="housing"){
-            if(bld.addPerson()){
-                person.home=tileIndex;
+        if (bld.subtype === "housing") {
+            if (bld.addPerson()) {
+                person.home = tileIndex;
                 updateHomes(false);
+
+                // Finally, send a telemetry payload
+                Telemetry.send({
+                    type: 'citizen_added_to_building',
+                    citizenName: person.name,
+                    buildingName: bld.name,
+                    buildingIndex: tileIndex, 
+                    turn: MainGame.global.turn
+                });
+
                 return true;
             }
             return false;
         }
-        else{
-            if(bld.addPerson()){
-                person.workplace=tileIndex;
+        else {
+            if (bld.addPerson()) {
+                person.workplace = tileIndex;
                 updateHomes(false);
+
+                // Finally, send a telemetry payload
+                Telemetry.send({
+                    type: 'citizen_added_to_building',
+                    citizenName: person.name,
+                    buildingName: bld.name,
+                    buildingIndex: tileIndex, 
+                    turn: MainGame.global.turn
+                });
+
                 return true;
             }
             return false;
@@ -517,6 +577,16 @@ var Population={
                     pop.people[housed[i]].home = null;
 
                     updateHomes(false);
+
+                    // Finally, send a telemetry payload
+                    Telemetry.send({
+                        type: 'citizen_removed_from_building',
+                        citizenName: pop.people[housed[i]].name,
+                        buildingName: bld.name,
+                        buildingIndex: tileIndex, 
+                        turn: MainGame.global.turn
+                    });
+
                     return true;
                 }
             }
@@ -529,6 +599,16 @@ var Population={
                     pop.people[employed[j]].workplace=null;
 
                     updateHomes(false);
+
+                    // Finally, send a telemetry payload
+                    Telemetry.send({
+                        type: 'citizen_removed_from_building',
+                        citizenName: pop.people[employed[j]].name,
+                        buildingName: bld.name,
+                        buildingIndex: tileIndex, 
+                        turn: MainGame.global.turn
+                    });
+
                     return true;
                 }
             }
@@ -545,6 +625,16 @@ var Population={
                 bld.removePerson();
                 person.home = null;
                 updateHomes(false);
+
+                // Finally, send a telemetry payload
+                Telemetry.send({
+                    type: 'citizen_removed_from_building',
+                    citizenName: person.name,
+                    buildingName: bld.name,
+                    buildingIndex: tileIndex, 
+                    turn: MainGame.global.turn
+                });
+
                 return true;
             }
             return false;
@@ -553,6 +643,16 @@ var Population={
                 bld.removePerson();
                 person.workplace=null;
                 updateHomes(false);
+
+                // Finally, send a telemetry payload
+                Telemetry.send({
+                    type: 'citizen_removed_from_building',
+                    citizenName: person.name,
+                    buildingName: bld.name,
+                    buildingIndex: tileIndex, 
+                    turn: MainGame.global.turn
+                });
+
                 return true;
             }else{
                 console.log(person.workplace+" "+tileIndex);

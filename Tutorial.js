@@ -11,6 +11,7 @@ var Tutorial = {
 	tuts: [],	
 	activeTut: null,
 	activeIndex: 0,
+	timer: null, // Unlike checkTimer, this timer is used to record how long the player spent in each tutorial sequence
 
 	// generate the tutorials
 	generate: function() {
@@ -31,16 +32,19 @@ var Tutorial = {
 			this.checkTimer.loop(50, this.loopingCheck, this);
 			this.checkTimer.start();
 
+			this.timer = MainGame.game.time.create(false);
+
 			this.initialized = true;
 		}
 
 		var tut = this.tuts[this.activeIndex];
-		// now let's execute the tut
-		// init
-		this._executeInit_(tut.init);
 
 		// tuts -> runningTuts
 		this.activeTut = tut;
+
+		// now let's execute the tut
+		// init
+		this._executeInit_(tut.init);		
 
 		// run tutorial			
 		this.runEvent(tut.event, tut.handler);
@@ -52,11 +56,31 @@ var Tutorial = {
 	},
 
 	_executeInit_: function(init) {
+		// Run the active tut's initializer
 		Function(init)();
+
+		// Send a telemetry payload
+		Telemetry.send({
+			type: 'tutorial_phase_started',
+			phaseName: Tutorial.activeTut.name
+		});
+
+		// Start the timer
+		this.timer.start();
 	},
 
 	loopingCheck: function() {
 		if (this.activeTut && this._checkCond_(this.activeTut.cond)) {
+			// Send a telemetry payload
+			Telemetry.send({
+				type: 'tutorial_phase_completed',
+				phaseName: Tutorial.activeTut.name,
+				phaseTime: this.timer.seconds
+			});
+
+			// Stop the timer (also resets elapsed time)
+			this.timer.stop();
+
 			// Update active tutorial
 			this.activeIndex++;
 			this.activeTut = this.tuts[this.activeIndex];
