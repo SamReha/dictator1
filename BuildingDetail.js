@@ -689,8 +689,8 @@ var BDController = {
             var currentPage = Math.ceil(bdInfo.building.people / view.itemsPerPage);
             var maxPage = Math.ceil(bdInfo.building.maxPeople / view.itemsPerPage);
             BDController.setupOccupantList(view, bdInfo, Math.max(currentPage-1,0));
-            view.pageIndicator.setModel(Math.max(currentPage-1,0), maxPage); // current, max
-            view.pageIndicator.visible = (maxPage > 1);
+            //view.pageIndicator.setModel(Math.max(currentPage-1,0), maxPage); // current, max
+            //view.pageIndicator.visible = (maxPage > 1);
 
             // Play some funky music white boi
             view.add_remove_sfx.play();
@@ -738,8 +738,8 @@ var BDController = {
             var currentPage = Math.ceil(bdInfo.building.people / view.itemsPerPage)
             var maxPage = Math.ceil(bdInfo.building.maxPeople / view.itemsPerPage);
             BDController.setupOccupantList(view, bdInfo, Math.max(currentPage-1,0));
-            view.pageIndicator.setModel(Math.max(currentPage-1,0), maxPage); // current, max        var pageCount = Math.ceil(occupants.length / view.itemsPerPage);
-            view.pageIndicator.visible = (maxPage > 1);
+            //view.pageIndicator.setModel(Math.max(currentPage-1,0), maxPage); // current, max        var pageCount = Math.ceil(occupants.length / view.itemsPerPage);
+            //view.pageIndicator.visible = (maxPage > 1);
 
 
             // Play some funky music white boi
